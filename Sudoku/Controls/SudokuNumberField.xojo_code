@@ -12,6 +12,10 @@ Inherits DesktopTextField
 		  Me.FontSize = 24
 		  Me.TextAlignment = TextAlignments.Center
 		  
+		  #If TargetMacOS Then
+		    Me.BackgroundColor = &cffffffff 'Transparent
+		  #EndIf
+		  
 		End Sub
 	#tag EndMethod
 

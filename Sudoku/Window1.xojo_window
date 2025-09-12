@@ -541,6 +541,13 @@ End
 		Sub Paint(g As Graphics, areas() As Rect)
 		  #Pragma unused areas
 		  
+		  #If TargetWindows Then
+		    If (Not Color.IsDarkMode) Then
+		      g.DrawingColor = Color.White
+		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, SudokuTool.N * kCellSize, SudokuTool.N * kCellSize)
+		    End If
+		  #endif
+		  
 		  ' Draw all thin "hair" lines first (gray)
 		  g.DrawingColor = colGridlineHair
 		  g.PenSize = 1
