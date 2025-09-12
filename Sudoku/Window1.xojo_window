@@ -773,7 +773,7 @@ End
 		    ' we don't set .Readonly to get arrow navigation
 		    Var gridVal As String = Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex).ToString
 		    If (gridVal = "0") Then gridVal = ""
-		    If (sender.Text <> "") Then sender.Text = gridVal
+		    If (sender.Text <> gridVal) Then sender.Text = gridVal
 		    Return
 		  End If
 		  
