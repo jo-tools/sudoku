@@ -27,10 +27,8 @@ Inherits DesktopTextField
 		  
 		  If lock Then
 		    Me.Bold = True
-		    Me.ReadOnly = True
 		  Else
 		    Me.Bold = False
-		    Me.ReadOnly = False
 		  End If
 		  
 		End Sub

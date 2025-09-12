@@ -656,69 +656,51 @@ End
 
 	#tag Method, Flags = &h21
 		Private Function SudokuNumberFieldKeyDown(sender As SudokuNumberField, key As String) As Boolean
-		  If sender.ReadOnly or mIsShowingSudoku Then
+		  If mIsShowingSudoku Then
 		    'let default behavior happen
 		    Return False
 		  End If
 		  
-		  Var doShiftFocus As Boolean = True
-		  
 		  Select Case key
 		    ' Handle arrow keys
 		  Case Chr(28) ' Left arrow
-		    Var leftIndex As Integer = sender.PositionIndex
-		    ' Move focus to previous (unlocked) cell
-		    While (leftIndex > 0)
-		      leftIndex = leftIndex - 1
-		      If SudokuTextFields(leftIndex).IsLocked Then Continue
-		      SudokuTextFields(leftIndex).SetFocus
-		      Exit 'while loop
-		    Wend
+		    Var leftIndex As Integer = sender.PositionIndex - 1
+		    if (leftIndex >= 0) then SudokuTextFields(leftIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(29) ' Right arrow
-		    Var rightIndex As Integer = sender.PositionIndex
-		    ' Move focus to next (unlocked) cell
-		    While (rightIndex < SudokuTool.N*SudokuTool.N-1)
-		      rightIndex = rightIndex + 1
-		      If SudokuTextFields(rightIndex).IsLocked Then Continue
-		      SudokuTextFields(rightIndex).SetFocus
-		      Exit 'while loop
-		    Wend
+		    Var rightIndex As Integer = sender.PositionIndex + 1
+		    if (rightIndex < SudokuTool.N*SudokuTool.N) then SudokuTextFields(rightIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.PositionIndex
+		    Var upIndex As Integer = sender.PositionIndex - SudokuTool.N
 		    ' Move focus to previous (unlocked) cell
-		    While (upIndex >= SudokuTool.N)
-		      upIndex = upIndex - SudokuTool.N
-		      If SudokuTextFields(upIndex).IsLocked Then Continue
-		      SudokuTextFields(upIndex).SetFocus
-		      Exit 'while loop
-		    Wend
+		    if (upIndex >= 0) then SudokuTextFields(upIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.PositionIndex
-		    While (downIndex < SudokuTool.N*SudokuTool.N - SudokuTool.N)
-		      downIndex = downIndex + SudokuTool.N
-		      If SudokuTextFields(downIndex).IsLocked Then Continue
-		      SudokuTextFields(downIndex).SetFocus
-		      Exit 'while loop
-		    Wend
+		    Var downIndex As Integer = sender.PositionIndex + SudokuTool.N
+		    if (downIndex < SudokuTool.N*SudokuTool.N) then SudokuTextFields(downIndex).SetFocus
 		    Return True
 		    
 		    ' Other special keys
 		  Case Chr(8), Chr(127) ' Backspace, Delete
 		    ' will be filled empty later
 		    key = "0"
-		    doShiftFocus = False
 		    
 		  Case Chr(9) 'Tab
 		    'let default behavior happen
 		    Return False
 		    
 		  End Select
+		  
+		  ' Locked Sudoku cell
+		  If sender.IsLocked Then
+		    ' Make sure original grid value is not being overwritten
+		    ' we don't set .Readonly to get arrow navigation
+		    Return True
+		  End If
 		  
 		  ' Allow entering Digits 0-N
 		  If key >= "0" And key <= SudokuTool.N.ToString Then
@@ -733,18 +715,6 @@ End
 		    
 		    ' Update Status
 		    Me.RefreshControls
-		    
-		    If doShiftFocus Then
-		      ' Move focus to next (unlocked) cell automatically
-		      Var nextIndex As Integer = sender.PositionIndex
-		      While (nextIndex < SudokuTool.N*SudokuTool.N-1)
-		        nextIndex = nextIndex + 1
-		        If SudokuTextFields(nextIndex).IsLocked Then Continue
-		        
-		        SudokuTextFields(nextIndex).SetFocus
-		        Exit 'while loop
-		      Wend
-		    End If
 		    
 		    Return True
 		  End If
@@ -787,6 +757,15 @@ End
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField)
 		  If mIsShowingSudoku Then Return
+		  
+		  If sender.IsLocked Then
+		    ' Make sure original grid value is not being overwritten
+		    ' we don't set .Readonly to get arrow navigation
+		    Var gridVal As String = Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex).ToString
+		    If (gridVal = "0") Then gridVal = ""
+		    If (sender.Text <> "") Then sender.Text = gridVal
+		    Return
+		  End If
 		  
 		  ' Update Number if necessary
 		  Var currentNumber As Integer = sender.Text.ToInteger
