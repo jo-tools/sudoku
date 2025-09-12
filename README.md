@@ -30,7 +30,7 @@ This project is a complete Sudoku tool written in [Xojo](https://www.xojo.com/).
 [Xojo](https://www.xojo.com/) is a rapid application development for Desktop, Web, Mobile & Raspberry Pi.  
 
 The Desktop application Xojo project ```Sudoku.xojo_project``` is using:
-- Xojo 2024r4.2
+- Xojo 2025r2.1
 - API 2
 
 
