@@ -622,6 +622,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ShowSudoku()
+		  mIsShowingSudoku = True
+		  
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
@@ -647,11 +649,18 @@ End
 		  
 		  Me.RefreshControls
 		  
+		  mIsShowingSudoku = False
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function SudokuNumberFieldKeyDown(sender As SudokuNumberField, key As String) As Boolean
+		  If sender.ReadOnly or mIsShowingSudoku Then
+		    'let default behavior happen
+		    Return False
+		  End If
+		  
 		  Var doShiftFocus As Boolean = True
 		  
 		  Select Case key
@@ -777,6 +786,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField)
+		  If mIsShowingSudoku Then Return
+		  
 		  ' Update Number if necessary
 		  Var currentNumber As Integer = sender.Text.ToInteger
 		  If (Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
@@ -793,6 +804,10 @@ End
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private mIsShowingSudoku As Boolean
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private Sudoku As SudokuTool
