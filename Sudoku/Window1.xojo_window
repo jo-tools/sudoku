@@ -11,20 +11,20 @@ Begin DesktopWindow Window1
    HasMaximizeButton=   False
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   400
+   Height          =   500
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   1342697471
    MenuBarVisible  =   False
-   MinimumHeight   =   400
-   MinimumWidth    =   440
+   MinimumHeight   =   500
+   MinimumWidth    =   560
    Resizeable      =   False
    Title           =   "Sudoku"
    Type            =   0
    Visible         =   True
-   Width           =   440
+   Width           =   560
    Begin SudokuButton btnSolve
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -38,19 +38,19 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   True
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   6
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   250
+      Top             =   370
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -69,19 +69,19 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   0
+      TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   20
+      Top             =   120
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -100,19 +100,19 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   2
+      TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   90
+      Top             =   190
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -131,19 +131,19 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   3
+      TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   125
+      Top             =   225
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -159,23 +159,23 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   True
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   7
+      TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Sudoku Status"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   328
+      Top             =   428
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -191,23 +191,23 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   285
+      Left            =   405
       LockBottom      =   True
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   8
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   360
+      Top             =   460
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -226,19 +226,19 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   4
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   160
+      Top             =   260
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -257,19 +257,19 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   5
+      TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   210
+      Top             =   315
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -288,23 +288,229 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   300
+      Left            =   420
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   1
+      TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   55
+      Top             =   155
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   120
+   End
+   Begin DesktopCanvas cnvAppIcon
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   64
+      Index           =   -2147483648
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   "#kURL_Repository"
+      Top             =   20
+      Transparent     =   False
+      Visible         =   True
+      Width           =   64
+   End
+   Begin DesktopLabel labAppName
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   30
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   108
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Sudoku"
+      TextAlignment   =   0
+      TextColor       =   &c0072D800
+      Tooltip         =   "#kURL_Repository"
+      Top             =   20
+      Transparent     =   False
+      Underline       =   True
+      Visible         =   True
+      Width           =   140
+   End
+   Begin DesktopLabel labThanks
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   30
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   310
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Would you like to say 'Thank you'?"
+      TextAlignment   =   3
+      TextColor       =   &c66666600
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   230
+   End
+   Begin DesktopLabel labAppVersion
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   30
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   108
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "AppVersion"
+      TextAlignment   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   54
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   140
+   End
+   Begin DesktopLabel labContact
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   30
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   355
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Contact"
+      TextAlignment   =   1
+      TextColor       =   &c0072CE00
+      Tooltip         =   "#kEmail_Contact"
+      Top             =   54
+      Transparent     =   False
+      Underline       =   True
+      Visible         =   True
+      Width           =   70
+   End
+   Begin DesktopCanvas cnvPayPal
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   30
+      Index           =   -2147483648
+      Left            =   434
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   "#kURL_PayPal"
+      Top             =   54
+      Transparent     =   False
+      Visible         =   True
+      Width           =   106
+   End
+   Begin DesktopSeparator sepTop
+      Active          =   False
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   3
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   100
+      Transparent     =   False
+      Visible         =   True
+      Width           =   560
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
 End
 #tag EndDesktopWindow
@@ -313,7 +519,7 @@ End
 	#tag Event
 		Sub Opening()
 		  ' Layout
-		  Me.Height = 2 * kMarginWindow + SudokuTool.N * kCellSize
+		  Me.Height = sepTop.Top + 2 * kMarginWindow + SudokuTool.N * kCellSize
 		  Me.MinimumHeight = Me.Height
 		  
 		  Me.Width = 2 * kMarginWindow + SudokuTool.N * kCellSize + 20 + btnSolve.Width
@@ -340,9 +546,9 @@ End
 		  g.PenSize = 1
 		  For i As Integer = 1 To SudokuTool.N-1 ' skip outer border (0 and N)
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize)
 		  Next
 		  
 		  ' Draw thicker red 3x3 block lines on top
@@ -350,9 +556,9 @@ End
 		  g.PenSize = 3
 		  For i As Integer = 0 To SudokuTool.N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize)
 		  Next
 		End Sub
 	#tag EndEvent
@@ -530,7 +736,7 @@ End
 		      SudokuTextFields(index).Parent = Me
 		      SudokuTextFields(index).Visible = True
 		      SudokuTextFields(index).Left = kMarginWindow + col * kCellSize + ((kCellSize - SudokuTextFields(index).Width) / 2)
-		      SudokuTextFields(index).Top = kMarginWindow + row * kCellSize + ((kCellSize - SudokuTextFields(index).Height) / 2)
+		      SudokuTextFields(index).Top = sepTop.Top + kMarginWindow + row * kCellSize + ((kCellSize - SudokuTextFields(index).Height) / 2)
 		      
 		      SudokuTextFields(index).RowIndex = row
 		      SudokuTextFields(index).ColumnIndex = col
@@ -577,7 +783,16 @@ End
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"44", Scope = Private
 	#tag EndConstant
 
+	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
+	#tag EndConstant
+
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kURL_PayPal, Type = String, Dynamic = False, Default = \"https://paypal.me/jotools", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kURL_Repository, Type = String, Dynamic = False, Default = \"https://github.com/jo-tools/sudoku", Scope = Private
 	#tag EndConstant
 
 
@@ -652,6 +867,176 @@ End
 		  Self.LockSudoku
 		  
 		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events cnvAppIcon
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma unused areas
+		  
+		  g.DrawPicture(AppIcon_128, 0, 0, 64, 64, 0, 0, AppIcon_128.Width, AppIcon_128.Height)
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
+		    System.GotoURL(kURL_Repository)
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
+		  Return True
+		  
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  Me.MouseCursor = Nil
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labAppName
+	#tag Event
+		Sub Opening()
+		  Me.FontSize = 18
+		  Me.Bold = True
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
+		    System.GotoURL(kURL_Repository)
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
+		  Return True
+		  
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  Me.MouseCursor = Nil
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labThanks
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux Then
+		    Me.FontSize = 12
+		  #EndIf
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labAppVersion
+	#tag Event
+		Sub Opening()
+		  If (App.Version <> "") Then
+		    Me.Text = App.Version
+		    Return
+		  End If
+		  
+		  Me.Text = Str(App.MajorVersion) + "." + Str(App.MinorVersion) + "." + Str(App.BugVersion)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labContact
+	#tag Event
+		Sub MouseExit()
+		  Me.MouseCursor = Nil
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  Me.MouseCursor = System.Cursors.FingerPointer
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
+		    System.GotoURL("mailto:" + kEmail_Contact)
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events cnvPayPal
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma unused areas
+		  
+		  g.DrawingColor = &cFFFFFF
+		  If Color.IsDarkMode Then g.DrawingColor = &cD0D0D0
+		  g.FillRectangle(0, 0, g.Width, g.Height)
+		  g.DrawingColor = &c909090
+		  g.DrawRectangle(0, 0, g.Width, g.Height)
+		  g.DrawPicture(PayPal, 3, 2, 100, 26, 0, 0, PayPal.Width, PayPal.Height)
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  Me.MouseCursor = Nil
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  Me.MouseCursor = System.Cursors.FingerPointer
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
+		    System.GotoURL(kURL_PayPal)
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused x
+		  #Pragma unused y
+		  
+		  Return True
+		  
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
