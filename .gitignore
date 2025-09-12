@@ -8,4 +8,10 @@ Debug*/Debug*.exe
 Debug*/Debug*\ Libs
 *.rbuistate
 *.xojo_uistate
-*.obsolete*
+*.obsolete
+
+# General
+.DS_Store
+Thumbs.db
+Desktop.ini
+
