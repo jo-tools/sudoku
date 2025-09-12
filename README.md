@@ -20,9 +20,10 @@ This project is a complete Sudoku tool written in [Xojo](https://www.xojo.com/).
 *The solver uses a classic backtracking algorithm with rule checking to guarantee correct solutions. Random puzzle generation is based on creating a full valid grid, applying digit shuffling, and then removing cells to reach the desired clue count.*
 
 
-### ScreenShots
+### ScreenShot
 
-*...todo...*
+![ScreenShot: Disk Image](ScreenShots/Sudoku.png?raw=true)
+
 
 ## Xojo
 ### Requirements
