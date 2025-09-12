@@ -657,23 +657,46 @@ End
 		  Select Case key
 		    ' Handle arrow keys
 		  Case Chr(28) ' Left arrow
-		    Var leftIndex As Integer = sender.PositionIndex - 1
-		    If leftIndex >= 0 Then SudokuTextFields(leftIndex).SetFocus
+		    Var leftIndex As Integer = sender.PositionIndex
+		    ' Move focus to previous (unlocked) cell
+		    While (leftIndex > 0)
+		      leftIndex = leftIndex - 1
+		      If SudokuTextFields(leftIndex).IsLocked Then Continue
+		      SudokuTextFields(leftIndex).SetFocus
+		      Exit 'while loop
+		    Wend
 		    Return True
 		    
 		  Case Chr(29) ' Right arrow
-		    Var rightIndex As Integer = sender.PositionIndex + 1
-		    If rightIndex < SudokuTool.N*SudokuTool.N Then SudokuTextFields(rightIndex).SetFocus
+		    Var rightIndex As Integer = sender.PositionIndex
+		    ' Move focus to next (unlocked) cell
+		    While (rightIndex < SudokuTool.N*SudokuTool.N-1)
+		      rightIndex = rightIndex + 1
+		      If SudokuTextFields(rightIndex).IsLocked Then Continue
+		      SudokuTextFields(rightIndex).SetFocus
+		      Exit 'while loop
+		    Wend
 		    Return True
 		    
 		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.PositionIndex - SudokuTool.N
-		    If upIndex >= 0 Then SudokuTextFields(upIndex).SetFocus
+		    Var upIndex As Integer = sender.PositionIndex
+		    ' Move focus to previous (unlocked) cell
+		    While (upIndex >= SudokuTool.N)
+		      upIndex = upIndex - SudokuTool.N
+		      If SudokuTextFields(upIndex).IsLocked Then Continue
+		      SudokuTextFields(upIndex).SetFocus
+		      Exit 'while loop
+		    Wend
 		    Return True
 		    
 		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.PositionIndex + SudokuTool.N
-		    If downIndex < SudokuTool.N*SudokuTool.N Then SudokuTextFields(downIndex).SetFocus
+		    Var downIndex As Integer = sender.PositionIndex
+		    While (downIndex < SudokuTool.N*SudokuTool.N - SudokuTool.N)
+		      downIndex = downIndex + SudokuTool.N
+		      If SudokuTextFields(downIndex).IsLocked Then Continue
+		      SudokuTextFields(downIndex).SetFocus
+		      Exit 'while loop
+		    Wend
 		    Return True
 		    
 		    ' Other special keys
