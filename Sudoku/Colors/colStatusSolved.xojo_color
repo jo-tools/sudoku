@@ -1,0 +1,8 @@
+#tag ColorGroup
+	CodeName=colStatusSolved
+	#tag Color
+		Type=0
+		Platform=1
+		Light=4F8F0000
+	#tag EndColor
+#tag EndColorGroup
