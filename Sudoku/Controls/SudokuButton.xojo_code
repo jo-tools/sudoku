@@ -8,7 +8,7 @@ Inherits DesktopButton
 		  #ElseIf TargetWindows Then
 		    Me.Height = 22
 		  #ElseIf TargetLinux Then
-		    Me.Height = 22
+		    Me.Height = 24
 		  #Else
 		    Me.Height = 20
 		  #EndIf

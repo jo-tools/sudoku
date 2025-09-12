@@ -651,8 +651,11 @@ End
 		  Next
 		  
 		  ' Focus into first empty field
-		  If (focusIndex < 0) Then focusIndex = 0
-		  SudokuTextFields(focusIndex).SetFocus
+		  If (focusIndex < 0) Then
+		    ClearFocus
+		  Else
+		    SudokuTextFields(focusIndex).SetFocus
+		  End If
 		  
 		  Me.RefreshControls
 		  

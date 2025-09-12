@@ -1,6 +1,17 @@
 #tag Class
 Protected Class SudokuNumberField
 Inherits DesktopTextField
+	#tag Event
+		Sub FocusLost()
+		  Me.SelectionStart = 0
+		  Me.SelectionLength = 0
+		  
+		  FocusLost
+		  
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  Super.Constructor
@@ -14,6 +25,11 @@ Inherits DesktopTextField
 		  
 		  #If TargetMacOS Then
 		    Me.BackgroundColor = &cffffffff 'Transparent
+		  #EndIf
+		  
+		  #If TargetLinux Then
+		    Me.Height = 32
+		    Me.FontSize = 22
 		  #EndIf
 		  
 		End Sub
@@ -37,6 +53,11 @@ Inherits DesktopTextField
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Hook, Flags = &h0
+		Event FocusLost()
+	#tag EndHook
 
 
 	#tag Property, Flags = &h0
