@@ -2,6 +2,7 @@
 Protected Class SudokuTool
 	#tag Method, Flags = &h0
 		Sub ClearGrid()
+		  ' Fill entire grid with 0's
 		  Redim grid(N-1, N-1)
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
@@ -19,6 +20,7 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Sub Constructor(clone As SudokuTool)
+		  ' Init with state of passed-in Sudoku-grid
 		  Redim grid(N-1, N-1)
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
@@ -29,7 +31,34 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function CountSolutions(limit As Integer = 2) As Integer
+		  Var row, col As Integer
+		  If Not FindEmpty(row, col) Then
+		    Return 1 ' Found one solution
+		  End If
+		  
+		  Var total As Integer = 0
+		  ' Try every possible digit for that empty cell
+		  For val As Integer = 1 To N
+		    If IsValueValid(row, col, val) Then
+		      ' After trying a digit, reset the cell to 0 and try the next digit
+		      grid(row, col) = val
+		      total = total + CountSolutions(limit)
+		      grid(row, col) = 0
+		      
+		      If total >= limit Then
+		        Exit ' No need to count more
+		      End If
+		    End If
+		  Next
+		  
+		  Return total
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function FindEmpty(ByRef outRow As Integer, ByRef outCol As Integer) As Boolean
+		  ' Find the first empty cell
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
 		      If grid(r, c) = 0 Then
@@ -39,6 +68,7 @@ Protected Class SudokuTool
 		      End If
 		    Next
 		  Next
+		  
 		  Return False
 		End Function
 	#tag EndMethod
@@ -108,13 +138,19 @@ Protected Class SudokuTool
 		    indices(j) = tmpIndex
 		  Next
 		  
-		  ' Remove cells until only numClues remain
+		  ' Remove cells while keeping unique solution
 		  Var removeCount As Integer = N*N - numClues
 		  For i As Integer = 0 To removeCount - 1
 		    Var idx As Integer = indices(i)
 		    Var rr As Integer = idx \ N
 		    Var cc As Integer = idx Mod N
+		    Var backup As Integer = grid(rr, cc)
+		    
 		    grid(rr, cc) = 0
+		    If CountSolutions(2) <> 1 Then
+		      ' Not unique anymore, restore the number
+		      grid(rr, cc) = backup
+		    End If
 		  Next
 		  
 		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
@@ -142,6 +178,8 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
+		  ' Try solve on a clone, so that this
+		  ' grid is not being modified
 		  Var clone As New SudokuTool(Me)
 		  Return clone.Solve
 		  
@@ -150,8 +188,10 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsSolved() As Boolean
+		  ' Ensure current filled-in digits are valid
 		  If (Not IsValid) Then Return False
 		  
+		  ' And no empty cells left
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
 		      If (grid(r,c) = 0) Then Return False
@@ -238,6 +278,7 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function Solve() As Boolean
+		  ' Ensure current filled-in digits are valid
 		  If (Not IsValid()) Then Return False
 		  
 		  Return SolveInternal()
