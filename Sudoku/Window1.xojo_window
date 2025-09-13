@@ -29,7 +29,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "&Solve"
+      Caption         =   "#kButtonSolve"
       Default         =   True
       Enabled         =   True
       FontName        =   "System"
@@ -40,7 +40,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
@@ -60,7 +60,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "&Empty"
+      Caption         =   "#kButtonEmpty"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -71,7 +71,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -91,7 +91,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "Random (32)"
+      Caption         =   "#kButtonRandom32"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -102,7 +102,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -122,7 +122,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "Random (48)"
+      Caption         =   "#kButtonRandom48"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -133,7 +133,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -161,7 +161,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
@@ -171,7 +171,7 @@ Begin DesktopWindow Window1
       TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Sudoku Status"
+      Text            =   "#kLabelSudokuStatus"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
@@ -193,7 +193,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   405
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
@@ -217,7 +217,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "Random (64)"
+      Caption         =   "#kButtonRandom64"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -228,7 +228,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -248,7 +248,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "&Lock"
+      Caption         =   "#kButtonLock"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -259,7 +259,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -279,7 +279,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "Random (24)"
+      Caption         =   "#kButtonRandom24"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -290,7 +290,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   420
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -317,7 +317,7 @@ Begin DesktopWindow Window1
       Index           =   -2147483648
       Left            =   20
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
@@ -343,7 +343,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   108
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
@@ -375,7 +375,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   310
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -385,7 +385,7 @@ Begin DesktopWindow Window1
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Would you like to say 'Thank you'?"
+      Text            =   "#kLabelThanks"
       TextAlignment   =   3
       TextColor       =   &c66666600
       Tooltip         =   ""
@@ -407,7 +407,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   108
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
@@ -439,7 +439,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   355
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -449,7 +449,7 @@ Begin DesktopWindow Window1
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Contact"
+      Text            =   "#kLabelContact"
       TextAlignment   =   1
       TextColor       =   &c0072CE00
       Tooltip         =   "#kEmail_Contact"
@@ -470,7 +470,7 @@ Begin DesktopWindow Window1
       Index           =   -2147483648
       Left            =   434
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
@@ -494,7 +494,7 @@ Begin DesktopWindow Window1
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
@@ -600,27 +600,27 @@ End
 		  
 		  ' Status
 		  If isEmpty Then
-		    labStatus.Text = "Empty"
+		    labStatus.Text = kSudokuStatusEmpty
 		    labStatus.TextColor = Color.TextColor
 		    Return
 		  End If
 		  
 		  If (Not isValid) Then
-		    labStatus.Text = "Invalid"
+		    labStatus.Text = kSudokuStatusInvalid
 		    labStatus.TextColor = colStatusInvalid
 		    Return
 		  End If
 		  
 		  If isSolved Then
-		    labStatus.Text = "Solved"
+		    labStatus.Text = kSudokuStatusSolved
 		    labStatus.TextColor = colStatusSolved
 		    Return
 		  End If
 		  
 		  If isSolvable Then
-		    labStatus.Text = "Valid"
+		    labStatus.Text = kSudokuStatusValid
 		  Else
-		    labStatus.Text = "Valid (not solvable)"
+		    labStatus.Text = kSudokuStatusValidNotSolvable
 		  End If
 		  labStatus.TextColor = colStatusValid
 		  
@@ -807,13 +807,103 @@ End
 	#tag EndProperty
 
 
+	#tag Constant, Name = kButtonEmpty, Type = String, Dynamic = True, Default = \"Empty", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Leer"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vide"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Vac\xC3\xADo"
+	#tag EndConstant
+
+	#tag Constant, Name = kButtonLock, Type = String, Dynamic = True, Default = \"Lock", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sperren"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Verrou"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Bloqueo"
+	#tag EndConstant
+
+	#tag Constant, Name = kButtonRandom24, Type = String, Dynamic = True, Default = \"Random (24)", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (24)"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (24)"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (24)"
+	#tag EndConstant
+
+	#tag Constant, Name = kButtonRandom32, Type = String, Dynamic = True, Default = \"Random (32)", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (32)"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (32)"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (32)"
+	#tag EndConstant
+
+	#tag Constant, Name = kButtonRandom48, Type = String, Dynamic = True, Default = \"Random (48)", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (48)"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (48)"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (48)"
+	#tag EndConstant
+
+	#tag Constant, Name = kButtonRandom64, Type = String, Dynamic = True, Default = \"Random (64)", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (64)"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (64)"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (64)"
+	#tag EndConstant
+
+	#tag Constant, Name = kButtonSolve, Type = String, Dynamic = True, Default = \"Solve", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"L\xC3\xB6sen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"R\xC3\xA9soudre"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Resolver"
+	#tag EndConstant
+
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"44", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
 	#tag EndConstant
 
+	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Kontakt"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Contact"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelSudokuStatus, Type = String, Dynamic = True, Default = \"Sudoku Status", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sudoku Status"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Sudoku Statut"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Sudoku Estado"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelThanks, Type = String, Dynamic = True, Default = \"Would you like to say \'Thank you\'\?", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"M\xC3\xB6chten Sie \'Danke\' sagen\?"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vous souhaitez dire \'merci\'\?"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"\xC2\xBFQuiere dar las gracias\?"
+	#tag EndConstant
+
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kSudokuStatusEmpty, Type = String, Dynamic = True, Default = \"Empty", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Leer"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vide"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Vac\xC3\xADo"
+	#tag EndConstant
+
+	#tag Constant, Name = kSudokuStatusInvalid, Type = String, Dynamic = True, Default = \"Invalid", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Ung\xC3\xBCltig"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Non valide"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"No v\xC3\xA1lido"
+	#tag EndConstant
+
+	#tag Constant, Name = kSudokuStatusSolved, Type = String, Dynamic = True, Default = \"Solved", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Gel\xC3\xB6st"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"R\xC3\xA9solu"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Resuelto"
+	#tag EndConstant
+
+	#tag Constant, Name = kSudokuStatusValid, Type = String, Dynamic = True, Default = \"Valid", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"G\xC3\xBCltig"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Valide"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"V\xC3\xA1lido"
+	#tag EndConstant
+
+	#tag Constant, Name = kSudokuStatusValidNotSolvable, Type = String, Dynamic = True, Default = \"Valid (not solvable)", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"G\xC3\xBCltig (nicht l\xC3\xB6sbar)"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Valide (non soluble)"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"V\xC3\xA1lido (sin soluci\xC3\xB3n)"
 	#tag EndConstant
 
 	#tag Constant, Name = kURL_PayPal, Type = String, Dynamic = False, Default = \"https://paypal.me/jotools", Scope = Private
