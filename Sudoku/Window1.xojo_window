@@ -572,6 +572,26 @@ End
 
 
 	#tag Method, Flags = &h21
+		Private Function HasUnlockedCells() As Boolean
+		  ' Are there any unlocked cells with digits?
+		  For r As Integer = 0 To SudokuTool.N-1
+		    For c As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = r * SudokuTool.N + c
+		      
+		      If SudokuTextFields(index).IsLocked Then Continue
+		      If (Me.Sudoku.GetGridCell(r, c) < 1) Then Continue 'Is empty
+		      
+		      ' Found a non-empty, unlocked cell
+		      Return True
+		    Next
+		  Next
+		  
+		  Return False
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub LockSudoku()
 		  ' Lock current state
 		  For r As Integer = 0 To SudokuTool.N-1
@@ -582,6 +602,8 @@ End
 		      SudokuTextFields(index).Lock = (v > 0)
 		    Next
 		  Next
+		  
+		  Me.RefreshControls
 		  
 		End Sub
 	#tag EndMethod
@@ -594,7 +616,7 @@ End
 		  Var isSolved As Boolean = Me.Sudoku.IsSolved
 		  
 		  ' Controls
-		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved)
+		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved)
 		  
