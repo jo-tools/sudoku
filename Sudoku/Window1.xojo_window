@@ -652,7 +652,7 @@ End
 		  
 		  ' Focus into first empty field
 		  If (focusIndex < 0) Then
-		    ClearFocus
+		    self.SetFocus 'move Focus out of TextFields
 		  Else
 		    SudokuTextFields(focusIndex).SetFocus
 		  End If
