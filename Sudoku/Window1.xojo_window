@@ -46,7 +46,7 @@ Begin DesktopWindow Window1
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   13
+      TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -87,68 +87,6 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   120
    End
-   Begin SudokuButton btnRandom32
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "#kButtonRandom32"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   420
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   9
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   190
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   120
-   End
-   Begin SudokuButton btnRandom48
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "#kButtonRandom48"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   420
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   10
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   225
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   120
-   End
    Begin DesktopLabel labStatusTitle
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -168,7 +106,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   14
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#kLabelSudokuStatus"
@@ -200,7 +138,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   15
+      TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -212,37 +150,6 @@ Begin DesktopWindow Window1
       Underline       =   False
       Visible         =   True
       Width           =   150
-   End
-   Begin SudokuButton btnRandom64
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "#kButtonRandom64"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   420
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   11
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   260
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   120
    End
    Begin SudokuButton btnLock
       AllowAutoDeactivate=   True
@@ -265,42 +172,11 @@ Begin DesktopWindow Window1
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   315
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   120
-   End
-   Begin SudokuButton btnRandom24
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "#kButtonRandom24"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   420
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   8
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   155
+      Top             =   285
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -512,6 +388,98 @@ Begin DesktopWindow Window1
       _mName          =   ""
       _mPanelIndex    =   0
    End
+   Begin SudokuPopupMenu lstNumClues
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      SelectedRowIndex=   -1
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   185
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   55
+   End
+   Begin SudokuLabel labNumClues
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   480
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "#kLabelNumClues"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   185
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   75
+   End
+   Begin SudokuButton btnRandom
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "#kButtonRandom"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   2
+      TabIndex        =   10
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   220
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
+   End
 End
 #tag EndDesktopWindow
 
@@ -530,9 +498,7 @@ End
 		  Me.SudokuNumberFieldsInit
 		  
 		  ' Start with a Random Sudoku
-		  Self.Sudoku.GenerateRandomPuzzle(48)
-		  Me.ShowSudoku
-		  Me.LockSudoku
+		  Me.RandomSudoku
 		  
 		End Sub
 	#tag EndEvent
@@ -604,6 +570,16 @@ End
 		  Next
 		  
 		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub RandomSudoku()
+		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		  Call Self.Sudoku.GenerateRandomPuzzle(numClues)
+		  Self.ShowSudoku
+		  Self.LockSudoku
 		  
 		End Sub
 	#tag EndMethod
@@ -841,28 +817,10 @@ End
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Bloqueo"
 	#tag EndConstant
 
-	#tag Constant, Name = kButtonRandom24, Type = String, Dynamic = True, Default = \"Random (24)", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (24)"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (24)"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (24)"
-	#tag EndConstant
-
-	#tag Constant, Name = kButtonRandom32, Type = String, Dynamic = True, Default = \"Random (32)", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (32)"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (32)"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (32)"
-	#tag EndConstant
-
-	#tag Constant, Name = kButtonRandom48, Type = String, Dynamic = True, Default = \"Random (48)", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (48)"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (48)"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (48)"
-	#tag EndConstant
-
-	#tag Constant, Name = kButtonRandom64, Type = String, Dynamic = True, Default = \"Random (64)", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall (64)"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire (64)"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio (64)"
+	#tag Constant, Name = kButtonRandom, Type = String, Dynamic = True, Default = \"Random", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio"
 	#tag EndConstant
 
 	#tag Constant, Name = kButtonSolve, Type = String, Dynamic = True, Default = \"Solve", Scope = Private
@@ -881,6 +839,12 @@ End
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Kontakt"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Contact"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelNumClues, Type = String, Dynamic = True, Default = \"Clues", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Vorgaben"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Indices"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Pistas"
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelSudokuStatus, Type = String, Dynamic = True, Default = \"Sudoku Status", Scope = Private
@@ -960,49 +924,9 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events btnRandom32
-	#tag Event
-		Sub Pressed()
-		  Self.Sudoku.GenerateRandomPuzzle(32)
-		  Self.ShowSudoku
-		  Self.LockSudoku
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnRandom48
-	#tag Event
-		Sub Pressed()
-		  Self.Sudoku.GenerateRandomPuzzle(48)
-		  Self.ShowSudoku
-		  Self.LockSudoku
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnRandom64
-	#tag Event
-		Sub Pressed()
-		  Self.Sudoku.GenerateRandomPuzzle(64)
-		  Self.ShowSudoku
-		  Self.LockSudoku
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events btnLock
 	#tag Event
 		Sub Pressed()
-		  Self.LockSudoku
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnRandom24
-	#tag Event
-		Sub Pressed()
-		  Self.Sudoku.GenerateRandomPuzzle(24)
-		  Self.ShowSudoku
 		  Self.LockSudoku
 		  
 		End Sub
@@ -1176,6 +1100,32 @@ End
 		  Return True
 		  
 		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstNumClues
+	#tag Event
+		Sub Opening()
+		  Me.RemoveAllRows
+		  
+		  Me.AddRow("24")
+		  Me.AddRow("28")
+		  Me.AddRow("32")
+		  Me.AddRow("40")
+		  Me.AddRow("48")
+		  Me.AddRow("56")
+		  Me.AddRow("64")
+		  
+		  Me.SelectedRowIndex = 3
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnRandom
+	#tag Event
+		Sub Pressed()
+		  Self.RandomSudoku
+		  
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
