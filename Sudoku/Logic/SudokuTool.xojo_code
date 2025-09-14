@@ -170,7 +170,7 @@ Protected Class SudokuTool
 		    ' Let's just accept the puzzle with more clues than requested...
 		    ' Otherwise we'd need to do repeated passes (retry with a new shuffle)
 		    ' until the target is reached or a max attempt count is exhausted
-		    Break
+		    Break ' Just to show this information in Debug Builds
 		  End If
 		  
 		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
