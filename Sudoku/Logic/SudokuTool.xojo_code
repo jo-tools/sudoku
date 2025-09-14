@@ -140,18 +140,38 @@ Protected Class SudokuTool
 		  
 		  ' Remove cells while keeping unique solution
 		  Var removeCount As Integer = N*N - numClues
-		  For i As Integer = 0 To removeCount - 1
+		  Var removed As Integer = 0
+		  
+		  For i As Integer = 0 To indices.LastIndex
+		    If removed >= removeCount Then Exit ' we're done
+		    
 		    Var idx As Integer = indices(i)
 		    Var rr As Integer = idx \ N
 		    Var cc As Integer = idx Mod N
 		    Var backup As Integer = grid(rr, cc)
 		    
+		    ' Skip already-empty cells (shouldn't happen - just to be safe)
+		    If backup = 0 Then Continue
+		    
+		    ' Try removing
 		    grid(rr, cc) = 0
-		    If CountSolutions(2) <> 1 Then
-		      ' Not unique anymore, restore the number
+		    
+		    ' If the puzzle still has exactly 1 solution, accept the removal
+		    If CountSolutions(2) = 1 Then
+		      removed = removed + 1
+		    Else
+		      ' Not unique solution, restore the value and try to remove another
 		      grid(rr, cc) = backup
 		    End If
 		  Next
+		  
+		  If removed < removeCount Then
+		    ' Could not remove enough cells while keeping uniqueness.
+		    ' Let's just accept the puzzle with more clues than requested...
+		    ' Otherwise we'd need to do repeated passes (retry with a new shuffle)
+		    ' until the target is reached or a max attempt count is exhausted
+		    Break ' Just to show this information in Debug Builds
+		  End If
 		  
 		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
 		End Sub
