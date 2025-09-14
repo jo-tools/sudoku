@@ -74,7 +74,13 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub GenerateRandomPuzzle(numClues As Integer = 32)
+		Function GenerateRandomPuzzle(numClues As Integer = 32) As Boolean
+		  ' Generate a Random Puzzle
+		  ' Aim to have the number of clues according to parameter
+		  ' Returns True on success
+		  ' Returns False if not enough cells could be removed while keeping uniqueness
+		  ' Note: Always contains a new puzzle, even if returning False
+		  
 		  Var Rnd As New Random
 		  
 		  ' Sanitize numClues
@@ -171,10 +177,13 @@ Protected Class SudokuTool
 		    ' Otherwise we'd need to do repeated passes (retry with a new shuffle)
 		    ' until the target is reached or a max attempt count is exhausted
 		    Break ' Just to show this information in Debug Builds
+		    Return False
 		  End If
 		  
 		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
-		End Sub
+		  Return True
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
