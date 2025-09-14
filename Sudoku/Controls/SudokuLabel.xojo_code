@@ -6,7 +6,7 @@ Inherits DesktopLabel
 		  #If TargetMacOS Then
 		    Me.Height = 20
 		  #ElseIf TargetWindows Then
-		    Me.Height = 22
+		    Me.Height = 20
 		  #ElseIf TargetLinux Then
 		    Me.Height = 24
 		  #Else
