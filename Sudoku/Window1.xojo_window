@@ -583,7 +583,7 @@ End
 		    
 		    For Each testPaperSize As PDFDocument.PageSizes In detectPdfPaperSizes
 		      Var testPdf As New PDFDocument(testPaperSize)
-		      If (testPdf.PageHeight = ps.PageHeight) And (testPdf.PageHeight = ps.PageHeight) Then
+		      If (testPdf.PageHeight = ps.PageHeight) And (testPdf.PageWidth = ps.PageWidth) Then
 		        pdfPaperSize = testPaperSize
 		        Exit 'Loop
 		      End If
