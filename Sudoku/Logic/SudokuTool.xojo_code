@@ -56,6 +56,127 @@ Protected Class SudokuTool
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub DrawInto(g As Graphics)
+		  g.DrawingColor = Color.Black
+		  
+		  ' Heights
+		  Var topBottomMargin As Double = g.Height * 0.1
+		  Var sudokuHeight As Double = g.Height * 0.5
+		  Var top As Double = topBottomMargin
+		  
+		  ' Sudoku Title
+		  Var title As String = "Sudoku"
+		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  g.FontUnit = FontUnits.Point
+		  g.FontSize = 18
+		  g.Bold = True
+		  g.DrawText(title, (g.Width - g.TextWidth(title)) / 2.0, top + g.FontAscent)
+		  
+		  Var titleHeight As Double = g.TextHeight * 1.5
+		  top = top + titleHeight
+		  sudokuHeight = sudokuHeight - titleHeight
+		  
+		  ' Main grid size and position
+		  Var gridSize As Double = sudokuHeight
+		  Var gridX As Double = (g.Width - gridSize) / 2.0
+		  Var gridY As Double = top
+		  
+		  ' Draw current Sudoku
+		  DrawSudokuInternal(g, gridX, gridY, gridSize, True)
+		  
+		  ' Solution (on a clone, in order not to modify this Sudoku's state)
+		  If Me.IsSolved Then Return
+		  Var clone As New SudokuTool(Me)
+		  Var hasSolution As Boolean = clone.Solve
+		  If (Not hasSolution) Then Return
+		  
+		  ' Heights
+		  sudokuHeight = g.Height * 0.15
+		  top = g.Height - topBottomMargin - sudokuHeight
+		  
+		  ' Solution Title
+		  title = kSolution
+		  g.FontSize = 12
+		  g.Bold = False
+		  g.DrawText(title, (g.Width - g.TextWidth(title)) / 2.0, top + g.FontAscent)
+		  
+		  titleHeight = g.TextHeight * 1.5
+		  top = top + titleHeight
+		  sudokuHeight = sudokuHeight - titleHeight
+		  
+		  gridSize = sudokuHeight
+		  gridX = (g.Width - gridSize) / 2.0
+		  gridY = top
+		  
+		  clone.DrawSudokuInternal(g, gridX, gridY, gridSize, False)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, fontBold As Boolean)
+		  Var block As Integer = Sqrt(N) // assume N is a perfect square
+		  Var cell As Double = sizePoints / N
+		  
+		  '// background (white)
+		  'g.DrawingColor = Color.White
+		  'g.FillRectangle(topLeftX, topLeftY, sizePoints, sizePoints)
+		  
+		  // hair (thin) grid lines (light gray)
+		  g.PenSize = 0.5
+		  For i As Integer = 1 To N - 1
+		    Var x As Double = topLeftX + i * cell
+		    Var y As Double = topLeftY + i * cell
+		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints) // vertical
+		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y) // horizontal
+		  Next
+		  
+		  // thicker block boundaries
+		  g.PenSize = 1
+		  // left/top outer border
+		  g.DrawRectangle(topLeftX, topLeftY, sizePoints, sizePoints)
+		  
+		  // thicker interior block separators
+		  For i As Integer = block To N - 1 Step block
+		    Var x As Double = topLeftX + i * cell
+		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints)
+		    Var y As Double = topLeftY + i * cell
+		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
+		  Next
+		  
+		  // draw numbers (centered)
+		  g.FontUnit = FontUnits.Point
+		  // pick font size so digits fill nicely but leave margin
+		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  g.Bold = fontBold
+		  
+		  For r As Integer = 0 To N - 1
+		    For c As Integer = 0 To N - 1
+		      Var v As Integer = me.GetGridCell(r, c)
+		      If v <> 0 Then
+		        Var s As String = Str(v)
+		        // choose font size relative to cell
+		        g.FontSize = cell * 0.6
+		        // measure
+		        Var w As Double = g.TextWidth(s)
+		        Var h As Double = g.TextHeight(s, cell) // approximate line height
+		        Var ascent As Double = g.FontAscent
+		        
+		        // compute left and baseline to center horizontally and vertically
+		        Var xText As Double = topLeftX + c * cell + (cell - w) / 2.0
+		        // baseline formula: baseline = centerY + ascent - textHeight/2
+		        Var centerY As Double = topLeftY + r * cell + cell / 2.0
+		        Var baselineY As Double = centerY + ascent - (h / 2.0)
+		        
+		        g.DrawText(s, xText, baselineY)
+		      End If
+		    Next
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function FindEmpty(ByRef outRow As Integer, ByRef outCol As Integer) As Boolean
 		  ' Find the first empty cell
@@ -358,6 +479,12 @@ Protected Class SudokuTool
 		Private grid(-1,-1) As Integer
 	#tag EndProperty
 
+
+	#tag Constant, Name = kSolution, Type = String, Dynamic = True, Default = \"Solution", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"L\xC3\xB6sung"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Solution"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Soluci\xC3\xB3n"
+	#tag EndConstant
 
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
 	#tag EndConstant

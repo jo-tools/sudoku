@@ -14,8 +14,26 @@ Inherits DesktopApplication
 		#Tag Instance, Platform = Linux, Language = Default, Definition  = \"&Delete"
 	#tag EndConstant
 
-	#tag Constant, Name = kFileQuit, Type = String, Dynamic = False, Default = \"&Quit", Scope = Public
+	#tag Constant, Name = kFileExportPDFShortcut, Type = String, Dynamic = False, Default = \"Ctrl+E", Scope = Public
+		#Tag Instance, Platform = Mac OS, Language = Default, Definition  = \"Cmd+E"
+	#tag EndConstant
+
+	#tag Constant, Name = kFileMenu, Type = String, Dynamic = True, Default = \"&File", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Datei"
+		#Tag Instance, Platform = Mac OS, Language = de, Definition  = \"&Ablage"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Fichier"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Archivo"
+	#tag EndConstant
+
+	#tag Constant, Name = kFilePrintShortcut, Type = String, Dynamic = False, Default = \"Ctrl+P", Scope = Public
+		#Tag Instance, Platform = Mac OS, Language = Default, Definition  = \"Cmd+P"
+	#tag EndConstant
+
+	#tag Constant, Name = kFileQuit, Type = String, Dynamic = True, Default = \"&Quit", Scope = Public
 		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"E&xit"
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Beenden"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Quitter"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Salir"
 	#tag EndConstant
 
 	#tag Constant, Name = kFileQuitShortcut, Type = String, Dynamic = False, Default = \"", Scope = Public

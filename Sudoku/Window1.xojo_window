@@ -537,6 +537,74 @@ End
 	#tag EndEvent
 
 
+	#tag MenuHandler
+		Function FileExportPDF() As Boolean Handles FileExportPDF.Action
+		  Self.ExportPDF
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function FilePrint() As Boolean Handles FilePrint.Action
+		  Self.Print
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+
+	#tag Method, Flags = &h21
+		Private Sub ExportPDF()
+		  ' Show Save File Dialog
+		  Var dlg As New SaveFileDialog
+		  dlg.ActionButtonCaption = kSaveDialogExport
+		  dlg.CancelButtonCaption = kSaveDialogCancel
+		  dlg.SuggestedFileName = "Sudoku.pdf"
+		  dlg.Title = "Sudoku"
+		  dlg.PromptText = kSaveDialogPrompt
+		  dlg.InitialFolder = SpecialFolder.Desktop
+		  
+		  Var f As FolderItem = dlg.ShowModal(Self)
+		  If (f = Nil) Then Return
+		  
+		  ' Try to detect Paper Format (from default PrinterSetup)
+		  Var pdfPaperSize As PDFDocument.PageSizes = PDFDocument.PageSizes.A4
+		  
+		  Try
+		    Var ps As New PrinterSetup
+		    
+		    Var detectPdfPaperSizes() As PDFDocument.PageSizes
+		    detectPdfPaperSizes.Add(PDFDocument.PageSizes.A4)
+		    detectPdfPaperSizes.Add(PDFDocument.PageSizes.Letter)
+		    detectPdfPaperSizes.Add(PDFDocument.PageSizes.Legal)
+		    
+		    For Each testPaperSize As PDFDocument.PageSizes In detectPdfPaperSizes
+		      Var testPdf As New PDFDocument(testPaperSize)
+		      If (testPdf.PageHeight = ps.PageHeight) And (testPdf.PageHeight = ps.PageHeight) Then
+		        pdfPaperSize = testPaperSize
+		        Exit 'Loop
+		      End If
+		    Next
+		  Catch err As RuntimeException
+		    'ignore
+		  End Try
+		  
+		  ' Setup PDF
+		  Var pdf As New PDFDocument(pdfPaperSize)
+		  Var g As Graphics = pdf.Graphics
+		  
+		  ' Draw Sudoku
+		  Me.Sudoku.DrawInto(g)
+		  
+		  ' Save PDF
+		  pdf.Save(f)
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
@@ -570,6 +638,21 @@ End
 		  Next
 		  
 		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub Print()
+		  ' Setup Printing
+		  Var ps As New PrinterSetup
+		  ps.Landscape = False
+		  Var g As Graphics = ps.ShowPrinterDialog(Self)
+		  If (g = Nil) Then Return
+		  
+		  ' Draw Sudoku
+		  Self.Sudoku.DrawInto(g)
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -860,6 +943,24 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kSaveDialogCancel, Type = String, Dynamic = True, Default = \"Cancel", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Abbrechen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Annuler"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Cancelar"
+	#tag EndConstant
+
+	#tag Constant, Name = kSaveDialogExport, Type = String, Dynamic = True, Default = \"Export", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Export"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exportation"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar"
+	#tag EndConstant
+
+	#tag Constant, Name = kSaveDialogPrompt, Type = String, Dynamic = True, Default = \"Export Sudoku as PDF", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sudoku als PDF exportieren"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exporter le Sudoku au format PDF"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar Sudoku como PDF"
 	#tag EndConstant
 
 	#tag Constant, Name = kSudokuStatusEmpty, Type = String, Dynamic = True, Default = \"Empty", Scope = Private

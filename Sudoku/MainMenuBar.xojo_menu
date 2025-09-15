@@ -3,10 +3,32 @@ Begin Menu MainMenuBar
    Begin DesktopMenuItem FileMenu
       SpecialMenu = 0
       Index = -2147483648
-      Text = "&File"
+      Text = "#App.kFileMenu"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
+      Begin DesktopMenuItem FilePrint
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Print"
+         ShortcutKey = "#App.kFilePrintShortcut"
+         Shortcut = "Cmd+#App.kFilePrintShortcut"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem FileExportPDF
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Export PDF"
+         ShortcutKey = "#App.kFileExportPDFShortcut"
+         Shortcut = "Cmd+#App.kFileExportPDFShortcut"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
       Begin DesktopQuitMenuItem FileQuit
          SpecialMenu = 0
          Index = -2147483648
@@ -104,14 +126,6 @@ Begin Menu MainMenuBar
          AutoEnable = True
          Visible = True
       End
-   End
-   Begin DesktopMenuItem HelpMenu
-      SpecialMenu = 0
-      Index = -2147483648
-      Text = "&Help"
-      AutoEnabled = True
-      AutoEnable = True
-      Visible = True
    End
 End
 #tag EndMenu
