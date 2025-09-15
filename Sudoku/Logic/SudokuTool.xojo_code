@@ -119,25 +119,19 @@ Protected Class SudokuTool
 		  Var block As Integer = Sqrt(N) // assume N is a perfect square
 		  Var cell As Double = sizePoints / N
 		  
-		  '// background (white)
-		  'g.DrawingColor = Color.White
-		  'g.FillRectangle(topLeftX, topLeftY, sizePoints, sizePoints)
-		  
-		  // hair (thin) grid lines (light gray)
+		  ' Thin grid lines
 		  g.PenSize = 0.5
+		  g.DrawingColor = Color.DarkGray
 		  For i As Integer = 1 To N - 1
 		    Var x As Double = topLeftX + i * cell
+		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints)
 		    Var y As Double = topLeftY + i * cell
-		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints) // vertical
-		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y) // horizontal
+		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
 		  Next
 		  
-		  // thicker block boundaries
+		  ' Thicker block separators (inside)
 		  g.PenSize = 1
-		  // left/top outer border
-		  g.DrawRectangle(topLeftX, topLeftY, sizePoints, sizePoints)
-		  
-		  // thicker interior block separators
+		  g.DrawingColor = Color.Black
 		  For i As Integer = block To N - 1 Step block
 		    Var x As Double = topLeftX + i * cell
 		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints)
@@ -145,9 +139,12 @@ Protected Class SudokuTool
 		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
 		  Next
 		  
-		  // draw numbers (centered)
+		  ' Outer border drawn last (to cover overlaps)
+		  g.PenSize = 2.0
+		  g.DrawRectangle(topLeftX, topLeftY, sizePoints, sizePoints)
+		  
+		  ' Draw digits (centered)
 		  g.FontUnit = FontUnits.Point
-		  // pick font size so digits fill nicely but leave margin
 		  g.FontName = PDFDocument.StandardFontNames.Helvetica
 		  g.Bold = fontBold
 		  
@@ -156,16 +153,14 @@ Protected Class SudokuTool
 		      Var v As Integer = me.GetGridCell(r, c)
 		      If v <> 0 Then
 		        Var s As String = Str(v)
-		        // choose font size relative to cell
+		        ' Choose font size relative to cell
 		        g.FontSize = cell * 0.6
-		        // measure
 		        Var w As Double = g.TextWidth(s)
-		        Var h As Double = g.TextHeight(s, cell) // approximate line height
+		        Var h As Double = g.TextHeight(s, cell)
 		        Var ascent As Double = g.FontAscent
 		        
-		        // compute left and baseline to center horizontally and vertically
+		        ' Compute left and baseline to center horizontally and vertically
 		        Var xText As Double = topLeftX + c * cell + (cell - w) / 2.0
-		        // baseline formula: baseline = centerY + ascent - textHeight/2
 		        Var centerY As Double = topLeftY + r * cell + cell / 2.0
 		        Var baselineY As Double = centerY + ascent - (h / 2.0)
 		        
