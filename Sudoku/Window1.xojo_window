@@ -559,12 +559,17 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ExportPDF()
 		  ' Show Save File Dialog
+		  Var filterPDF As New FileType
+		  filterPDF.Name = "PDF"
+		  filterPDF.Extensions = ".pdf"
+		  
 		  Var dlg As New SaveFileDialog
 		  dlg.ActionButtonCaption = kSaveDialogExport
 		  dlg.CancelButtonCaption = kSaveDialogCancel
 		  dlg.SuggestedFileName = "Sudoku.pdf"
 		  dlg.Title = "Sudoku"
 		  dlg.PromptText = kSaveDialogPrompt
+		  dlg.Filter = filterPDF
 		  dlg.InitialFolder = SpecialFolder.Desktop
 		  
 		  Var f As FolderItem = dlg.ShowModal(Self)
