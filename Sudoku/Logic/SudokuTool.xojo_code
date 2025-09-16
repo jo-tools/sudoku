@@ -32,6 +32,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Function CountSolutions(limit As Integer = 2) As Integer
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var row, col As Integer
 		  If Not FindEmpty(row, col) Then
 		    Return 1 ' Found one solution
@@ -197,6 +200,9 @@ Protected Class SudokuTool
 		  ' Returns False if not enough cells could be removed while keeping uniqueness
 		  ' Note: Always contains a new puzzle, even if returning False
 		  
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var Rnd As New Random
 		  
 		  ' Sanitize numClues
@@ -311,6 +317,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
 		      If (grid(r,c) <> 0) Then Return False
@@ -333,6 +342,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsSolved() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  ' Ensure current filled-in digits are valid
 		  If (Not IsValid) Then Return False
 		  
@@ -349,6 +361,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsValid() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
 		      Var val As Integer = grid(r,c)
@@ -375,6 +390,9 @@ Protected Class SudokuTool
 		Private Function IsValueValid(r As Integer, c As Integer, val As Integer) As Boolean
 		  ' Check if placing 'val' at grid(r, c) is allowed according
 		  ' to Sudoku rules. Returns True if valid, False otherwise.
+		  
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
 		  
 		  ' 1. Check the row
 		  ' A number must not appear twice in the same row
@@ -432,6 +450,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternal() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var row As Integer
 		  Var col As Integer
 		  
