@@ -118,12 +118,12 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, fontBold As Boolean)
-		  Var block As Integer = Sqrt(N) // assume N is a perfect square
+		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, isPuzzle As Boolean)
+		  Var block As Integer = N \ 3
 		  Var cell As Double = sizePoints / N
 		  
 		  ' Thin grid lines
-		  g.PenSize = 0.5
+		  g.PenSize = If(isPuzzle, 0.5, 0.25)
 		  g.DrawingColor = Color.DarkGray
 		  For i As Integer = 1 To N - 1
 		    Var x As Double = topLeftX + i * cell
@@ -133,7 +133,7 @@ Protected Class SudokuTool
 		  Next
 		  
 		  ' Thicker block separators (inside)
-		  g.PenSize = 1
+		  g.PenSize = If(isPuzzle, 1.0, 0.5)
 		  g.DrawingColor = Color.Black
 		  For i As Integer = block To N - 1 Step block
 		    Var x As Double = topLeftX + i * cell
@@ -143,13 +143,13 @@ Protected Class SudokuTool
 		  Next
 		  
 		  ' Outer border drawn last (to cover overlaps)
-		  g.PenSize = 2.0
-		  g.DrawRectangle(topLeftX, topLeftY, sizePoints, sizePoints)
+		  g.PenSize = If(isPuzzle, 2.0, 1.0)
+		  g.DrawRectangle(topLeftX - g.PenSize/2, topLeftY - g.PenSize/2, sizePoints + g.PenSize, sizePoints + g.PenSize)
 		  
 		  ' Draw digits (centered)
 		  g.FontUnit = FontUnits.Point
 		  g.FontName = PDFDocument.StandardFontNames.Helvetica
-		  g.Bold = fontBold
+		  g.Bold = isPuzzle 'not bold for solution
 		  
 		  For r As Integer = 0 To N - 1
 		    For c As Integer = 0 To N - 1
