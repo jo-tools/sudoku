@@ -29,7 +29,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#kButtonSolve"
+      Caption         =   "#App.kSudokuSolve"
       Default         =   True
       Enabled         =   True
       FontName        =   "System"
@@ -60,7 +60,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#kButtonEmpty"
+      Caption         =   "#App.kSudokuEmpty"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -155,7 +155,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#kButtonLock"
+      Caption         =   "#App.kSudokuLock"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -453,7 +453,7 @@ Begin DesktopWindow Window1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#kButtonRandom"
+      Caption         =   "#App.kSudokuRandom"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -498,7 +498,7 @@ End
 		  Me.SudokuNumberFieldsInit
 		  
 		  ' Start with a Random Sudoku
-		  Me.RandomSudoku
+		  Me.ActionRandom
 		  
 		End Sub
 	#tag EndEvent
@@ -555,6 +555,90 @@ End
 		End Function
 	#tag EndMenuHandler
 
+	#tag MenuHandler
+		Function SudokuEmpty() As Boolean Handles SudokuEmpty.Action
+		  Self.ActionEmpty
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuLock() As Boolean Handles SudokuLock.Action
+		  Self.ActionLock
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuRandom() As Boolean Handles SudokuRandom.Action
+		  Self.ActionRandom
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuSolve() As Boolean Handles SudokuSolve.Action
+		  Self.ActionSolve
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+
+	#tag Method, Flags = &h21
+		Private Sub ActionEmpty()
+		  Self.Sudoku.ClearGrid
+		  Self.ShowSudoku
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionLock()
+		  ' Lock current state
+		  For r As Integer = 0 To SudokuTool.N-1
+		    For c As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = r * SudokuTool.N + c
+		      Var v As Integer = Me.Sudoku.GetGridCell(r, c)
+		      
+		      SudokuTextFields(index).Lock = (v > 0)
+		    Next
+		  Next
+		  
+		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionRandom()
+		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		  Call Self.Sudoku.GenerateRandomPuzzle(numClues)
+		  Self.ShowSudoku
+		  Self.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionSolve()
+		  ' Sanity Check
+		  If (Not Self.Sudoku.IsSolvable) Then Return
+		  
+		  ' Solve and Show
+		  Call Self.Sudoku.Solve
+		  Self.ShowSudoku
+		  Self.ActionLock
+		  
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub ExportPDF()
@@ -631,23 +715,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub LockSudoku()
-		  ' Lock current state
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = r * SudokuTool.N + c
-		      Var v As Integer = Me.Sudoku.GetGridCell(r, c)
-		      
-		      SudokuTextFields(index).Lock = (v > 0)
-		    Next
-		  Next
-		  
-		  Me.RefreshControls
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub Print()
 		  ' Setup Printing
 		  Var ps As New PrinterSetup
@@ -663,16 +730,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub RandomSudoku()
-		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		  Call Self.Sudoku.GenerateRandomPuzzle(numClues)
-		  Self.ShowSudoku
-		  Self.LockSudoku
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
 		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
 		  Var isValid As Boolean = Me.Sudoku.IsValid
@@ -683,6 +740,12 @@ End
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved)
+		  
+		  ' Menu
+		  SudokuEmpty.Enabled = btnEmpty.Enabled
+		  SudokuRandom.Enabled = btnRandom.Enabled
+		  SudokuLock.Enabled = btnLock.Enabled
+		  SudokuSolve.Enabled = btnSolve.Enabled
 		  
 		  ' Status
 		  If isEmpty Then
@@ -893,30 +956,6 @@ End
 	#tag EndProperty
 
 
-	#tag Constant, Name = kButtonEmpty, Type = String, Dynamic = True, Default = \"Empty", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Leer"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vide"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Vac\xC3\xADo"
-	#tag EndConstant
-
-	#tag Constant, Name = kButtonLock, Type = String, Dynamic = True, Default = \"Lock", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sperren"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Verrou"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Bloqueo"
-	#tag EndConstant
-
-	#tag Constant, Name = kButtonRandom, Type = String, Dynamic = True, Default = \"Random", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio"
-	#tag EndConstant
-
-	#tag Constant, Name = kButtonSolve, Type = String, Dynamic = True, Default = \"Solve", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"L\xC3\xB6sen"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"R\xC3\xA9soudre"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Resolver"
-	#tag EndConstant
-
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"44", Scope = Private
 	#tag EndConstant
 
@@ -1010,13 +1049,7 @@ End
 #tag Events btnSolve
 	#tag Event
 		Sub Pressed()
-		  ' Sanity Check
-		  If (Not Self.Sudoku.IsSolvable) Then Return
-		  
-		  ' Solve and Show
-		  Call Self.Sudoku.Solve
-		  Self.ShowSudoku
-		  Self.LockSudoku
+		  Self.ActionSolve
 		  
 		End Sub
 	#tag EndEvent
@@ -1024,16 +1057,14 @@ End
 #tag Events btnEmpty
 	#tag Event
 		Sub Pressed()
-		  Self.Sudoku.ClearGrid
-		  Self.ShowSudoku
-		  
+		  self.ActionEmpty
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnLock
 	#tag Event
 		Sub Pressed()
-		  Self.LockSudoku
+		  Self.ActionLock
 		  
 		End Sub
 	#tag EndEvent
@@ -1229,7 +1260,7 @@ End
 #tag Events btnRandom
 	#tag Event
 		Sub Pressed()
-		  Self.RandomSudoku
+		  Self.ActionRandom
 		  
 		End Sub
 	#tag EndEvent
