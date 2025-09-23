@@ -69,5 +69,5 @@ WindowsVersions={1f676c76-80e1-4239-95bb-83d0f6d0da78}|{8e0f7a12-bfb3-4fe8-b9a5-
 WindowsRunAs=0
 MacOSMinimumVersion=
 PlistEntries={"root":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n\t<key>CFBundleIconName</key>\n\t<string>App</string>\n</dict>\n</plist>"}
-AppCategory=
+AppCategory=Puzzle Games
 AppSpecificPassword=
