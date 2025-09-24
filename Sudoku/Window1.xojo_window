@@ -685,6 +685,13 @@ End
 		  Var pdf As New PDFDocument(pdfPaperSize)
 		  Var g As Graphics = pdf.Graphics
 		  
+		  ' PDF MetaData
+		  pdf.Title = "Sudoku"
+		  pdf.Subject = "Sudoku"
+		  pdf.Author = kURL_Repository
+		  pdf.Creator = "Sudoku " + labAppVersion.Text + " (Xojo " + XojoVersionString + ")"
+		  pdf.Keywords = "Sudoku"
+		  
 		  ' Draw Sudoku
 		  Me.Sudoku.DrawInto(g)
 		  
