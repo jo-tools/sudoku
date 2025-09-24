@@ -32,6 +32,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Function CountSolutions(limit As Integer = 2) As Integer
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var row, col As Integer
 		  If Not FindEmpty(row, col) Then
 		    Return 1 ' Found one solution
@@ -54,6 +57,122 @@ Protected Class SudokuTool
 		  
 		  Return total
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DrawInto(g As Graphics)
+		  g.DrawingColor = Color.Black
+		  
+		  ' Heights
+		  Var topBottomMargin As Double = g.Height * 0.1
+		  Var sudokuHeight As Double = g.Height * 0.5
+		  Var top As Double = topBottomMargin
+		  
+		  ' Sudoku Title
+		  Var title As String = "Sudoku"
+		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  g.FontUnit = FontUnits.Point
+		  g.FontSize = 18
+		  g.Bold = True
+		  g.DrawText(title, (g.Width - g.TextWidth(title)) / 2.0, top + g.FontAscent)
+		  
+		  Var titleHeight As Double = g.TextHeight * 1.5
+		  top = top + titleHeight
+		  sudokuHeight = sudokuHeight - titleHeight
+		  
+		  ' Main grid size and position
+		  Var gridSize As Double = sudokuHeight
+		  Var gridX As Double = (g.Width - gridSize) / 2.0
+		  Var gridY As Double = top
+		  
+		  ' Draw current Sudoku
+		  DrawSudokuInternal(g, gridX, gridY, gridSize, True)
+		  
+		  ' Solution (on a clone, in order not to modify this Sudoku's state)
+		  If Me.IsSolved Then Return
+		  Var clone As New SudokuTool(Me)
+		  Var hasSolution As Boolean = clone.Solve
+		  If (Not hasSolution) Then Return
+		  
+		  ' Heights
+		  sudokuHeight = g.Height * 0.15
+		  top = g.Height - topBottomMargin - sudokuHeight
+		  
+		  ' Solution Title
+		  title = kSolution
+		  g.FontSize = 12
+		  g.Bold = False
+		  g.DrawText(title, (g.Width - g.TextWidth(title)) / 2.0, top + g.FontAscent)
+		  
+		  titleHeight = g.TextHeight * 1.5
+		  top = top + titleHeight
+		  sudokuHeight = sudokuHeight - titleHeight
+		  
+		  gridSize = sudokuHeight
+		  gridX = (g.Width - gridSize) / 2.0
+		  gridY = top
+		  
+		  clone.DrawSudokuInternal(g, gridX, gridY, gridSize, False)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, isPuzzle As Boolean)
+		  Var block As Integer = N \ 3
+		  Var cell As Double = sizePoints / N
+		  
+		  ' Thin grid lines
+		  g.PenSize = If(isPuzzle, 0.5, 0.25)
+		  g.DrawingColor = Color.DarkGray
+		  For i As Integer = 1 To N - 1
+		    Var x As Double = topLeftX + i * cell
+		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints)
+		    Var y As Double = topLeftY + i * cell
+		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
+		  Next
+		  
+		  ' Thicker block separators (inside)
+		  g.PenSize = If(isPuzzle, 1.0, 0.5)
+		  g.DrawingColor = Color.Black
+		  For i As Integer = block To N - 1 Step block
+		    Var x As Double = topLeftX + i * cell
+		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints)
+		    Var y As Double = topLeftY + i * cell
+		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
+		  Next
+		  
+		  ' Outer border drawn last (to cover overlaps)
+		  g.PenSize = If(isPuzzle, 2.0, 1.0)
+		  g.DrawRectangle(topLeftX - g.PenSize/2, topLeftY - g.PenSize/2, sizePoints + g.PenSize, sizePoints + g.PenSize)
+		  
+		  ' Draw digits (centered)
+		  g.FontUnit = FontUnits.Point
+		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  g.Bold = isPuzzle 'not bold for solution
+		  
+		  For r As Integer = 0 To N - 1
+		    For c As Integer = 0 To N - 1
+		      Var v As Integer = me.GetGridCell(r, c)
+		      If v <> 0 Then
+		        Var s As String = Str(v)
+		        ' Choose font size relative to cell
+		        g.FontSize = cell * 0.6
+		        Var w As Double = g.TextWidth(s)
+		        Var h As Double = g.TextHeight(s, cell)
+		        Var ascent As Double = g.FontAscent
+		        
+		        ' Compute left and baseline to center horizontally and vertically
+		        Var xText As Double = topLeftX + c * cell + (cell - w) / 2.0
+		        Var centerY As Double = topLeftY + r * cell + cell / 2.0
+		        Var baselineY As Double = centerY + ascent - (h / 2.0)
+		        
+		        g.DrawText(s, xText, baselineY)
+		      End If
+		    Next
+		  Next
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -80,6 +199,9 @@ Protected Class SudokuTool
 		  ' Returns True on success
 		  ' Returns False if not enough cells could be removed while keeping uniqueness
 		  ' Note: Always contains a new puzzle, even if returning False
+		  
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
 		  
 		  Var Rnd As New Random
 		  
@@ -195,6 +317,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
 		      If (grid(r,c) <> 0) Then Return False
@@ -217,6 +342,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsSolved() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  ' Ensure current filled-in digits are valid
 		  If (Not IsValid) Then Return False
 		  
@@ -233,6 +361,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsValid() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
 		      Var val As Integer = grid(r,c)
@@ -259,6 +390,9 @@ Protected Class SudokuTool
 		Private Function IsValueValid(r As Integer, c As Integer, val As Integer) As Boolean
 		  ' Check if placing 'val' at grid(r, c) is allowed according
 		  ' to Sudoku rules. Returns True if valid, False otherwise.
+		  
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
 		  
 		  ' 1. Check the row
 		  ' A number must not appear twice in the same row
@@ -316,6 +450,9 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternal() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var row As Integer
 		  Var col As Integer
 		  
@@ -358,6 +495,12 @@ Protected Class SudokuTool
 		Private grid(-1,-1) As Integer
 	#tag EndProperty
 
+
+	#tag Constant, Name = kSolution, Type = String, Dynamic = True, Default = \"Solution", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"L\xC3\xB6sung"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Solution"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Soluci\xC3\xB3n"
+	#tag EndConstant
 
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
 	#tag EndConstant

@@ -3,10 +3,32 @@ Begin Menu MainMenuBar
    Begin DesktopMenuItem FileMenu
       SpecialMenu = 0
       Index = -2147483648
-      Text = "&File"
+      Text = "#App.kFileMenu"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
+      Begin DesktopMenuItem FilePrint
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kFIlePrint"
+         ShortcutKey = "P"
+         Shortcut = "Cmd+P"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem FileExportPDF
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kFileExportPDF"
+         ShortcutKey = "E"
+         Shortcut = "Cmd+E"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
       Begin DesktopQuitMenuItem FileQuit
          SpecialMenu = 0
          Index = -2147483648
@@ -105,13 +127,65 @@ Begin Menu MainMenuBar
          Visible = True
       End
    End
-   Begin DesktopMenuItem HelpMenu
+   Begin DesktopMenuItem SudokuMenu
       SpecialMenu = 0
       Index = -2147483648
-      Text = "&Help"
+      Text = "&Sudoku"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
+      Begin DesktopMenuItem SudokuEmpty
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kSudokuEmpty"
+         ShortcutKey = "N"
+         Shortcut = "Cmd+N"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem SudokuRandom
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kSudokuRandom"
+         ShortcutKey = "R"
+         Shortcut = "Cmd+R"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem UntitledSeparator
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "-"
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem SudokuLock
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kSudokuLock"
+         ShortcutKey = "L"
+         Shortcut = "Cmd+L"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem SudokuSolve
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kSudokuSolve"
+         ShortcutKey = "O"
+         Shortcut = "Cmd+O"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
    End
 End
 #tag EndMenu
