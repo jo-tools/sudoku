@@ -512,7 +512,23 @@ End
 		      g.DrawingColor = Color.White
 		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, SudokuTool.N * kCellSize, SudokuTool.N * kCellSize)
 		    End If
-		  #endif
+		  #EndIf
+		  
+		  ' Draw next solvable cells
+		  g.DrawingColor = colNextSolvableCell
+		  g.PenSize = 4
+		  If (Self.SolveCellHints <> Nil) Then
+		    For row As Integer = 0 To SudokuTool.N-1
+		      For col As Integer = 0 To SudokuTool.N-1
+		        Var index As Integer = row * SudokuTool.N + col
+		        
+		        Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
+		        Case SudokuTool.SolveHint.BasicSudokuRule
+		          g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
+		        End Select
+		      Next
+		    Next
+		  End If
 		  
 		  ' Draw all thin "hair" lines first (gray)
 		  g.DrawingColor = colGridlineHair
@@ -743,6 +759,9 @@ End
 		  Var isSolvable As Boolean = Me.Sudoku.IsSolvable
 		  Var isSolved As Boolean = Me.Sudoku.IsSolved
 		  
+		  SolveCellHints = Me.Sudoku.GetSolveCellHints
+		  self.Refresh(False)
+		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
@@ -952,6 +971,10 @@ End
 
 	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SolveCellHints As Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

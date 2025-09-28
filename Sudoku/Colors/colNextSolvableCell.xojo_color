@@ -1,9 +1,9 @@
 #tag ColorGroup
-	CodeName=colGridlineHair
+	CodeName=colNextSolvableCell
 	#tag Color
 		Type=1
 		Platform=1
-		Light=A9A9A900
-		Dark=5E5E5E00
+		Light=00F900C0
+		Dark=4F8F00C0
 	#tag EndColor
 #tag EndColorGroup

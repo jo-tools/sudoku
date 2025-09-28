@@ -316,6 +316,64 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetSolveCellHints() As Dictionary
+		  Var solveCellHints As New Dictionary
+		  
+		  For r As Integer = 0 To SudokuTool.N-1
+		    For c As Integer = 0 To SudokuTool.N-1
+		      Var i As Integer = r * SudokuTool.N + c
+		      solveCellHints.Value(i) = SolveHint.None
+		    Next
+		  Next
+		  
+		  If Me.IsEmpty Or Me.IsSolved Or (Not Me.IsValid) Or (Not Me.IsSolvable) Then Return solveCellHints
+		  
+		  For r As Integer = 0 To SudokuTool.N-1
+		    For c As Integer = 0 To SudokuTool.N-1
+		      Var i As Integer = r * SudokuTool.N + c
+		      If (grid(r,c) <> 0) Then Continue
+		      
+		      ' Try all possible numbers (1-9) for this empty cell
+		      Var countValid As Integer
+		      For v As Integer = 1 To N
+		        ' Check if placing 'val' here is allowed by Sudoku rules
+		        If IsValueValid(r, c, v) Then
+		          countValid = countValid + 1
+		          If (countValid > 1) Then Exit 'Loop
+		        End If
+		        
+		        // TODO: check more logic
+		        //-----------------------
+		        // 300 000 000
+		        // 000 000 000
+		        // 000 000 000
+		        // 030 000 000
+		        // 000 000 000
+		        // 000 000 000
+		        // 000 000 000
+		        // 000 300 000
+		        // 000 000 300
+		        //
+		        // Expected as "next solvable cell": Row 7, Col 2 needs to be 3
+		        // because 3 is already in Col 1 and 2, and is already in row 8 and 9
+		        //
+		        // In each blocks of 3, a number can only occur in 1 of the 3 rows/cols of the "block"
+		      Next
+		      
+		      ' Multiple possible values
+		      If (countValid <> 1) Then Continue
+		      
+		      ' A distinct valid cell value found
+		      solveCellHints.Value(i) = SolveHint.BasicSudokuRule
+		    Next
+		  Next
+		  
+		  Return solveCellHints
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
@@ -504,6 +562,12 @@ Protected Class SudokuTool
 
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
 	#tag EndConstant
+
+
+	#tag Enum, Name = SolveHint, Type = Integer, Flags = &h0
+		None=0
+		BasicSudokuRule=1
+	#tag EndEnum
 
 
 	#tag ViewBehavior
