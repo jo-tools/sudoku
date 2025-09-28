@@ -11,10 +11,11 @@ This project is a complete Sudoku tool written in [Xojo](https://www.xojo.com/).
 
 - Create a Sudoku puzzle
   - Enter your own Sudoku puzzle
-  - Generate a random Sudoku puzzle with a given number of clues  
+  - Generate a random Sudoku puzzle with a given number of clues
+  - Export as PDF | Print
 - Solve the Sudoku puzzle
-  - Interactively edit puzzles with on the fly validation  
-  - Let the solver complete the puzzle  
+  - Interactively edit puzzles with on the fly validation
+  - Let the solver complete the puzzle
 
 ### Logic
 *The solver uses a classic backtracking algorithm with rule checking to guarantee correct solutions. Random puzzle generation is based on creating a full valid grid, applying digit shuffling, and then removing cells to reach the desired clue count while enforcing a unique solution.*
