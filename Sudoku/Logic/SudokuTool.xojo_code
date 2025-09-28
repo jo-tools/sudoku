@@ -620,7 +620,7 @@ Protected Class SudokuTool
 	#tag EndConstant
 
 
-	#tag Enum, Name = SolveHint, Type = Integer, Flags = &h0
+	#tag Enum, Name = SolveHint, Type = UInt8, Flags = &h0
 		None=0
 		  BasicSudokuRule=1
 		HiddenSingle=2

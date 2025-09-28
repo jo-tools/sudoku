@@ -14,7 +14,9 @@ This project is a complete Sudoku tool written in [Xojo](https://www.xojo.com/).
   - Generate a random Sudoku puzzle with a given number of clues
   - Export as PDF | Print
 - Solve the Sudoku puzzle
-  - Interactively edit puzzles with on the fly validation
+  - Interactively edit puzzles with
+    - On the fly validation
+    - Solve next cells indication
   - Let the solver complete the puzzle
 
 ### Logic
