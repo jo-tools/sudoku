@@ -317,8 +317,12 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function GetSolveCellHints() As Dictionary
-		  Var solveCellHints As New Dictionary
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
 		  
+		  Dim solveCellHints As New Dictionary
+		  
+		  ' Empty Hints
 		  For r As Integer = 0 To SudokuTool.N-1
 		    For c As Integer = 0 To SudokuTool.N-1
 		      Var i As Integer = r * SudokuTool.N + c
@@ -326,45 +330,44 @@ Protected Class SudokuTool
 		    Next
 		  Next
 		  
+		  ' No Hints if not valid or not solvable
 		  If Me.IsEmpty Or Me.IsSolved Or (Not Me.IsValid) Or (Not Me.IsSolvable) Then Return solveCellHints
 		  
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var i As Integer = r * SudokuTool.N + c
-		      If (grid(r,c) <> 0) Then Continue
+		  ' Add Solve Cell Hints
+		  For r As Integer = 0 To N-1
+		    For c As Integer = 0 To N-1
+		      Var i As Integer = r * N + c
 		      
-		      ' Try all possible numbers (1-9) for this empty cell
-		      Var countValid As Integer
+		      ' No Hints in non empty Cells
+		      If grid(r, c) <> 0 Then
+		        solveCellHints.Value(i) = SolveHint.None
+		        Continue
+		      End If
+		      
+		      ' 1. Basic Sudoku Rules
+		      ' Distinct digit in each row/col/block
+		      Var candidates() As Integer
 		      For v As Integer = 1 To N
-		        ' Check if placing 'val' here is allowed by Sudoku rules
 		        If IsValueValid(r, c, v) Then
-		          countValid = countValid + 1
-		          If (countValid > 1) Then Exit 'Loop
+		          candidates.Add(v)
+		          If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Basic Sudoku Rules Check
+		          'If (candidates.Count > 2) Then Exit ' We just need to know of more than two candidates for the Naked Pairs Check
 		        End If
-		        
-		        // TODO: check more logic
-		        //-----------------------
-		        // 300 000 000
-		        // 000 000 000
-		        // 000 000 000
-		        // 030 000 000
-		        // 000 000 000
-		        // 000 000 000
-		        // 000 000 000
-		        // 000 300 000
-		        // 000 000 300
-		        //
-		        // Expected as "next solvable cell": Row 7, Col 2 needs to be 3
-		        // because 3 is already in Col 1 and 2, and is already in row 8 and 9
-		        //
-		        // In each blocks of 3, a number can only occur in 1 of the 3 rows/cols of the "block"
 		      Next
 		      
-		      ' Multiple possible values
-		      If (countValid <> 1) Then Continue
+		      If candidates.Count = 1 Then
+		        solveCellHints.Value(i) = SolveHint.BasicSudokuRule
+		        Continue
+		      End If
 		      
-		      ' A distinct valid cell value found
-		      solveCellHints.Value(i) = SolveHint.BasicSudokuRule
+		      ' 2. Hidden Single
+		      ' Only one spot for a digit in row/col/block
+		      For v As Integer = 1 To N
+		        If IsValueHiddenSingle(r, c, v) Then
+		          solveCellHints.Value(i) = SolveHint.HiddenSingle
+		          exit 
+		        End If
+		      Next
 		    Next
 		  Next
 		  
@@ -441,6 +444,59 @@ Protected Class SudokuTool
 		  Next
 		  
 		  Return True
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function IsValueHiddenSingle(r As Integer, c As Integer, val As Integer) As Boolean
+		  ' Check if 'val' at grid(r, c) is a naked single.
+		  
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Row check
+		  Var possibleCols() As Integer
+		  For cc As Integer = 0 To N-1
+		    If grid(r, cc) = 0 And IsValueValid(r, cc, val) Then
+		      possibleCols.Add(cc)
+		      If (possibleCols.Count > 1) Then Exit ' We just need to know of more than one candidate
+		    End If
+		  Next
+		  If possibleCols.Count = 1 And possibleCols(0) = c Then
+		    Return True
+		  End If
+		  
+		  ' Column check
+		  Var possibleRows() As Integer
+		  For rr As Integer = 0 To N-1
+		    If grid(rr, c) = 0 And IsValueValid(rr, c, val) Then
+		      If (possibleRows.Count > 1) Then Exit ' We just need to know of more than one candidate
+		      possibleRows.Add(rr)
+		    End If
+		  Next
+		  If possibleRows.Count = 1 And possibleRows(0) = r Then
+		    Return True
+		  End If
+		  
+		  ' Block check
+		  Var blockR As Integer = (r \ 3) * 3
+		  Var blockC As Integer = (c \ 3) * 3
+		  Var possibleBlockCells() As Integer
+		  For rr As Integer = blockR To blockR+2
+		    For cc As Integer = blockC To blockC+2
+		      If grid(rr, cc) = 0 And IsValueValid(rr, cc, val) Then
+		        possibleBlockCells.Add(rr * N + cc)
+		      End If
+		    Next
+		  Next
+		  
+		  Var index As Integer = r * N + c
+		  If possibleBlockCells.Count = 1 And possibleBlockCells(0) = index Then
+		    Return True
+		  End If
+		  
+		  Return False
+		  
 		End Function
 	#tag EndMethod
 
@@ -566,7 +622,8 @@ Protected Class SudokuTool
 
 	#tag Enum, Name = SolveHint, Type = Integer, Flags = &h0
 		None=0
-		BasicSudokuRule=1
+		  BasicSudokuRule=1
+		HiddenSingle=2
 	#tag EndEnum
 
 

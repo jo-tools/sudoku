@@ -515,7 +515,6 @@ End
 		  #EndIf
 		  
 		  ' Draw next solvable cells
-		  g.DrawingColor = colNextSolvableCell
 		  g.PenSize = 4
 		  If (Self.SolveCellHints <> Nil) Then
 		    For row As Integer = 0 To SudokuTool.N-1
@@ -524,6 +523,10 @@ End
 		        
 		        Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
 		        Case SudokuTool.SolveHint.BasicSudokuRule
+		          g.DrawingColor = colSolveHintBasicSudokuRule
+		          g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
+		        Case SudokuTool.SolveHint.HiddenSingle
+		          g.DrawingColor = colSolveHintHiddenSingle
 		          g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
 		        End Select
 		      Next
@@ -549,6 +552,7 @@ End
 		    ' Vertical
 		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize)
 		  Next
+		  
 		End Sub
 	#tag EndEvent
 

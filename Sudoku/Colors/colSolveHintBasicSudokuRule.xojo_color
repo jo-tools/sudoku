@@ -1,9 +1,9 @@
 #tag ColorGroup
-	CodeName=colNextSolvableCell
+	CodeName=colSolveHintBasicSudokuRule
 	#tag Color
 		Type=1
 		Platform=1
 		Light=00F900C0
-		Dark=4F8F00C0
+		Dark=4F8F00BF
 	#tag EndColor
 #tag EndColorGroup

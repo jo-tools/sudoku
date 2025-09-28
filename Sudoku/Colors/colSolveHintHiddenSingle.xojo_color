@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=colSolveHintHiddenSingle
+	#tag Color
+		Type=1
+		Platform=1
+		Light=929000BF
+		Dark=FFFB00E6
+	#tag EndColor
+#tag EndColorGroup
