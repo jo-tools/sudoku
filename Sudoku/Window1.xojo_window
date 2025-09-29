@@ -545,12 +545,12 @@ End
 		  
 		  ' Draw thicker red 3x3 block lines on top
 		  g.DrawingColor = colGridline
-		  g.PenSize = 3
+		  g.PenSize = 2
 		  For i As Integer = 0 To SudokuTool.N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
 		  Next
 		  
 		End Sub
