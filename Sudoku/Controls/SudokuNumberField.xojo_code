@@ -22,8 +22,9 @@ Inherits DesktopTextField
 		  Me.FontName = "System"
 		  Me.FontSize = 24
 		  Me.TextAlignment = TextAlignments.Center
+		  Me.HasBorder = False
 		  
-		  #If TargetMacOS Then
+		  #If TargetMacOS or TargetLinux Then
 		    Me.BackgroundColor = &cffffffff 'Transparent
 		  #EndIf
 		  
