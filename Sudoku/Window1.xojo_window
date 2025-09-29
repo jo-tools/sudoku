@@ -514,23 +514,25 @@ End
 		    End If
 		  #EndIf
 		  
-		  ' Draw next solvable cells
-		  g.PenSize = 4
-		  If (Self.SolveCellHints <> Nil) Then
-		    For row As Integer = 0 To SudokuTool.N-1
-		      For col As Integer = 0 To SudokuTool.N-1
-		        Var index As Integer = row * SudokuTool.N + col
-		        
-		        Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
-		        Case SudokuTool.SolveHint.BasicSudokuRule
-		          g.DrawingColor = colSolveHintBasicSudokuRule
-		          g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
-		        Case SudokuTool.SolveHint.HiddenSingle
-		          g.DrawingColor = colSolveHintHiddenSingle
-		          g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
-		        End Select
+		  If Self.mShowHints Then
+		    ' Draw next solvable cells
+		    g.PenSize = 4
+		    If (Self.SolveCellHints <> Nil) Then
+		      For row As Integer = 0 To SudokuTool.N-1
+		        For col As Integer = 0 To SudokuTool.N-1
+		          Var index As Integer = row * SudokuTool.N + col
+		          
+		          Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
+		          Case SudokuTool.SolveHint.BasicSudokuRule
+		            g.DrawingColor = colSolveHintBasicSudokuRule
+		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
+		          Case SudokuTool.SolveHint.HiddenSingle
+		            g.DrawingColor = colSolveHintHiddenSingle
+		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
+		          End Select
+		        Next
 		      Next
-		    Next
+		    End If
 		  End If
 		  
 		  ' Draw all thin "hair" lines first (gray)
@@ -596,6 +598,16 @@ End
 	#tag MenuHandler
 		Function SudokuRandom() As Boolean Handles SudokuRandom.Action
 		  Self.ActionRandom
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuShowHints() As Boolean Handles SudokuShowHints.Action
+		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
 		  
 		  Return True
 		  
@@ -776,6 +788,7 @@ End
 		  SudokuRandom.Enabled = btnRandom.Enabled
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
+		  SudokuShowHints.HasCheckMark = mShowHints
 		  
 		  ' Status
 		  If isEmpty Then
@@ -975,6 +988,10 @@ End
 
 	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mShowHints As Boolean = True
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

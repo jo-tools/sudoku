@@ -63,6 +63,12 @@ Inherits DesktopApplication
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Aleatorio"
 	#tag EndConstant
 
+	#tag Constant, Name = kSudokuShowHints, Type = String, Dynamic = True, Default = \"&Hints", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Hinweise"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Suggestions"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Sugerencias"
+	#tag EndConstant
+
 	#tag Constant, Name = kSudokuSolve, Type = String, Dynamic = True, Default = \"&Solve", Scope = Public
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"&L\xC3\xB6sen"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&R\xC3\xA9soudre"
