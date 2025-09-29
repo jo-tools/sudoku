@@ -46,7 +46,7 @@ Begin DesktopWindow Window1
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -106,7 +106,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   13
+      TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#kLabelSudokuStatus"
@@ -138,7 +138,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   14
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -172,11 +172,11 @@ Begin DesktopWindow Window1
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   11
+      TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   285
+      Top             =   310
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -478,6 +478,35 @@ Begin DesktopWindow Window1
       Transparent     =   False
       Underline       =   False
       Visible         =   True
+      Width           =   120
+   End
+   Begin SudokuCheckbox chkShowHints
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "#App.kSudokuShowHints"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   11
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   275
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      VisualState     =   0
       Width           =   120
    End
 End
@@ -788,6 +817,7 @@ End
 		  SudokuRandom.Enabled = btnRandom.Enabled
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
+		  chkShowHints.EnsureValue = mShowHints
 		  SudokuShowHints.HasCheckMark = mShowHints
 		  
 		  ' Status
@@ -1312,6 +1342,21 @@ End
 	#tag Event
 		Sub Pressed()
 		  Self.ActionRandom
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkShowHints
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mShowHints
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
 		  
 		End Sub
 	#tag EndEvent

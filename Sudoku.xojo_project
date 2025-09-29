@@ -25,6 +25,7 @@ MultiImage=AppIcon_128;Resources/AppIcon_128.xojo_image;&h00000000606B17FF;&h000
 MultiImage=PayPal;Resources/PayPal.xojo_image;&h0000000042A75FFF;&h000000005DC5CFFF;false
 Class=SudokuPopupMenu;Sudoku/Controls/SudokuPopupMenu.xojo_code;&h00000000549D07FF;&h00000000445187FF;false
 Class=SudokuLabel;Sudoku/Controls/SudokuLabel.xojo_code;&h000000000AA9FFFF;&h00000000445187FF;false
+Class=SudokuCheckbox;Sudoku/Controls/SudokuCheckbox.xojo_code;&h000000001BE91FFF;&h00000000445187FF;false
 DefaultWindow=Window1
 AppMenuBar=MainMenuBar
 MajorVersion=1
