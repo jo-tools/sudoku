@@ -72,6 +72,19 @@ Protected Class SudokuTool
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function CreateSolveMove(row As Integer, col As Integer, oldValue As Integer, newValue As Integer) As SolveMove
+		  Var m As SolveMove
+		  m.Row = row
+		  m.Col = col
+		  m.OldValue = oldValue
+		  m.NewValue = newValue
+		  
+		  Return m
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub DrawInto(g As Graphics)
 		  g.DrawingColor = Color.Black
@@ -561,50 +574,167 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function SolveApplyDeterministicSteps() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Fill all deterministic cells (Naked singles and Hidden singles).
+		  ' Returns True if we filled at least one cell (so caller can loop).
+		  ' If an inconsistency is detected, return False.
+		  
+		  Var changed As Boolean = False
+		  
+		  For Each solveCell As SolveCellHint In Me.GetSolveCellHints()
+		    Me.SolveApplyMove(Me.CreateSolveMove(solveCell.Row, solveCell.Col, grid(solveCell.Row, solveCell.Col), solveCell.SolutionValue))
+		    changed = True
+		  Next
+		  
+		  ' Quick sanity check
+		  If changed Then
+		    If (Not Me.IsValid()) Then
+		      ' If the deterministic step produced an inconsistency, fail fast
+		      Return False
+		    End If
+		  End If
+		  
+		  Return changed
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SolveApplyMove(move As SolveMove)
+		  ' Apply move to grid
+		  ' And add move to solve stack (to make it un-doable)
+		  grid(move.Row, move.Col) = move.NewValue
+		  solveStack.Add(move)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function SolveGetCellCandidates(row As Integer, col As Integer) As Integer()
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Return candidate values for cell according to IsValueValid
+		  Var candidates() As Integer
+		  If (grid(row, col) > 0) Then Return candidates
+		  
+		  For val As Integer = 1 To N
+		    If IsValueValid(row, col, val) Then
+		      candidates.Add(val)
+		    End If
+		  Next
+		  
+		  Return candidates
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function SolveInternal() As Boolean
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Var row As Integer
-		  Var col As Integer
+		  ' Remember stack position at entry
+		  Var startStackCount As Integer = solveStack.Count
 		  
-		  ' Find the next empty cell
-		  ' If there are no empty cells left, the puzzle is solved
+		  ' Apply deterministic steps
+		  While SolveApplyDeterministicSteps
+		    ' Once applied, maybe there are new ones,
+		    ' so loop until nothing can be applied any longer
+		  Wend
+		  
+		  ' Check if solved just with deterministic steps
+		  Var row, col As Integer
 		  If Not FindEmpty(row, col) Then
 		    Return True
 		  End If
 		  
-		  ' Try all possible numbers (1-9) for this empty cell
-		  For Val As Integer = 1 To N
-		    ' Check if placing 'val' here is allowed by Sudoku rules
-		    If IsValueValid(row, col, Val) Then
-		      ' Tentatively place 'val' in the cell
-		      grid(row, col) = Val
+		  
+		  ' Find to-be-solved cells with the least possible candidate values
+		  Var bestRow As Integer = -1
+		  Var bestCol As Integer = -1
+		  Var bestCount As Integer = 9999
+		  Dim bestCandidates() As Integer
+		  
+		  For row = 0 To N-1
+		    For col = 0 To N-1
+		      If (grid(row, col) > 0) Then Continue
 		      
-		      ' Recursively attempt to solve the rest of the grid
-		      If SolveInternal() Then
-		        ' Success! If the recursive call returns True, the puzzle is solved
-		        ' Propagate success back up the recursion chain
-		        Return True
+		      Var candidates() As Integer = SolveGetCellCandidates(row, col)
+		      If (candidates.Count < 1) Then
+		        ' Oops - Rollback
+		        SolveUndoTo(startStackCount)
+		        Return False
 		      End If
 		      
-		      ' Backtracking
-		      ' If recursion returned False, this 'val' led to a dead end
-		      ' Undo the move before trying the next number in this cell
-		      grid(row, col) = 0
-		    End If
+		      If (candidates.Count < bestCount) Then
+		        bestCount = candidates.Count
+		        bestRow = row
+		        bestCol = col
+		        bestCandidates = candidates
+		        
+		        If (bestCount = 1) Then Exit ' Already best cell with just one candidate
+		      End If
+		    Next
+		    
+		    If (bestCount = 1) Then Exit
 		  Next
 		  
-		  ' All numbers 1-9 failed in this cell
-		  ' Signal to the previous recursive call that it must backtrack
+		  If (bestRow < 0) Or (bestCol < 0) Then
+		    ' Nothing more to solve
+		    Return True
+		  End If
+		  
+		  ' Try the cell candidates (in the cell with the least possible candidates)
+		  For Each val As Integer In bestCandidates
+		    ' Tentatively place 'val' in the cell
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), Val))
+		    
+		    ' Recursively attempt to solve the rest of the grid
+		    If SolveInternal() Then
+		      ' Success! If the recursive call returns True, the puzzle is solved
+		      ' Propagate success back up the recursion chain
+		      Return True
+		    End If
+		    
+		    ' Backtracking
+		    ' If recursion returned False, this 'val' led to a dead end
+		    ' Undo the move(s) before trying the next number in this cell
+		    SolveUndoTo(startStackCount)
+		  Next
+		  
+		  ' Nothing worked - Rollback and fail
+		  SolveUndoTo(startStackCount)
 		  Return False
 		  
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub SolveUndoTo(stackSize As Integer)
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Undo - re-apply old values
+		  While solveStack.Count > stackSize
+		    Var m As SolveMove = solveStack(solveStack.LastIndex)
+		    grid(m.Row, m.Col) = m.OldValue
+		    solveStack.RemoveAt(solveStack.LastIndex)
+		  Wend
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h21
 		Private grid(-1,-1) As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private solveStack() As SolveMove
 	#tag EndProperty
 
 
@@ -623,6 +753,13 @@ Protected Class SudokuTool
 		  Col As Integer
 		  SolveHint As SolveHint
 		SolutionValue As Integer
+	#tag EndStructure
+
+	#tag Structure, Name = SolveMove, Flags = &h21
+		Row As Integer
+		  Col As Integer
+		  OldValue As Integer
+		NewValue As Integer
 	#tag EndStructure
 
 
