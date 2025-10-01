@@ -320,7 +320,7 @@ Protected Class SudokuTool
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Dim solveCellHints As New Dictionary
+		  Var solveCellHints As New Dictionary
 		  
 		  ' Empty Hints
 		  For r As Integer = 0 To SudokuTool.N-1
@@ -355,7 +355,7 @@ Protected Class SudokuTool
 		      Next
 		      
 		      If candidates.Count = 1 Then
-		        solveCellHints.Value(i) = SolveHint.BasicSudokuRule
+		        solveCellHints.Value(i) = SolveHint.NakedSingle
 		        Continue
 		      End If
 		      
@@ -448,7 +448,7 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Function IsValueHiddenSingle(r As Integer, c As Integer, val As Integer) As Boolean
-		  ' Check if 'val' at grid(r, c) is a naked single.
+		  ' Check if 'val' at grid(r, c) is a hidden single.
 		  
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
@@ -621,7 +621,7 @@ Protected Class SudokuTool
 
 	#tag Enum, Name = SolveHint, Type = UInt8, Flags = &h0
 		None=0
-		  BasicSudokuRule=1
+		  NakedSingle=1
 		HiddenSingle=2
 	#tag EndEnum
 

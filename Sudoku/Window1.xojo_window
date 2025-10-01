@@ -505,6 +505,7 @@ Begin DesktopWindow Window1
       Top             =   275
       Transparent     =   False
       Underline       =   False
+      Value           =   False
       Visible         =   True
       VisualState     =   0
       Width           =   120
@@ -552,8 +553,8 @@ End
 		          Var index As Integer = row * SudokuTool.N + col
 		          
 		          Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
-		          Case SudokuTool.SolveHint.BasicSudokuRule
-		            g.DrawingColor = colSolveHintBasicSudokuRule
+		          Case SudokuTool.SolveHint.NakedSingle
+		            g.DrawingColor = colSolveHintNakedSingle
 		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
 		          Case SudokuTool.SolveHint.HiddenSingle
 		            g.DrawingColor = colSolveHintHiddenSingle

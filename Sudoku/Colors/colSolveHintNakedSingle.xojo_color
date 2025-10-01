@@ -1,5 +1,5 @@
 #tag ColorGroup
-	CodeName=colSolveHintBasicSudokuRule
+	CodeName=colSolveHintNakedSingle
 	#tag Color
 		Type=1
 		Platform=1
