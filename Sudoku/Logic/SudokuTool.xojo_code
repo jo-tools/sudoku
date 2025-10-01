@@ -59,6 +59,19 @@ Protected Class SudokuTool
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function CreateSolveCellHint(row As Integer, col As Integer, solveHint As SolveHint, solutionValue As Integer) As SolveCellHint
+		  Var h As SolveCellHint
+		  h.Row = row
+		  h.Col = col
+		  h.SolveHint = solveHint
+		  h.SolutionValue = solutionValue
+		  
+		  Return h
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub DrawInto(g As Graphics)
 		  g.DrawingColor = Color.Black
@@ -316,31 +329,17 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSolveCellHints() As Dictionary
+		Function GetSolveCellHints() As SolveCellHint()
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Var solveCellHints As New Dictionary
-		  
-		  ' Empty Hints
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var i As Integer = r * SudokuTool.N + c
-		      solveCellHints.Value(i) = SolveHint.None
-		    Next
-		  Next
-		  
-		  ' No Hints if not valid or not solvable
-		  If Me.IsEmpty Or Me.IsSolved Or (Not Me.IsValid) Or (Not Me.IsSolvable) Then Return solveCellHints
+		  Var solveCellHints() As SolveCellHint
 		  
 		  ' Add Solve Cell Hints
 		  For r As Integer = 0 To N-1
 		    For c As Integer = 0 To N-1
-		      Var i As Integer = r * N + c
-		      
 		      ' No Hints in non empty Cells
 		      If grid(r, c) <> 0 Then
-		        solveCellHints.Value(i) = SolveHint.None
 		        Continue
 		      End If
 		      
@@ -350,12 +349,12 @@ Protected Class SudokuTool
 		      For v As Integer = 1 To N
 		        If IsValueValid(r, c, v) Then
 		          candidates.Add(v)
-		          If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Basic Sudoku Rules Check
+		          If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
 		        End If
 		      Next
 		      
 		      If candidates.Count = 1 Then
-		        solveCellHints.Value(i) = SolveHint.NakedSingle
+		        solveCellHints.Add(CreateSolveCellHint(r, c, SolveHint.NakedSingle, candidates(0)))
 		        Continue
 		      End If
 		      
@@ -363,8 +362,8 @@ Protected Class SudokuTool
 		      ' Only one spot for a digit in row/col/block
 		      For v As Integer = 1 To N
 		        If IsValueHiddenSingle(r, c, v) Then
-		          solveCellHints.Value(i) = SolveHint.HiddenSingle
-		          exit 
+		          solveCellHints.Add(CreateSolveCellHint(r, c, SolveHint.HiddenSingle, v))
+		          Exit 
 		        End If
 		      Next
 		    Next
@@ -617,6 +616,14 @@ Protected Class SudokuTool
 
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
 	#tag EndConstant
+
+
+	#tag Structure, Name = SolveCellHint, Flags = &h0
+		Row As Integer
+		  Col As Integer
+		  SolveHint As SolveHint
+		SolutionValue As Integer
+	#tag EndStructure
 
 
 	#tag Enum, Name = SolveHint, Type = UInt8, Flags = &h0

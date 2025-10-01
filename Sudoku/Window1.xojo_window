@@ -544,25 +544,19 @@ End
 		    End If
 		  #EndIf
 		  
-		  If Self.mShowHints Then
+		  If Self.mShowHints And (Self.SolveCellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    If (Self.SolveCellHints <> Nil) Then
-		      For row As Integer = 0 To SudokuTool.N-1
-		        For col As Integer = 0 To SudokuTool.N-1
-		          Var index As Integer = row * SudokuTool.N + col
-		          
-		          Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
-		          Case SudokuTool.SolveHint.NakedSingle
-		            g.DrawingColor = colSolveHintNakedSingle
-		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
-		          Case SudokuTool.SolveHint.HiddenSingle
-		            g.DrawingColor = colSolveHintHiddenSingle
-		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
-		          End Select
-		        Next
-		      Next
-		    End If
+		    For Each h As SudokuTool.SolveCellHint In Self.SolveCellHints
+		      Select Case h.SolveHint
+		      Case SudokuTool.SolveHint.NakedSingle
+		        g.DrawingColor = colSolveHintNakedSingle
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		      Case SudokuTool.SolveHint.HiddenSingle
+		        g.DrawingColor = colSolveHintHiddenSingle
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		      End Select
+		    Next
 		  End If
 		  
 		  ' Draw all thin "hair" lines first (gray)
@@ -805,7 +799,12 @@ End
 		  Var isSolvable As Boolean = Me.Sudoku.IsSolvable
 		  Var isSolved As Boolean = Me.Sudoku.IsSolved
 		  
-		  SolveCellHints = Me.Sudoku.GetSolveCellHints
+		  If (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
+		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
+		  Else
+		    Redim SolveCellHints(-1)
+		  End If
+		  
 		  self.Refresh(False)
 		  
 		  ' Controls
@@ -1026,7 +1025,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private SolveCellHints As Dictionary
+		Private SolveCellHints() As SudokuTool.SolveCellHint
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
