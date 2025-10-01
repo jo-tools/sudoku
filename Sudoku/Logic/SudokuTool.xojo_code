@@ -455,7 +455,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSolveCellHints() As SolveCellHint()
+		Function GetSolveCellHints(firstOnly As Boolean = False) As SolveCellHint()
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -481,6 +481,7 @@ Protected Class SudokuTool
 		      
 		      If candidates.Count = 1 Then
 		        solveCellHints.Add(CreateSolveCellHint(r, c, SolveHint.NakedSingle, candidates(0)))
+		        If firstOnly Then Return SolveCellHints
 		        Continue
 		      End If
 		      
@@ -489,6 +490,7 @@ Protected Class SudokuTool
 		      For v As Integer = 1 To N
 		        If IsValueHiddenSingle(r, c, v) Then
 		          solveCellHints.Add(CreateSolveCellHint(r, c, SolveHint.HiddenSingle, v))
+		          If firstOnly Then Return SolveCellHints
 		          Exit 
 		        End If
 		      Next
@@ -703,18 +705,18 @@ Protected Class SudokuTool
 		  
 		  Var changed As Boolean = False
 		  
-		  For Each solveCell As SolveCellHint In Me.GetSolveCellHints()
-		    Me.SolveApplyMove(Me.CreateSolveMove(solveCell.Row, solveCell.Col, grid(solveCell.Row, solveCell.Col), solveCell.SolutionValue))
+		  Do
+		    ' Just get one deterministic hint
+		    Var solveCellHints() As SolveCellHint = GetSolveCellHints(True)
+		    If solveCellHints.Count = 0 Then Exit
+		    
+		    ' Apply
+		    Var h As SolveCellHint = solveCellHints(0)
+		    Me.SolveApplyMove(Me.CreateSolveMove(h.Row, h.Col, grid(h.Row, h.Col), h.SolutionValue))
 		    changed = True
-		  Next
-		  
-		  ' Quick sanity check
-		  If changed Then
-		    If (Not Me.IsValid()) Then
-		      ' If the deterministic step produced an inconsistency, fail fast
-		      Return False
-		    End If
-		  End If
+		    
+		    ' Since puzzle has changed: loop again and get fresh hint(s)
+		  Loop
 		  
 		  Return changed
 		  
