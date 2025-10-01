@@ -35,27 +35,84 @@ Protected Class SudokuTool
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  Var startStackCount As Integer = solveStack.Count
+		  
+		  ' Apply deterministic steps
+		  While SolveApplyDeterministicSteps
+		    ' Once applied, maybe there are new ones,
+		    ' so loop until nothing can be applied any longer
+		  Wend
+		  
+		  ' Check if solved just with deterministic steps
 		  Var row, col As Integer
-		  If Not FindEmpty(row, col) Then
-		    Return 1 ' Found one solution
+		  If (Not FindEmpty(row, col)) Then
+		    ' Count as one solution
+		    SolveUndoTo(startStackCount)
+		    Return 1
 		  End If
 		  
-		  Var total As Integer = 0
-		  ' Try every possible digit for that empty cell
-		  For val As Integer = 1 To N
-		    If IsValueValid(row, col, val) Then
-		      ' After trying a digit, reset the cell to 0 and try the next digit
-		      grid(row, col) = val
-		      total = total + CountSolutions(limit)
-		      grid(row, col) = 0
+		  Var deterministicStepsStackCount As Integer = solveStack.Count
+		  
+		  ' Find to-be-solved cells with the least possible candidate values
+		  Var bestRow As Integer = -1
+		  Var bestCol As Integer = -1
+		  Var bestCount As Integer = 9999
+		  Dim bestCandidates() As Integer
+		  
+		  For row = 0 To N-1
+		    For col = 0 To N-1
+		      If (grid(row, col) > 0) Then Continue
 		      
-		      If total >= limit Then
-		        Exit ' No need to count more
+		      Var candidates() As Integer = SolveGetCellCandidates(row, col)
+		      If (candidates.Count < 1) Then
+		        ' Invalid State - Rollback entirely and backtrack
+		        SolveUndoTo(startStackCount)
+		        Return 0
 		      End If
+		      
+		      If (candidates.Count < bestCount) Then
+		        bestCount = candidates.Count
+		        bestRow = row
+		        bestCol = col
+		        bestCandidates = candidates
+		        
+		        If (bestCount = 1) Then Exit ' Already best cell with just one candidate
+		      End If
+		    Next
+		    
+		    If (bestCount = 1) Then Exit
+		  Next
+		  
+		  If (bestRow < 0) Or (bestCol < 0) Then
+		    ' Nothing more to solve
+		    ' Count as one solution
+		    SolveUndoTo(startStackCount)
+		    Return 1
+		  End If
+		  
+		  ' Try the cell candidates (in the cell with the least possible candidates)
+		  Var total As Integer = 0
+		  For Each Val As Integer In bestCandidates
+		    ' Tentatively place 'val' in the cell
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), Val))
+		    
+		    ' Recursively attempt to solve the rest of the grid
+		    total = total + CountSolutions(limit - total)
+		    
+		    ' Undo the move(s) before trying the next number in this cell
+		    ' to see if they lead to another solution
+		    ' The deterministic steps should be valid/unique, so keep them in the stack
+		    SolveUndoTo(deterministicStepsStackCount)
+		    
+		    If total >= limit Then
+		      Exit
 		    End If
 		  Next
 		  
+		  ' None of the candidates resulted in a solved state, so rollback entirely and backtrack
+		  SolveUndoTo(startStackCount)
 		  Return total
+		  
 		End Function
 	#tag EndMethod
 
@@ -235,13 +292,18 @@ Protected Class SudokuTool
 		  If numClues < 1 Then numClues = 1
 		  If numClues > N*N Then numClues = N*N
 		  
-		  ClearGrid
-		  
-		  ' Place a random Number
-		  grid(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
-		  
-		  ' Start with a valid, solved grid
-		  Call Solve
+		  Var isInitSolved As Boolean = False
+		  while (not isInitSolved)
+		    ClearGrid
+		    
+		    ' Place numbers 1-9 at random once as that's always valid
+		    For Val As Integer = 1 To N
+		      grid(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Val
+		    Next
+		    
+		    ' Start with a valid, solved grid
+		    isInitSolved = Me.Solve
+		  Wend
 		  
 		  ' Shuffle Digits to get a different-looking solved grid
 		  Var perm(N) As Integer
@@ -566,10 +628,16 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function Solve() As Boolean
+		  Redim solveStack(-1)
+		  
 		  ' Ensure current filled-in digits are valid
 		  If (Not IsValid()) Then Return False
 		  
-		  Return SolveInternal()
+		  Var solveResult As Boolean = SolveInternal()
+		  
+		  Redim solveStack(-1)
+		  Return solveResult
+		  
 		End Function
 	#tag EndMethod
 

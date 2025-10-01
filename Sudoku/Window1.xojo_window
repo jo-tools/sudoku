@@ -799,7 +799,7 @@ End
 		  Var isSolvable As Boolean = Me.Sudoku.IsSolvable
 		  Var isSolved As Boolean = Me.Sudoku.IsSolved
 		  
-		  If (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
+		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
 		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
 		  Else
 		    Redim SolveCellHints(-1)
