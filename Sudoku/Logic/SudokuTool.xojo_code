@@ -316,6 +316,66 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetSolveCellHints() As Dictionary
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var solveCellHints As New Dictionary
+		  
+		  ' Empty Hints
+		  For r As Integer = 0 To SudokuTool.N-1
+		    For c As Integer = 0 To SudokuTool.N-1
+		      Var i As Integer = r * SudokuTool.N + c
+		      solveCellHints.Value(i) = SolveHint.None
+		    Next
+		  Next
+		  
+		  ' No Hints if not valid or not solvable
+		  If Me.IsEmpty Or Me.IsSolved Or (Not Me.IsValid) Or (Not Me.IsSolvable) Then Return solveCellHints
+		  
+		  ' Add Solve Cell Hints
+		  For r As Integer = 0 To N-1
+		    For c As Integer = 0 To N-1
+		      Var i As Integer = r * N + c
+		      
+		      ' No Hints in non empty Cells
+		      If grid(r, c) <> 0 Then
+		        solveCellHints.Value(i) = SolveHint.None
+		        Continue
+		      End If
+		      
+		      ' 1. Basic Sudoku Rules (Naked Single)
+		      ' Distinct digit in each row/col/block
+		      Var candidates() As Integer
+		      For v As Integer = 1 To N
+		        If IsValueValid(r, c, v) Then
+		          candidates.Add(v)
+		          If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Basic Sudoku Rules Check
+		        End If
+		      Next
+		      
+		      If candidates.Count = 1 Then
+		        solveCellHints.Value(i) = SolveHint.NakedSingle
+		        Continue
+		      End If
+		      
+		      ' 2. Hidden Single
+		      ' Only one spot for a digit in row/col/block
+		      For v As Integer = 1 To N
+		        If IsValueHiddenSingle(r, c, v) Then
+		          solveCellHints.Value(i) = SolveHint.HiddenSingle
+		          exit 
+		        End If
+		      Next
+		    Next
+		  Next
+		  
+		  Return solveCellHints
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
@@ -383,6 +443,59 @@ Protected Class SudokuTool
 		  Next
 		  
 		  Return True
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function IsValueHiddenSingle(r As Integer, c As Integer, val As Integer) As Boolean
+		  ' Check if 'val' at grid(r, c) is a hidden single.
+		  
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Row check
+		  Var possibleCols() As Integer
+		  For cc As Integer = 0 To N-1
+		    If grid(r, cc) = 0 And IsValueValid(r, cc, val) Then
+		      possibleCols.Add(cc)
+		      If (possibleCols.Count > 1) Then Exit ' We just need to know of more than one candidate
+		    End If
+		  Next
+		  If possibleCols.Count = 1 And possibleCols(0) = c Then
+		    Return True
+		  End If
+		  
+		  ' Column check
+		  Var possibleRows() As Integer
+		  For rr As Integer = 0 To N-1
+		    If grid(rr, c) = 0 And IsValueValid(rr, c, val) Then
+		      If (possibleRows.Count > 1) Then Exit ' We just need to know of more than one candidate
+		      possibleRows.Add(rr)
+		    End If
+		  Next
+		  If possibleRows.Count = 1 And possibleRows(0) = r Then
+		    Return True
+		  End If
+		  
+		  ' Block check
+		  Var blockR As Integer = (r \ 3) * 3
+		  Var blockC As Integer = (c \ 3) * 3
+		  Var possibleBlockCells() As Integer
+		  For rr As Integer = blockR To blockR+2
+		    For cc As Integer = blockC To blockC+2
+		      If grid(rr, cc) = 0 And IsValueValid(rr, cc, val) Then
+		        possibleBlockCells.Add(rr * N + cc)
+		      End If
+		    Next
+		  Next
+		  
+		  Var index As Integer = r * N + c
+		  If possibleBlockCells.Count = 1 And possibleBlockCells(0) = index Then
+		    Return True
+		  End If
+		  
+		  Return False
+		  
 		End Function
 	#tag EndMethod
 
@@ -504,6 +617,13 @@ Protected Class SudokuTool
 
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
 	#tag EndConstant
+
+
+	#tag Enum, Name = SolveHint, Type = UInt8, Flags = &h0
+		None=0
+		  NakedSingle=1
+		HiddenSingle=2
+	#tag EndEnum
 
 
 	#tag ViewBehavior

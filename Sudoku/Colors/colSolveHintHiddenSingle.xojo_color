@@ -1,9 +1,9 @@
 #tag ColorGroup
-	CodeName=colGridlineHair
+	CodeName=colSolveHintHiddenSingle
 	#tag Color
 		Type=1
 		Platform=1
-		Light=A9A9A900
-		Dark=5E5E5E00
+		Light=945200BF
+		Dark=FFFB00E6
 	#tag EndColor
 #tag EndColorGroup

@@ -46,7 +46,7 @@ Begin DesktopWindow Window1
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -106,7 +106,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   13
+      TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#kLabelSudokuStatus"
@@ -138,7 +138,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   14
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -172,11 +172,11 @@ Begin DesktopWindow Window1
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   11
+      TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   285
+      Top             =   310
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -480,6 +480,36 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   120
    End
+   Begin SudokuCheckbox chkShowHints
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "#App.kSudokuShowHints"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   11
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   275
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   120
+   End
 End
 #tag EndDesktopWindow
 
@@ -512,7 +542,28 @@ End
 		      g.DrawingColor = Color.White
 		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, SudokuTool.N * kCellSize, SudokuTool.N * kCellSize)
 		    End If
-		  #endif
+		  #EndIf
+		  
+		  If Self.mShowHints Then
+		    ' Draw next solvable cells
+		    g.PenSize = 4
+		    If (Self.SolveCellHints <> Nil) Then
+		      For row As Integer = 0 To SudokuTool.N-1
+		        For col As Integer = 0 To SudokuTool.N-1
+		          Var index As Integer = row * SudokuTool.N + col
+		          
+		          Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
+		          Case SudokuTool.SolveHint.NakedSingle
+		            g.DrawingColor = colSolveHintNakedSingle
+		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
+		          Case SudokuTool.SolveHint.HiddenSingle
+		            g.DrawingColor = colSolveHintHiddenSingle
+		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
+		          End Select
+		        Next
+		      Next
+		    End If
+		  End If
 		  
 		  ' Draw all thin "hair" lines first (gray)
 		  g.DrawingColor = colGridlineHair
@@ -526,13 +577,14 @@ End
 		  
 		  ' Draw thicker red 3x3 block lines on top
 		  g.DrawingColor = colGridline
-		  g.PenSize = 3
+		  g.PenSize = 2
 		  For i As Integer = 0 To SudokuTool.N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
 		  Next
+		  
 		End Sub
 	#tag EndEvent
 
@@ -576,6 +628,16 @@ End
 	#tag MenuHandler
 		Function SudokuRandom() As Boolean Handles SudokuRandom.Action
 		  Self.ActionRandom
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuShowHints() As Boolean Handles SudokuShowHints.Action
+		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
 		  
 		  Return True
 		  
@@ -743,6 +805,9 @@ End
 		  Var isSolvable As Boolean = Me.Sudoku.IsSolvable
 		  Var isSolved As Boolean = Me.Sudoku.IsSolved
 		  
+		  SolveCellHints = Me.Sudoku.GetSolveCellHints
+		  self.Refresh(False)
+		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
@@ -753,6 +818,8 @@ End
 		  SudokuRandom.Enabled = btnRandom.Enabled
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
+		  chkShowHints.EnsureValue = mShowHints
+		  SudokuShowHints.HasCheckMark = mShowHints
 		  
 		  ' Status
 		  If isEmpty Then
@@ -952,6 +1019,14 @@ End
 
 	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mShowHints As Boolean = True
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SolveCellHints As Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1268,6 +1343,21 @@ End
 	#tag Event
 		Sub Pressed()
 		  Self.ActionRandom
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkShowHints
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mShowHints
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
 		  
 		End Sub
 	#tag EndEvent
