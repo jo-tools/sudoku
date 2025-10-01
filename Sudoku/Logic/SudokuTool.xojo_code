@@ -51,37 +51,22 @@ Protected Class SudokuTool
 		    Return 1
 		  End If
 		  
+		  ' Now we don't have any more cells to fill out with a certain value.
+		  ' Let's start to guess the remaining empty cell's values...
+		  
 		  Var deterministicStepsStackCount As Integer = solveStack.Count
 		  
 		  ' Find to-be-solved cells with the least possible candidate values
 		  Var bestRow As Integer = -1
 		  Var bestCol As Integer = -1
-		  Var bestCount As Integer = 9999
 		  Dim bestCandidates() As Integer
 		  
-		  For row = 0 To N-1
-		    For col = 0 To N-1
-		      If (grid(row, col) > 0) Then Continue
-		      
-		      Var candidates() As Integer = SolveGetCellCandidates(row, col)
-		      If (candidates.Count < 1) Then
-		        ' Invalid State - Rollback entirely and backtrack
-		        SolveUndoTo(startStackCount)
-		        Return 0
-		      End If
-		      
-		      If (candidates.Count < bestCount) Then
-		        bestCount = candidates.Count
-		        bestRow = row
-		        bestCol = col
-		        bestCandidates = candidates
-		        
-		        If (bestCount = 1) Then Exit ' Already best cell with just one candidate
-		      End If
-		    Next
-		    
-		    If (bestCount = 1) Then Exit
-		  Next
+		  If (Not Me.SolveFindBestNextCell(bestRow, bestCol, bestCandidates)) Then
+		    ' Invalid State - Rollback entirely and backtrack
+		    SolveUndoTo(startStackCount)
+		    Return 0
+		  End If
+		  
 		  
 		  If (bestRow < 0) Or (bestCol < 0) Then
 		    ' Nothing more to solve
@@ -450,7 +435,7 @@ Protected Class SudokuTool
 		  
 		  ' Shuffle using Fisher-Yates
 		  Var Rnd As New Random
-		  For i As Integer = valuesInRandomOrder.LastRowIndex DownTo 1
+		  For i As Integer = valuesInRandomOrder.LastIndex DownTo 1
 		    Var j As Integer = Rnd.InRange(0, i)
 		    Var tmp As Integer = valuesInRandomOrder(i)
 		    valuesInRandomOrder(i) = valuesInRandomOrder(j)
@@ -747,6 +732,42 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function SolveFindBestNextCell(ByRef bestRow As Integer, ByRef bestCol As Integer, ByRef bestCandidates() As Integer) As Boolean
+		  ' Find to-be-solved cells with the least possible candidate values
+		  bestRow = -1
+		  bestCol = -1
+		  Redim bestCandidates(-1)
+		  Var bestCount As Integer = 9999
+		  
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      If (grid(row, col) > 0) Then Continue
+		      
+		      Var candidates() As Integer = SolveGetCellCandidates(row, col)
+		      If (candidates.Count < 1) Then
+		        ' Invalid State
+		        Return False
+		      End If
+		      
+		      If (candidates.Count < bestCount) Then
+		        bestCount = candidates.Count
+		        bestRow = row
+		        bestCol = col
+		        bestCandidates = candidates
+		        
+		        If (bestCount = 1) Then Exit ' Already best cell with just one candidate
+		      End If
+		    Next
+		    
+		    If (bestCount = 1) Then Exit
+		  Next
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function SolveGetCellCandidates(row As Integer, col As Integer) As Integer()
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
@@ -786,37 +807,21 @@ Protected Class SudokuTool
 		    Return True
 		  End If
 		  
+		  ' Now we don't have any more cells to fill out with a certain value.
+		  ' Let's start to guess the remaining empty cell's values...
+		  
 		  Var deterministicStepsStackCount As Integer = solveStack.Count
 		  
 		  ' Find to-be-solved cells with the least possible candidate values
 		  Var bestRow As Integer = -1
 		  Var bestCol As Integer = -1
-		  Var bestCount As Integer = 9999
 		  Dim bestCandidates() As Integer
 		  
-		  For row = 0 To N-1
-		    For col = 0 To N-1
-		      If (grid(row, col) > 0) Then Continue
-		      
-		      Var candidates() As Integer = SolveGetCellCandidates(row, col)
-		      If (candidates.Count < 1) Then
-		        ' Invalid State - Rollback entirely and backtrack
-		        SolveUndoTo(startStackCount)
-		        Return False
-		      End If
-		      
-		      If (candidates.Count < bestCount) Then
-		        bestCount = candidates.Count
-		        bestRow = row
-		        bestCol = col
-		        bestCandidates = candidates
-		        
-		        If (bestCount = 1) Then Exit ' Already best cell with just one candidate
-		      End If
-		    Next
-		    
-		    If (bestCount = 1) Then Exit
-		  Next
+		  If (Not Me.SolveFindBestNextCell(bestRow, bestCol, bestCandidates)) Then
+		    ' Invalid State - Rollback entirely and backtrack
+		    SolveUndoTo(startStackCount)
+		    Return False
+		  End If
 		  
 		  If (bestRow < 0) Or (bestCol < 0) Then
 		    ' Nothing more to solve
