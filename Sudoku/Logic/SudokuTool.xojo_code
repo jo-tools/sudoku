@@ -652,6 +652,7 @@ Protected Class SudokuTool
 		    Return True
 		  End If
 		  
+		  Var deterministicStepsStackCount As Integer = solveStack.Count
 		  
 		  ' Find to-be-solved cells with the least possible candidate values
 		  Var bestRow As Integer = -1
@@ -665,7 +666,7 @@ Protected Class SudokuTool
 		      
 		      Var candidates() As Integer = SolveGetCellCandidates(row, col)
 		      If (candidates.Count < 1) Then
-		        ' Oops - Rollback
+		        ' Invalid State - Rollback entirely and backtrack
 		        SolveUndoTo(startStackCount)
 		        Return False
 		      End If
@@ -703,10 +704,11 @@ Protected Class SudokuTool
 		    ' Backtracking
 		    ' If recursion returned False, this 'val' led to a dead end
 		    ' Undo the move(s) before trying the next number in this cell
-		    SolveUndoTo(startStackCount)
+		    ' The deterministic steps should be valid, so keep them in the stack
+		    SolveUndoTo(deterministicStepsStackCount)
 		  Next
 		  
-		  ' Nothing worked - Rollback and fail
+		  ' None of the candidates resulted in a solved state, so rollback entirely and backtrack
 		  SolveUndoTo(startStackCount)
 		  Return False
 		  
