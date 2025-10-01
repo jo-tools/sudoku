@@ -344,14 +344,13 @@ Protected Class SudokuTool
 		        Continue
 		      End If
 		      
-		      ' 1. Basic Sudoku Rules
+		      ' 1. Basic Sudoku Rules (Naked Single)
 		      ' Distinct digit in each row/col/block
 		      Var candidates() As Integer
 		      For v As Integer = 1 To N
 		        If IsValueValid(r, c, v) Then
 		          candidates.Add(v)
 		          If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Basic Sudoku Rules Check
-		          'If (candidates.Count > 2) Then Exit ' We just need to know of more than two candidates for the Naked Pairs Check
 		        End If
 		      Next
 		      
