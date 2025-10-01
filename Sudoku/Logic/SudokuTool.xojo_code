@@ -706,14 +706,28 @@ Protected Class SudokuTool
 		  Var changed As Boolean = False
 		  
 		  Do
-		    ' Just get one deterministic hint
-		    Var solveCellHints() As SolveCellHint = GetSolveCellHints(True)
-		    If solveCellHints.Count = 0 Then Exit
+		    Var appliedThisPass As Boolean = False
+		    Var solveCellHints() As SolveCellHint = Me.GetSolveCellHints()
 		    
-		    ' Apply
-		    Var h As SolveCellHint = solveCellHints(0)
-		    Me.SolveApplyMove(Me.CreateSolveMove(h.Row, h.Col, grid(h.Row, h.Col), h.SolutionValue))
-		    changed = True
+		    For Each h As SolveCellHint In solveCellHints
+		      ' Check that this move is still valid under current state
+		      If IsValueValid(h.Row, h.Col, h.SolutionValue) Then
+		        ' Apply
+		        Me.SolveApplyMove(Me.CreateSolveMove(h.Row, h.Col, grid(h.Row, h.Col), h.SolutionValue))
+		        changed = True
+		        appliedThisPass = True
+		      Else
+		        'Break
+		      End If
+		    Next
+		    
+		    ' If nothing could be applied in this pass, break out
+		    If (Not appliedThisPass) Then Exit
+		    
+		    ' Quick sanity check
+		    If Not Me.IsValid() Then
+		      Return False
+		    End If
 		    
 		    ' Since puzzle has changed: loop again and get fresh hint(s)
 		  Loop
