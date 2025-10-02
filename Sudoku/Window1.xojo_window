@@ -795,9 +795,9 @@ End
 	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
 		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
-		  Var isValid As Boolean = Me.Sudoku.IsValid
-		  Var isSolvable As Boolean = Me.Sudoku.IsSolvable
-		  Var isSolved As Boolean = Me.Sudoku.IsSolved
+		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid
+		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.Sudoku.IsSolvable)
+		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
 		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
@@ -805,7 +805,7 @@ End
 		    Redim SolveCellHints(-1)
 		  End If
 		  
-		  self.Refresh(False)
+		  Self.Refresh(False)
 		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
@@ -1138,7 +1138,8 @@ End
 #tag Events btnEmpty
 	#tag Event
 		Sub Pressed()
-		  self.ActionEmpty
+		  Self.ActionEmpty
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
