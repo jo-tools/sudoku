@@ -9,6 +9,9 @@ Protected Class SudokuTool
 		      grid(r, c) = 0
 		    Next
 		  Next
+		  
+		  cacheIsSolvable = IsSolvableState.Solvable
+		  
 		End Sub
 	#tag EndMethod
 
@@ -285,7 +288,7 @@ Protected Class SudokuTool
 		    grid(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
 		    
 		    ' Start with a valid, solved grid
-		    isInitSolved = Me.GenerateRandomPuzzleSolve
+		    isInitSolved = Me.Solve
 		  Wend
 		  
 		  ' Shuffle Digits to get a different-looking solved grid
@@ -374,52 +377,9 @@ Protected Class SudokuTool
 		  End If
 		  
 		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
+		  cacheIsSolvable = IsSolvableState.Solvable
 		  Return True
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function GenerateRandomPuzzleSolve() As Boolean
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  ' We don't use the .Solve method here because trying to figure out
-		  ' best strategies is actually slower with just a random number placed
-		  
-		  Var row As Integer
-		  Var col As Integer
-		  
-		  ' Find the next empty cell
-		  ' If there are no empty cells left, the puzzle is solved
-		  If Not FindEmpty(row, col) Then
-		    Return True
-		  End If
-		  
-		  ' Try all possible numbers (1-9) for this empty cell in random order
-		  For Each Val As Integer In Me.GenerateRandomValues
-		    ' Check if placing 'val' here is allowed by Sudoku rules
-		    If IsValueValid(row, col, Val) Then
-		      ' Tentatively place 'val' in the cell
-		      grid(row, col) = Val
-		      
-		      ' Recursively attempt to solve the rest of the grid
-		      If GenerateRandomPuzzleSolve() Then
-		        ' Success! If the recursive call returns True, the puzzle is solved
-		        ' Propagate success back up the recursion chain
-		        Return True
-		      End If
-		      
-		      ' Backtracking
-		      ' If recursion returned False, this 'val' led to a dead end
-		      ' Undo the move before trying the next number in this cell
-		      grid(row, col) = 0
-		    End If
-		  Next
-		  
-		  ' All numbers 1-9 failed in this cell
-		  ' Signal to the previous recursive call that it must backtrack
-		  Return False
 		End Function
 	#tag EndMethod
 
@@ -543,10 +503,22 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
-		  ' Try solve on a clone, so that this
-		  ' grid is not being modified
-		  Var clone As New SudokuTool(Me)
-		  Return clone.Solve
+		  Select Case cacheIsSolvable
+		  Case IsSolvableState.Solvable
+		    Return True
+		  Case IsSolvableState.NotSolvable
+		    Return False
+		  Else
+		    ' Try solve on a clone, so that this grid is not being modified
+		    Var clone As New SudokuTool(Me)
+		    If clone.Solve Then
+		      cacheIsSolvable = IsSolvableState.Solvable
+		      Return True
+		    Else
+		      cacheIsSolvable = IsSolvableState.NotSolvable
+		      Return False
+		    End If
+		  End Select
 		  
 		End Function
 	#tag EndMethod
@@ -699,7 +671,10 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Sub SetGridCell(r As Integer, c As Integer, Assigns val As Integer)
-		  grid(r,c) = val
+		  grid(r,c) = Val
+		  
+		  cacheIsSolvable = IsSolvableState.Unknown
+		  
 		End Sub
 	#tag EndMethod
 
@@ -711,6 +686,12 @@ Protected Class SudokuTool
 		  If (Not IsValid()) Then Return False
 		  
 		  Var solveResult As Boolean = SolveInternal()
+		  
+		  If solveResult Then
+		    cacheIsSolvable = IsSolvableState.Solvable
+		  Else
+		    cacheIsSolvable = IsSolvableState.NotSolvable
+		  End If
 		  
 		  Redim solveStack(-1)
 		  Return solveResult
@@ -985,6 +966,10 @@ Protected Class SudokuTool
 
 
 	#tag Property, Flags = &h21
+		Private cacheIsSolvable As IsSolvableState = IsSolvableState.Unknown
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private grid(-1,-1) As Integer
 	#tag EndProperty
 
@@ -1017,6 +1002,12 @@ Protected Class SudokuTool
 		NewValue As Integer
 	#tag EndStructure
 
+
+	#tag Enum, Name = IsSolvableState, Type = Integer, Flags = &h21
+		Unknown = 0
+		  NotSolvable = 1
+		Solvable = 2
+	#tag EndEnum
 
 	#tag Enum, Name = SolveHint, Type = UInt8, Flags = &h0
 		None=0
