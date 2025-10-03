@@ -447,6 +447,30 @@ Protected Class SudokuTool
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function GetCountNonEmpty() As Integer
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var count As Integer = 0
+		  
+		  ' Count non empty cells
+		  For r As Integer = 0 To N-1
+		    For c As Integer = 0 To N-1
+		      If grid(r, c) < 1 Then
+		        Continue
+		      End If
+		      
+		      count = count + 1
+		    Next
+		  Next
+		  
+		  Return count
+		  
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function GetGridCell(r As Integer, c As Integer) As Integer
 		  Return grid(r,c)
@@ -808,6 +832,80 @@ Protected Class SudokuTool
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' The Solver with Strategies is more performant with complex Sudoku puzzles
+		  ' However, with e.g. nearly empty Sudoku's it takes much longer because of
+		  ' the overhead of checking possible strategies.
+		  
+		  ' Let's just look at the current state of the Sudoku that needs to be solved.
+		  ' If there are a certain amount of numbers placed and strategies are available,
+		  ' then use the Solver with Strategies.
+		  ' Otherwise use the plain Backtracking Solver (and hope it is faster ;-)
+		  
+		  Var countNonEmpty As Integer = Me.GetCountNonEmpty
+		  
+		  If (countNonEmpty > N + N/2) Then
+		    Var solveCellHints() As SolveCellHint = Me.GetSolveCellHints()
+		    If (solveCellHints.LastIndex >= 0) Then
+		      Return SolveInternalWithStrategies
+		    End If
+		  End If
+		  
+		  Return SolveInternalWithBacktracking
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function SolveInternalWithBacktracking() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Remember stack position at entry
+		  Var startStackCount As Integer = solveStack.Count
+		  
+		  Var row As Integer
+		  Var col As Integer
+		  
+		  ' Find the next empty cell
+		  ' If there are no empty cells left, the puzzle is solved
+		  If Not FindEmpty(row, col) Then
+		    Return True
+		  End If
+		  
+		  ' Try all possible numbers (1-9) for this empty cell
+		  For Val As Integer = 1 To N
+		    ' Check if placing 'val' here is allowed by Sudoku rules
+		    If IsValueValid(row, col, Val) Then
+		      ' Tentatively place 'val' in the cell
+		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, grid(row, col), Val))
+		      
+		      ' Recursively attempt to solve the rest of the grid
+		      If SolveInternalWithBacktracking() Then
+		        ' Success! If the recursive call returns True, the puzzle is solved
+		        ' Propagate success back up the recursion chain
+		        Return True
+		      End If
+		      
+		      ' Backtracking
+		      ' If recursion returned False, this 'val' led to a dead end
+		      ' Undo the move before trying the next number in this cell
+		      grid(row, col) = 0
+		    End If
+		  Next
+		  
+		  ' All numbers 1-9 failed in this cell
+		  ' Signal to the previous recursive call that it must backtrack
+		  SolveUndoTo(startStackCount)
+		  Return False
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function SolveInternalWithStrategies() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  ' Remember stack position at entry
 		  Var startStackCount As Integer = solveStack.Count
 		  
@@ -850,7 +948,7 @@ Protected Class SudokuTool
 		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), Val))
 		    
 		    ' Recursively attempt to solve the rest of the grid
-		    If SolveInternal() Then
+		    If SolveInternalWithStrategies() Then
 		      ' Success! If the recursive call returns True, the puzzle is solved
 		      ' Propagate success back up the recursion chain
 		      Return True
