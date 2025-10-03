@@ -659,12 +659,12 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
 		  ' Lock current state
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = r * SudokuTool.N + c
-		      Var v As Integer = Me.Sudoku.GetGridCell(r, c)
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
 		      
-		      SudokuTextFields(index).Lock = (v > 0)
+		      SudokuTextFields(index).Lock = (val > 0)
 		    Next
 		  Next
 		  
@@ -760,12 +760,12 @@ End
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = r * SudokuTool.N + c
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
 		      
 		      If SudokuTextFields(index).IsLocked Then Continue
-		      If (Me.Sudoku.GetGridCell(r, c) < 1) Then Continue 'Is empty
+		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
 		      Return True
@@ -856,18 +856,18 @@ End
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = r * SudokuTool.N + c
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
 		      
 		      SudokuTextFields(index).Lock = False
 		      
-		      Var v As Integer = Me.Sudoku.GetGridCell(r, c)
-		      If v = 0 Then
+		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
+		      If val = 0 Then
 		        SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
-		        SudokuTextFields(index).Text = Str(v)
+		        SudokuTextFields(index).Text = val.ToString
 		      End If
 		    Next
 		  Next
@@ -1309,7 +1309,8 @@ End
 		    Return
 		  End If
 		  
-		  Me.Text = Str(App.MajorVersion) + "." + Str(App.MinorVersion) + "." + Str(App.BugVersion)
+		  Me.Text = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

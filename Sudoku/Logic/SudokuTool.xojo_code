@@ -4,9 +4,9 @@ Protected Class SudokuTool
 		Sub ClearGrid()
 		  ' Fill entire grid with 0's
 		  Redim grid(N-1, N-1)
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      grid(r, c) = 0
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      grid(row, col) = 0
 		    Next
 		  Next
 		  
@@ -25,9 +25,9 @@ Protected Class SudokuTool
 		Sub Constructor(clone As SudokuTool)
 		  ' Init with state of passed-in Sudoku-grid
 		  Redim grid(N-1, N-1)
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      grid(r, c) = clone.GetGridCell(r, c)
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      grid(row, col) = clone.GetGridCell(row, col)
 		    Next
 		  Next
 		End Sub
@@ -80,9 +80,9 @@ Protected Class SudokuTool
 		  
 		  ' Try the cell candidates (in the cell with the least possible candidates)
 		  Var total As Integer = 0
-		  For Each Val As Integer In bestCandidates
+		  For Each val As Integer In bestCandidates
 		    ' Tentatively place 'val' in the cell
-		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), Val))
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), val))
 		    
 		    ' Recursively attempt to solve the rest of the grid
 		    total = total + CountSolutions(limit - total)
@@ -222,11 +222,11 @@ Protected Class SudokuTool
 		  g.FontName = PDFDocument.StandardFontNames.Helvetica
 		  g.Bold = isPuzzle 'not bold for solution
 		  
-		  For r As Integer = 0 To N - 1
-		    For c As Integer = 0 To N - 1
-		      Var v As Integer = me.GetGridCell(r, c)
-		      If v <> 0 Then
-		        Var s As String = Str(v)
+		  For row As Integer = 0 To N - 1
+		    For col As Integer = 0 To N - 1
+		      Var val As Integer = me.GetGridCell(row, col)
+		      If val <> 0 Then
+		        Var s As String = val.ToString
 		        ' Choose font size relative to cell
 		        g.FontSize = cell * 0.6
 		        Var w As Double = g.TextWidth(s)
@@ -234,8 +234,8 @@ Protected Class SudokuTool
 		        Var ascent As Double = g.FontAscent
 		        
 		        ' Compute left and baseline to center horizontally and vertically
-		        Var xText As Double = topLeftX + c * cell + (cell - w) / 2.0
-		        Var centerY As Double = topLeftY + r * cell + cell / 2.0
+		        Var xText As Double = topLeftX + col * cell + (cell - w) / 2.0
+		        Var centerY As Double = topLeftY + row * cell + cell / 2.0
 		        Var baselineY As Double = centerY + ascent - (h / 2.0)
 		        
 		        g.DrawText(s, xText, baselineY)
@@ -249,11 +249,11 @@ Protected Class SudokuTool
 	#tag Method, Flags = &h21
 		Private Function FindEmpty(ByRef outRow As Integer, ByRef outCol As Integer) As Boolean
 		  ' Find the first empty cell
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      If grid(r, c) = 0 Then
-		        outRow = r
-		        outCol = c
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      If grid(row, col) = 0 Then
+		        outRow = row
+		        outCol = col
 		        Return True
 		      End If
 		    Next
@@ -307,21 +307,21 @@ Protected Class SudokuTool
 		  
 		  ' Apply the permutation to create a randomized solution copy
 		  Var solution(N-1, N-1) As Integer
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      Var v As Integer = grid(r,c)
-		      If v >= 1 And v <= N Then
-		        solution(r,c) = perm(v)
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      Var val As Integer = grid(row, col)
+		      If val >= 1 And val <= N Then
+		        solution(row, col) = perm(val)
 		      Else
-		        solution(r,c) = 0
+		        solution(row, col) = 0
 		      End If
 		    Next
 		  Next
 		  
 		  ' Put the permuted solution back into grid
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      grid(r,c) = solution(r,c)
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      grid(row, col) = solution(row, col)
 		    Next
 		  Next
 		  
@@ -415,9 +415,9 @@ Protected Class SudokuTool
 		  Var count As Integer = 0
 		  
 		  ' Count non empty cells
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      If grid(r, c) < 1 Then
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      If grid(row, col) < 1 Then
 		        Continue
 		      End If
 		      
@@ -432,8 +432,8 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetGridCell(r As Integer, c As Integer) As Integer
-		  Return grid(r,c)
+		Function GetGridCell(row As Integer, col As Integer) As Integer
+		  Return grid(row, col)
 		  
 		End Function
 	#tag EndMethod
@@ -446,34 +446,34 @@ Protected Class SudokuTool
 		  Var solveCellHints() As SolveCellHint
 		  
 		  ' Add Solve Cell Hints
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
 		      ' No Hints in non empty Cells
-		      If grid(r, c) <> 0 Then
+		      If grid(row, col) <> 0 Then
 		        Continue
 		      End If
 		      
 		      ' 1. Basic Sudoku Rules (Naked Single)
 		      ' Distinct digit in each row/col/block
 		      Var candidates() As Integer
-		      For v As Integer = 1 To N
-		        If IsValueValid(r, c, v) Then
-		          candidates.Add(v)
+		      For val As Integer = 1 To N
+		        If IsValueValid(row, col, val) Then
+		          candidates.Add(val)
 		          If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
 		        End If
 		      Next
 		      
 		      If candidates.Count = 1 Then
-		        solveCellHints.Add(CreateSolveCellHint(r, c, SolveHint.NakedSingle, candidates(0)))
+		        solveCellHints.Add(CreateSolveCellHint(row, col, SolveHint.NakedSingle, candidates(0)))
 		        If firstOnly Then Return SolveCellHints
 		        Continue
 		      End If
 		      
 		      ' 2. Hidden Single
 		      ' Only one spot for a digit in row/col/block
-		      For v As Integer = 1 To N
-		        If IsValueHiddenSingle(r, c, v) Then
-		          solveCellHints.Add(CreateSolveCellHint(r, c, SolveHint.HiddenSingle, v))
+		      For val As Integer = 1 To N
+		        If IsValueHiddenSingle(row, col, val) Then
+		          solveCellHints.Add(CreateSolveCellHint(row, col, SolveHint.HiddenSingle, val))
 		          If firstOnly Then Return SolveCellHints
 		          Exit 
 		        End If
@@ -491,9 +491,9 @@ Protected Class SudokuTool
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      If (grid(r,c) <> 0) Then Return False
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      If (grid(row, col) <> 0) Then Return False
 		    Next
 		  Next
 		  
@@ -532,9 +532,9 @@ Protected Class SudokuTool
 		  If (Not IsValid) Then Return False
 		  
 		  ' And no empty cells left
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      If (grid(r,c) = 0) Then Return False
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      If (grid(row, col) = 0) Then Return False
 		    Next
 		  Next
 		  
@@ -547,20 +547,22 @@ Protected Class SudokuTool
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  For r As Integer = 0 To N-1
-		    For c As Integer = 0 To N-1
-		      Var val As Integer = grid(r,c)
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      Var val As Integer = grid(row, col)
 		      If val <> 0 Then
 		        ' Temporarily remove the number
-		        grid(r,c) = 0
+		        grid(row, col) = 0
 		        
 		        ' Check number in this cell
-		        Var numIsValid As Boolean = IsValueValid(r, c, Val)
+		        Var numIsValid As Boolean = IsValueValid(row, col, val)
 		        
 		        ' Restore the number
-		        grid(r,c) = Val
+		        grid(row, col) = val
 		        
-		        If (Not numIsValid) Then Return False
+		        If (Not numIsValid) Then
+		          Return False
+		        End If
 		      End If
 		    Next
 		  Next
@@ -570,8 +572,8 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function IsValueHiddenSingle(r As Integer, c As Integer, val As Integer) As Boolean
-		  ' Check if 'val' at grid(r, c) is a hidden single.
+		Private Function IsValueHiddenSingle(row As Integer, col As Integer, val As Integer) As Boolean
+		  ' Check if 'val' at grid(r,c) is a hidden single.
 		  
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
@@ -579,30 +581,30 @@ Protected Class SudokuTool
 		  ' Row check
 		  Var possibleCols() As Integer
 		  For cc As Integer = 0 To N-1
-		    If grid(r, cc) = 0 And IsValueValid(r, cc, val) Then
+		    If grid(row, cc) = 0 And IsValueValid(row, cc, val) Then
 		      possibleCols.Add(cc)
-		      If (possibleCols.Count > 1) Then Exit ' We just need to know of more than one candidate
+		      If (possibleCols.Count > 1) Then Exit ' We just need to know if more than one candidate
 		    End If
 		  Next
-		  If possibleCols.Count = 1 And possibleCols(0) = c Then
+		  If possibleCols.Count = 1 And possibleCols(0) = col Then
 		    Return True
 		  End If
 		  
 		  ' Column check
 		  Var possibleRows() As Integer
 		  For rr As Integer = 0 To N-1
-		    If grid(rr, c) = 0 And IsValueValid(rr, c, val) Then
-		      If (possibleRows.Count > 1) Then Exit ' We just need to know of more than one candidate
+		    If grid(rr, col) = 0 And IsValueValid(rr, col, val) Then
+		      If (possibleRows.Count > 1) Then Exit ' We just need to know if more than one candidate
 		      possibleRows.Add(rr)
 		    End If
 		  Next
-		  If possibleRows.Count = 1 And possibleRows(0) = r Then
+		  If possibleRows.Count = 1 And possibleRows(0) = row Then
 		    Return True
 		  End If
 		  
 		  ' Block check
-		  Var blockR As Integer = (r \ 3) * 3
-		  Var blockC As Integer = (c \ 3) * 3
+		  Var blockR As Integer = (row \ 3) * 3
+		  Var blockC As Integer = (col \ 3) * 3
 		  Var possibleBlockCells() As Integer
 		  For rr As Integer = blockR To blockR+2
 		    For cc As Integer = blockC To blockC+2
@@ -612,7 +614,7 @@ Protected Class SudokuTool
 		    Next
 		  Next
 		  
-		  Var index As Integer = r * N + c
+		  Var index As Integer = row * N + col
 		  If possibleBlockCells.Count = 1 And possibleBlockCells(0) = index Then
 		    Return True
 		  End If
@@ -623,7 +625,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function IsValueValid(r As Integer, c As Integer, val As Integer) As Boolean
+		Private Function IsValueValid(row As Integer, col As Integer, val As Integer) As Boolean
 		  ' Check if placing 'val' at grid(r, c) is allowed according
 		  ' to Sudoku rules. Returns True if valid, False otherwise.
 		  
@@ -632,8 +634,8 @@ Protected Class SudokuTool
 		  
 		  ' 1. Check the row
 		  ' A number must not appear twice in the same row
-		  For col As Integer = 0 To N-1
-		    If grid(r, col) = Val Then
+		  For cc As Integer = 0 To N-1
+		    If grid(row, cc) = val Then
 		      ' 'val' already exists in this row → invalid
 		      Return False
 		    End If
@@ -641,8 +643,8 @@ Protected Class SudokuTool
 		  
 		  ' 2. Check the column
 		  ' A number must not appear twice in the same column
-		  For row As Integer = 0 To N-1
-		    If grid(row, c) = Val Then
+		  For rr As Integer = 0 To N-1
+		    If grid(rr, col) = val Then
 		      ' 'val' already exists in this column → invalid
 		      Return False
 		    End If
@@ -651,12 +653,12 @@ Protected Class SudokuTool
 		  '3. Check the 3x3 block
 		  ' Each 3x3 block must contain unique numbers
 		  ' Calculate the top-left corner of the block containing (r, c)
-		  Var br As Integer = (r \ 3) * 3
-		  Var bc As Integer = (c \ 3) * 3
+		  Var br As Integer = (row \ 3) * 3
+		  Var bc As Integer = (col \ 3) * 3
 		  
 		  For rr As Integer = br To br + 2
 		    For cc As Integer = bc To bc + 2
-		      If grid(rr, cc) = Val Then
+		      If grid(rr, cc) = val Then
 		        ' 'val' already exists in this 3x3 block → invalid
 		        Return False
 		      End If
@@ -670,8 +672,8 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetGridCell(r As Integer, c As Integer, Assigns val As Integer)
-		  grid(r,c) = Val
+		Sub SetGridCell(row As Integer, col As Integer, Assigns val As Integer)
+		  grid(row, col) = val
 		  
 		  cacheIsSolvable = IsSolvableState.Unknown
 		  
@@ -854,11 +856,11 @@ Protected Class SudokuTool
 		  End If
 		  
 		  ' Try all possible numbers (1-9) for this empty cell
-		  For Val As Integer = 1 To N
+		  For val As Integer = 1 To N
 		    ' Check if placing 'val' here is allowed by Sudoku rules
-		    If IsValueValid(row, col, Val) Then
+		    If IsValueValid(row, col, val) Then
 		      ' Tentatively place 'val' in the cell
-		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, grid(row, col), Val))
+		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, grid(row, col), val))
 		      
 		      ' Recursively attempt to solve the rest of the grid
 		      If SolveInternalWithBacktracking() Then
@@ -926,7 +928,7 @@ Protected Class SudokuTool
 		  ' Try the cell candidates (in the cell with the least possible candidates)
 		  For Each val As Integer In bestCandidates
 		    ' Tentatively place 'val' in the cell
-		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), Val))
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), val))
 		    
 		    ' Recursively attempt to solve the rest of the grid
 		    If SolveInternalWithStrategies() Then
