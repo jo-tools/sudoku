@@ -795,7 +795,7 @@ End
 	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
 		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
-		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid(SudokuTool.IsValidCheck.BasicSudokuRules)
+		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
 		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.Sudoku.IsSolvable)
 		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
 		  

@@ -17,7 +17,7 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  ClearGrid
+		  Me.ClearGrid
 		End Sub
 	#tag EndMethod
 
@@ -41,16 +41,16 @@ Protected Class SudokuTool
 		  Var startStackCount As Integer = solveStack.Count
 		  
 		  ' Apply deterministic steps
-		  While SolveApplyDeterministicSteps
+		  While Me.SolveApplyDeterministicSteps
 		    ' Once applied, maybe there are new ones,
 		    ' so loop until nothing can be applied any longer
 		  Wend
 		  
 		  ' Check if solved just with deterministic steps
 		  Var row, col As Integer
-		  If (Not FindEmpty(row, col)) Then
+		  If (Not Me.FindEmpty(row, col)) Then
 		    ' Count as one solution
-		    SolveUndoTo(startStackCount)
+		    Me.SolveUndoTo(startStackCount)
 		    Return 1
 		  End If
 		  
@@ -66,7 +66,7 @@ Protected Class SudokuTool
 		  
 		  If (Not Me.SolveFindBestNextCell(bestRow, bestCol, bestCandidates)) Then
 		    ' Invalid State - Rollback entirely and backtrack
-		    SolveUndoTo(startStackCount)
+		    Me.SolveUndoTo(startStackCount)
 		    Return 0
 		  End If
 		  
@@ -74,7 +74,7 @@ Protected Class SudokuTool
 		  If (bestRow < 0) Or (bestCol < 0) Then
 		    ' Nothing more to solve
 		    ' Count as one solution
-		    SolveUndoTo(startStackCount)
+		    Me.SolveUndoTo(startStackCount)
 		    Return 1
 		  End If
 		  
@@ -85,12 +85,12 @@ Protected Class SudokuTool
 		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), val))
 		    
 		    ' Recursively attempt to solve the rest of the grid
-		    total = total + CountSolutions(limit - total)
+		    total = total + Me.CountSolutions(limit - total)
 		    
 		    ' Undo the move(s) before trying the next number in this cell
 		    ' to see if they lead to another solution
 		    ' The deterministic steps should be valid/unique, so keep them in the stack
-		    SolveUndoTo(deterministicStepsStackCount)
+		    Me.SolveUndoTo(deterministicStepsStackCount)
 		    
 		    If total >= limit Then
 		      Exit
@@ -98,7 +98,7 @@ Protected Class SudokuTool
 		  Next
 		  
 		  ' None of the candidates resulted in a solved state, so rollback entirely and backtrack
-		  SolveUndoTo(startStackCount)
+		  Me.SolveUndoTo(startStackCount)
 		  Return total
 		  
 		End Function
@@ -157,7 +157,7 @@ Protected Class SudokuTool
 		  Var gridY As Double = top
 		  
 		  ' Draw current Sudoku
-		  DrawSudokuInternal(g, gridX, gridY, gridSize, True)
+		  Me.DrawSudokuInternal(g, gridX, gridY, gridSize, True)
 		  
 		  ' Solution (on a clone, in order not to modify this Sudoku's state)
 		  If Me.IsSolved Then Return
@@ -224,7 +224,7 @@ Protected Class SudokuTool
 		  
 		  For row As Integer = 0 To N - 1
 		    For col As Integer = 0 To N - 1
-		      Var val As Integer = me.GetGridCell(row, col)
+		      Var val As Integer = Me.GetGridCell(row, col)
 		      If val <> 0 Then
 		        Var s As String = val.ToString
 		        ' Choose font size relative to cell
@@ -282,7 +282,7 @@ Protected Class SudokuTool
 		  
 		  Var isInitSolved As Boolean = False
 		  while (not isInitSolved)
-		    ClearGrid
+		    Me.ClearGrid
 		    
 		    ' Place a random Number
 		    grid(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
@@ -359,7 +359,7 @@ Protected Class SudokuTool
 		    grid(rr, cc) = 0
 		    
 		    ' If the puzzle still has exactly 1 solution, accept the removal
-		    If CountSolutions(2) = 1 Then
+		    If Me.CountSolutions(2) = 1 Then
 		      removed = removed + 1
 		    Else
 		      ' Not unique solution, restore the value and try to remove another
@@ -451,33 +451,33 @@ Protected Class SudokuTool
 		  
 		  ' No Hints in non empty Cells
 		  If grid(row, col) <> 0 Then
-		    Return CreateSolveCellHint(row, col, SolveHint.None, 0)
+		    Return Me.CreateSolveCellHint(row, col, SolveHint.None, 0)
 		  End If
 		  
 		  ' 1. Basic Sudoku Rules (Naked Single)
 		  ' Distinct digit in each row/col/block
 		  Var candidates() As Integer
-		  For Val As Integer = 1 To N
-		    If IsValueValid(row, col, Val) Then
-		      candidates.Add(Val)
+		  For val As Integer = 1 To N
+		    If Me.IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
+		      candidates.Add(val)
 		      If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
 		    End If
 		  Next
 		  
 		  If candidates.Count = 1 Then
-		    Return CreateSolveCellHint(row, col, SolveHint.NakedSingle, candidates(0))
+		    Return Me.CreateSolveCellHint(row, col, SolveHint.NakedSingle, candidates(0))
 		  End If
 		  
 		  ' 2. Hidden Single
 		  ' Only one spot for a digit in row/col/block
-		  For Val As Integer = 1 To N
-		    If IsValueHiddenSingle(row, col, Val) Then
-		      Return CreateSolveCellHint(row, col, SolveHint.HiddenSingle, Val)
+		  For val As Integer = 1 To N
+		    If Me.IsValueHiddenSingle(row, col, val) Then
+		      Return Me.CreateSolveCellHint(row, col, SolveHint.HiddenSingle, val)
 		      Exit 
 		    End If
 		  Next
 		  
-		  Return CreateSolveCellHint(row, col, SolveHint.None, 0)
+		  Return Me.CreateSolveCellHint(row, col, SolveHint.None, 0)
 		  
 		End Function
 	#tag EndMethod
@@ -552,7 +552,7 @@ Protected Class SudokuTool
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not IsValid(IsValidCheck.AdvancedChecks)) Then Return False
+		  If (Not Me.IsValid(ValidCheck.AdvancedChecks)) Then Return False
 		  
 		  ' And no empty cells left
 		  For row As Integer = 0 To N-1
@@ -566,7 +566,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IsValid(checkType As IsValidCheck) As Boolean
+		Function IsValid(checkType As ValidCheck) As Boolean
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -578,15 +578,7 @@ Protected Class SudokuTool
 		        grid(row, col) = 0
 		        
 		        ' Check number in this cell
-		        Var numIsValid As Boolean = IsValueValid(row, col, val)
-		        
-		        If numIsValid And (checkType = IsValidCheck.AdvancedChecks) Then
-		          Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
-		          Select Case solveCellHint.SolveHint
-		          Case SolveHint.NakedSingle, SolveHint.HiddenSingle
-		            If (solveCellHint.SolutionValue <> Val) Then numIsValid = False
-		          End Select
-		        End If
+		        Var numIsValid As Boolean = Me.IsValueValid(row, col, val, checkType)
 		        
 		        ' Restore the number
 		        grid(row, col) = val
@@ -612,7 +604,7 @@ Protected Class SudokuTool
 		  ' Row check
 		  Var possibleCols() As Integer
 		  For cc As Integer = 0 To N-1
-		    If grid(row, cc) = 0 And IsValueValid(row, cc, val) Then
+		    If grid(row, cc) = 0 And Me.IsValueValid(row, cc, val, ValidCheck.BasicSudokuRules) Then
 		      possibleCols.Add(cc)
 		      If (possibleCols.Count > 1) Then Exit ' We just need to know if more than one candidate
 		    End If
@@ -624,7 +616,7 @@ Protected Class SudokuTool
 		  ' Column check
 		  Var possibleRows() As Integer
 		  For rr As Integer = 0 To N-1
-		    If grid(rr, col) = 0 And IsValueValid(rr, col, val) Then
+		    If grid(rr, col) = 0 And Me.IsValueValid(rr, col, val, ValidCheck.BasicSudokuRules) Then
 		      If (possibleRows.Count > 1) Then Exit ' We just need to know if more than one candidate
 		      possibleRows.Add(rr)
 		    End If
@@ -639,7 +631,7 @@ Protected Class SudokuTool
 		  Var possibleBlockCells() As Integer
 		  For rr As Integer = blockR To blockR+2
 		    For cc As Integer = blockC To blockC+2
-		      If grid(rr, cc) = 0 And IsValueValid(rr, cc, val) Then
+		      If grid(rr, cc) = 0 And Me.IsValueValid(rr, cc, val, ValidCheck.BasicSudokuRules) Then
 		        possibleBlockCells.Add(rr * N + cc)
 		      End If
 		    Next
@@ -656,7 +648,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function IsValueValid(row As Integer, col As Integer, val As Integer) As Boolean
+		Private Function IsValueValid(row As Integer, col As Integer, val As Integer, checkType As ValidCheck) As Boolean
 		  ' Check if placing 'val' at grid(r, c) is allowed according
 		  ' to Sudoku rules. Returns True if valid, False otherwise.
 		  
@@ -681,7 +673,7 @@ Protected Class SudokuTool
 		    End If
 		  Next
 		  
-		  '3. Check the 3x3 block
+		  ' 3. Check the 3x3 block
 		  ' Each 3x3 block must contain unique numbers
 		  ' Calculate the top-left corner of the block containing (r, c)
 		  Var br As Integer = (row \ 3) * 3
@@ -696,8 +688,16 @@ Protected Class SudokuTool
 		    Next
 		  Next
 		  
+		  ' 4. Advanced Checks: Naked Single, Hidden Single
+		  If (checkType = ValidCheck.AdvancedChecks) Then
+		    Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
+		    Select Case solveCellHint.SolveHint
+		    Case SolveHint.NakedSingle, SolveHint.HiddenSingle
+		      If (solveCellHint.SolutionValue <> val) Then Return False
+		    End Select
+		  End If
+		  
 		  ' Passed all checks
-		  ' No conflicts found in row, column, or block
 		  Return True
 		End Function
 	#tag EndMethod
@@ -716,9 +716,9 @@ Protected Class SudokuTool
 		  Redim solveStack(-1)
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not IsValid(IsValidCheck.AdvancedChecks)) Then Return False
+		  If (Not Me.IsValid(ValidCheck.AdvancedChecks)) Then Return False
 		  
-		  Var solveResult As Boolean = SolveInternal()
+		  Var solveResult As Boolean = Me.SolveInternal()
 		  
 		  If solveResult Then
 		    cacheIsSolvable = IsSolvableState.Solvable
@@ -749,7 +749,8 @@ Protected Class SudokuTool
 		    
 		    For Each h As SolveCellHint In solveCellHints
 		      ' Check that this move is still valid under current state
-		      If IsValueValid(h.Row, h.Col, h.SolutionValue) Then
+		      ' Note: No need to check with ValidCheck.AdvancedChecks since we got them from SolveCellHints
+		      If Me.IsValueValid(h.Row, h.Col, h.SolutionValue, ValidCheck.BasicSudokuRules) Then
 		        ' Apply
 		        Me.SolveApplyMove(Me.CreateSolveMove(h.Row, h.Col, grid(h.Row, h.Col), h.SolutionValue))
 		        changed = True
@@ -798,7 +799,7 @@ Protected Class SudokuTool
 		    For col As Integer = 0 To N-1
 		      If (grid(row, col) > 0) Then Continue
 		      
-		      Var candidates() As Integer = SolveGetCellCandidates(row, col)
+		      Var candidates() As Integer = Me.SolveGetCellCandidates(row, col)
 		      If (candidates.Count < 1) Then
 		        ' Invalid State
 		        Return False
@@ -827,12 +828,15 @@ Protected Class SudokuTool
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  ' Return candidate values for cell according to IsValueValid
+		  ' Return candidate values for cell according to Me.IsValueValid
 		  Var candidates() As Integer
 		  If (grid(row, col) > 0) Then Return candidates
 		  
 		  For val As Integer = 1 To N
-		    If IsValueValid(row, col, val) Then
+		    ' Note: No need to check with ValidCheck.AdvancedChecks since we
+		    ' call this Method only in the Solver with Strategies, and the Solver
+		    ' has checked that there are no Naked/Hidden Singles to be filled out
+		    If Me.IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
 		      candidates.Add(val)
 		    End If
 		  Next
@@ -861,11 +865,11 @@ Protected Class SudokuTool
 		  If (countNonEmpty > N + N/2) Then
 		    Var solveCellHints() As SolveCellHint = Me.GetSolveCellHints()
 		    If (solveCellHints.LastIndex >= 0) Then
-		      Return SolveInternalWithStrategies
+		      Return Me.SolveInternalWithStrategies
 		    End If
 		  End If
 		  
-		  Return SolveInternalWithBacktracking
+		  Return Me.SolveInternalWithBacktracking
 		  
 		End Function
 	#tag EndMethod
@@ -883,19 +887,31 @@ Protected Class SudokuTool
 		  
 		  ' Find the next empty cell
 		  ' If there are no empty cells left, the puzzle is solved
-		  If Not FindEmpty(row, col) Then
+		  If Not Me.FindEmpty(row, col) Then
 		    Return True
 		  End If
 		  
 		  ' Try all possible numbers (1-9) for this empty cell
-		  For val As Integer = 1 To N
+		  Var tryNumberFrom As Integer = 1
+		  Var tryNumberTo As Integer = N
+		  
+		  Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
+		  Select Case solveCellHint.SolveHint
+		  Case SolveHint.NakedSingle, SolveHint.HiddenSingle
+		    ' No need to try all numbers, since we found a Naked/Hidden Single
+		    tryNumberFrom = solveCellHint.SolutionValue
+		    tryNumberTo = solveCellHint.SolutionValue
+		  End Select
+		  
+		  For val As Integer = tryNumberFrom To tryNumberTo
 		    ' Check if placing 'val' here is allowed by Sudoku rules
-		    If IsValueValid(row, col, val) Then
+		    ' Note: No need to check with ValidCheck.AdvancedChecks since we checked Naked/Hidden Singles in GetSolveCellHint
+		    If Me.IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
 		      ' Tentatively place 'val' in the cell
 		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, grid(row, col), val))
 		      
 		      ' Recursively attempt to solve the rest of the grid
-		      If SolveInternalWithBacktracking() Then
+		      If Me.SolveInternalWithBacktracking() Then
 		        ' Success! If the recursive call returns True, the puzzle is solved
 		        ' Propagate success back up the recursion chain
 		        Return True
@@ -904,13 +920,12 @@ Protected Class SudokuTool
 		      ' Backtracking
 		      ' If recursion returned False, this 'val' led to a dead end
 		      ' Undo the move before trying the next number in this cell
-		      grid(row, col) = 0
+		      Me.SolveUndoTo(startStackCount)
 		    End If
 		  Next
 		  
-		  ' All numbers 1-9 failed in this cell
+		  ' All numbers failed in this cell (to fully solve with recursion)
 		  ' Signal to the previous recursive call that it must backtrack
-		  SolveUndoTo(startStackCount)
 		  Return False
 		  
 		End Function
@@ -925,14 +940,14 @@ Protected Class SudokuTool
 		  Var startStackCount As Integer = solveStack.Count
 		  
 		  ' Apply deterministic steps
-		  While SolveApplyDeterministicSteps
+		  While Me.SolveApplyDeterministicSteps
 		    ' Once applied, maybe there are new ones,
 		    ' so loop until nothing can be applied any longer
 		  Wend
 		  
 		  ' Check if solved just with deterministic steps
 		  Var row, col As Integer
-		  If Not FindEmpty(row, col) Then
+		  If Not Me.FindEmpty(row, col) Then
 		    Return True
 		  End If
 		  
@@ -948,7 +963,7 @@ Protected Class SudokuTool
 		  
 		  If (Not Me.SolveFindBestNextCell(bestRow, bestCol, bestCandidates)) Then
 		    ' Invalid State - Rollback entirely and backtrack
-		    SolveUndoTo(startStackCount)
+		    Me.SolveUndoTo(startStackCount)
 		    Return False
 		  End If
 		  
@@ -963,7 +978,7 @@ Protected Class SudokuTool
 		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), val))
 		    
 		    ' Recursively attempt to solve the rest of the grid
-		    If SolveInternalWithStrategies() Then
+		    If Me.SolveInternalWithStrategies() Then
 		      ' Success! If the recursive call returns True, the puzzle is solved
 		      ' Propagate success back up the recursion chain
 		      Return True
@@ -973,11 +988,11 @@ Protected Class SudokuTool
 		    ' If recursion returned False, this 'val' led to a dead end
 		    ' Undo the move(s) before trying the next number in this cell
 		    ' The deterministic steps should be valid, so keep them in the stack
-		    SolveUndoTo(deterministicStepsStackCount)
+		    Me.SolveUndoTo(deterministicStepsStackCount)
 		  Next
 		  
 		  ' None of the candidates resulted in a solved state, so rollback entirely and backtrack
-		  SolveUndoTo(startStackCount)
+		  Me.SolveUndoTo(startStackCount)
 		  Return False
 		  
 		End Function
@@ -1043,15 +1058,15 @@ Protected Class SudokuTool
 		Solvable = 2
 	#tag EndEnum
 
-	#tag Enum, Name = IsValidCheck, Type = Integer, Flags = &h0
-		BasicSudokuRules = 1
-		AdvancedChecks=2
-	#tag EndEnum
-
 	#tag Enum, Name = SolveHint, Type = UInt8, Flags = &h0
 		None=0
 		  NakedSingle=1
 		HiddenSingle=2
+	#tag EndEnum
+
+	#tag Enum, Name = ValidCheck, Flags = &h0
+		BasicSudokuRules = 1
+		AdvancedChecks=2
 	#tag EndEnum
 
 
