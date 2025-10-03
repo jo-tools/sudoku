@@ -438,8 +438,52 @@ Protected Class SudokuTool
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function GetSolveCellHint(row As Integer, col As Integer) As SolveCellHint
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var solveCellHint As SolveCellHint
+		  solveCellHint.Row = row
+		  solveCellHint.Col = col
+		  solveCellHint.SolveHint = SolveHint.None
+		  solveCellHint.SolutionValue = 0
+		  
+		  ' No Hints in non empty Cells
+		  If grid(row, col) <> 0 Then
+		    Return CreateSolveCellHint(row, col, SolveHint.None, 0)
+		  End If
+		  
+		  ' 1. Basic Sudoku Rules (Naked Single)
+		  ' Distinct digit in each row/col/block
+		  Var candidates() As Integer
+		  For Val As Integer = 1 To N
+		    If IsValueValid(row, col, Val) Then
+		      candidates.Add(Val)
+		      If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
+		    End If
+		  Next
+		  
+		  If candidates.Count = 1 Then
+		    Return CreateSolveCellHint(row, col, SolveHint.NakedSingle, candidates(0))
+		  End If
+		  
+		  ' 2. Hidden Single
+		  ' Only one spot for a digit in row/col/block
+		  For Val As Integer = 1 To N
+		    If IsValueHiddenSingle(row, col, Val) Then
+		      Return CreateSolveCellHint(row, col, SolveHint.HiddenSingle, Val)
+		      Exit 
+		    End If
+		  Next
+		  
+		  Return CreateSolveCellHint(row, col, SolveHint.None, 0)
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
-		Function GetSolveCellHints(firstOnly As Boolean = False) As SolveCellHint()
+		Function GetSolveCellHints() As SolveCellHint()
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -453,31 +497,10 @@ Protected Class SudokuTool
 		        Continue
 		      End If
 		      
-		      ' 1. Basic Sudoku Rules (Naked Single)
-		      ' Distinct digit in each row/col/block
-		      Var candidates() As Integer
-		      For val As Integer = 1 To N
-		        If IsValueValid(row, col, val) Then
-		          candidates.Add(val)
-		          If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
-		        End If
-		      Next
+		      Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
+		      If (solveCellHint.SolveHint = SolveHint.None) Then Continue
 		      
-		      If candidates.Count = 1 Then
-		        solveCellHints.Add(CreateSolveCellHint(row, col, SolveHint.NakedSingle, candidates(0)))
-		        If firstOnly Then Return SolveCellHints
-		        Continue
-		      End If
-		      
-		      ' 2. Hidden Single
-		      ' Only one spot for a digit in row/col/block
-		      For val As Integer = 1 To N
-		        If IsValueHiddenSingle(row, col, val) Then
-		          solveCellHints.Add(CreateSolveCellHint(row, col, SolveHint.HiddenSingle, val))
-		          If firstOnly Then Return SolveCellHints
-		          Exit 
-		        End If
-		      Next
+		      solveCellHints.Add(solveCellHint)
 		    Next
 		  Next
 		  
@@ -529,7 +552,7 @@ Protected Class SudokuTool
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not IsValid) Then Return False
+		  If (Not IsValid(IsValidCheck.AdvancedChecks)) Then Return False
 		  
 		  ' And no empty cells left
 		  For row As Integer = 0 To N-1
@@ -543,7 +566,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IsValid() As Boolean
+		Function IsValid(checkType As IsValidCheck) As Boolean
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -556,6 +579,14 @@ Protected Class SudokuTool
 		        
 		        ' Check number in this cell
 		        Var numIsValid As Boolean = IsValueValid(row, col, val)
+		        
+		        If numIsValid And (checkType = IsValidCheck.AdvancedChecks) Then
+		          Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
+		          Select Case solveCellHint.SolveHint
+		          Case SolveHint.NakedSingle, SolveHint.HiddenSingle
+		            If (solveCellHint.SolutionValue <> Val) Then numIsValid = False
+		          End Select
+		        End If
 		        
 		        ' Restore the number
 		        grid(row, col) = val
@@ -685,7 +716,7 @@ Protected Class SudokuTool
 		  Redim solveStack(-1)
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not IsValid()) Then Return False
+		  If (Not IsValid(IsValidCheck.AdvancedChecks)) Then Return False
 		  
 		  Var solveResult As Boolean = SolveInternal()
 		  
@@ -731,10 +762,11 @@ Protected Class SudokuTool
 		    ' If nothing could be applied in this pass, break out
 		    If (Not appliedThisPass) Then Exit
 		    
-		    ' Quick sanity check
-		    If Not Me.IsValid() Then
-		      Return False
-		    End If
+		    // TODO: i think this is not really necessary
+		    '' Quick sanity check
+		    'If Not Me.IsValid() Then
+		    'Return False
+		    'End If
 		    
 		    ' Since puzzle has changed: loop again and get fresh hint(s)
 		  Loop
@@ -1009,6 +1041,11 @@ Protected Class SudokuTool
 		Unknown = 0
 		  NotSolvable = 1
 		Solvable = 2
+	#tag EndEnum
+
+	#tag Enum, Name = IsValidCheck, Type = Integer, Flags = &h0
+		BasicSudokuRules = 1
+		AdvancedChecks=2
 	#tag EndEnum
 
 	#tag Enum, Name = SolveHint, Type = UInt8, Flags = &h0
