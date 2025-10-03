@@ -1142,6 +1142,70 @@ End
 		  
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Function ConstructContextualMenu(base As DesktopMenuItem, x As Integer, y As Integer) As Boolean
+		  #Pragma unused y
+		  #Pragma unused x
+		  
+		  #If DebugBuild Then
+		    For i As Integer = 1 To 10
+		      Var debugExample1 As New DesktopMenuItem("Sudoku " + i.ToString)
+		      debugExample1.Name = "sudoku" + i.ToString
+		      base.AddMenu(debugExample1)
+		    Next
+		    Return True
+		    
+		  #EndIf
+		  
+		  Return False
+		  
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function ContextualMenuItemSelected(selectedItem As DesktopMenuItem) As Boolean
+		  #If DebugBuild Then
+		    Var loadSudoku As String
+		    Select Case selectedItem.Name
+		    Case "sudoku1"
+		      loadSudoku = "000014000030000200070000000000900030601000000000000080200000104000050600000708000"
+		    Case "sudoku2"
+		      loadSudoku = "100006080064000000000040007000090600070400500500070100050000320300008000400000000"
+		    Case "sudoku3"
+		      loadSudoku = "700000000086090000050640800008500043010070020540003100004087060000020710000000009"
+		    Case "sudoku4"
+		      loadSudoku = "400000805030000000000700000020000060000080400000010000000603070500200000104000000"
+		    Case "sudoku5"
+		      loadSudoku = "480300000000000071020000000705000060000200800000000000001076000300000400000050000"
+		    Case "sudoku6"
+		      loadSudoku = "005000987040050001007000000200048000090100000600200000300600200000009070000000500"
+		    Case "sudoku7"
+		      loadSudoku = "098010000200000060000000000000302050084000000000600000000040809300500000000000100"
+		    Case "sudoku8"
+		      loadSudoku = "000501000090000800060000000401000000000070090000000030800000105000200400000360000"
+		    Case "sudoku9"
+		      loadSudoku = "080004050000700300000000000010085000600000200000040000302600000000000041700000000"
+		    Case "sudoku10"
+		      loadSudoku = "000031900300900601419867352080302017053100026102000039000010203000043100031009700"
+		    End Select
+		    
+		    If (loadSudoku <> "") Then
+		      Self.Sudoku.ClearGrid
+		      
+		      For row As Integer = 0 To SudokuTool.N-1
+		        For col As Integer = 0 To SudokuTool.N-1
+		          Var index As Integer = row * SudokuTool.N + col
+		          Self.Sudoku.SetGridCell(row, col) = loadSudoku.Middle(index, 1).ToInteger
+		        Next
+		      Next
+		      
+		      Self.ShowSudoku
+		    End If
+		  #EndIf
+		  
+		  
+		  
+		End Function
+	#tag EndEvent
 #tag EndEvents
 #tag Events btnLock
 	#tag Event
