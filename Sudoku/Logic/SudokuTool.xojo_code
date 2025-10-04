@@ -847,16 +847,16 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SaveTo(f As FolderItem, credits As String) As Boolean
+		Function SaveTo(f As FolderItem, author As String) As Boolean
 		  ' Save to FolderItem
 		  ' Note: Raises an Exception on failure
 		  
-		  ' Sanitize credits
+		  ' Sanitize Author
 		  Var rx As New RegEx
 		  rx.SearchPattern = "[0-9]"
 		  rx.ReplacementPattern = ""
 		  rx.Options.ReplaceAllMatches = True
-		  credits = rx.Replace(credits.Trim)
+		  author = rx.Replace(author.Trim)
 		  
 		  
 		  ' Write File
@@ -865,7 +865,7 @@ Protected Class SudokuTool
 		  Var t As TextOutputStream = TextOutputStream.Create(f)
 		  t.Encoding = Encodings.UTF8
 		  t.Delimiter = EndOfLine.UNIX
-		  t.WriteLine(credits)
+		  t.WriteLine(author)
 		  t.WriteLine("")
 		  t.Write(fileContent)
 		  t.Close
