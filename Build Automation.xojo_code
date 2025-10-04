@@ -111,6 +111,11 @@
 				End
 			End
 			Begin BuildStepList Mac OS X
+				Begin IDEScriptBuildStep EnsureBundleIdentifier , AppliesTo = 0, Architecture = 0, Target = 0
+					If (PropertyValue("App.Application Identifier") <> ConstantValue("App.kBundleIdentifier")) Then
+					PropertyValue("App.Application Identifier") = ConstantValue("App.kBundleIdentifier")
+					End If
+				End
 				Begin BuildProjectStep Build
 				End
 				Begin CopyFilesBuildStep AssetsCar

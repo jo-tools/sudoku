@@ -515,6 +515,13 @@ End
 
 #tag WindowCode
 	#tag Event
+		Sub Closing()
+		  Me.WindowClosed
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening()
 		  ' Layout
 		  Me.Height = sepTop.Top + 2 * kMarginWindow + SudokuTool.N * kCellSize
@@ -527,8 +534,7 @@ End
 		  Me.Sudoku = New SudokuTool
 		  Me.SudokuNumberFieldsInit
 		  
-		  ' Start with a Random Sudoku
-		  Me.ActionRandom
+		  Me.WindowOpened
 		  
 		End Sub
 	#tag EndEvent
@@ -754,16 +760,13 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionOpen()
-		  Var fileContent As String
-		  
 		  Try
-		    Var t As TextInputStream
 		    Var f As FolderItem = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
-		    If f = Nil Then Return
+		    If (f = Nil) Then Return
 		    
-		    t = TextInputStream.Open(f)
+		    Var t As TextInputStream = TextInputStream.Open(f)
 		    t.Encoding = Encodings.UTF8
-		    fileContent = t.ReadAll
+		    Var fileContent As String = t.ReadAll
 		    t.Close
 		    
 		    If Me.Sudoku.FromString(fileContent) Then
@@ -824,6 +827,38 @@ End
 		  Me.ActionLock
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetUsersCurrentStateFile(tryCreate As Boolean) As FolderItem
+		  Try
+		    Var f As FolderItem = SpecialFolder.ApplicationData
+		    If (f = Nil) Or (Not f.IsFolder) Or (Not f.Exists) Then Return Nil
+		    
+		    f = f.Child(App.kBundleIdentifier)
+		    If (f = Nil) Then Return Nil
+		    
+		    If (Not f.Exists) Then
+		      If (Not tryCreate) Then Return Nil
+		      f.CreateFolder
+		    End If
+		    
+		    
+		    f = f.Child("currentstate.sudoku")
+		    If (f = Nil) Then Return Nil
+		    
+		    If f.IsFolder Or (Not f.Exists) Then
+		      if (not tryCreate) then Return Nil
+		    End If
+		    
+		    Return f
+		    
+		  Catch err As RuntimeException
+		    'ignore
+		    
+		  End Try
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -1080,6 +1115,65 @@ End
 		  
 		  ' Update Status
 		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub WindowClosed()
+		  Try
+		    Var f As FolderItem = GetUsersCurrentStateFile(True)
+		    If f <> Nil Then
+		      
+		      Var fileContent As String = Me.Sudoku.ToString
+		      
+		      Var t As TextOutputStream = TextOutputStream.Create(f)
+		      t.Encoding = Encodings.UTF8
+		      t.Delimiter = EndOfLine.UNIX
+		      t.WriteLine(kURL_Repository)
+		      t.WriteLine("")
+		      t.Write(fileContent)
+		      t.Close
+		      
+		      
+		    End If
+		    
+		  Catch err As IOException
+		    'ignore
+		    
+		  Finally
+		    ' Start with a Random Sudoku
+		    Me.ActionRandom
+		    
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub WindowOpened()
+		  try
+		    Var f As FolderItem = GetUsersCurrentStateFile(False)
+		    If f <> Nil Then
+		      Var t As TextInputStream = TextInputStream.Open(f)
+		      t.Encoding = Encodings.UTF8
+		      var fileContent As String = t.ReadAll
+		      t.Close
+		      
+		      If Me.Sudoku.FromString(fileContent) Then
+		        Me.ShowSudoku
+		        Return
+		      End If
+		    End If
+		    
+		  Catch err As IOException
+		    'ignore
+		    
+		  Finally
+		    ' Start with a Random Sudoku
+		    Me.ActionRandom
+		    
+		  End Try
 		  
 		End Sub
 	#tag EndMethod
