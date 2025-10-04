@@ -70,7 +70,6 @@ Protected Class SudokuTool
 		    Return 0
 		  End If
 		  
-		  
 		  If (bestRow < 0) Or (bestCol < 0) Then
 		    ' Nothing more to solve
 		    ' Count as one solution
@@ -288,7 +287,7 @@ Protected Class SudokuTool
 		    grid(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
 		    
 		    ' Start with a valid, solved grid
-		    isInitSolved = Me.Solve
+		    isInitSolved = Me.GenerateRandomPuzzleSolve
 		  Wend
 		  
 		  ' Shuffle Digits to get a different-looking solved grid
@@ -367,6 +366,8 @@ Protected Class SudokuTool
 		    End If
 		  Next
 		  
+		  cacheIsSolvable = IsSolvableState.Solvable
+		  
 		  If removed < removeCount Then
 		    ' Could not remove enough cells while keeping uniqueness.
 		    ' Let's just accept the puzzle with more clues than requested...
@@ -377,9 +378,55 @@ Protected Class SudokuTool
 		  End If
 		  
 		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
-		  cacheIsSolvable = IsSolvableState.Solvable
 		  Return True
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GenerateRandomPuzzleSolve() As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' We don't use the .Solve method here because trying to figure out
+		  ' best strategies is actually slower with just a random number placed
+		  '
+		  ' Additionally we always generate random order for the tries
+		  ' to create a more random new Sudoku.
+		  
+		  Var row As Integer
+		  Var col As Integer
+		  
+		  ' Find the next empty cell
+		  ' If there are no empty cells left, the puzzle is solved
+		  If Not FindEmpty(row, col) Then
+		    Return True
+		  End If
+		  
+		  ' Try all possible numbers (1-9) for this empty cell in random order
+		  For Each val As Integer In Me.GenerateRandomValues
+		    ' Check if placing 'val' here is allowed by Sudoku rules
+		    If IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
+		      ' Tentatively place 'val' in the cell
+		      grid(row, col) = val
+		      
+		      ' Recursively attempt to solve the rest of the grid
+		      If GenerateRandomPuzzleSolve() Then
+		        ' Success! If the recursive call returns True, the puzzle is solved
+		        ' Propagate success back up the recursion chain
+		        Return True
+		      End If
+		      
+		      ' Backtracking
+		      ' If recursion returned False, this 'val' led to a dead end
+		      ' Undo the move before trying the next number in this cell
+		      grid(row, col) = 0
+		    End If
+		  Next
+		  
+		  ' All numbers 1-9 failed in this cell
+		  ' Signal to the previous recursive call that it must backtrack
+		  Return False
 		End Function
 	#tag EndMethod
 
