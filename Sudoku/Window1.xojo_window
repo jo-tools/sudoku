@@ -544,10 +544,10 @@ End
 		    End If
 		  #EndIf
 		  
-		  If Self.mShowHints And (Self.SolveCellHints.LastIndex >= 0) Then
+		  If Me.mShowHints And (Me.SolveCellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    For Each h As SudokuTool.SolveCellHint In Self.SolveCellHints
+		    For Each h As SudokuTool.SolveCellHint In Me.SolveCellHints
 		      Select Case h.SolveHint
 		      Case SudokuTool.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
@@ -668,8 +668,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionEmpty()
-		  Self.Sudoku.ClearGrid
-		  Self.ShowSudoku
+		  Me.Sudoku.ClearGrid
+		  Me.ShowSudoku
 		  
 		End Sub
 	#tag EndMethod
@@ -754,6 +754,27 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionOpen()
+		  Var fileContent As String
+		  
+		  Try
+		    Var t As TextInputStream
+		    Var f As FolderItem = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
+		    If f = Nil Then Return
+		    
+		    t = TextInputStream.Open(f)
+		    t.Encoding = Encodings.UTF8
+		    fileContent = t.ReadAll
+		    t.Close
+		    
+		    If Me.Sudoku.FromString(fileContent) Then
+		      Me.ShowSudoku
+		    End If
+		    
+		  Catch e As IOException
+		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
+		    
+		  End Try
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -761,34 +782,27 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionRandom()
 		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		  Call Self.Sudoku.GenerateRandomPuzzle(numClues)
-		  Self.ShowSudoku
-		  Self.ActionLock
+		  Call Me.Sudoku.GenerateRandomPuzzle(numClues)
+		  Me.ShowSudoku
+		  Me.ActionLock
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub ActionSave()
-		  Var dlg As New SaveFileDialog
-		  dlg.ActionButtonCaption = kSaveDialogExport
-		  dlg.CancelButtonCaption = kSaveDialogCancel
-		  dlg.SuggestedFileName = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"
-		  dlg.Title = "Sudoku"
-		  dlg.PromptText = kSaveDialogPrompt
-		  dlg.Filter = SudokuFileTypeGroup.Sudoku
-		  dlg.InitialFolder = SpecialFolder.Desktop
-		  
-		  Var f As FolderItem = dlg.ShowModal(Self)
-		  If (f = Nil) Then Return
-		  
-		  
 		  Try
-		    Var fileContent As String = Self.Sudoku.ToString
+		    Var suggestedFilename As String = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"
+		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
+		    If (f = Nil) Then Return
+		    
+		    Var fileContent As String = Me.Sudoku.ToString
 		    
 		    Var t As TextOutputStream = TextOutputStream.Create(f)
 		    t.Encoding = Encodings.UTF8
 		    t.Delimiter = EndOfLine.UNIX
+		    t.WriteLine(kURL_Repository)
+		    t.WriteLine("")
 		    t.Write(fileContent)
 		    t.Close
 		    
@@ -802,12 +816,12 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionSolve()
 		  ' Sanity Check
-		  If (Not Self.Sudoku.IsSolvable) Then Return
+		  If (Not Me.Sudoku.IsSolvable) Then Return
 		  
 		  ' Solve and Show
-		  Call Self.Sudoku.Solve
-		  Self.ShowSudoku
-		  Self.ActionLock
+		  Call Me.Sudoku.Solve
+		  Me.ShowSudoku
+		  Me.ActionLock
 		  
 		End Sub
 	#tag EndMethod
@@ -841,7 +855,7 @@ End
 		  If (g = Nil) Then Return
 		  
 		  ' Draw Sudoku
-		  Self.Sudoku.DrawInto(g)
+		  Me.Sudoku.DrawInto(g)
 		  
 		  
 		End Sub

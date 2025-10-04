@@ -263,6 +263,67 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function FromString(s As String) As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  s = s.Trim
+		  If (s = "") Then Return False
+		  
+		  ' Sanity
+		  If (s.Bytes < N*N) Or (s.Bytes > 2048) Then Return False
+		  
+		  s = s.ReplaceLineEndings("")
+		  
+		  Var currentChar As String
+		  Var currentVal As Integer
+		  Var numbers() As Integer
+		  For pos As Integer = 0 To s.Bytes
+		    currentVal = -1
+		    currentChar = s.MiddleBytes(pos, 1)
+		    
+		    Select Case currentChar
+		    Case "0"
+		      currentVal = 0
+		    Else
+		      currentVal = currentChar.ToInteger
+		      If (currentVal < 1) Then
+		        'invalid
+		        Continue
+		      End If
+		    End Select
+		    
+		    If (currentVal < 0) Or (currentVal > N) Then
+		      'invalid
+		      Continue
+		    End If
+		    
+		    numbers.Add(currentVal)
+		  Next
+		  
+		  ' Sanity
+		  If (numbers.Count <> N * N) Then
+		    'invalid
+		    Return False
+		  End If
+		  
+		  ' Valid String to build a Sudoku
+		  Me.ClearGrid
+		  
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Me.SetGridCell(row, col) = numbers(index)
+		    Next
+		  Next
+		  
+		  cacheIsSolvable = IsSolvableState.Unknown
+		  Return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GenerateRandomPuzzle(numClues As Integer = 32) As Boolean
 		  ' Generate a Random Puzzle
 		  ' Aim to have the number of clues according to parameter
