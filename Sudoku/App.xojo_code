@@ -2,11 +2,36 @@
 Protected Class App
 Inherits DesktopApplication
 	#tag Event
-		Sub Opening()
-		  Me.AllowAutoQuit = True
+		Sub DocumentCreated()
+		  If (Me.SudokuWindow <> Nil) Then
+		    Me.SudokuWindow.DocumentOpen(Nil)
+		  End If
 		  
 		End Sub
 	#tag EndEvent
+
+	#tag Event
+		Sub DocumentOpened(item As FolderItem)
+		  If (Me.SudokuWindow <> Nil) Then
+		    Me.SudokuWindow.DocumentOpen(item)
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Opening()
+		  Me.AllowAutoQuit = True
+		  Me.SudokuWindow = New MainWindow
+		  Me.SudokuWindow.Show
+		  
+		End Sub
+	#tag EndEvent
+
+
+	#tag Property, Flags = &h21
+		Private SudokuWindow As MainWindow
+	#tag EndProperty
 
 
 	#tag Constant, Name = kBundleIdentifier, Type = String, Dynamic = False, Default = \"ch.jotools.sudoku", Scope = Public

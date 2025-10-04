@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopWindow Window1
+Begin DesktopWindow MainWindow
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF
    Composite       =   False
@@ -12,7 +12,7 @@ Begin DesktopWindow Window1
    HasMinimizeButton=   True
    HasTitleBar     =   True
    Height          =   500
-   ImplicitInstance=   True
+   ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
@@ -516,7 +516,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Closing()
-		  Me.WindowClosed
+		  Me.DocumentClose
 		  
 		End Sub
 	#tag EndEvent
@@ -533,8 +533,6 @@ End
 		  ' Init Sudoku
 		  Me.Sudoku = New SudokuTool
 		  Me.SudokuNumberFieldsInit
-		  
-		  Me.WindowOpened
 		  
 		End Sub
 	#tag EndEvent
@@ -812,6 +810,49 @@ End
 		  Call Me.Sudoku.Solve
 		  Me.ShowSudoku
 		  Me.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DocumentClose()
+		  Try
+		    Var f As FolderItem = GetUsersCurrentStateFile(True)
+		    If (f <> Nil) Then
+		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		    End If
+		    
+		  Catch err As IOException
+		    'Silently ignore
+		    
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DocumentOpen(f As FolderItem)
+		  Try
+		    If (f = Nil) Then
+		      f = GetUsersCurrentStateFile(False)
+		    End If
+		    
+		    
+		    If (f <> Nil) Then
+		      If Me.Sudoku.LoadFrom(f) Then
+		        Me.ShowSudoku
+		        Return
+		      end if
+		    End If
+		    
+		  Catch err As IOException
+		    ' Silently ignore
+		    
+		  Finally
+		    ' Start with a Random Sudoku
+		    Me.ActionRandom
+		    
+		  End Try
 		  
 		End Sub
 	#tag EndMethod
@@ -1102,45 +1143,6 @@ End
 		  
 		  ' Update Status
 		  Me.RefreshControls
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub WindowClosed()
-		  Try
-		    Var f As FolderItem = GetUsersCurrentStateFile(True)
-		    If (f <> Nil) Then
-		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
-		    End If
-		    
-		  Catch err As IOException
-		    'Silently ignore
-		    
-		  End Try
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub WindowOpened()
-		  try
-		    Var f As FolderItem = GetUsersCurrentStateFile(False)
-		    If (f <> Nil) Then
-		      If Me.Sudoku.LoadFrom(f) Then
-		        Me.ShowSudoku
-		        Return
-		      end if
-		    End If
-		    
-		  Catch err As IOException
-		    ' Silently ignore
-		    
-		  Finally
-		    ' Start with a Random Sudoku
-		    Me.ActionRandom
-		    
-		  End Try
 		  
 		End Sub
 	#tag EndMethod
