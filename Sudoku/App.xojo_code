@@ -3,6 +3,10 @@ Protected Class App
 Inherits DesktopApplication
 	#tag Event
 		Sub DocumentCreated()
+		  ' Note: Multiple Sudoku Windows aren't
+		  ' supported (yet). We're using only
+		  ' 1 Main Window.
+		  
 		  If (Me.SudokuWindow <> Nil) Then
 		    Me.SudokuWindow.DocumentOpen(Nil)
 		  End If
@@ -12,6 +16,10 @@ Inherits DesktopApplication
 
 	#tag Event
 		Sub DocumentOpened(item As FolderItem)
+		  ' Note: Multiple Sudoku Windows aren't
+		  ' supported (yet). We're using only
+		  ' 1 Main Window.
+		  
 		  If (Me.SudokuWindow <> Nil) Then
 		    Me.SudokuWindow.DocumentOpen(item)
 		  End If
@@ -22,6 +30,10 @@ Inherits DesktopApplication
 	#tag Event
 		Sub Opening()
 		  Me.AllowAutoQuit = True
+		  
+		  ' Note: Multiple Sudoku Windows aren't
+		  ' supported (yet). We're using only
+		  ' 1 Main Window.
 		  Me.SudokuWindow = New MainWindow
 		  Me.SudokuWindow.Show
 		  
