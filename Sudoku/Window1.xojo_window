@@ -810,7 +810,7 @@ End
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
-		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved)
+		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.Sudoku.SolveEnabled
 		  
 		  ' Menu
 		  SudokuEmpty.Enabled = btnEmpty.Enabled

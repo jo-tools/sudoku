@@ -62,7 +62,7 @@ Protected Class SudokuTool
 		  ' Find to-be-solved cells with the least possible candidate values
 		  Var bestRow As Integer = -1
 		  Var bestCol As Integer = -1
-		  Dim bestCandidates() As Integer
+		  Var bestCandidates() As Integer
 		  
 		  If (Not Me.SolveFindBestNextCell(bestRow, bestCol, bestCandidates)) Then
 		    ' Invalid State - Rollback entirely and backtrack
@@ -527,20 +527,40 @@ Protected Class SudokuTool
 	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
 		  Select Case cacheIsSolvable
+		    
 		  Case IsSolvableState.Solvable
 		    Return True
+		    
 		  Case IsSolvableState.NotSolvable
 		    Return False
+		    
 		  Else
-		    ' Try solve on a clone, so that this grid is not being modified
-		    Var clone As New SudokuTool(Me)
-		    If clone.Solve Then
-		      cacheIsSolvable = IsSolvableState.Solvable
-		      Return True
-		    Else
+		    
+		    If (Not Me.IsValid(ValidCheck.AdvancedChecks)) Then
 		      cacheIsSolvable = IsSolvableState.NotSolvable
 		      Return False
 		    End If
+		    
+		    If (Me.GetCountNonEmpty <= kTresholdAssumeIsSolvable) Then
+		      ' Only check validity (above), skip heavy solving
+		      ' Assume solvable for now (don’t trigger full backtracking)
+		      ' Almost any sparse Sudoku with less than x numbers is solvable
+		      cacheIsSolvable = IsSolvableState.Solvable
+		      Return True
+		      
+		    Else
+		      ' Try solve on a clone, so that this grid is not being modified
+		      Var clone As New SudokuTool(Me)
+		      If clone.Solve Then
+		        cacheIsSolvable = IsSolvableState.Solvable
+		        Return True
+		      Else
+		        cacheIsSolvable = IsSolvableState.NotSolvable
+		        Return False
+		      End If
+		      
+		    End If
+		    
 		  End Select
 		  
 		End Function
@@ -787,6 +807,19 @@ Protected Class SudokuTool
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function SolveEnabled() As Boolean
+		  ' Should the UI enable the Solve Button?
+		  ' No valid Sudoku with unique solution can have fewer than 17 clues.
+		  ' While even a blank Sudoku or one with just a couple of numbers
+		  ' can be solved (without unique solution), that probably is not the
+		  ' intent.
+		  
+		  Return Me.GetCountNonEmpty >= kTresholdSolveEnabled
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function SolveFindBestNextCell(ByRef bestRow As Integer, ByRef bestCol As Integer, ByRef bestCandidates() As Integer) As Boolean
 		  ' Find to-be-solved cells with the least possible candidate values
@@ -860,16 +893,26 @@ Protected Class SudokuTool
 		  ' then use the Solver with Strategies.
 		  ' Otherwise use the plain Backtracking Solver (and hope it is faster ;-)
 		  
-		  Var countNonEmpty As Integer = Me.GetCountNonEmpty
-		  
-		  If (countNonEmpty > N + N/2) Then
-		    Var solveCellHints() As SolveCellHint = Me.GetSolveCellHints()
-		    If (solveCellHints.LastIndex >= 0) Then
+		  Select Case Me.GetCountNonEmpty
+		    
+		  Case Is <= kTresholdSparse
+		    ' Sparse: Use Backtracking
+		    Return Me.SolveInternalWithBacktracking
+		    
+		  Case Is <= kTresholdMedium
+		    ' Medium density: Try strategies if we find hints right away
+		    Var hints() As SolveCellHint = Me.GetSolveCellHints
+		    If hints.LastIndex >= 0 Then
 		      Return Me.SolveInternalWithStrategies
+		    Else
+		      Return Me.SolveInternalWithBacktracking
 		    End If
-		  End If
-		  
-		  Return Me.SolveInternalWithBacktracking
+		    
+		  Case Else
+		    ' Dense: Strategies are almost always better
+		    Return Me.SolveInternalWithStrategies
+		    
+		  End Select
 		  
 		End Function
 	#tag EndMethod
@@ -959,7 +1002,7 @@ Protected Class SudokuTool
 		  ' Find to-be-solved cells with the least possible candidate values
 		  Var bestRow As Integer = -1
 		  Var bestCol As Integer = -1
-		  Dim bestCandidates() As Integer
+		  Var bestCandidates() As Integer
 		  
 		  If (Not Me.SolveFindBestNextCell(bestRow, bestCol, bestCandidates)) Then
 		    ' Invalid State - Rollback entirely and backtrack
@@ -1031,6 +1074,18 @@ Protected Class SudokuTool
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"L\xC3\xB6sung"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Solution"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Soluci\xC3\xB3n"
+	#tag EndConstant
+
+	#tag Constant, Name = kTresholdAssumeIsSolvable, Type = Double, Dynamic = False, Default = \"14", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kTresholdMedium, Type = Double, Dynamic = False, Default = \"25", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kTresholdSolveEnabled, Type = Double, Dynamic = False, Default = \"17", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kTresholdSparse, Type = Double, Dynamic = False, Default = \"12", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
