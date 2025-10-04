@@ -10,7 +10,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem FileOpen
          SpecialMenu = 0
          Index = -2147483648
-         Text = "Open"
+         Text = "#App.kFileOpen"
          ShortcutKey = "O"
          Shortcut = "Cmd+O"
          MenuModifier = True
@@ -21,7 +21,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem FileSaveAs
          SpecialMenu = 0
          Index = -2147483648
-         Text = "Save As ..."
+         Text = "#App.kFileSaveAs"
          ShortcutKey = "S"
          Shortcut = "Cmd+Shift+S"
          MenuModifier = True

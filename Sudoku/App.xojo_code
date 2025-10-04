@@ -30,6 +30,12 @@ Inherits DesktopApplication
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Archivo"
 	#tag EndConstant
 
+	#tag Constant, Name = kFileOpen, Type = String, Dynamic = True, Default = \"&Open", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"\xC3\x96&ffnen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"O&uvrir"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Abrir"
+	#tag EndConstant
+
 	#tag Constant, Name = kFilePrint, Type = String, Dynamic = True, Default = \"&Print", Scope = Public
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Drucken"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Imprimer"
@@ -46,6 +52,12 @@ Inherits DesktopApplication
 	#tag Constant, Name = kFileQuitShortcut, Type = String, Dynamic = False, Default = \"", Scope = Public
 		#Tag Instance, Platform = Mac OS, Language = Default, Definition  = \"Cmd+Q"
 		#Tag Instance, Platform = Linux, Language = Default, Definition  = \"Ctrl+Q"
+	#tag EndConstant
+
+	#tag Constant, Name = kFileSaveAs, Type = String, Dynamic = True, Default = \"&Save As...", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Speichern unter..."
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"E&nregistrer sous\xE2\x80\xA6"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Guardar como\xE2\x80\xA6"
 	#tag EndConstant
 
 	#tag Constant, Name = kSudokuEmpty, Type = String, Dynamic = True, Default = \"&Empty", Scope = Public
