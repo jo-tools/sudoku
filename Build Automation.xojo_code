@@ -277,6 +277,15 @@
 			Begin BuildStepList Windows
 				Begin BuildProjectStep Build
 				End
+				Begin CopyFilesBuildStep CopyIcoFiles
+					AppliesTo = 0
+					Architecture = 0
+					Target = 0
+					Destination = 1
+					Subdirectory = 
+					FolderItem = Li4vUmVzb3VyY2VzL0FwcEljb24uaWNv
+					FolderItem = Li4vUmVzb3VyY2VzL0RvY3VtZW50SWNvbi5pY28=
+				End
 				Begin IDEScriptBuildStep CodeSign , AppliesTo = 2, Architecture = 0, Target = 0
 					'*********************************************************************************************
 					' CodeSign | Azure Trusted Signing | PFX | Docker
@@ -708,11 +717,11 @@
 					Var sINNOSETUP_SCRIPT As String
 					Select Case CurrentBuildTarget
 					Case 3 'Windows (Intel, 32Bit)
-					sINNOSETUP_SCRIPT = "_build/innosetup_universal.iss"
+					sINNOSETUP_SCRIPT = "_build/sudoku.iss"
 					Case 19 'Windows (Intel, 64Bit)
-					sINNOSETUP_SCRIPT = "_build/innosetup_universal.iss"
+					sINNOSETUP_SCRIPT = "_build/sudoku.iss"
 					Case 25 'Windows(ARM, 64Bit)
-					sINNOSETUP_SCRIPT = "_build/innosetup_universal.iss"
+					sINNOSETUP_SCRIPT = "_build/sudoku.iss"
 					Else
 					If (Not bSILENT) Then Print "InnoSetup: Unsupported Build Target"
 					Return

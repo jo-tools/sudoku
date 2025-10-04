@@ -155,3 +155,13 @@ Name: "{commonprograms}\{#csProductName}"; Filename: "{app}\{#csExeName}"
 
 [Run]
 Filename: "{app}\{#csExeName}"; Description: "{cm:LaunchProgram,{#csProductName}}"; Flags: nowait postinstall skipifsilent
+
+[Registry]
+; Define the file type
+Root: HKCR; Subkey: ".sudoku"; ValueType: string; ValueName: ""; ValueData: "{#csProductName}.sudoku"; Flags: uninsdeletevalue
+; Define the file type description
+Root: HKCR; Subkey: "{#csProductName}.sudoku"; ValueType: string; ValueName: ""; ValueData: "{#csProductName}"; Flags: uninsdeletekey
+; Define the default icon for this file type
+Root: HKCR; Subkey: "{#csProductName}.sudoku\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#csProductName} Resources\DocumentIcon.ico"""; Flags: uninsdeletekey
+; Define the open command for this file type
+Root: HKCR; Subkey: "{#csProductName}.sudoku\Shell\Open\Command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#csExeName}"" ""%1"""; Flags: uninsdeletekey
