@@ -764,12 +764,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
 		    If (f = Nil) Then Return
 		    
-		    Var t As TextInputStream = TextInputStream.Open(f)
-		    t.Encoding = Encodings.UTF8
-		    Var fileContent As String = t.ReadAll
-		    t.Close
-		    
-		    If Me.Sudoku.FromString(fileContent) Then
+		    If Me.Sudoku.LoadFrom(f) Then
 		      Me.ShowSudoku
 		    End If
 		    
@@ -799,15 +794,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
 		    If (f = Nil) Then Return
 		    
-		    Var fileContent As String = Me.Sudoku.ToString
-		    
-		    Var t As TextOutputStream = TextOutputStream.Create(f)
-		    t.Encoding = Encodings.UTF8
-		    t.Delimiter = EndOfLine.UNIX
-		    t.WriteLine(kURL_Repository)
-		    t.WriteLine("")
-		    t.Write(fileContent)
-		    t.Close
+		    Call Me.Sudoku.SaveTo(f, kURL_Repository)
 		    
 		  Catch e As IOException
 		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
@@ -1123,27 +1110,12 @@ End
 		Private Sub WindowClosed()
 		  Try
 		    Var f As FolderItem = GetUsersCurrentStateFile(True)
-		    If f <> Nil Then
-		      
-		      Var fileContent As String = Me.Sudoku.ToString
-		      
-		      Var t As TextOutputStream = TextOutputStream.Create(f)
-		      t.Encoding = Encodings.UTF8
-		      t.Delimiter = EndOfLine.UNIX
-		      t.WriteLine(kURL_Repository)
-		      t.WriteLine("")
-		      t.Write(fileContent)
-		      t.Close
-		      
-		      
+		    If (f <> Nil) Then
+		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
 		    End If
 		    
 		  Catch err As IOException
-		    'ignore
-		    
-		  Finally
-		    ' Start with a Random Sudoku
-		    Me.ActionRandom
+		    'Silently ignore
 		    
 		  End Try
 		  
@@ -1154,20 +1126,15 @@ End
 		Private Sub WindowOpened()
 		  try
 		    Var f As FolderItem = GetUsersCurrentStateFile(False)
-		    If f <> Nil Then
-		      Var t As TextInputStream = TextInputStream.Open(f)
-		      t.Encoding = Encodings.UTF8
-		      var fileContent As String = t.ReadAll
-		      t.Close
-		      
-		      If Me.Sudoku.FromString(fileContent) Then
+		    If (f <> Nil) Then
+		      If Me.Sudoku.LoadFrom(f) Then
 		        Me.ShowSudoku
 		        Return
-		      End If
+		      end if
 		    End If
 		    
 		  Catch err As IOException
-		    'ignore
+		    ' Silently ignore
 		    
 		  Finally
 		    ' Start with a Random Sudoku

@@ -831,6 +831,51 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function LoadFrom(f As FolderItem) As Boolean
+		  Var t As TextInputStream = TextInputStream.Open(f)
+		  t.Encoding = Encodings.UTF8
+		  Var fileContent As String = t.ReadAll
+		  t.Close
+		  
+		  If Me.FromString(fileContent) Then
+		    Return True
+		  End If
+		  
+		  Return False
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SaveTo(f As FolderItem, credits As String) As Boolean
+		  ' Save to FolderItem
+		  ' Note: Raises an Exception on failure
+		  
+		  ' Sanitize credits
+		  Var rx As New RegEx
+		  rx.SearchPattern = "[0-9]"
+		  rx.ReplacementPattern = ""
+		  rx.Options.ReplaceAllMatches = True
+		  credits = rx.Replace(credits.Trim)
+		  
+		  
+		  ' Write File
+		  Var fileContent As String = Me.ToString
+		  
+		  Var t As TextOutputStream = TextOutputStream.Create(f)
+		  t.Encoding = Encodings.UTF8
+		  t.Delimiter = EndOfLine.UNIX
+		  t.WriteLine(credits)
+		  t.WriteLine("")
+		  t.Write(fileContent)
+		  t.Close
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetGridCell(row As Integer, col As Integer, Assigns val As Integer)
 		  grid(row, col) = val
 		  
