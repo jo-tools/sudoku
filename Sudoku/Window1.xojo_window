@@ -544,25 +544,19 @@ End
 		    End If
 		  #EndIf
 		  
-		  If Self.mShowHints Then
+		  If Self.mShowHints And (Self.SolveCellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    If (Self.SolveCellHints <> Nil) Then
-		      For row As Integer = 0 To SudokuTool.N-1
-		        For col As Integer = 0 To SudokuTool.N-1
-		          Var index As Integer = row * SudokuTool.N + col
-		          
-		          Select Case Self.SolveCellHints.Lookup(index, SudokuTool.SolveHint.None)
-		          Case SudokuTool.SolveHint.NakedSingle
-		            g.DrawingColor = colSolveHintNakedSingle
-		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
-		          Case SudokuTool.SolveHint.HiddenSingle
-		            g.DrawingColor = colSolveHintHiddenSingle
-		            g.FillRectangle(kMarginWindow + col * kCellSize, sepTop.Top + kMarginWindow + row * kCellSize, kCellSize, kCellSize)
-		          End Select
-		        Next
-		      Next
-		    End If
+		    For Each h As SudokuTool.SolveCellHint In Self.SolveCellHints
+		      Select Case h.SolveHint
+		      Case SudokuTool.SolveHint.NakedSingle
+		        g.DrawingColor = colSolveHintNakedSingle
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		      Case SudokuTool.SolveHint.HiddenSingle
+		        g.DrawingColor = colSolveHintHiddenSingle
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		      End Select
+		    Next
 		  End If
 		  
 		  ' Draw all thin "hair" lines first (gray)
@@ -665,12 +659,12 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
 		  ' Lock current state
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = r * SudokuTool.N + c
-		      Var v As Integer = Me.Sudoku.GetGridCell(r, c)
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
 		      
-		      SudokuTextFields(index).Lock = (v > 0)
+		      SudokuTextFields(index).Lock = (val > 0)
 		    Next
 		  Next
 		  
@@ -766,12 +760,12 @@ End
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = r * SudokuTool.N + c
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
 		      
 		      If SudokuTextFields(index).IsLocked Then Continue
-		      If (Me.Sudoku.GetGridCell(r, c) < 1) Then Continue 'Is empty
+		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
 		      Return True
@@ -801,17 +795,22 @@ End
 	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
 		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
-		  Var isValid As Boolean = Me.Sudoku.IsValid
-		  Var isSolvable As Boolean = Me.Sudoku.IsSolvable
-		  Var isSolved As Boolean = Me.Sudoku.IsSolved
+		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
+		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.Sudoku.IsSolvable)
+		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
 		  
-		  SolveCellHints = Me.Sudoku.GetSolveCellHints
-		  self.Refresh(False)
+		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
+		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
+		  Else
+		    Redim SolveCellHints(-1)
+		  End If
+		  
+		  Self.Refresh(False)
 		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
-		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved)
+		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.Sudoku.SolveEnabled
 		  
 		  ' Menu
 		  SudokuEmpty.Enabled = btnEmpty.Enabled
@@ -857,18 +856,18 @@ End
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
-		  For r As Integer = 0 To SudokuTool.N-1
-		    For c As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = r * SudokuTool.N + c
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
 		      
 		      SudokuTextFields(index).Lock = False
 		      
-		      Var v As Integer = Me.Sudoku.GetGridCell(r, c)
-		      If v = 0 Then
+		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
+		      If val = 0 Then
 		        SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
-		        SudokuTextFields(index).Text = Str(v)
+		        SudokuTextFields(index).Text = val.ToString
 		      End If
 		    Next
 		  Next
@@ -1026,7 +1025,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private SolveCellHints As Dictionary
+		Private SolveCellHints() As SudokuTool.SolveCellHint
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1139,8 +1138,73 @@ End
 #tag Events btnEmpty
 	#tag Event
 		Sub Pressed()
-		  self.ActionEmpty
+		  Self.ActionEmpty
+		  
 		End Sub
+	#tag EndEvent
+	#tag Event
+		Function ConstructContextualMenu(base As DesktopMenuItem, x As Integer, y As Integer) As Boolean
+		  #Pragma unused y
+		  #Pragma unused x
+		  
+		  #If DebugBuild Then
+		    For i As Integer = 1 To 10
+		      Var debugExample1 As New DesktopMenuItem("Sudoku " + i.ToString)
+		      debugExample1.Name = "sudoku" + i.ToString
+		      base.AddMenu(debugExample1)
+		    Next
+		    Return True
+		    
+		  #EndIf
+		  
+		  Return False
+		  
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function ContextualMenuItemSelected(selectedItem As DesktopMenuItem) As Boolean
+		  #If DebugBuild Then
+		    Var loadSudoku As String
+		    Select Case selectedItem.Name
+		    Case "sudoku1"
+		      loadSudoku = "000014000030000200070000000000900030601000000000000080200000104000050600000708000"
+		    Case "sudoku2"
+		      loadSudoku = "100006080064000000000040007000090600070400500500070100050000320300008000400000000"
+		    Case "sudoku3"
+		      loadSudoku = "700000000086090000050640800008500043010070020540003100004087060000020710000000009"
+		    Case "sudoku4"
+		      loadSudoku = "400000805030000000000700000020000060000080400000010000000603070500200000104000000"
+		    Case "sudoku5"
+		      loadSudoku = "480300000000000071020000000705000060000200800000000000001076000300000400000050000"
+		    Case "sudoku6"
+		      loadSudoku = "005000987040050001007000000200048000090100000600200000300600200000009070000000500"
+		    Case "sudoku7"
+		      loadSudoku = "098010000200000060000000000000302050084000000000600000000040809300500000000000100"
+		    Case "sudoku8"
+		      loadSudoku = "000501000090000800060000000401000000000070090000000030800000105000200400000360000"
+		    Case "sudoku9"
+		      loadSudoku = "080004050000700300000000000010085000600000200000040000302600000000000041700000000"
+		    Case "sudoku10"
+		      loadSudoku = "000031900300900601419867352080302017053100026102000039000010203000043100031009700"
+		    End Select
+		    
+		    If (loadSudoku <> "") Then
+		      Self.Sudoku.ClearGrid
+		      
+		      For row As Integer = 0 To SudokuTool.N-1
+		        For col As Integer = 0 To SudokuTool.N-1
+		          Var index As Integer = row * SudokuTool.N + col
+		          Self.Sudoku.SetGridCell(row, col) = loadSudoku.Middle(index, 1).ToInteger
+		        Next
+		      Next
+		      
+		      Self.ShowSudoku
+		    End If
+		  #EndIf
+		  
+		  
+		  
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnLock
@@ -1245,7 +1309,8 @@ End
 		    Return
 		  End If
 		  
-		  Me.Text = Str(App.MajorVersion) + "." + Str(App.MinorVersion) + "." + Str(App.BugVersion)
+		  Me.Text = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
