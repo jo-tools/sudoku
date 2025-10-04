@@ -1,0 +1,19 @@
+#tag FileTypeSet
+	#tag FileType
+		CodeName=Sudoku
+		DocIcon=Sudoku.xojo_resources;&h0
+		Extension=.sudoku
+		Flags=&h5
+		MacCreator=
+		MacType=
+		Name=Sudoku
+		UTI=ch.jotools.sudoku-puzzle
+		UTIConformsTo=public.text, public.data
+		Description=Sudoku
+		MimeType=text/plain
+		Imported=False
+		HandlerRank=&h11
+		UTIPhysicalType=public.data
+	#tag EndFileType
+
+#tag EndFileTypeSet

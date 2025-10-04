@@ -585,7 +585,16 @@ End
 
 	#tag MenuHandler
 		Function FileExportPDF() As Boolean Handles FileExportPDF.Action
-		  Self.ExportPDF
+		  Self.ActionExportPDF
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function FileOpen() As Boolean Handles FileOpen.Action
+		  Self.ActionOpen
 		  
 		  Return True
 		  
@@ -595,6 +604,15 @@ End
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
 		  Self.Print
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function FileSaveAs() As Boolean Handles FileSaveAs.Action
+		  Self.ActionSave
 		  
 		  Return True
 		  
@@ -657,47 +675,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionLock()
-		  ' Lock current state
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
-		      
-		      SudokuTextFields(index).Lock = (val > 0)
-		    Next
-		  Next
-		  
-		  Me.RefreshControls
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ActionRandom()
-		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		  Call Self.Sudoku.GenerateRandomPuzzle(numClues)
-		  Self.ShowSudoku
-		  Self.ActionLock
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ActionSolve()
-		  ' Sanity Check
-		  If (Not Self.Sudoku.IsSolvable) Then Return
-		  
-		  ' Solve and Show
-		  Call Self.Sudoku.Solve
-		  Self.ShowSudoku
-		  Self.ActionLock
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ExportPDF()
+		Private Sub ActionExportPDF()
 		  ' Show Save File Dialog
 		  Var filterPDF As New FileType
 		  filterPDF.Name = "PDF"
@@ -753,6 +731,83 @@ End
 		  
 		  ' Save PDF
 		  pdf.Save(f)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionLock()
+		  ' Lock current state
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
+		      
+		      SudokuTextFields(index).Lock = (val > 0)
+		    Next
+		  Next
+		  
+		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionOpen()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionRandom()
+		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		  Call Self.Sudoku.GenerateRandomPuzzle(numClues)
+		  Self.ShowSudoku
+		  Self.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionSave()
+		  Var dlg As New SaveFileDialog
+		  dlg.ActionButtonCaption = kSaveDialogExport
+		  dlg.CancelButtonCaption = kSaveDialogCancel
+		  dlg.SuggestedFileName = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"
+		  dlg.Title = "Sudoku"
+		  dlg.PromptText = kSaveDialogPrompt
+		  dlg.Filter = SudokuFileTypeGroup.Sudoku
+		  dlg.InitialFolder = SpecialFolder.Desktop
+		  
+		  Var f As FolderItem = dlg.ShowModal(Self)
+		  If (f = Nil) Then Return
+		  
+		  
+		  Try
+		    Var fileContent As String = Self.Sudoku.ToString
+		    
+		    Var t As TextOutputStream = TextOutputStream.Create(f)
+		    t.Encoding = Encodings.UTF8
+		    t.Delimiter = EndOfLine.UNIX
+		    t.Write(fileContent)
+		    t.Close
+		    
+		  Catch e As IOException
+		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
+		    
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionSolve()
+		  ' Sanity Check
+		  If (Not Self.Sudoku.IsSolvable) Then Return
+		  
+		  ' Solve and Show
+		  Call Self.Sudoku.Solve
+		  Self.ShowSudoku
+		  Self.ActionLock
 		  
 		End Sub
 	#tag EndMethod

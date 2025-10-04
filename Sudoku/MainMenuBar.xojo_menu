@@ -7,6 +7,37 @@ Begin Menu MainMenuBar
       AutoEnabled = True
       AutoEnable = True
       Visible = True
+      Begin DesktopMenuItem FileOpen
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Open"
+         ShortcutKey = "O"
+         Shortcut = "Cmd+O"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem FileSaveAs
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "Save As ..."
+         ShortcutKey = "S"
+         Shortcut = "Cmd+Shift+S"
+         MenuModifier = True
+         AltMenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem FileSeparator1
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "-"
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
       Begin DesktopMenuItem FilePrint
          SpecialMenu = 0
          Index = -2147483648
@@ -25,6 +56,14 @@ Begin Menu MainMenuBar
          ShortcutKey = "E"
          Shortcut = "Cmd+E"
          MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem FileSeparator2
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "-"
          AutoEnabled = True
          AutoEnable = True
          Visible = True
@@ -198,8 +237,8 @@ Begin Menu MainMenuBar
          SpecialMenu = 0
          Index = -2147483648
          Text = "#App.kSudokuSolve"
-         ShortcutKey = "O"
-         Shortcut = "Cmd+O"
+         ShortcutKey = "B"
+         Shortcut = "Cmd+B"
          MenuModifier = True
          AutoEnabled = True
          AutoEnable = True

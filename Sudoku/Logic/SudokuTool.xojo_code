@@ -1103,6 +1103,28 @@ Protected Class SudokuTool
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ToString() As String
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var rows() As String
+		  
+		  For row As Integer = 0 To N-1
+		    Var cols() As String
+		    
+		    For col As Integer = 0 To N-1
+		      cols.Add(grid(row, col).ToString)
+		    Next
+		    
+		    rows.Add(String.FromArray(cols, ""))
+		  Next
+		  
+		  Return String.FromArray(rows, EndOfLine.UNIX)
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h21
 		Private cacheIsSolvable As IsSolvableState = IsSolvableState.Unknown
