@@ -1087,7 +1087,13 @@ End
 		    Var f As FolderItem = SpecialFolder.ApplicationData
 		    If (f = Nil) Or (Not f.IsFolder) Or (Not f.Exists) Then Return Nil
 		    
-		    f = f.Child(App.kBundleIdentifier)
+		    #If TargetLinux Then
+		      f = f.Child("." + App.kBundleIdentifier)
+		    #Else
+		      f = f.Child(App.kBundleIdentifier)
+		    #EndIf
+		    
+		    
 		    If (f = Nil) Then Return Nil
 		    
 		    If (Not f.Exists) Then
