@@ -39,7 +39,7 @@ Protected Class SudokuTool
 		    Var jsonSudoku As JSONItem = json.Child("sudoku")
 		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		    
-		    Var row, col, val As Integer
+		    Var row, col, value As Integer
 		    Var locked As Boolean
 		    For i As Integer = 0 To jsonSudoku.LastRowIndex
 		      Var jsonSudokuCell As JSONItem = jsonSudoku.ChildAt(i)
@@ -49,7 +49,7 @@ Protected Class SudokuTool
 		      
 		      row = jsonSudokuCell.Lookup("row", -1).IntegerValue - 1
 		      col = jsonSudokuCell.Lookup("col", -1).IntegerValue - 1
-		      val = jsonSudokuCell.Lookup("val", -1).IntegerValue
+		      value = jsonSudokuCell.Lookup("value", -1).IntegerValue
 		      locked = jsonSudokuCell.Lookup("locked", False).BooleanValue
 		      
 		      If (row < 0) Or (row >= N) Then
@@ -58,7 +58,7 @@ Protected Class SudokuTool
 		      If (col < 0) Or (col >= N) Then
 		        Continue
 		      End If
-		      If (val < 0) Or (val > N) Then
+		      If (value < 0) Or (value > N) Then
 		        Continue
 		      End If
 		      
@@ -67,8 +67,8 @@ Protected Class SudokuTool
 		        Raise New InvalidArgumentException(kExceptionMessage, 3)
 		      End If
 		      
-		      dictSudoku.Value(index) = val
-		      If locked And (val > 0) Then loadedLockedCellIndexes.Add(index)
+		      dictSudoku.Value(index) = value
+		      If locked And (value > 0) Then loadedLockedCellIndexes.Add(index)
 		    Next
 		    
 		    
@@ -241,9 +241,9 @@ Protected Class SudokuTool
 		  
 		  ' Try the cell candidates (in the cell with the least possible candidates)
 		  Var total As Integer = 0
-		  For Each val As Integer In bestCandidates
-		    ' Tentatively place 'val' in the cell
-		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), val))
+		  For Each value As Integer In bestCandidates
+		    ' Tentatively place value in the cell
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), value))
 		    
 		    ' Recursively attempt to solve the rest of the grid
 		    total = total + Me.CountSolutions(limit - total)
@@ -385,9 +385,9 @@ Protected Class SudokuTool
 		  
 		  For row As Integer = 0 To N - 1
 		    For col As Integer = 0 To N - 1
-		      Var val As Integer = Me.GetGridCell(row, col)
-		      If val <> 0 Then
-		        Var s As String = val.ToString
+		      Var value As Integer = Me.GetGridCell(row, col)
+		      If value <> 0 Then
+		        Var s As String = value.ToString
 		        ' Choose font size relative to cell
 		        g.FontSize = cell * 0.6
 		        Var w As Double = g.TextWidth(s)
@@ -470,9 +470,9 @@ Protected Class SudokuTool
 		  Var solution(N-1, N-1) As Integer
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      Var val As Integer = grid(row, col)
-		      If val >= 1 And val <= N Then
-		        solution(row, col) = perm(val)
+		      Var value As Integer = grid(row, col)
+		      If value >= 1 And value <= N Then
+		        solution(row, col) = perm(value)
 		      Else
 		        solution(row, col) = 0
 		      End If
@@ -566,11 +566,11 @@ Protected Class SudokuTool
 		  End If
 		  
 		  ' Try all possible numbers (1-9) for this empty cell in random order
-		  For Each val As Integer In Me.GenerateRandomValues
-		    ' Check if placing 'val' here is allowed by Sudoku rules
-		    If IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
-		      ' Tentatively place 'val' in the cell
-		      grid(row, col) = val
+		  For Each value As Integer In Me.GenerateRandomValues
+		    ' Check if placing value here is allowed by Sudoku rules
+		    If IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
+		      ' Tentatively place value in the cell
+		      grid(row, col) = value
 		      
 		      ' Recursively attempt to solve the rest of the grid
 		      If GenerateRandomPuzzleSolve() Then
@@ -580,7 +580,7 @@ Protected Class SudokuTool
 		      End If
 		      
 		      ' Backtracking
-		      ' If recursion returned False, this 'val' led to a dead end
+		      ' If recursion returned False, this value led to a dead end
 		      ' Undo the move before trying the next number in this cell
 		      grid(row, col) = 0
 		    End If
@@ -666,9 +666,9 @@ Protected Class SudokuTool
 		  ' 1. Basic Sudoku Rules (Naked Single)
 		  ' Distinct digit in each row/col/block
 		  Var candidates() As Integer
-		  For val As Integer = 1 To N
-		    If Me.IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
-		      candidates.Add(val)
+		  For value As Integer = 1 To N
+		    If Me.IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
+		      candidates.Add(value)
 		      If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
 		    End If
 		  Next
@@ -679,9 +679,9 @@ Protected Class SudokuTool
 		  
 		  ' 2. Hidden Single
 		  ' Only one spot for a digit in row/col/block
-		  For val As Integer = 1 To N
-		    If Me.IsValueHiddenSingle(row, col, val) Then
-		      Return Me.CreateSolveCellHint(row, col, SolveHint.HiddenSingle, val)
+		  For value As Integer = 1 To N
+		    If Me.IsValueHiddenSingle(row, col, value) Then
+		      Return Me.CreateSolveCellHint(row, col, SolveHint.HiddenSingle, value)
 		      Exit 
 		    End If
 		  Next
@@ -810,16 +810,16 @@ Protected Class SudokuTool
 		  
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      Var val As Integer = grid(row, col)
-		      If val <> 0 Then
+		      Var value As Integer = grid(row, col)
+		      If value <> 0 Then
 		        ' Temporarily remove the number
 		        grid(row, col) = 0
 		        
 		        ' Check number in this cell
-		        Var numIsValid As Boolean = Me.IsValueValid(row, col, val, checkType)
+		        Var numIsValid As Boolean = Me.IsValueValid(row, col, value, checkType)
 		        
 		        ' Restore the number
-		        grid(row, col) = val
+		        grid(row, col) = value
 		        
 		        If (Not numIsValid) Then
 		          Return False
@@ -833,8 +833,8 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function IsValueHiddenSingle(row As Integer, col As Integer, val As Integer) As Boolean
-		  ' Check if 'val' at grid(r,c) is a hidden single.
+		Private Function IsValueHiddenSingle(row As Integer, col As Integer, value As Integer) As Boolean
+		  ' Check if value at grid(r,c) is a hidden single.
 		  
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
@@ -842,7 +842,7 @@ Protected Class SudokuTool
 		  ' Row check
 		  Var possibleCols() As Integer
 		  For cc As Integer = 0 To N-1
-		    If grid(row, cc) = 0 And Me.IsValueValid(row, cc, val, ValidCheck.BasicSudokuRules) Then
+		    If grid(row, cc) = 0 And Me.IsValueValid(row, cc, value, ValidCheck.BasicSudokuRules) Then
 		      possibleCols.Add(cc)
 		      If (possibleCols.Count > 1) Then Exit ' We just need to know if more than one candidate
 		    End If
@@ -854,7 +854,7 @@ Protected Class SudokuTool
 		  ' Column check
 		  Var possibleRows() As Integer
 		  For rr As Integer = 0 To N-1
-		    If grid(rr, col) = 0 And Me.IsValueValid(rr, col, val, ValidCheck.BasicSudokuRules) Then
+		    If grid(rr, col) = 0 And Me.IsValueValid(rr, col, value, ValidCheck.BasicSudokuRules) Then
 		      If (possibleRows.Count > 1) Then Exit ' We just need to know if more than one candidate
 		      possibleRows.Add(rr)
 		    End If
@@ -869,7 +869,7 @@ Protected Class SudokuTool
 		  Var possibleBlockCells() As Integer
 		  For rr As Integer = blockR To blockR+2
 		    For cc As Integer = blockC To blockC+2
-		      If grid(rr, cc) = 0 And Me.IsValueValid(rr, cc, val, ValidCheck.BasicSudokuRules) Then
+		      If grid(rr, cc) = 0 And Me.IsValueValid(rr, cc, value, ValidCheck.BasicSudokuRules) Then
 		        possibleBlockCells.Add(rr * N + cc)
 		      End If
 		    Next
@@ -886,8 +886,8 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function IsValueValid(row As Integer, col As Integer, val As Integer, checkType As ValidCheck) As Boolean
-		  ' Check if placing 'val' at grid(r, c) is allowed according
+		Private Function IsValueValid(row As Integer, col As Integer, value As Integer, checkType As ValidCheck) As Boolean
+		  ' Check if placing value at grid(r, c) is allowed according
 		  ' to Sudoku rules. Returns True if valid, False otherwise.
 		  
 		  #Pragma DisableBackgroundTasks
@@ -896,8 +896,8 @@ Protected Class SudokuTool
 		  ' 1. Check the row
 		  ' A number must not appear twice in the same row
 		  For cc As Integer = 0 To N-1
-		    If grid(row, cc) = val Then
-		      ' 'val' already exists in this row → invalid
+		    If grid(row, cc) = value Then
+		      ' value already exists in this row → invalid
 		      Return False
 		    End If
 		  Next
@@ -905,8 +905,8 @@ Protected Class SudokuTool
 		  ' 2. Check the column
 		  ' A number must not appear twice in the same column
 		  For rr As Integer = 0 To N-1
-		    If grid(rr, col) = val Then
-		      ' 'val' already exists in this column → invalid
+		    If grid(rr, col) = value Then
+		      ' value already exists in this column → invalid
 		      Return False
 		    End If
 		  Next
@@ -919,8 +919,8 @@ Protected Class SudokuTool
 		  
 		  For rr As Integer = br To br + 2
 		    For cc As Integer = bc To bc + 2
-		      If grid(rr, cc) = val Then
-		        ' 'val' already exists in this 3x3 block → invalid
+		      If grid(rr, cc) = value Then
+		        ' value already exists in this 3x3 block → invalid
 		        Return False
 		      End If
 		    Next
@@ -931,7 +931,7 @@ Protected Class SudokuTool
 		    Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
 		    Select Case solveCellHint.SolveHint
 		    Case SolveHint.NakedSingle, SolveHint.HiddenSingle
-		      If (solveCellHint.SolutionValue <> val) Then Return False
+		      If (solveCellHint.SolutionValue <> value) Then Return False
 		    End Select
 		  End If
 		  
@@ -1007,8 +1007,8 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetGridCell(row As Integer, col As Integer, Assigns val As Integer)
-		  grid(row, col) = val
+		Sub SetGridCell(row As Integer, col As Integer, Assigns value As Integer)
+		  grid(row, col) = value
 		  
 		  cacheIsSolvable = IsSolvableState.Unknown
 		  
@@ -1160,12 +1160,12 @@ Protected Class SudokuTool
 		  Var candidates() As Integer
 		  If (grid(row, col) > 0) Then Return candidates
 		  
-		  For val As Integer = 1 To N
+		  For value As Integer = 1 To N
 		    ' Note: No need to check with ValidCheck.AdvancedChecks since we
 		    ' call this Method only in the Solver with Strategies, and the Solver
 		    ' has checked that there are no Naked/Hidden Singles to be filled out
-		    If Me.IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
-		      candidates.Add(val)
+		    If Me.IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
+		      candidates.Add(value)
 		    End If
 		  Next
 		  
@@ -1241,12 +1241,12 @@ Protected Class SudokuTool
 		    tryNumberTo = solveCellHint.SolutionValue
 		  End Select
 		  
-		  For val As Integer = tryNumberFrom To tryNumberTo
-		    ' Check if placing 'val' here is allowed by Sudoku rules
+		  For value As Integer = tryNumberFrom To tryNumberTo
+		    ' Check if placing value here is allowed by Sudoku rules
 		    ' Note: No need to check with ValidCheck.AdvancedChecks since we checked Naked/Hidden Singles in GetSolveCellHint
-		    If Me.IsValueValid(row, col, val, ValidCheck.BasicSudokuRules) Then
-		      ' Tentatively place 'val' in the cell
-		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, grid(row, col), val))
+		    If Me.IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
+		      ' Tentatively place value in the cell
+		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, grid(row, col), value))
 		      
 		      ' Recursively attempt to solve the rest of the grid
 		      If Me.SolveInternalWithBacktracking() Then
@@ -1256,7 +1256,7 @@ Protected Class SudokuTool
 		      End If
 		      
 		      ' Backtracking
-		      ' If recursion returned False, this 'val' led to a dead end
+		      ' If recursion returned False, this value led to a dead end
 		      ' Undo the move before trying the next number in this cell
 		      Me.SolveUndoTo(startStackCount)
 		    End If
@@ -1311,9 +1311,9 @@ Protected Class SudokuTool
 		  End If
 		  
 		  ' Try the cell candidates (in the cell with the least possible candidates)
-		  For Each val As Integer In bestCandidates
-		    ' Tentatively place 'val' in the cell
-		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), val))
+		  For Each value As Integer In bestCandidates
+		    ' Tentatively place value in the cell
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, grid(bestRow, bestCol), value))
 		    
 		    ' Recursively attempt to solve the rest of the grid
 		    If Me.SolveInternalWithStrategies() Then
@@ -1323,7 +1323,7 @@ Protected Class SudokuTool
 		    End If
 		    
 		    ' Backtracking
-		    ' If recursion returned False, this 'val' led to a dead end
+		    ' If recursion returned False, this value led to a dead end
 		    ' Undo the move(s) before trying the next number in this cell
 		    ' The deterministic steps should be valid, so keep them in the stack
 		    Me.SolveUndoTo(deterministicStepsStackCount)
@@ -1366,7 +1366,7 @@ Protected Class SudokuTool
 		      jsonSudokuCell.Value("row") = row+1
 		      jsonSudokuCell.Value("col") = col+1
 		      jsonSudokuCell.Value("index") = index
-		      jsonSudokuCell.Value("val") = grid(row, col)
+		      jsonSudokuCell.Value("value") = grid(row, col)
 		      jsonSudokuCell.Value("locked") = (grid(row, col) > 0) And (lockedCellIndexes.IndexOf(index) >= 0)
 		      
 		      jsonSudoku.Add(jsonSudokuCell)

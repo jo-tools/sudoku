@@ -745,10 +745,10 @@ End
 		  For row As Integer = 0 To SudokuTool.N-1
 		    For col As Integer = 0 To SudokuTool.N-1
 		      Var index As Integer = row * SudokuTool.N + col
-		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
+		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
 		      
-		      If (val > 0) Then
-		        SudokuTextFields(index).Lock = (val > 0)
+		      If (value > 0) Then
+		        SudokuTextFields(index).Lock = (value > 0)
 		        Me.Sudoku.SetGridCellLocked(row, col)
 		      End If
 		    Next
@@ -1006,12 +1006,12 @@ End
 		      
 		      SudokuTextFields(index).Lock = False
 		      
-		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
-		      If val = 0 Then
+		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      If value = 0 Then
 		        SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
-		        SudokuTextFields(index).Text = val.ToString
+		        SudokuTextFields(index).Text = value.ToString
 		        SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
 		      End If
 		    Next
