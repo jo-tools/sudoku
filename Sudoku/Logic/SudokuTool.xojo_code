@@ -1024,12 +1024,12 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SaveTo(f As FolderItem, author As String) As Boolean
+		Function SaveTo(f As FolderItem, application As JSONItem) As Boolean
 		  ' Save to FolderItem (as JSON)
 		  ' Note: Raises an Exception on failure
 		  
 		  ' Write File
-		  Var json As JSONItem = Me.ToJson(author)
+		  Var json As JSONItem = Me.ToJson(application)
 		  
 		  Var jsonOptions As New JSONOptions
 		  jsonOptions.Compact = False
@@ -1391,7 +1391,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToJson(author As String) As JSONItem
+		Function ToJson(application As JSONItem) As JSONItem
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -1413,7 +1413,9 @@ Protected Class SudokuTool
 		  Next
 		  
 		  Var json As New JSONItem
-		  json.Value(kJSONKeyAuthor) = author
+		  If (application <> Nil) Then
+		    json.Value(kJSONKeyApplication) = application
+		  End If
 		  json.Value(kJSONKeySudoku) = jsonSudoku
 		  
 		  Return json
@@ -1461,7 +1463,7 @@ Protected Class SudokuTool
 	#tag EndProperty
 
 
-	#tag Constant, Name = kJSONKeyAuthor, Type = String, Dynamic = False, Default = \"author", Scope = Private
+	#tag Constant, Name = kJSONKeyApplication, Type = String, Dynamic = False, Default = \"application", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeySudoku, Type = String, Dynamic = False, Default = \"sudoku", Scope = Private

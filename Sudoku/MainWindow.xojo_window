@@ -834,7 +834,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
 		    If (f = Nil) Then Return
 		    
-		    Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		    Call Me.Sudoku.SaveTo(f, GetJsonApplication)
 		    
 		  Catch e As IOException
 		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
@@ -861,7 +861,7 @@ End
 		  Try
 		    Var f As FolderItem = GetUsersCurrentSudokuStateFile(True)
 		    If (f <> Nil) Then
-		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		      Call Me.Sudoku.SaveTo(f, GetJsonApplication)
 		    End If
 		    
 		  Catch err As IOException
@@ -873,7 +873,7 @@ End
 		    Var f As FolderItem = GetUsersCurrentSettingsFile(True)
 		    If (f <> Nil) Then
 		      Var json As New JSONItem
-		      json.Value(kJSONKeyAuthor) = kURL_Repository
+		      json.Value(kJSONKeyApplication) = GetJsonApplication
 		      json.Value(kJSONKeyShowHints) = mShowHints
 		      
 		      Var jsonOptions As New JSONOptions
@@ -963,6 +963,17 @@ End
 		  End Try
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetJsonApplication() As JSONItem
+		  Var jsonApplication As New JSONItem
+		  jsonApplication.Value(kJSONKeyApplicationName) = "Sudoku"
+		  jsonApplication.Value(kJSONKeyApplicationVersion) = labAppVersion.Text.Trim
+		  jsonApplication.Value(kJSONKeyApplicationUrl) = kURL_Repository
+		  Return jsonApplication
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -1304,7 +1315,16 @@ End
 	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kJSONKeyAuthor, Type = String, Dynamic = False, Default = \"author", Scope = Private
+	#tag Constant, Name = kJSONKeyApplication, Type = String, Dynamic = False, Default = \"application", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationName, Type = String, Dynamic = False, Default = \"name", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationUrl, Type = String, Dynamic = False, Default = \"url", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationVersion, Type = String, Dynamic = False, Default = \"version", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showhints", Scope = Private
