@@ -10,6 +10,7 @@ Protected Class SudokuTool
 		    Next
 		  Next
 		  
+		  Redim lockedCellIndexes(-1)
 		  cacheIsSolvable = IsSolvableState.Solvable
 		  
 		End Sub
@@ -22,14 +23,175 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(json As JSONItem)
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Init with JSON representation of a Sudoku-grid
+		  Const kExceptionMessage = "Invalid JSON representation of a Sudoku"
+		  
+		  Dim dictSudoku As New Dictionary
+		  Dim loadedLockedCellIndexes() As Integer
+		  
+		  Try
+		    If (json = Nil) Or (Not json.HasKey("sudoku")) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
+		    
+		    Var jsonSudoku As JSONItem = json.Child("sudoku")
+		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
+		    
+		    Var row, col, val As Integer
+		    Var locked As Boolean
+		    For i As Integer = 0 To jsonSudoku.LastRowIndex
+		      Var jsonSudokuCell As JSONItem = jsonSudoku.ChildAt(i)
+		      If (jsonSudokuCell = Nil) Then
+		        Continue
+		      End If
+		      
+		      row = jsonSudokuCell.Lookup("row", -1).IntegerValue - 1
+		      col = jsonSudokuCell.Lookup("col", -1).IntegerValue - 1
+		      val = jsonSudokuCell.Lookup("val", -1).IntegerValue
+		      locked = jsonSudokuCell.Lookup("locked", False).BooleanValue
+		      
+		      If (row < 0) Or (row >= N) Then
+		        Continue
+		      End If
+		      If (col < 0) Or (col >= N) Then
+		        Continue
+		      End If
+		      If (val < 0) Or (val > N) Then
+		        Continue
+		      End If
+		      
+		      Var index As Integer = row * SudokuTool.N + col
+		      If dictSudoku.HasKey(index) Then
+		        Raise New InvalidArgumentException(kExceptionMessage, 3)
+		      End If
+		      
+		      dictSudoku.Value(index) = val
+		      If locked And (val > 0) Then loadedLockedCellIndexes.Add(index)
+		    Next
+		    
+		    
+		  Catch err As JSONException
+		    Raise New InvalidArgumentException(kExceptionMessage, 4)
+		    
+		  Catch err As RuntimeException
+		    Raise New InvalidArgumentException(kExceptionMessage, 5)
+		    
+		  End Try
+		  
+		  ' Sanity Check
+		  If (dictSudoku = Nil) Or (dictSudoku.KeyCount <> N*N) Then
+		    Raise New InvalidArgumentException(kExceptionMessage, 6)
+		  End If
+		  
+		  For i As Integer = 0 To N*N - 1
+		    If (Not dictSudoku.HasKey(i)) Then
+		      Raise New InvalidArgumentException(kExceptionMessage, 7)
+		    End If
+		  Next
+		  
+		  
+		  ' Valid JSON to build a Sudoku
+		  Me.ClearGrid
+		  
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Me.SetGridCell(row, col) = dictSudoku.Lookup(index, 0)
+		      
+		      If (loadedLockedCellIndexes.IndexOf(index) >= 0) Then
+		        me.SetGridCellLocked(row, col)
+		      End If
+		    Next
+		  Next
+		  
+		  cacheIsSolvable = IsSolvableState.Unknown
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(s As String)
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Init with String representation of a Sudoku-grid
+		  Const kExceptionMessage = "Invalid String representation of a Sudoku"
+		  
+		  s = s.Trim
+		  If (s = "") Then Raise New InvalidArgumentException(kExceptionMessage, 1)
+		  
+		  ' Sanity
+		  If (s.Bytes < N*N) Or (s.Bytes > 2048) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
+		  
+		  
+		  s = s.ReplaceLineEndings("")
+		  
+		  Var currentChar As String
+		  Var currentVal As Integer
+		  Var numbers() As Integer
+		  For pos As Integer = 0 To s.Bytes
+		    currentVal = -1
+		    currentChar = s.MiddleBytes(pos, 1)
+		    
+		    Select Case currentChar
+		    Case "0"
+		      currentVal = 0
+		    Else
+		      currentVal = currentChar.ToInteger
+		      If (currentVal < 1) Then
+		        'invalid
+		        Continue
+		      End If
+		    End Select
+		    
+		    If (currentVal < 0) Or (currentVal > N) Then
+		      'invalid
+		      Continue
+		    End If
+		    
+		    numbers.Add(currentVal)
+		  Next
+		  
+		  ' Sanity
+		  If (numbers.Count <> N * N) Then
+		    'invalid
+		    Raise New InvalidArgumentException(kExceptionMessage, 3)
+		  End If
+		  
+		  ' Valid String to build a Sudoku
+		  Me.ClearGrid
+		  
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Me.SetGridCell(row, col) = numbers(index)
+		    Next
+		  Next
+		  
+		  cacheIsSolvable = IsSolvableState.Unknown
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(clone As SudokuTool)
 		  ' Init with state of passed-in Sudoku-grid
 		  Redim grid(N-1, N-1)
+		  ReDim lockedCellIndexes(-1)
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
 		      grid(row, col) = clone.GetGridCell(row, col)
+		      
+		      If clone.IsGridCellLocked(row, col) Then
+		        SetGridCellLocked(row, col)
+		      End If
 		    Next
 		  Next
+		  
+		  cacheIsSolvable = IsSolvableState.Unknown
+		  
 		End Sub
 	#tag EndMethod
 
@@ -259,150 +421,6 @@ Protected Class SudokuTool
 		  Next
 		  
 		  Return False
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function FromJson(json As JSONItem, ByRef lockedCellIndexes() As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  Dim dictSudoku As New Dictionary
-		  Redim lockedCellIndexes(-1)
-		  
-		  Try
-		    If (json = Nil) Or (Not json.HasKey("sudoku")) Then Return False
-		    
-		    Var jsonSudoku As JSONItem = json.Child("sudoku")
-		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Return False
-		    
-		    Var row, col, Val As Integer
-		    Var locked As Boolean
-		    For i As Integer = 0 To jsonSudoku.LastRowIndex
-		      Var jsonSudokuCell As JSONItem = jsonSudoku.ChildAt(i)
-		      If (jsonSudokuCell = Nil) Then
-		        Continue
-		      End If
-		      
-		      row = jsonSudokuCell.Lookup("row", -1).IntegerValue - 1
-		      col = jsonSudokuCell.Lookup("col", -1).IntegerValue - 1
-		      Val = jsonSudokuCell.Lookup("val", -1).IntegerValue
-		      locked = jsonSudokuCell.Lookup("locked", False).BooleanValue
-		      
-		      If (row < 0) Or (row >= N) Then
-		        Continue
-		      End If
-		      If (col < 0) Or (col >= N) Then
-		        Continue
-		      End If
-		      If (Val < 0) Or (Val > N) Then
-		        Continue
-		      End If
-		      
-		      Var index As Integer = row * SudokuTool.N + col
-		      If dictSudoku.HasKey(index) Then
-		        Return False
-		      End If
-		      
-		      dictSudoku.Value(index) = Val
-		      If locked And (Val > 0) Then lockedCellIndexes.Add(index)
-		    Next
-		    
-		    
-		  Catch err As JSONException
-		    Return False
-		    
-		  Catch err As RuntimeException
-		    Return False
-		    
-		  End Try
-		  
-		  ' Sanity Check
-		  If (dictSudoku = Nil) Or (dictSudoku.KeyCount <> N*N) Then
-		    Return False
-		  End If
-		  
-		  For i As Integer = 0 To N*N - 1
-		    If (Not dictSudoku.HasKey(i)) Then
-		      Return False
-		    End If
-		  Next
-		  
-		  
-		  ' Valid JSON to build a Sudoku
-		  Me.ClearGrid
-		  
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      Me.SetGridCell(row, col) = dictSudoku.Lookup(index, 0)
-		    Next
-		  Next
-		  
-		  cacheIsSolvable = IsSolvableState.Unknown
-		  Return True
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function FromString(s As String) As Boolean
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  s = s.Trim
-		  If (s = "") Then Return False
-		  
-		  ' Sanity
-		  If (s.Bytes < N*N) Or (s.Bytes > 2048) Then Return False
-		  
-		  s = s.ReplaceLineEndings("")
-		  
-		  Var currentChar As String
-		  Var currentVal As Integer
-		  Var numbers() As Integer
-		  For pos As Integer = 0 To s.Bytes
-		    currentVal = -1
-		    currentChar = s.MiddleBytes(pos, 1)
-		    
-		    Select Case currentChar
-		    Case "0"
-		      currentVal = 0
-		    Else
-		      currentVal = currentChar.ToInteger
-		      If (currentVal < 1) Then
-		        'invalid
-		        Continue
-		      End If
-		    End Select
-		    
-		    If (currentVal < 0) Or (currentVal > N) Then
-		      'invalid
-		      Continue
-		    End If
-		    
-		    numbers.Add(currentVal)
-		  Next
-		  
-		  ' Sanity
-		  If (numbers.Count <> N * N) Then
-		    'invalid
-		    Return False
-		  End If
-		  
-		  ' Valid String to build a Sudoku
-		  Me.ClearGrid
-		  
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      Me.SetGridCell(row, col) = numbers(index)
-		    Next
-		  Next
-		  
-		  cacheIsSolvable = IsSolvableState.Unknown
-		  Return True
-		  
 		End Function
 	#tag EndMethod
 
@@ -716,6 +734,15 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function IsGridCellLocked(row As Integer, col As Integer) As Boolean
+		  Var index As Integer = row * SudokuTool.N + col
+		  
+		  Return (lockedCellIndexes.IndexOf(index) >= 0)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
 		  Select Case cacheIsSolvable
 		    
@@ -914,7 +941,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function LoadFrom(f As FolderItem, ByRef lockedCellIndexes() As Integer) As Boolean
+		Shared Function LoadFrom(f As FolderItem) As SudokuTool
 		  ' Load from FolderItem (as JSON | as Text)
 		  
 		  Var t As TextInputStream = TextInputStream.Open(f)
@@ -923,41 +950,47 @@ Protected Class SudokuTool
 		  t.Close
 		  
 		  fileContent = fileContent.Trim
-		  If (fileContent = "") Then Return False
+		  If (fileContent = "") Then Return Nil
 		  
-		  If (fileContent.LeftBytes(1) = "{") and (fileContent.MiddleBytes(fileContent.Bytes-1, 1) = "}") Then
+		  If (fileContent.LeftBytes(1) = "{") And (fileContent.MiddleBytes(fileContent.Bytes-1, 1) = "}") Then
 		    ' Assume it's a JSON Content
 		    Try
 		      #Pragma BreakOnExceptions Off
 		      
 		      Var json As New JSONItem(fileContent)
-		      If Me.FromJson(json, lockedCellIndexes) Then
-		        Return True
-		      End If
 		      
-		    Catch err As JSONException
-		      'ignore
+		      Var sudoku As New SudokuTool(json)
+		      If (sudoku <> Nil) Then Return sudoku
 		      
+		    Catch err1 As JSONException
+		      ' Invalid JSON
+		    Catch err2 As InvalidArgumentException
+		      ' Invalid JSON for Sudoku
 		    End Try
 		  End If
 		  
+		  Try
+		    Var sudoku As New SudokuTool(fileContent)
+		    If (sudoku <> Nil) Then Return sudoku
+		    
+		  Catch err As InvalidArgumentException
+		    ' Invalid String for Sudoku
+		    
+		  End Try
 		  
-		  If Me.FromString(fileContent) Then
-		    Return True
-		  End If
-		  
-		  Return False
+		  ' No success loading from File
+		  Return Nil
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SaveTo(f As FolderItem, author As String, lockedCellIndexes() As Integer) As Boolean
+		Function SaveTo(f As FolderItem, author As String) As Boolean
 		  ' Save to FolderItem (as JSON)
 		  ' Note: Raises an Exception on failure
 		  
 		  ' Write File
-		  Var json As JSONItem = Me.ToJson(author, lockedCellIndexes)
+		  Var json As JSONItem = Me.ToJson(author)
 		  
 		  Var jsonOptions As New JSONOptions
 		  jsonOptions.Compact = False
@@ -978,6 +1011,17 @@ Protected Class SudokuTool
 		  grid(row, col) = val
 		  
 		  cacheIsSolvable = IsSolvableState.Unknown
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetGridCellLocked(row As Integer, col As Integer)
+		  Var index As Integer = row * SudokuTool.N + col
+		  
+		  If (lockedCellIndexes.IndexOf(index) < 0) Then
+		    lockedCellIndexes.Add(index)
+		  End If
 		  
 		End Sub
 	#tag EndMethod
@@ -1308,7 +1352,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToJson(author As String, lockedCellIndexes() As Integer) As JSONItem
+		Function ToJson(author As String) As JSONItem
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -1323,7 +1367,8 @@ Protected Class SudokuTool
 		      jsonSudokuCell.Value("col") = col+1
 		      jsonSudokuCell.Value("index") = index
 		      jsonSudokuCell.Value("val") = grid(row, col)
-		      jsonSudokuCell.Value("locked") = (lockedCellIndexes.IndexOf(index) >= 0)
+		      jsonSudokuCell.Value("locked") = (grid(row, col) > 0) And (lockedCellIndexes.IndexOf(index) >= 0)
+		      
 		      jsonSudoku.Add(jsonSudokuCell)
 		    Next
 		  Next
@@ -1366,6 +1411,10 @@ Protected Class SudokuTool
 
 	#tag Property, Flags = &h21
 		Private grid(-1,-1) As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private lockedCellIndexes() As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

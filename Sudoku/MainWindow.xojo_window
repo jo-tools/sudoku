@@ -747,7 +747,10 @@ End
 		      Var index As Integer = row * SudokuTool.N + col
 		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
 		      
-		      SudokuTextFields(index).Lock = (val > 0)
+		      If (val > 0) Then
+		        SudokuTextFields(index).Lock = (val > 0)
+		        Me.Sudoku.SetGridCellLocked(row, col)
+		      End If
 		    Next
 		  Next
 		  
@@ -762,9 +765,11 @@ End
 		    Var f As FolderItem = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
 		    If (f = Nil) Then Return
 		    
-		    Var lockedCellIndexes() As Integer
-		    If Me.Sudoku.LoadFrom(f, lockedCellIndexes) Then
-		      Me.ShowSudoku(lockedCellIndexes)
+		    Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		    
+		    If (newSudoku <> Nil) Then
+		      Me.Sudoku = newSudoku
+		      Me.ShowSudoku
 		    Else
 		      Me.Sudoku.ClearGrid
 		      Me.ShowSudoku
@@ -796,7 +801,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
 		    If (f = Nil) Then Return
 		    
-		    Call Me.Sudoku.SaveTo(f, kURL_Repository, GetLockedCellIndexes)
+		    Call Me.Sudoku.SaveTo(f, kURL_Repository)
 		    
 		  Catch e As IOException
 		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
@@ -823,7 +828,7 @@ End
 		  Try
 		    Var f As FolderItem = GetUsersCurrentStateFile(True)
 		    If (f <> Nil) Then
-		      Call Me.Sudoku.SaveTo(f, kURL_Repository, GetLockedCellIndexes)
+		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
 		    End If
 		    
 		  Catch err As IOException
@@ -843,9 +848,11 @@ End
 		    
 		    
 		    If (f <> Nil) Then
-		      Var lockedCellIndexes() As Integer
-		      If Me.Sudoku.LoadFrom(f, lockedCellIndexes) Then
-		        Me.ShowSudoku(lockedCellIndexes)
+		      Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		      
+		      If (newSudoku <> Nil) Then
+		        Me.Sudoku = newSudoku
+		        Me.ShowSudoku
 		        Return
 		      end if
 		    End If
@@ -860,26 +867,6 @@ End
 		  End Try
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function GetLockedCellIndexes() As Integer()
-		  Var lockedCellIndexes() As Integer
-		  
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      
-		      If SudokuTextFields(index).IsLocked Then
-		        lockedCellIndexes.Add(index)
-		      End If
-		      
-		    Next
-		  Next
-		  
-		  Return lockedCellIndexes
-		  
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -1025,6 +1012,7 @@ End
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
 		        SudokuTextFields(index).Text = val.ToString
+		        SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
@@ -1039,20 +1027,6 @@ End
 		  Me.RefreshControls
 		  
 		  mIsShowingSudoku = False
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ShowSudoku(lockedCellIndexes() As Integer)
-		  Me.ShowSudoku
-		  
-		  For Each lockedIndex As Integer In lockedCellIndexes
-		    If (SudokuTextFields.LastIndex < lockedIndex) Then Continue
-		    If (SudokuTextFields(lockedIndex).Text.ToInteger < 0) Then Continue
-		    
-		    SudokuTextFields(lockedIndex).Lock = True
-		  Next
 		  
 		End Sub
 	#tag EndMethod
