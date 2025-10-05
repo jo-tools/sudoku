@@ -646,6 +646,46 @@ Protected Class SudokuTool
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetSolveCellCandidates() As SolveCellCandidate()
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var solveCellCandidates() As SolveCellCandidate
+		  
+		  ' Add Solve Cell Candidates
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      ' No Candidates in non empty Cells
+		      If grid(row, col) <> 0 Then
+		        Continue
+		      End If
+		      
+		      Var candidates() As Integer = Me.SolveGetCellCandidates(row, col)
+		      If (candidates.Count < 1) Then Continue
+		      
+		      
+		      Var solveCellCandidate As SolveCellCandidate
+		      solveCellCandidate.Row = row
+		      solveCellCandidate.Col = col
+		      
+		      For value As Integer = 1 To N
+		        If (candidates.IndexOf(value) >= 0) Then
+		          solveCellCandidate.Candidates(value-1) = CType(value, Int8)
+		        Else
+		          solveCellCandidate.Candidates(value-1) = CType(0, Int8)
+		        End If
+		      Next
+		      
+		      solveCellCandidates.Add(solveCellCandidate)
+		    Next
+		  Next
+		  
+		  Return solveCellCandidates
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function GetSolveCellHint(row As Integer, col As Integer) As SolveCellHint
 		  #Pragma DisableBackgroundTasks
@@ -1463,6 +1503,12 @@ Protected Class SudokuTool
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
 	#tag EndConstant
 
+
+	#tag Structure, Name = SolveCellCandidate, Flags = &h0
+		Row As Integer
+		  Col As Integer
+		Candidates(8) As Int8
+	#tag EndStructure
 
 	#tag Structure, Name = SolveCellHint, Flags = &h0
 		Row As Integer

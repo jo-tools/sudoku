@@ -583,6 +583,37 @@ End
 		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
 		  Next
 		  
+		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
+		  g.FontSize = 8
+		  
+		  If Me.mShowHints And (Me.SolveCellCandidates.LastIndex >= 0) Then
+		    ' Draw Cell Candidates
+		    Var hintRowSize As Double = (kCellSize - self.SudokuTextFields(0).Height) / 2
+		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
+		    
+		    For Each h As SudokuTool.SolveCellCandidate In Me.SolveCellCandidates
+		      if h.Row = 0 and h.Col = 0 then break
+		      For Each candidate As Int8 In h.Candidates
+		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
+		        
+		        Select Case candidate
+		        Case Is <= 4
+		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
+		        Case 5
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		        Case 6
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		        Case Is >= 7
+		          Var adjustX As Double = ((kCellSize/3) - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		        End Select
+		      Next
+		    Next
+		  End If
+		  
 		End Sub
 	#tag EndEvent
 
@@ -945,8 +976,10 @@ End
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
 		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
+		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
 		  Else
 		    Redim SolveCellHints(-1)
+		    ReDim SolveCellCandidates(-1)
 		  End If
 		  
 		  Self.Refresh(False)
@@ -1170,6 +1203,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private SolveCellCandidates() As SudokuTool.SolveCellCandidate
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private SolveCellHints() As SudokuTool.SolveCellHint
 	#tag EndProperty
 
@@ -1182,7 +1219,7 @@ End
 	#tag EndProperty
 
 
-	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"44", Scope = Private
+	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
