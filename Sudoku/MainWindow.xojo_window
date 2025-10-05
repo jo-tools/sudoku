@@ -11,14 +11,14 @@ Begin DesktopWindow MainWindow
    HasMaximizeButton=   False
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   500
+   Height          =   560
    ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   1342697471
    MenuBarVisible  =   False
-   MinimumHeight   =   500
+   MinimumHeight   =   560
    MinimumWidth    =   560
    Resizeable      =   False
    Title           =   "Sudoku"
@@ -46,11 +46,11 @@ Begin DesktopWindow MainWindow
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   13
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   370
+      Top             =   430
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -106,14 +106,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   14
+      TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#kLabelSudokuStatus"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   428
+      Top             =   488
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -138,14 +138,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   15
+      TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   460
+      Top             =   520
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -172,11 +172,11 @@ Begin DesktopWindow MainWindow
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   310
+      Top             =   275
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -497,17 +497,79 @@ Begin DesktopWindow MainWindow
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
-      TabIndex        =   11
+      Scope           =   2
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   275
+      Top             =   355
       Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
       VisualState     =   0
+      Width           =   120
+   End
+   Begin SudokuCheckbox chkShowCandidates
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "#App.kSudokuShowCandidates"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   380
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   120
+   End
+   Begin SudokuLabel labShow
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   12
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "#kLabelShow"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   330
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
       Width           =   120
    End
 End
@@ -522,7 +584,18 @@ End
 	#tag EndEvent
 
 	#tag Event
+		Sub DropObject(obj As DragItem, action As DragItem.Types)
+		  If (obj <> Nil) And (obj.FolderItem <> Nil) And (Not obj.FolderItem.IsFolder) And obj.FolderItem.Exists Then
+		    Me.ActionOpen(obj.FolderItem)
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening()
+		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
+		  
 		  ' Layout
 		  Me.Height = sepTop.Top + 2 * kMarginWindow + SudokuTool.N * kCellSize
 		  Me.MinimumHeight = Me.Height
@@ -533,6 +606,8 @@ End
 		  ' Init Sudoku
 		  Me.Sudoku = New SudokuTool
 		  Me.SudokuNumberFieldsInit
+		  
+		  Me.DocumentInit
 		  
 		End Sub
 	#tag EndEvent
@@ -583,6 +658,36 @@ End
 		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
 		  Next
 		  
+		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
+		  g.FontSize = 8
+		  
+		  If Me.mShowCandidates And (Me.SolveCellCandidates.LastIndex >= 0) Then
+		    ' Draw Cell Candidates
+		    Var hintRowSize As Double = (kCellSize - self.SudokuTextFields(0).Height) / 2
+		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
+		    
+		    For Each h As SudokuTool.SolveCellCandidate In Me.SolveCellCandidates
+		      For Each candidate As Int8 In h.Candidates
+		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
+		        
+		        Select Case candidate
+		        Case Is <= 4
+		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
+		        Case 5
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		        Case 6
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		        Case Is >= 7
+		          Var adjustX As Double = ((kCellSize/3) - g.TextWidth(candidate.ToString)) / 2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		        End Select
+		      Next
+		    Next
+		  End If
+		  
 		End Sub
 	#tag EndEvent
 
@@ -598,7 +703,7 @@ End
 
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
-		  Self.ActionOpen
+		  Self.ActionOpen(Nil)
 		  
 		  Return True
 		  
@@ -644,6 +749,16 @@ End
 	#tag MenuHandler
 		Function SudokuRandom() As Boolean Handles SudokuRandom.Action
 		  Self.ActionRandom
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuShowCandidates() As Boolean Handles SudokuShowCandidates.Action
+		  Self.mShowCandidates = (Not Self.mShowCandidates)
+		  Self.RefreshControls
 		  
 		  Return True
 		  
@@ -760,9 +875,12 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionOpen()
+		Private Sub ActionOpen(f As FolderItem)
 		  Try
-		    Var f As FolderItem = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
+		    If (f = Nil) Then
+		      f = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
+		    End If
+		    
 		    If (f = Nil) Then Return
 		    
 		    Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
@@ -801,7 +919,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
 		    If (f = Nil) Then Return
 		    
-		    Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		    Call Me.Sudoku.SaveTo(f, GetJsonApplication)
 		    
 		  Catch e As IOException
 		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
@@ -826,9 +944,37 @@ End
 	#tag Method, Flags = &h21
 		Private Sub DocumentClose()
 		  Try
-		    Var f As FolderItem = GetUsersCurrentStateFile(True)
+		    Var f As FolderItem = GetUsersCurrentSudokuStateFile(True)
 		    If (f <> Nil) Then
-		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		      Call Me.Sudoku.SaveTo(f, GetJsonApplication)
+		    End If
+		    
+		  Catch err As IOException
+		    'Silently ignore
+		    
+		  End Try
+		  
+		  Try
+		    Var f As FolderItem = GetUsersCurrentSettingsFile(True)
+		    If (f <> Nil) Then
+		      Var json As New JSONItem
+		      json.Value(kJSONKeyApplication) = GetJsonApplication
+		      json.Value(kJSONKeyShowHints) = mShowHints
+		      json.Value(kJSONKeyShowCandidates) = mShowCandidates
+		      
+		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		      If (randomNumClues > 0) Then
+		        json.Value(kJSONKeyRandomNumClues) = randomNumClues
+		      End If
+		      
+		      Var jsonOptions As New JSONOptions
+		      jsonOptions.Compact = False
+		      
+		      Var t As TextOutputStream = TextOutputStream.Create(f)
+		      t.Encoding = Encodings.UTF8
+		      t.Delimiter = EndOfLine.UNIX
+		      t.Write(json.ToString(jsonOptions))
+		      t.Close
 		    End If
 		    
 		  Catch err As IOException
@@ -839,11 +985,66 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub DocumentInit()
+		  #Pragma BreakOnExceptions Off
+		  
+		  Try
+		    
+		    Var f As folderitem = GetUsersCurrentSettingsFile(False)
+		    If (f = Nil) Then
+		      ' Silently ignore
+		      Return
+		    End If
+		    
+		    Var t As TextInputStream = TextInputStream.Open(f)
+		    t.Encoding = Encodings.UTF8
+		    Var fileContent As String = t.ReadAll
+		    t.Close
+		    
+		    fileContent = fileContent.Trim
+		    If (fileContent = "") Then
+		      ' Silently ignore
+		      Return
+		    End If
+		    
+		    Var json As New JSONItem(fileContent)
+		    
+		    If json.HasKey(kJSONKeyShowHints) Then
+		      mShowHints = json.Lookup(kJSONKeyShowHints, mShowHints).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyShowCandidates) Then
+		      mShowCandidates = json.Lookup(kJSONKeyShowCandidates, mShowCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyRandomNumClues) Then
+		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		      randomNumClues = json.Lookup(kJSONKeyRandomNumClues, randomNumClues).IntegerValue
+		      If (lstNumClues.SelectedRowText <> randomNumClues.ToString) Then
+		        Try
+		          lstNumClues.SelectRowWithText(randomNumClues.ToString)
+		        Catch err As InvalidArgumentException
+		          ' Silently ignore
+		        End Try
+		      End If
+		    End If
+		    
+		    
+		  Catch err1 As IOException
+		    ' Silently ignore
+		    
+		  Catch err2 As JSONException
+		    ' Silently ignore
+		    
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub DocumentOpen(f As FolderItem)
 		  Try
 		    If (f = Nil) Then
-		      f = GetUsersCurrentStateFile(False)
+		      f = GetUsersCurrentSudokuStateFile(False)
 		    End If
 		    
 		    
@@ -870,12 +1071,29 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function GetUsersCurrentStateFile(tryCreate As Boolean) As FolderItem
+		Private Function GetJsonApplication() As JSONItem
+		  Var jsonApplication As New JSONItem
+		  jsonApplication.Value(kJSONKeyApplicationName) = "Sudoku"
+		  jsonApplication.Value(kJSONKeyApplicationVersion) = labAppVersion.Text.Trim
+		  jsonApplication.Value(kJSONKeyApplicationUrl) = kURL_Repository
+		  Return jsonApplication
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetUsersCurrentFile(filename As String, tryCreate As Boolean) As FolderItem
 		  Try
 		    Var f As FolderItem = SpecialFolder.ApplicationData
 		    If (f = Nil) Or (Not f.IsFolder) Or (Not f.Exists) Then Return Nil
 		    
-		    f = f.Child(App.kBundleIdentifier)
+		    #If TargetLinux Then
+		      f = f.Child("." + App.kBundleIdentifier)
+		    #Else
+		      f = f.Child(App.kBundleIdentifier)
+		    #EndIf
+		    
+		    
 		    If (f = Nil) Then Return Nil
 		    
 		    If (Not f.Exists) Then
@@ -884,7 +1102,7 @@ End
 		    End If
 		    
 		    
-		    f = f.Child("currentstate.sudoku")
+		    f = f.Child(filename)
 		    If (f = Nil) Then Return Nil
 		    
 		    If f.IsFolder Or (Not f.Exists) Then
@@ -897,6 +1115,20 @@ End
 		    'ignore
 		    
 		  End Try
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetUsersCurrentSettingsFile(tryCreate As Boolean) As FolderItem
+		  Return GetUsersCurrentFile("sudoku-settings.json", tryCreate)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetUsersCurrentSudokuStateFile(tryCreate As Boolean) As FolderItem
+		  Return GetUsersCurrentFile("currentstate.sudoku", tryCreate)
 		  
 		End Function
 	#tag EndMethod
@@ -949,6 +1181,12 @@ End
 		    Redim SolveCellHints(-1)
 		  End If
 		  
+		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
+		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
+		  Else
+		    Redim SolveCellCandidates(-1)
+		  End If
+		  
 		  Self.Refresh(False)
 		  
 		  ' Controls
@@ -962,7 +1200,9 @@ End
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
 		  chkShowHints.EnsureValue = mShowHints
+		  chkShowCandidates.EnsureValue = mShowCandidates
 		  SudokuShowHints.HasCheckMark = mShowHints
+		  SudokuShowCandidates.HasCheckMark = mShowCandidates
 		  
 		  ' Status
 		  If isEmpty Then
@@ -1166,7 +1406,15 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mShowCandidates As Boolean = True
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mShowHints As Boolean = True
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SolveCellCandidates() As SudokuTool.SolveCellCandidate
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1182,10 +1430,31 @@ End
 	#tag EndProperty
 
 
-	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"44", Scope = Private
+	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplication, Type = String, Dynamic = False, Default = \"application", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationName, Type = String, Dynamic = False, Default = \"name", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationUrl, Type = String, Dynamic = False, Default = \"url", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationVersion, Type = String, Dynamic = False, Default = \"version", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyShowCandidates, Type = String, Dynamic = False, Default = \"showCandidates", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showHints", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
@@ -1198,6 +1467,12 @@ End
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Vorgaben"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Indices"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Pistas"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelShow, Type = String, Dynamic = True, Default = \"Show", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Anzeigen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Afficher"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Mostrar"
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelSudokuStatus, Type = String, Dynamic = True, Default = \"Sudoku Status", Scope = Private
@@ -1567,6 +1842,21 @@ End
 	#tag Event
 		Sub ValueChanged()
 		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkShowCandidates
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mShowCandidates
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowCandidates = (Not Self.mShowCandidates)
 		  Self.RefreshControls
 		  
 		End Sub
