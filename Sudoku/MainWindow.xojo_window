@@ -534,6 +534,8 @@ End
 		  Me.Sudoku = New SudokuTool
 		  Me.SudokuNumberFieldsInit
 		  
+		  Me.DocumentInit
+		  
 		End Sub
 	#tag EndEvent
 
@@ -857,9 +859,31 @@ End
 	#tag Method, Flags = &h21
 		Private Sub DocumentClose()
 		  Try
-		    Var f As FolderItem = GetUsersCurrentStateFile(True)
+		    Var f As FolderItem = GetUsersCurrentSudokuStateFile(True)
 		    If (f <> Nil) Then
 		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		    End If
+		    
+		  Catch err As IOException
+		    'Silently ignore
+		    
+		  End Try
+		  
+		  Try
+		    Var f As FolderItem = GetUsersCurrentSettingsFile(True)
+		    If (f <> Nil) Then
+		      Var json As New JSONItem
+		      json.Value(kJSONKeyAuthor) = kURL_Repository
+		      json.Value(kJSONKeyShowHints) = mShowHints
+		      
+		      Var jsonOptions As New JSONOptions
+		      jsonOptions.Compact = False
+		      
+		      Var t As TextOutputStream = TextOutputStream.Create(f)
+		      t.Encoding = Encodings.UTF8
+		      t.Delimiter = EndOfLine.UNIX
+		      t.Write(json.ToString(jsonOptions))
+		      t.Close
 		    End If
 		    
 		  Catch err As IOException
@@ -870,11 +894,52 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub DocumentInit()
+		  #Pragma BreakOnExceptions Off
+		  
+		  Try
+		    
+		    Var f As folderitem = GetUsersCurrentSettingsFile(False)
+		    If (f = Nil) Then
+		      ' Silently ignore
+		      Return
+		    End If
+		    
+		    Var t As TextInputStream = TextInputStream.Open(f)
+		    t.Encoding = Encodings.UTF8
+		    Var fileContent As String = t.ReadAll
+		    t.Close
+		    
+		    fileContent = fileContent.Trim
+		    If (fileContent = "") Then
+		      ' Silently ignore
+		      Return
+		    End If
+		    
+		    Var json As New JSONItem(fileContent)
+		    
+		    If json.HasKey(kJSONKeyShowHints) Then
+		      mShowHints = json.Lookup(kJSONKeyShowHints, mShowHints).BooleanValue
+		    End If
+		    
+		    
+		  Catch err1 As IOException
+		    ' Silently ignore
+		    
+		  Catch err2 As JSONException
+		    ' Silently ignore
+		    
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub DocumentOpen(f As FolderItem)
 		  Try
 		    If (f = Nil) Then
-		      f = GetUsersCurrentStateFile(False)
+		      f = GetUsersCurrentSudokuStateFile(False)
 		    End If
 		    
 		    
@@ -901,7 +966,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function GetUsersCurrentStateFile(tryCreate As Boolean) As FolderItem
+		Private Function GetUsersCurrentFile(filename As String, tryCreate As Boolean) As FolderItem
 		  Try
 		    Var f As FolderItem = SpecialFolder.ApplicationData
 		    If (f = Nil) Or (Not f.IsFolder) Or (Not f.Exists) Then Return Nil
@@ -915,7 +980,7 @@ End
 		    End If
 		    
 		    
-		    f = f.Child("currentstate.sudoku")
+		    f = f.Child(filename)
 		    If (f = Nil) Then Return Nil
 		    
 		    If f.IsFolder Or (Not f.Exists) Then
@@ -928,6 +993,20 @@ End
 		    'ignore
 		    
 		  End Try
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetUsersCurrentSettingsFile(tryCreate As Boolean) As FolderItem
+		  Return GetUsersCurrentFile("sudoku-settings.json", tryCreate)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetUsersCurrentSudokuStateFile(tryCreate As Boolean) As FolderItem
+		  Return GetUsersCurrentFile("currentstate.sudoku", tryCreate)
 		  
 		End Function
 	#tag EndMethod
@@ -1223,6 +1302,12 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyAuthor, Type = String, Dynamic = False, Default = \"author", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showhints", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
