@@ -173,25 +173,6 @@ Begin Menu MainMenuBar
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin DesktopMenuItem SudokuShowHints
-         SpecialMenu = 0
-         Index = -2147483648
-         Text = "#App.kSudokuShowHints"
-         ShortcutKey = "I"
-         Shortcut = "Cmd+I"
-         MenuModifier = True
-         AutoEnabled = True
-         AutoEnable = True
-         Visible = True
-      End
-      Begin DesktopMenuItem SudokuSeparator1
-         SpecialMenu = 0
-         Index = -2147483648
-         Text = "-"
-         AutoEnabled = True
-         AutoEnable = True
-         Visible = True
-      End
       Begin DesktopMenuItem SudokuEmpty
          SpecialMenu = 0
          Index = -2147483648
@@ -214,7 +195,7 @@ Begin Menu MainMenuBar
          AutoEnable = True
          Visible = True
       End
-      Begin DesktopMenuItem SudokuSeparator2
+      Begin DesktopMenuItem SudokuSeparator1
          SpecialMenu = 0
          Index = -2147483648
          Text = "-"
@@ -229,6 +210,44 @@ Begin Menu MainMenuBar
          ShortcutKey = "L"
          Shortcut = "Cmd+L"
          MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem SudokuSeparator2
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "-"
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem SudokuShowHints
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kSudokuShowHints"
+         ShortcutKey = "I"
+         Shortcut = "Cmd+I"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem SudokuShowCandidates
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kSudokuShowCandidates"
+         ShortcutKey = "J"
+         Shortcut = "Cmd+J"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+      Begin DesktopMenuItem SudokuSeparator3
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "-"
          AutoEnabled = True
          AutoEnable = True
          Visible = True

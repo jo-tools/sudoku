@@ -11,14 +11,14 @@ Begin DesktopWindow MainWindow
    HasMaximizeButton=   False
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   500
+   Height          =   560
    ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   1342697471
    MenuBarVisible  =   False
-   MinimumHeight   =   500
+   MinimumHeight   =   560
    MinimumWidth    =   560
    Resizeable      =   False
    Title           =   "Sudoku"
@@ -46,11 +46,11 @@ Begin DesktopWindow MainWindow
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   13
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   370
+      Top             =   430
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -106,14 +106,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   14
+      TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#kLabelSudokuStatus"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   428
+      Top             =   488
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -138,14 +138,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   15
+      TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   460
+      Top             =   520
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -172,11 +172,11 @@ Begin DesktopWindow MainWindow
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   310
+      Top             =   275
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -498,16 +498,78 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   11
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   275
+      Top             =   355
       Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
       VisualState     =   0
+      Width           =   120
+   End
+   Begin SudokuCheckbox chkShowCandidates
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "#App.kSudokuShowCandidates"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   380
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   120
+   End
+   Begin SudokuLabel labShow
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   12
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "#kLabelShow"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   330
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
       Width           =   120
    End
 End
@@ -599,7 +661,7 @@ End
 		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		  g.FontSize = 8
 		  
-		  If Me.mShowHints And (Me.SolveCellCandidates.LastIndex >= 0) Then
+		  If Me.mShowCandidates And (Me.SolveCellCandidates.LastIndex >= 0) Then
 		    ' Draw Cell Candidates
 		    Var hintRowSize As Double = (kCellSize - self.SudokuTextFields(0).Height) / 2
 		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
@@ -687,6 +749,16 @@ End
 	#tag MenuHandler
 		Function SudokuRandom() As Boolean Handles SudokuRandom.Action
 		  Self.ActionRandom
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuShowCandidates() As Boolean Handles SudokuShowCandidates.Action
+		  Self.mShowCandidates = (Not Self.mShowCandidates)
+		  Self.RefreshControls
 		  
 		  Return True
 		  
@@ -888,6 +960,7 @@ End
 		      Var json As New JSONItem
 		      json.Value(kJSONKeyApplication) = GetJsonApplication
 		      json.Value(kJSONKeyShowHints) = mShowHints
+		      json.Value(kJSONKeyShowCandidates) = mShowCandidates
 		      
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		      If (randomNumClues > 0) Then
@@ -939,6 +1012,9 @@ End
 		    
 		    If json.HasKey(kJSONKeyShowHints) Then
 		      mShowHints = json.Lookup(kJSONKeyShowHints, mShowHints).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyShowCandidates) Then
+		      mShowCandidates = json.Lookup(kJSONKeyShowCandidates, mShowCandidates).BooleanValue
 		    End If
 		    If json.HasKey(kJSONKeyRandomNumClues) Then
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
@@ -1095,10 +1171,14 @@ End
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
 		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
-		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
 		  Else
 		    Redim SolveCellHints(-1)
-		    ReDim SolveCellCandidates(-1)
+		  End If
+		  
+		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
+		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
+		  Else
+		    Redim SolveCellCandidates(-1)
 		  End If
 		  
 		  Self.Refresh(False)
@@ -1114,7 +1194,9 @@ End
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
 		  chkShowHints.EnsureValue = mShowHints
+		  chkShowCandidates.EnsureValue = mShowCandidates
 		  SudokuShowHints.HasCheckMark = mShowHints
+		  SudokuShowCandidates.HasCheckMark = mShowCandidates
 		  
 		  ' Status
 		  If isEmpty Then
@@ -1318,6 +1400,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mShowCandidates As Boolean = True
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mShowHints As Boolean = True
 	#tag EndProperty
 
@@ -1359,7 +1445,10 @@ End
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showhints", Scope = Private
+	#tag Constant, Name = kJSONKeyShowCandidates, Type = String, Dynamic = False, Default = \"showCandidates", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showHints", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
@@ -1372,6 +1461,12 @@ End
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Vorgaben"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Indices"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Pistas"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelShow, Type = String, Dynamic = True, Default = \"Show", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Anzeigen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Afficher"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Mostrar"
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelSudokuStatus, Type = String, Dynamic = True, Default = \"Sudoku Status", Scope = Private
@@ -1741,6 +1836,21 @@ End
 	#tag Event
 		Sub ValueChanged()
 		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkShowCandidates
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mShowCandidates
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowCandidates = (Not Self.mShowCandidates)
 		  Self.RefreshControls
 		  
 		End Sub
