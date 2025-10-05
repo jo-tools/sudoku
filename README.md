@@ -5,19 +5,21 @@ Sudoku Solver & Generator
 
 ## Description
 
-This project is a complete Sudoku tool written in [Xojo](https://www.xojo.com/).  
+This project is a Sudoku Tool written in [Xojo](https://www.xojo.com/).  
 
 ### Features
 
 - Create a Sudoku puzzle
   - Enter your own Sudoku puzzle
   - Generate a random Sudoku puzzle with a given number of clues
-  - Export as PDF | Print
 - Solve the Sudoku puzzle
   - Interactively edit puzzles with
-    - On the fly validation
-    - Solve next cells indication
+    - On-the-fly validation
+    - Hints
+      - Highlight easiest cells to solve *(Naked Singles, Hidden Singles)*
+      - Display possible cell candidates
   - Let the solver complete the puzzle
+- Export as PDF | Print
 - Save to File | Open from File
 
 
