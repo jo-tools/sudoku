@@ -522,7 +522,18 @@ End
 	#tag EndEvent
 
 	#tag Event
+		Sub DropObject(obj As DragItem, action As DragItem.Types)
+		  If (obj <> Nil) And (obj.FolderItem <> Nil) And (Not obj.FolderItem.IsFolder) And obj.FolderItem.Exists Then
+		    Me.ActionOpen(obj.FolderItem)
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening()
+		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
+		  
 		  ' Layout
 		  Me.Height = sepTop.Top + 2 * kMarginWindow + SudokuTool.N * kCellSize
 		  Me.MinimumHeight = Me.Height
@@ -631,7 +642,7 @@ End
 
 	#tag MenuHandler
 		Function FileOpen() As Boolean Handles FileOpen.Action
-		  Self.ActionOpen
+		  Self.ActionOpen(Nil)
 		  
 		  Return True
 		  
@@ -793,9 +804,12 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionOpen()
+		Private Sub ActionOpen(f As FolderItem)
 		  Try
-		    Var f As FolderItem = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
+		    If (f = Nil) Then
+		      f = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
+		    End If
+		    
 		    If (f = Nil) Then Return
 		    
 		    Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
