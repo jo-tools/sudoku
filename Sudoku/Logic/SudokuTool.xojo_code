@@ -34,9 +34,9 @@ Protected Class SudokuTool
 		  Dim loadedLockedCellIndexes() As Integer
 		  
 		  Try
-		    If (json = Nil) Or (Not json.HasKey("sudoku")) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
+		    If (json = Nil) Or (Not json.HasKey(kJSONKeySudoku)) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
 		    
-		    Var jsonSudoku As JSONItem = json.Child("sudoku")
+		    Var jsonSudoku As JSONItem = json.Child(kJSONKeySudoku)
 		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		    
 		    Var row, col, value As Integer
@@ -47,10 +47,10 @@ Protected Class SudokuTool
 		        Continue
 		      End If
 		      
-		      row = jsonSudokuCell.Lookup("row", -1).IntegerValue - 1
-		      col = jsonSudokuCell.Lookup("col", -1).IntegerValue - 1
-		      value = jsonSudokuCell.Lookup("value", -1).IntegerValue
-		      locked = jsonSudokuCell.Lookup("locked", False).BooleanValue
+		      row = jsonSudokuCell.Lookup(kJSONKeySudokuCellRow, -1).IntegerValue - 1
+		      col = jsonSudokuCell.Lookup(kJSONKeySudokuCellCol, -1).IntegerValue - 1
+		      value = jsonSudokuCell.Lookup(kJSONKeySudokuCellValue, -1).IntegerValue
+		      locked = jsonSudokuCell.Lookup(kJSONKeySudokuCellLocked, False).BooleanValue
 		      
 		      If (row < 0) Or (row >= N) Then
 		        Continue
@@ -70,7 +70,6 @@ Protected Class SudokuTool
 		      dictSudoku.Value(index) = value
 		      If locked And (value > 0) Then loadedLockedCellIndexes.Add(index)
 		    Next
-		    
 		    
 		  Catch err As JSONException
 		    Raise New InvalidArgumentException(kExceptionMessage, 4)
@@ -1363,19 +1362,19 @@ Protected Class SudokuTool
 		      Var index As Integer = row * SudokuTool.N + col
 		      
 		      Var jsonSudokuCell As New JSONItem
-		      jsonSudokuCell.Value("row") = row+1
-		      jsonSudokuCell.Value("col") = col+1
-		      jsonSudokuCell.Value("index") = index
-		      jsonSudokuCell.Value("value") = grid(row, col)
-		      jsonSudokuCell.Value("locked") = (grid(row, col) > 0) And (lockedCellIndexes.IndexOf(index) >= 0)
+		      jsonSudokuCell.Value(kJSONKeySudokuCellRow) = row+1
+		      jsonSudokuCell.Value(kJSONKeySudokuCellCol) = col+1
+		      jsonSudokuCell.Value(kJSONKeySudokuCellIndex) = index
+		      jsonSudokuCell.Value(kJSONKeySudokuCellValue) = grid(row, col)
+		      jsonSudokuCell.Value(kJSONKeySudokuCellLocked) = (grid(row, col) > 0) And (lockedCellIndexes.IndexOf(index) >= 0)
 		      
 		      jsonSudoku.Add(jsonSudokuCell)
 		    Next
 		  Next
 		  
 		  Var json As New JSONItem
-		  json.Value("author") = author
-		  json.Value("sudoku") = jsonSudoku
+		  json.Value(kJSONKeyAuthor) = author
+		  json.Value(kJSONKeySudoku) = jsonSudoku
 		  
 		  Return json
 		  
@@ -1421,6 +1420,27 @@ Protected Class SudokuTool
 		Private solveStack() As SolveMove
 	#tag EndProperty
 
+
+	#tag Constant, Name = kJSONKeyAuthor, Type = String, Dynamic = False, Default = \"author", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudoku, Type = String, Dynamic = False, Default = \"sudoku", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudokuCellCol, Type = String, Dynamic = False, Default = \"col", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudokuCellIndex, Type = String, Dynamic = False, Default = \"index", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudokuCellLocked, Type = String, Dynamic = False, Default = \"locked", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudokuCellRow, Type = String, Dynamic = False, Default = \"row", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudokuCellValue, Type = String, Dynamic = False, Default = \"value", Scope = Private
+	#tag EndConstant
 
 	#tag Constant, Name = kSolution, Type = String, Dynamic = True, Default = \"Solution", Scope = Private
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"L\xC3\xB6sung"
