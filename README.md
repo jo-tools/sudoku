@@ -18,6 +18,8 @@ This project is a complete Sudoku tool written in [Xojo](https://www.xojo.com/).
     - On the fly validation
     - Solve next cells indication
   - Let the solver complete the puzzle
+- Save to File | Open from File
+
 
 ### Logic
 *The solver uses a classic backtracking algorithm with strategies and rule checking to guarantee correct solutions. Random puzzle generation is based on creating a full valid grid, applying digit shuffling, and then removing cells to reach the desired clue count while enforcing a unique solution.*

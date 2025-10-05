@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopWindow Window1
+Begin DesktopWindow MainWindow
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF
    Composite       =   False
@@ -12,7 +12,7 @@ Begin DesktopWindow Window1
    HasMinimizeButton=   True
    HasTitleBar     =   True
    Height          =   500
-   ImplicitInstance=   True
+   ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
@@ -515,6 +515,13 @@ End
 
 #tag WindowCode
 	#tag Event
+		Sub Closing()
+		  Me.DocumentClose
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening()
 		  ' Layout
 		  Me.Height = sepTop.Top + 2 * kMarginWindow + SudokuTool.N * kCellSize
@@ -526,9 +533,6 @@ End
 		  ' Init Sudoku
 		  Me.Sudoku = New SudokuTool
 		  Me.SudokuNumberFieldsInit
-		  
-		  ' Start with a Random Sudoku
-		  Me.ActionRandom
 		  
 		End Sub
 	#tag EndEvent
@@ -544,10 +548,10 @@ End
 		    End If
 		  #EndIf
 		  
-		  If Self.mShowHints And (Self.SolveCellHints.LastIndex >= 0) Then
+		  If Me.mShowHints And (Me.SolveCellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    For Each h As SudokuTool.SolveCellHint In Self.SolveCellHints
+		    For Each h As SudokuTool.SolveCellHint In Me.SolveCellHints
 		      Select Case h.SolveHint
 		      Case SudokuTool.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
@@ -585,7 +589,16 @@ End
 
 	#tag MenuHandler
 		Function FileExportPDF() As Boolean Handles FileExportPDF.Action
-		  Self.ExportPDF
+		  Self.ActionExportPDF
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function FileOpen() As Boolean Handles FileOpen.Action
+		  Self.ActionOpen
 		  
 		  Return True
 		  
@@ -595,6 +608,15 @@ End
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
 		  Self.Print
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function FileSaveAs() As Boolean Handles FileSaveAs.Action
+		  Self.ActionSave
 		  
 		  Return True
 		  
@@ -650,54 +672,14 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionEmpty()
-		  Self.Sudoku.ClearGrid
-		  Self.ShowSudoku
+		  Me.Sudoku.ClearGrid
+		  Me.ShowSudoku
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionLock()
-		  ' Lock current state
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
-		      
-		      SudokuTextFields(index).Lock = (val > 0)
-		    Next
-		  Next
-		  
-		  Me.RefreshControls
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ActionRandom()
-		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		  Call Self.Sudoku.GenerateRandomPuzzle(numClues)
-		  Self.ShowSudoku
-		  Self.ActionLock
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ActionSolve()
-		  ' Sanity Check
-		  If (Not Self.Sudoku.IsSolvable) Then Return
-		  
-		  ' Solve and Show
-		  Call Self.Sudoku.Solve
-		  Self.ShowSudoku
-		  Self.ActionLock
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ExportPDF()
+		Private Sub ActionExportPDF()
 		  ' Show Save File Dialog
 		  Var filterPDF As New FileType
 		  filterPDF.Name = "PDF"
@@ -758,6 +740,168 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub ActionLock()
+		  ' Lock current state
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      
+		      If (value > 0) Then
+		        SudokuTextFields(index).Lock = (value > 0)
+		        Me.Sudoku.SetGridCellLocked(row, col)
+		      End If
+		    Next
+		  Next
+		  
+		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionOpen()
+		  Try
+		    Var f As FolderItem = FolderItem.ShowOpenFileDialog(SudokuFileTypeGroup.Sudoku)
+		    If (f = Nil) Then Return
+		    
+		    Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		    
+		    If (newSudoku <> Nil) Then
+		      Me.Sudoku = newSudoku
+		      Me.ShowSudoku
+		    Else
+		      Me.Sudoku.ClearGrid
+		      Me.ShowSudoku
+		    End If
+		    
+		  Catch e As IOException
+		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
+		    
+		  End Try
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionRandom()
+		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		  Call Me.Sudoku.GenerateRandomPuzzle(numClues)
+		  Me.ShowSudoku
+		  Me.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionSave()
+		  Try
+		    Var suggestedFilename As String = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"
+		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
+		    If (f = Nil) Then Return
+		    
+		    Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		    
+		  Catch e As IOException
+		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
+		    
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionSolve()
+		  ' Sanity Check
+		  If (Not Me.Sudoku.IsSolvable) Then Return
+		  
+		  ' Solve and Show
+		  Call Me.Sudoku.Solve
+		  Me.ShowSudoku
+		  Me.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DocumentClose()
+		  Try
+		    Var f As FolderItem = GetUsersCurrentStateFile(True)
+		    If (f <> Nil) Then
+		      Call Me.Sudoku.SaveTo(f, kURL_Repository)
+		    End If
+		    
+		  Catch err As IOException
+		    'Silently ignore
+		    
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DocumentOpen(f As FolderItem)
+		  Try
+		    If (f = Nil) Then
+		      f = GetUsersCurrentStateFile(False)
+		    End If
+		    
+		    
+		    If (f <> Nil) Then
+		      Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		      
+		      If (newSudoku <> Nil) Then
+		        Me.Sudoku = newSudoku
+		        Me.ShowSudoku
+		        Return
+		      end if
+		    End If
+		    
+		  Catch err As IOException
+		    ' Silently ignore
+		    
+		  Finally
+		    ' Start with a Random Sudoku
+		    Me.ActionRandom
+		    
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetUsersCurrentStateFile(tryCreate As Boolean) As FolderItem
+		  Try
+		    Var f As FolderItem = SpecialFolder.ApplicationData
+		    If (f = Nil) Or (Not f.IsFolder) Or (Not f.Exists) Then Return Nil
+		    
+		    f = f.Child(App.kBundleIdentifier)
+		    If (f = Nil) Then Return Nil
+		    
+		    If (Not f.Exists) Then
+		      If (Not tryCreate) Then Return Nil
+		      f.CreateFolder
+		    End If
+		    
+		    
+		    f = f.Child("currentstate.sudoku")
+		    If (f = Nil) Then Return Nil
+		    
+		    If f.IsFolder Or (Not f.Exists) Then
+		      if (not tryCreate) then Return Nil
+		    End If
+		    
+		    Return f
+		    
+		  Catch err As RuntimeException
+		    'ignore
+		    
+		  End Try
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
 		  For row As Integer = 0 To SudokuTool.N-1
@@ -786,7 +930,7 @@ End
 		  If (g = Nil) Then Return
 		  
 		  ' Draw Sudoku
-		  Self.Sudoku.DrawInto(g)
+		  Me.Sudoku.DrawInto(g)
 		  
 		  
 		End Sub
@@ -862,12 +1006,13 @@ End
 		      
 		      SudokuTextFields(index).Lock = False
 		      
-		      Var val As Integer = Me.Sudoku.GetGridCell(row, col)
-		      If val = 0 Then
+		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      If value = 0 Then
 		        SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
-		        SudokuTextFields(index).Text = val.ToString
+		        SudokuTextFields(index).Text = value.ToString
+		        SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
