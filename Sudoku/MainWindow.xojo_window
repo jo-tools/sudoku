@@ -497,7 +497,7 @@ Begin DesktopWindow MainWindow
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
-      Scope           =   0
+      Scope           =   2
       TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
@@ -605,7 +605,6 @@ End
 		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
 		    
 		    For Each h As SudokuTool.SolveCellCandidate In Me.SolveCellCandidates
-		      if h.Row = 0 and h.Col = 0 then break
 		      For Each candidate As Int8 In h.Candidates
 		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
 		        
@@ -890,6 +889,11 @@ End
 		      json.Value(kJSONKeyApplication) = GetJsonApplication
 		      json.Value(kJSONKeyShowHints) = mShowHints
 		      
+		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		      If (randomNumClues > 0) Then
+		        json.Value(kJSONKeyRandomNumClues) = randomNumClues
+		      End If
+		      
 		      Var jsonOptions As New JSONOptions
 		      jsonOptions.Compact = False
 		      
@@ -935,6 +939,17 @@ End
 		    
 		    If json.HasKey(kJSONKeyShowHints) Then
 		      mShowHints = json.Lookup(kJSONKeyShowHints, mShowHints).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyRandomNumClues) Then
+		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		      randomNumClues = json.Lookup(kJSONKeyRandomNumClues, randomNumClues).IntegerValue
+		      If (lstNumClues.SelectedRowText <> randomNumClues.ToString) Then
+		        Try
+		          lstNumClues.SelectRowWithText(randomNumClues.ToString)
+		        Catch err As InvalidArgumentException
+		          ' Silently ignore
+		        End Try
+		      End If
 		    End If
 		    
 		    
@@ -1339,6 +1354,9 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyApplicationVersion, Type = String, Dynamic = False, Default = \"version", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showhints", Scope = Private
