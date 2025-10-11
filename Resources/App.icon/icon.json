@@ -1,16 +1,25 @@
 {
   "fill" : {
-    "automatic-gradient" : "srgb:0.06867,0.14745,0.19872,1.00000"
+    "linear-gradient" : [
+      "srgb:0.09020,0.19216,0.25882,1.00000",
+      "srgb:0.05882,0.12549,0.17255,1.00000"
+    ]
   },
   "groups" : [
     {
       "layers" : [
         {
-          "glass" : false,
-          "image-name" : "AppIcon_2048.png",
-          "name" : "AppIcon_2048",
+          "fill" : "none",
+          "glass-specializations" : [
+            {
+              "appearance" : "light",
+              "value" : false
+            }
+          ],
+          "image-name" : "Sudoku.svg",
+          "name" : "Sudoku",
           "position" : {
-            "scale" : 0.62,
+            "scale" : 1.25,
             "translation-in-points" : [
               0,
               0
@@ -18,12 +27,14 @@
           }
         }
       ],
+      "lighting" : "individual",
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.5
       },
+      "specular" : false,
       "translucency" : {
-        "enabled" : true,
+        "enabled" : false,
         "value" : 0.5
       }
     }
