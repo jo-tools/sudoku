@@ -10,3 +10,5 @@ actool \
 	--enable-icon-stack-fallback-generation=disabled \
 	./Assets/Assets.xcassets \
 	./Assets/App.icon
+
+iconutil -c icns -o ./App.icns ./Assets/Assets.xcassets/App.iconset
