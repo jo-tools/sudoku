@@ -8,4 +8,5 @@ actool \
 	--app-icon App \
 	--output-partial-info-plist /dev/null \
 	--enable-icon-stack-fallback-generation=disabled \
-	./App.icon
+	./Assets/Assets.xcassets \
+	./Assets/App.icon
