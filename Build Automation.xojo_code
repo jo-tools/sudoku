@@ -126,6 +126,7 @@
 					Subdirectory = 
 					FolderItem = Li4vUmVzb3VyY2VzL0Fzc2V0cy5jYXI=
 					FolderItem = Li4vUmVzb3VyY2VzL0FwcC5pY25z
+					FolderItem = Li4vUmVzb3VyY2VzL1N1ZG9rdS5pY25z
 				End
 				Begin SignProjectStep Sign
 				  DeveloperID=

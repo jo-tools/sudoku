@@ -1,6 +1,9 @@
 #!/bin/sh
 #
 
+# Build Assets.car
+# by combining Assets.xcassets (Accent Color, App Icon)
+# and App.icon (Icon Composer, macOS Tahoe App Icon)
 actool \
 	--compile . \
 	--platform macosx \
@@ -11,4 +14,8 @@ actool \
 	./Assets/Assets.xcassets \
 	./Assets/App.icon
 
+# App ICNS
 iconutil -c icns -o ./App.icns ./Assets/Assets.xcassets/App.iconset
+
+# Sudoku ICNS - DocumentIcon in FileTypeGroup 'Sudoku'
+iconutil -c icns -o ./Sudoku.icns ./Assets/Assets.xcassets/Sudoku.iconset
