@@ -10,6 +10,10 @@ Debug*/Debug*\ Libs
 *.xojo_uistate
 *.obsolete
 
+# Xcode
+xcuserdata/
+*.xcworkspace
+
 # General
 .DS_Store
 Thumbs.db
