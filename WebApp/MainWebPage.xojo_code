@@ -941,8 +941,6 @@ End
 #tag Events cnvSudoku
 	#tag Event
 		Sub Paint(g As WebGraphics)
-		  Const sepTopTop = 0
-		  
 		  If Self.mShowHints And (Self.SolveCellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
@@ -950,10 +948,10 @@ End
 		      Select Case h.SolveHint
 		      Case SudokuTool.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
-		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTopTop + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
 		      Case SudokuTool.SolveHint.HiddenSingle
 		        g.DrawingColor = colSolveHintHiddenSingle
-		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTopTop + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
 		      End Select
 		    Next
 		  End If
@@ -963,9 +961,9 @@ End
 		  g.PenSize = 1
 		  For i As Integer = 1 To SudokuTool.N-1 ' skip outer border (0 and N)
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, sepTopTop + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTopTop + kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, kMarginWindow + i * kCellSize)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, sepTopTop + kMarginWindow, kMarginWindow + i * kCellSize, sepTopTop + kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize, kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize)
 		  Next
 		  
 		  ' Draw thicker red 3x3 block lines on top
@@ -973,9 +971,9 @@ End
 		  g.PenSize = 2
 		  For i As Integer = 0 To SudokuTool.N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTopTop + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, sepTopTop + kMarginWindow + i * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTopTop + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTopTop + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
 		  Next
 		  
 		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
@@ -994,16 +992,16 @@ End
 		        Select Case candidate
 		        Case Is <= 4
 		          Var adjustX As Double = (kCellSize/4) /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + adjustY)
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, kMarginWindow + h.Row * kCellSize + adjustY)
 		        Case 5
 		          Var adjustX As Double = hintRowSize /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
 		        Case 6
 		          Var adjustX As Double = hintRowSize /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
 		        Case Is >= 7
 		          Var adjustX As Double = (kCellSize/3) /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY - 1)
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY - 1)
 		        End Select
 		      Next
 		    Next
