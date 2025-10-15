@@ -6,7 +6,7 @@ Begin WebPage MainWebPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   600
+   Height          =   670
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,7 +20,7 @@ Begin WebPage MainWebPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   600
+   MinimumHeight   =   670
    MinimumWidth    =   800
    PanelIndex      =   0
    ScaleFactor     =   0.0
@@ -42,7 +42,7 @@ Begin WebPage MainWebPage
       Image           =   1252120575
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   20
+      Left            =   0
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
@@ -74,7 +74,7 @@ Begin WebPage MainWebPage
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   95
+      Left            =   75
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
@@ -94,7 +94,7 @@ Begin WebPage MainWebPage
       Top             =   24
       Underline       =   True
       Visible         =   True
-      Width           =   200
+      Width           =   100
       _mPanelIndex    =   -1
    End
    Begin WebLabel labAppVersion
@@ -103,12 +103,12 @@ Begin WebPage MainWebPage
       CSSClasses      =   ""
       Enabled         =   True
       FontName        =   ""
-      FontSize        =   0.0
+      FontSize        =   12.0
       Height          =   28
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
-      Left            =   95
+      Left            =   75
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
@@ -128,7 +128,7 @@ Begin WebPage MainWebPage
       Top             =   52
       Underline       =   False
       Visible         =   True
-      Width           =   200
+      Width           =   100
       _mPanelIndex    =   -1
    End
    Begin WebLabel labThankYou
@@ -155,7 +155,7 @@ Begin WebPage MainWebPage
       Scope           =   2
       TabIndex        =   1
       TabStop         =   True
-      Text            =   "#kLabelThanks"
+      Text            =   "#Translations.kLabelThanks"
       TextAlignment   =   3
       TextColor       =   &c79797900
       Tooltip         =   ""
@@ -189,7 +189,7 @@ Begin WebPage MainWebPage
       Scope           =   2
       TabIndex        =   3
       TabStop         =   True
-      Text            =   "#kLabelContact"
+      Text            =   "#Translations.kLabelContact"
       TextAlignment   =   1
       TextColor       =   colAppLabel
       Tooltip         =   "#SudokuTool.kEmail_Contact"
@@ -229,20 +229,660 @@ Begin WebPage MainWebPage
       _mPanelIndex    =   -1
       _ProtectImage   =   False
    End
+   Begin WebCanvas cnvSudoku
+      ControlID       =   ""
+      CSSClasses      =   ""
+      DiffEngineDisabled=   False
+      Enabled         =   True
+      Height          =   580
+      Index           =   -2147483648
+      indicator       =   0
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   6
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   90
+      Visible         =   True
+      Width           =   580
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnEmpty
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "#Translations.kSudokuEmpty"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   5
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   7
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   110
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin WebPopupMenu lstNumClues
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      InitialValue    =   ""
+      LastAddedRowIndex=   0
+      LastRowIndex    =   0
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      RowCount        =   0
+      Scope           =   2
+      SelectedRowIndex=   0
+      SelectedRowText =   ""
+      TabIndex        =   8
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   184
+      Visible         =   True
+      Width           =   75
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labNumClues
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Italic          =   False
+      Left            =   683
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   9
+      TabStop         =   True
+      Text            =   "#kLabelNumClues"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   184
+      Underline       =   False
+      Visible         =   True
+      Width           =   97
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnRandom
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "#kSudokuRandom"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   10
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   230
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnLock
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "#kSudokuLock"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   False
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   2
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   11
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   308
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labShow
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      indicator       =   0
+      Italic          =   False
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   12
+      TabStop         =   True
+      Text            =   "#kLabelShow"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   370
+      Underline       =   False
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin SudokuCheckbox chkShowHints
+      Caption         =   "#kSudokuShowHints"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   34
+      Indeterminate   =   False
+      Index           =   -2147483648
+      indicator       =   0
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   13
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   407
+      Value           =   False
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin SudokuCheckbox chkShowCandidates
+      Caption         =   "#kSudokuShowCandidates"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      Height          =   34
+      Indeterminate   =   False
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   14
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   449
+      Value           =   False
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin WebButton btnSolve
+      AllowAutoDisable=   False
+      Cancel          =   False
+      Caption         =   "#kSudokuSolve"
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Default         =   True
+      Enabled         =   True
+      Height          =   38
+      Index           =   -2147483648
+      Indicator       =   1
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Outlined        =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   15
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   516
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labStatusTitle
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   12.0
+      Height          =   20
+      Index           =   -2147483648
+      Indicator       =   0
+      Italic          =   False
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   16
+      TabStop         =   True
+      Text            =   "#kLabelSudokuStatus"
+      TextAlignment   =   2
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   584
+      Underline       =   False
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labStatus
+      Bold            =   True
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   38
+      Index           =   -2147483648
+      indicator       =   0
+      Italic          =   False
+      Left            =   600
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   17
+      TabStop         =   True
+      Text            =   "..."
+      TextAlignment   =   2
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   612
+      Underline       =   False
+      Visible         =   True
+      Width           =   180
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
 #tag WindowCode
-	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Kontakt"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Contact"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
+	#tag Event
+		Sub Opening()
+		  Me.Sudoku = New SudokuTool
+		  
+		  Redim SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
+		  
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      
+		      Dim t As New SudokuNumberField
+		      
+		      SudokuTextFields(index) = t
+		      
+		      t.RowIndex = row
+		      t.ColumnIndex = col
+		      t.PositionIndex = index
+		      
+		      t.TextAlignment = TextAlignments.Center
+		      //t.FieldType = WebTextField.FieldTypes.Number
+		      t.MaximumCharactersAllowed = 1
+		      t.Visible = True
+		      t.Enabled = True
+		      t.Width = 40
+		      t.Height = 40
+		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) /2)
+		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) /2)
+		      t.Style.BackgroundColor = &cffffffff
+		      
+		      
+		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
+		      
+		      
+		      Me.AddControl(t)
+		    Next
+		  Next
+		  
+		  self.ActionRandom
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h21
+		Private Sub ActionEmpty()
+		  Me.Sudoku.ClearGrid
+		  Me.ShowSudoku
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionLock()
+		  ' Lock current state
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      
+		      If (value > 0) Then
+		        SudokuTextFields(index).Lock = (value > 0)
+		        Me.Sudoku.SetGridCellLocked(row, col)
+		      End If
+		    Next
+		  Next
+		  
+		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionRandom()
+		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		  Call Me.Sudoku.GenerateRandomPuzzle(numClues)
+		  Me.ShowSudoku
+		  Me.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionSolve()
+		  ' Sanity Check
+		  If (Not Me.Sudoku.IsSolvable) Then Return
+		  
+		  ' Solve and Show
+		  Call Me.Sudoku.Solve
+		  Me.ShowSudoku
+		  Me.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function HasUnlockedCells() As Boolean
+		  ' Are there any unlocked cells with digits?
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      
+		      If SudokuTextFields(index).IsLocked Then Continue
+		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
+		      
+		      ' Found a non-empty, unlocked cell
+		      Return True
+		    Next
+		  Next
+		  
+		  Return False
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub RefreshControls()
+		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
+		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
+		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.Sudoku.IsSolvable)
+		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
+		  
+		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
+		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
+		  Else
+		    Redim SolveCellHints(-1)
+		  End If
+		  
+		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
+		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
+		  Else
+		    Redim SolveCellCandidates(-1)
+		  End If
+		  
+		  cnvSudoku.Refresh
+		  
+		  
+		  ' Controls
+		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
+		  btnEmpty.Enabled = (Not isEmpty)
+		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.Sudoku.SolveEnabled
+		  
+		  '' Menu
+		  'SudokuEmpty.Enabled = btnEmpty.Enabled
+		  'SudokuRandom.Enabled = btnRandom.Enabled
+		  'SudokuLock.Enabled = btnLock.Enabled
+		  'SudokuSolve.Enabled = btnSolve.Enabled
+		  chkShowHints.EnsureValue = mShowHints
+		  chkShowCandidates.EnsureValue = mShowCandidates
+		  'SudokuShowHints.HasCheckMark = mShowHints
+		  'SudokuShowCandidates.HasCheckMark = mShowCandidates
+		  
+		  ' Status
+		  If isEmpty Then
+		    labStatus.Text = kSudokuStatusEmpty
+		    labStatus.TextColor = Color.Gray
+		    Return
+		  End If
+		  
+		  If (Not isValid) Then
+		    labStatus.Text = kSudokuStatusInvalid
+		    labStatus.TextColor = colStatusInvalid
+		    Return
+		  End If
+		  
+		  If isSolved Then
+		    labStatus.Text = kSudokuStatusSolved
+		    labStatus.TextColor = colStatusSolved
+		    Return
+		  End If
+		  
+		  If isSolvable Then
+		    labStatus.Text = kSudokuStatusValid
+		  Else
+		    labStatus.Text = kSudokuStatusValidNotSolvable
+		  End If
+		  labStatus.TextColor = colStatusValid
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ShowSudoku()
+		  mIsShowingSudoku = True
+		  
+		  Var focusIndex As Integer = -1
+		  
+		  ' Put Values into SudokuTextFields
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      
+		      SudokuTextFields(index).Lock = False
+		      
+		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      If value = 0 Then
+		        SudokuTextFields(index).Text = ""
+		        If (focusIndex < 0) Then focusIndex = index
+		      Else
+		        SudokuTextFields(index).Text = value.ToString
+		        SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
+		      End If
+		    Next
+		  Next
+		  
+		  ' Focus into first empty field
+		  If (focusIndex < 0) Then
+		    self.SetFocus 'move Focus out of TextFields
+		  Else
+		    SudokuTextFields(focusIndex).SetFocus
+		  End If
+		  
+		  Me.RefreshControls
+		  
+		  mIsShowingSudoku = False
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField)
+		  If mIsShowingSudoku Then Return
+		  
+		  If sender.IsLocked Then
+		    ' Make sure original grid value is not being overwritten
+		    ' we don't set .Readonly to get arrow navigation
+		    Var gridVal As String = Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex).ToString
+		    If (gridVal = "0") Then gridVal = ""
+		    If (sender.Text <> gridVal) Then sender.Text = gridVal
+		    Return
+		  End If
+		  
+		  ' Update Number if necessary
+		  Var currentNumber As Integer = sender.Text.ToInteger
+		  
+		  If (currentNumber < 1) And (sender.Text <> "") Then
+		    sender.Text = ""
+		  End If
+		  
+		  If (Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
+		  
+		  Me.Sudoku.SetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		  
+		  ' Update Status
+		  Me.RefreshControls
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private mIsShowingSudoku As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mShowCandidates As Boolean = True
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mShowHints As Boolean = True
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SolveCellCandidates() As SudokuTool.SolveCellCandidate
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SolveCellHints() As SudokuTool.SolveCellHint
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private Sudoku As SudokuTool
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SudokuTextFields() As SudokuNumberField
+	#tag EndProperty
+
+
+	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"60", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kLabelThanks, Type = String, Dynamic = True, Default = \"Would you like to say \'Thank you\'\?", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"M\xC3\xB6chten Sie \'Danke\' sagen\?"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vous souhaitez dire \'merci\'\?"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"\xC2\xBFQuiere dar las gracias\?"
+	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
 	#tag EndConstant
 
 
@@ -294,6 +934,170 @@ End
 		  #Pragma Unused y
 		  
 		  Session.GoToURL(SudokuTool.kURL_Paypal)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events cnvSudoku
+	#tag Event
+		Sub Paint(g As WebGraphics)
+		  '#Pragma unused areas
+		  Const sepTopTop = 0
+		  
+		  If self.mShowHints And (self.SolveCellHints.LastIndex >= 0) Then
+		    ' Draw next solvable cells
+		    g.PenSize = 4
+		    For Each h As SudokuTool.SolveCellHint In self.SolveCellHints
+		      Select Case h.SolveHint
+		      Case SudokuTool.SolveHint.NakedSingle
+		        g.DrawingColor = colSolveHintNakedSingle
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTopTop + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		      Case SudokuTool.SolveHint.HiddenSingle
+		        g.DrawingColor = colSolveHintHiddenSingle
+		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTopTop + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
+		      End Select
+		    Next
+		  End If
+		  
+		  ' Draw all thin "hair" lines first (gray)
+		  g.DrawingColor = colGridlineHair
+		  g.PenSize = 1
+		  For i As Integer = 1 To SudokuTool.N-1 ' skip outer border (0 and N)
+		    ' Horizontal
+		    g.DrawLine(kMarginWindow, sepTopTop + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTopTop + kMarginWindow + i * kCellSize)
+		    ' Vertical
+		    g.DrawLine(kMarginWindow + i * kCellSize, sepTopTop + kMarginWindow, kMarginWindow + i * kCellSize, sepTopTop + kMarginWindow + SudokuTool.N * kCellSize)
+		  Next
+		  
+		  ' Draw thicker red 3x3 block lines on top
+		  g.DrawingColor = colGridline
+		  g.PenSize = 2
+		  For i As Integer = 0 To SudokuTool.N Step 3
+		    ' Horizontal
+		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTopTop + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, sepTopTop + kMarginWindow + i * kCellSize - g.PenSize/2)
+		    ' Vertical
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTopTop + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTopTop + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
+		  Next
+		  
+		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
+		  g.FontSize = 8
+		  
+		  If Self.mShowCandidates And (Self.SolveCellCandidates.LastIndex >= 0) Then
+		    ' Draw Cell Candidates
+		    g.TextAlignment = TextAlignments.Center
+		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
+		    Var adjustY As Double = (hintRowSize/2) + 3
+		    
+		    For Each h As SudokuTool.SolveCellCandidate In self.SolveCellCandidates
+		      For Each candidate As Int8 In h.Candidates
+		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
+		        
+		        Select Case candidate
+		        Case Is <= 4
+		          Var adjustX As Double = (kCellSize/4) /2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + adjustY)
+		        Case 5
+		          Var adjustX As Double = hintRowSize /2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		        Case 6
+		          Var adjustX As Double = hintRowSize /2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		        Case Is >= 7
+		          Var adjustX As Double = (kCellSize/3) /2
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		        End Select
+		      Next
+		    Next
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Shown()
+		  Me.Width = 2 * kMarginWindow + 9 * kCellSize
+		  me.Height = 2 * kMarginWindow + 9 * kCellSize
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnEmpty
+	#tag Event
+		Sub Pressed()
+		  self.ActionEmpty
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstNumClues
+	#tag Event
+		Sub Opening()
+		  Me.RemoveAllRows
+		  
+		  Me.AddRow("24")
+		  Me.AddRow("28")
+		  Me.AddRow("32")
+		  Me.AddRow("40")
+		  Me.AddRow("48")
+		  Me.AddRow("56")
+		  Me.AddRow("64")
+		  
+		  Me.SelectedRowIndex = 3
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnRandom
+	#tag Event
+		Sub Pressed()
+		  Self.ActionRandom
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnLock
+	#tag Event
+		Sub Pressed()
+		  self.ActionLock
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkShowHints
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mShowHints
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkShowCandidates
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowCandidates = (Not Self.mShowCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mShowCandidates
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnSolve
+	#tag Event
+		Sub Pressed()
+		  Self.ActionSolve
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
