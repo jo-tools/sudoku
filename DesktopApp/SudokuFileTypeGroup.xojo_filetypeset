@@ -1,7 +1,7 @@
 #tag FileTypeSet
 	#tag FileType
 		CodeName=Sudoku
-		DocIcon=Sudoku.xojo_resources;&h0
+		DocIcon=SudokuDesktop.xojo_resources;&h0
 		Extension=.sudoku
 		Flags=&h5
 		MacCreator=
