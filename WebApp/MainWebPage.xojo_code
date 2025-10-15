@@ -6,7 +6,7 @@ Begin WebPage MainWebPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   400
+   Height          =   600
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,26 +20,285 @@ Begin WebPage MainWebPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   400
-   MinimumWidth    =   600
+   MinimumHeight   =   600
+   MinimumWidth    =   800
    PanelIndex      =   0
    ScaleFactor     =   0.0
    TabIndex        =   0
-   Title           =   "Untitled"
+   Title           =   "Sudoku"
    Top             =   0
    Visible         =   True
-   Width           =   600
+   Width           =   800
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mName          =   ""
    _mPanelIndex    =   -1
+   Begin WebImageViewer imgAppIcon
+      ControlID       =   ""
+      CSSClasses      =   "mouse-cursor-pointer"
+      DisplayMode     =   0
+      Enabled         =   True
+      Height          =   64
+      Image           =   1252120575
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      SVGData         =   ""
+      TabIndex        =   0
+      TabStop         =   True
+      Tooltip         =   "#kURL_Repository"
+      Top             =   20
+      URL             =   ""
+      Visible         =   True
+      Width           =   64
+      _mPanelIndex    =   -1
+      _ProtectImage   =   False
+   End
+   Begin WebLabel labAppName
+      Bold            =   True
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   28
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   95
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   2
+      TabStop         =   True
+      Text            =   "Sudoku"
+      TextAlignment   =   0
+      TextColor       =   colAppLabel
+      Tooltip         =   ""
+      Top             =   24
+      Underline       =   False
+      Visible         =   True
+      Width           =   200
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labAppVersion
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   28
+      Index           =   -2147483648
+      Indicator       =   0
+      Italic          =   False
+      Left            =   95
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   5
+      TabStop         =   True
+      Text            =   "AppVersion"
+      TextAlignment   =   0
+      TextColor       =   &c000000FF
+      Tooltip         =   ""
+      Top             =   52
+      Underline       =   False
+      Visible         =   True
+      Width           =   200
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labThankYou
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   ""
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   10.0
+      Height          =   24
+      Index           =   -2147483648
+      Indicator       =   0
+      Italic          =   False
+      Left            =   590
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   1
+      TabStop         =   True
+      Text            =   "#kLabelThanks"
+      TextAlignment   =   3
+      TextColor       =   &c79797900
+      Tooltip         =   ""
+      Top             =   20
+      Underline       =   False
+      Visible         =   True
+      Width           =   190
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labContact
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   "mouse-cursor-pointer"
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   10.0
+      Height          =   26
+      Index           =   -2147483648
+      Indicator       =   0
+      Italic          =   False
+      Left            =   615
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   3
+      TabStop         =   True
+      Text            =   "#kLabelContact"
+      TextAlignment   =   1
+      TextColor       =   colLinkLabel
+      Tooltip         =   "#kEmail_Contact"
+      Top             =   44
+      Underline       =   True
+      Visible         =   True
+      Width           =   65
+      _mPanelIndex    =   -1
+   End
+   Begin WebImageViewer imgPayPal
+      ControlID       =   ""
+      CSSClasses      =   "mouse-cursor-pointer"
+      DisplayMode     =   0
+      Enabled         =   True
+      Height          =   26
+      Image           =   1158877183
+      Index           =   -2147483648
+      Indicator       =   0
+      Left            =   680
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      LockVertical    =   False
+      PanelIndex      =   0
+      Scope           =   2
+      SVGData         =   ""
+      TabIndex        =   4
+      TabStop         =   True
+      Tooltip         =   "#kURL_Paypal"
+      Top             =   44
+      URL             =   ""
+      Visible         =   True
+      Width           =   100
+      _mPanelIndex    =   -1
+      _ProtectImage   =   False
+   End
 End
 #tag EndWebPage
 
 #tag WindowCode
+	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Kontakt"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Contact"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelThanks, Type = String, Dynamic = True, Default = \"Would you like to say \'Thank you\'\?", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"M\xC3\xB6chten Sie \'Danke\' sagen\?"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vous souhaitez dire \'merci\'\?"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"\xC2\xBFQuiere dar las gracias\?"
+	#tag EndConstant
+
+	#tag Constant, Name = kURL_PayPal, Type = String, Dynamic = False, Default = \"https://paypal.me/jotools", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kURL_Repository, Type = String, Dynamic = False, Default = \"https://github.com/jo-tools/sudoku", Scope = Private
+	#tag EndConstant
+
+
 #tag EndWindowCode
 
+#tag Events imgAppIcon
+	#tag Event
+		Sub Pressed(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
+		  Session.GoToURL(kURL_Repository)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labAppVersion
+	#tag Event
+		Sub Opening()
+		  If (App.Version <> "") Then
+		    Me.Text = App.Version
+		    Return
+		  End If
+		  
+		  Me.Text = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labContact
+	#tag Event
+		Sub Pressed()
+		  Session.GoToURL("mailto:" + kEmail_Contact)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events imgPayPal
+	#tag Event
+		Sub Pressed(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
+		  Session.GoToURL(kURL_Paypal)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="PanelIndex"

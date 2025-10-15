@@ -29,7 +29,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#App.kSudokuSolve"
+      Caption         =   "#Translations.kSudokuSolve"
       Default         =   True
       Enabled         =   True
       FontName        =   "System"
@@ -60,7 +60,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#App.kSudokuEmpty"
+      Caption         =   "#Translations.kSudokuEmpty"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -109,7 +109,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "#kLabelSudokuStatus"
+      Text            =   "#Translations.kLabelSudokuStatus"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
@@ -155,7 +155,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#App.kSudokuLock"
+      Caption         =   "#Translations.kSudokuLock"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -261,7 +261,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "#kLabelThanks"
+      Text            =   "#Translations.kLabelThanks"
       TextAlignment   =   3
       TextColor       =   &c66666600
       Tooltip         =   ""
@@ -325,7 +325,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "#kLabelContact"
+      Text            =   "#Translations.kLabelContact"
       TextAlignment   =   1
       TextColor       =   &c0072CE00
       Tooltip         =   "#kEmail_Contact"
@@ -439,7 +439,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "#kLabelNumClues"
+      Text            =   "#Translations.kLabelNumClues"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
@@ -453,7 +453,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#App.kSudokuRandom"
+      Caption         =   "#Translations.kSudokuRandom"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -483,7 +483,7 @@ Begin DesktopWindow MainWindow
    Begin SudokuCheckbox chkShowHints
       AllowAutoDeactivate=   True
       Bold            =   False
-      Caption         =   "#App.kSudokuShowHints"
+      Caption         =   "#Translations.kSudokuShowHints"
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -513,7 +513,7 @@ Begin DesktopWindow MainWindow
    Begin SudokuCheckbox chkShowCandidates
       AllowAutoDeactivate=   True
       Bold            =   False
-      Caption         =   "#App.kSudokuShowCandidates"
+      Caption         =   "#Translations.kSudokuShowCandidates"
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -562,7 +562,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "#kLabelShow"
+      Text            =   "#Translations.kLabelShow"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
@@ -801,11 +801,11 @@ End
 		  filterPDF.Extensions = ".pdf"
 		  
 		  Var dlg As New SaveFileDialog
-		  dlg.ActionButtonCaption = kSaveDialogExport
-		  dlg.CancelButtonCaption = kSaveDialogCancel
+		  dlg.ActionButtonCaption = Translations.kSaveDialogExport
+		  dlg.CancelButtonCaption = Translations.kSaveDialogCancel
 		  dlg.SuggestedFileName = "Sudoku.pdf"
 		  dlg.Title = "Sudoku"
-		  dlg.PromptText = kSaveDialogPrompt
+		  dlg.PromptText = Translations.kSaveDialogPrompt
 		  dlg.Filter = filterPDF
 		  dlg.InitialFolder = SpecialFolder.Desktop
 		  
@@ -1206,27 +1206,27 @@ End
 		  
 		  ' Status
 		  If isEmpty Then
-		    labStatus.Text = kSudokuStatusEmpty
+		    labStatus.Text = Translations.kSudokuStatusEmpty
 		    labStatus.TextColor = Color.TextColor
 		    Return
 		  End If
 		  
 		  If (Not isValid) Then
-		    labStatus.Text = kSudokuStatusInvalid
+		    labStatus.Text = Translations.kSudokuStatusInvalid
 		    labStatus.TextColor = colStatusInvalid
 		    Return
 		  End If
 		  
 		  If isSolved Then
-		    labStatus.Text = kSudokuStatusSolved
+		    labStatus.Text = Translations.kSudokuStatusSolved
 		    labStatus.TextColor = colStatusSolved
 		    Return
 		  End If
 		  
 		  If isSolvable Then
-		    labStatus.Text = kSudokuStatusValid
+		    labStatus.Text = Translations.kSudokuStatusValid
 		  Else
-		    labStatus.Text = kSudokuStatusValidNotSolvable
+		    labStatus.Text = Translations.kSudokuStatusValidNotSolvable
 		  End If
 		  labStatus.TextColor = colStatusValid
 		  
@@ -1457,85 +1457,7 @@ End
 	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showHints", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Kontakt"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Contact"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
-	#tag EndConstant
-
-	#tag Constant, Name = kLabelNumClues, Type = String, Dynamic = True, Default = \"Clues", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Vorgaben"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Indices"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Pistas"
-	#tag EndConstant
-
-	#tag Constant, Name = kLabelShow, Type = String, Dynamic = True, Default = \"Show", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Anzeigen"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Afficher"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Mostrar"
-	#tag EndConstant
-
-	#tag Constant, Name = kLabelSudokuStatus, Type = String, Dynamic = True, Default = \"Sudoku Status", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sudoku Status"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Sudoku Statut"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Sudoku Estado"
-	#tag EndConstant
-
-	#tag Constant, Name = kLabelThanks, Type = String, Dynamic = True, Default = \"Would you like to say \'Thank you\'\?", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"M\xC3\xB6chten Sie \'Danke\' sagen\?"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vous souhaitez dire \'merci\'\?"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"\xC2\xBFQuiere dar las gracias\?"
-	#tag EndConstant
-
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kSaveDialogCancel, Type = String, Dynamic = True, Default = \"Cancel", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Abbrechen"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Annuler"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Cancelar"
-	#tag EndConstant
-
-	#tag Constant, Name = kSaveDialogExport, Type = String, Dynamic = True, Default = \"Export", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Export"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exportation"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar"
-	#tag EndConstant
-
-	#tag Constant, Name = kSaveDialogPrompt, Type = String, Dynamic = True, Default = \"Export Sudoku as PDF", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sudoku als PDF exportieren"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exporter le Sudoku au format PDF"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar Sudoku como PDF"
-	#tag EndConstant
-
-	#tag Constant, Name = kSudokuStatusEmpty, Type = String, Dynamic = True, Default = \"Empty", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Leer"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vide"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Vac\xC3\xADo"
-	#tag EndConstant
-
-	#tag Constant, Name = kSudokuStatusInvalid, Type = String, Dynamic = True, Default = \"Invalid", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Ung\xC3\xBCltig"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Non valide"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"No v\xC3\xA1lido"
-	#tag EndConstant
-
-	#tag Constant, Name = kSudokuStatusSolved, Type = String, Dynamic = True, Default = \"Solved", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Gel\xC3\xB6st"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"R\xC3\xA9solu"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Resuelto"
-	#tag EndConstant
-
-	#tag Constant, Name = kSudokuStatusValid, Type = String, Dynamic = True, Default = \"Valid", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"G\xC3\xBCltig"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Valide"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"V\xC3\xA1lido"
-	#tag EndConstant
-
-	#tag Constant, Name = kSudokuStatusValidNotSolvable, Type = String, Dynamic = True, Default = \"Valid (not solvable)", Scope = Private
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"G\xC3\xBCltig (nicht l\xC3\xB6sbar)"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Valide (non soluble)"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"V\xC3\xA1lido (sin soluci\xC3\xB3n)"
 	#tag EndConstant
 
 	#tag Constant, Name = kURL_PayPal, Type = String, Dynamic = False, Default = \"https://paypal.me/jotools", Scope = Private

@@ -21,6 +21,7 @@ ColorAsset=colStatusSolved;DesktopApp/Colors/colStatusSolved.xojo_color;&h000000
 ColorAsset=colSolveHintNakedSingle;DesktopApp/Colors/colSolveHintNakedSingle.xojo_color;&h000000006742A7FF;&h0000000052A4A7FF;false
 ColorAsset=colSolveHintHiddenSingle;DesktopApp/Colors/colSolveHintHiddenSingle.xojo_color;&h0000000068C7EFFF;&h0000000052A4A7FF;false
 Folder=Resources;Resources;&h000000005DC5CFFF;&h0000000000000000;false
+Module=Translations;Resources/Translations.xojo_code;&h00000000136F7FFF;&h000000005DC5CFFF;false
 MultiImage=AppIcon_128;Resources/AppIcon_128.xojo_image;&h00000000606B17FF;&h000000005DC5CFFF;false
 MultiImage=PayPal;Resources/PayPal.xojo_image;&h0000000042A75FFF;&h000000005DC5CFFF;false
 Class=SudokuPopupMenu;DesktopApp/Controls/SudokuPopupMenu.xojo_code;&h00000000549D07FF;&h00000000445187FF;false
