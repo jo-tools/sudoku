@@ -606,40 +606,9 @@ End
 		Sub Opening()
 		  Me.Sudoku = New SudokuTool
 		  
-		  Redim SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
+		  Self.SudokuNumberFieldsInit
+		  Self.ActionRandom
 		  
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      
-		      Dim t As New SudokuNumberField
-		      
-		      SudokuTextFields(index) = t
-		      
-		      t.RowIndex = row
-		      t.ColumnIndex = col
-		      t.PositionIndex = index
-		      
-		      t.TextAlignment = TextAlignments.Center
-		      //t.FieldType = WebTextField.FieldTypes.Number
-		      t.MaximumCharactersAllowed = 1
-		      t.Visible = True
-		      t.Enabled = True
-		      t.Width = 40
-		      t.Height = 40
-		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) /2)
-		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) /2)
-		      t.Style.BackgroundColor = &cffffffff
-		      
-		      
-		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
-		      
-		      
-		      Me.AddControl(t)
-		    Next
-		  Next
-		  
-		  self.ActionRandom
 		End Sub
 	#tag EndEvent
 
@@ -742,15 +711,9 @@ End
 		  btnEmpty.Enabled = (Not isEmpty)
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.Sudoku.SolveEnabled
 		  
-		  '' Menu
-		  'SudokuEmpty.Enabled = btnEmpty.Enabled
-		  'SudokuRandom.Enabled = btnRandom.Enabled
-		  'SudokuLock.Enabled = btnLock.Enabled
-		  'SudokuSolve.Enabled = btnSolve.Enabled
+		  ' Show
 		  chkShowHints.EnsureValue = mShowHints
 		  chkShowCandidates.EnsureValue = mShowCandidates
-		  'SudokuShowHints.HasCheckMark = mShowHints
-		  'SudokuShowCandidates.HasCheckMark = mShowCandidates
 		  
 		  ' Status
 		  If isEmpty Then
@@ -815,6 +778,44 @@ End
 		  Me.RefreshControls
 		  
 		  mIsShowingSudoku = False
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SudokuNumberFieldsInit()
+		  Redim SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
+		  
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      
+		      Dim t As New SudokuNumberField
+		      
+		      SudokuTextFields(index) = t
+		      
+		      t.RowIndex = row
+		      t.ColumnIndex = col
+		      t.PositionIndex = index
+		      
+		      t.TextAlignment = TextAlignments.Center
+		      //t.FieldType = WebTextField.FieldTypes.Number
+		      t.MaximumCharactersAllowed = 1
+		      t.Visible = True
+		      t.Enabled = True
+		      t.Width = 40
+		      t.Height = 40
+		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) /2)
+		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) /2)
+		      t.Style.BackgroundColor = &cffffffff
+		      
+		      
+		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
+		      
+		      
+		      Me.AddControl(t)
+		    Next
+		  Next
 		  
 		End Sub
 	#tag EndMethod
@@ -940,13 +941,12 @@ End
 #tag Events cnvSudoku
 	#tag Event
 		Sub Paint(g As WebGraphics)
-		  '#Pragma unused areas
 		  Const sepTopTop = 0
 		  
-		  If self.mShowHints And (self.SolveCellHints.LastIndex >= 0) Then
+		  If Self.mShowHints And (Self.SolveCellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    For Each h As SudokuTool.SolveCellHint In self.SolveCellHints
+		    For Each h As SudokuTool.SolveCellHint In Self.SolveCellHints
 		      Select Case h.SolveHint
 		      Case SudokuTool.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
@@ -987,7 +987,7 @@ End
 		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
 		    Var adjustY As Double = (hintRowSize/2) + 3
 		    
-		    For Each h As SudokuTool.SolveCellCandidate In self.SolveCellCandidates
+		    For Each h As SudokuTool.SolveCellCandidate In Self.SolveCellCandidates
 		      For Each candidate As Int8 In h.Candidates
 		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
 		        
@@ -1017,16 +1017,12 @@ End
 		  me.Height = 2 * kMarginWindow + 9 * kCellSize
 		End Sub
 	#tag EndEvent
-	#tag Event
-		Sub Opening()
-		  
-		End Sub
-	#tag EndEvent
 #tag EndEvents
 #tag Events btnEmpty
 	#tag Event
 		Sub Pressed()
-		  self.ActionEmpty
+		  Self.ActionEmpty
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1059,7 +1055,8 @@ End
 #tag Events btnLock
 	#tag Event
 		Sub Pressed()
-		  self.ActionLock
+		  Self.ActionLock
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
