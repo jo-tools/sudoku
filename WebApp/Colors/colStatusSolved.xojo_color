@@ -1,9 +1,8 @@
 #tag ColorGroup
-	CodeName=colLinkLabel
+	CodeName=colStatusSolved
 	#tag Color
-		Type=1
+		Type=0
 		Platform=3
-		Light=2C2CE100
-		Dark=0096FF00
+		Light=4F8F0000
 	#tag EndColor
 #tag EndColorGroup

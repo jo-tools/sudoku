@@ -201,7 +201,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      Tooltip         =   "#kURL_Repository"
+      Tooltip         =   "#SudokuTool.kURL_Repository"
       Top             =   20
       Transparent     =   False
       Visible         =   True
@@ -232,7 +232,7 @@ Begin DesktopWindow MainWindow
       Text            =   "Sudoku"
       TextAlignment   =   0
       TextColor       =   &c0072D800
-      Tooltip         =   "#kURL_Repository"
+      Tooltip         =   "#SudokuTool.kURL_Repository"
       Top             =   20
       Transparent     =   False
       Underline       =   True
@@ -328,7 +328,7 @@ Begin DesktopWindow MainWindow
       Text            =   "#Translations.kLabelContact"
       TextAlignment   =   1
       TextColor       =   &c0072CE00
-      Tooltip         =   "#kEmail_Contact"
+      Tooltip         =   "#SudokuTool.kEmail_Contact"
       Top             =   54
       Transparent     =   False
       Underline       =   True
@@ -354,7 +354,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
-      Tooltip         =   "#kURL_PayPal"
+      Tooltip         =   "#SudokuTool.kURL_PayPal"
       Top             =   54
       Transparent     =   False
       Visible         =   True
@@ -841,7 +841,7 @@ End
 		  ' PDF MetaData
 		  pdf.Title = "Sudoku"
 		  pdf.Subject = "Sudoku"
-		  pdf.Author = kURL_Repository
+		  pdf.Author = SudokuTool.kURL_Repository
 		  pdf.Creator = "Sudoku " + labAppVersion.Text + " (Xojo " + XojoVersionString + ")"
 		  pdf.Keywords = "Sudoku"
 		  
@@ -1075,7 +1075,7 @@ End
 		  Var jsonApplication As New JSONItem
 		  jsonApplication.Value(kJSONKeyApplicationName) = "Sudoku"
 		  jsonApplication.Value(kJSONKeyApplicationVersion) = labAppVersion.Text.Trim
-		  jsonApplication.Value(kJSONKeyApplicationUrl) = kURL_Repository
+		  jsonApplication.Value(kJSONKeyApplicationUrl) = SudokuTool.kURL_Repository
 		  Return jsonApplication
 		  
 		End Function
@@ -1433,9 +1433,6 @@ End
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
-	#tag EndConstant
-
 	#tag Constant, Name = kJSONKeyApplication, Type = String, Dynamic = False, Default = \"application", Scope = Private
 	#tag EndConstant
 
@@ -1458,12 +1455,6 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kURL_PayPal, Type = String, Dynamic = False, Default = \"https://paypal.me/jotools", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kURL_Repository, Type = String, Dynamic = False, Default = \"https://github.com/jo-tools/sudoku", Scope = Private
 	#tag EndConstant
 
 
@@ -1569,7 +1560,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(kURL_Repository)
+		    System.GotoURL(SudokuTool.kURL_Repository)
 		  End If
 		  
 		End Sub
@@ -1607,7 +1598,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(kURL_Repository)
+		    System.GotoURL(SudokuTool.kURL_Repository)
 		  End If
 		  
 		End Sub
@@ -1679,7 +1670,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL("mailto:" + kEmail_Contact)
+		    System.GotoURL("mailto:" + SudokuTool.kEmail_Contact)
 		  End If
 		End Sub
 	#tag EndEvent
@@ -1713,7 +1704,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(kURL_PayPal)
+		    System.GotoURL(SudokuTool.kURL_PayPal)
 		  End If
 		  
 		End Sub

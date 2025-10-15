@@ -32,7 +32,6 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebImageViewer imgAppIcon
       ControlID       =   ""
@@ -56,7 +55,7 @@ Begin WebPage MainWebPage
       SVGData         =   ""
       TabIndex        =   0
       TabStop         =   True
-      Tooltip         =   "#kURL_Repository"
+      Tooltip         =   "#SudokuTool.kURL_Repository"
       Top             =   20
       URL             =   ""
       Visible         =   True
@@ -67,7 +66,7 @@ Begin WebPage MainWebPage
    Begin WebLabel labAppName
       Bold            =   True
       ControlID       =   ""
-      CSSClasses      =   ""
+      CSSClasses      =   "mouse-cursor-pointer"
       Enabled         =   True
       FontName        =   ""
       FontSize        =   0.0
@@ -91,9 +90,9 @@ Begin WebPage MainWebPage
       Text            =   "Sudoku"
       TextAlignment   =   0
       TextColor       =   colAppLabel
-      Tooltip         =   ""
+      Tooltip         =   "#SudokuTool.kURL_Repository"
       Top             =   24
-      Underline       =   False
+      Underline       =   True
       Visible         =   True
       Width           =   200
       _mPanelIndex    =   -1
@@ -192,8 +191,8 @@ Begin WebPage MainWebPage
       TabStop         =   True
       Text            =   "#kLabelContact"
       TextAlignment   =   1
-      TextColor       =   colLinkLabel
-      Tooltip         =   "#kEmail_Contact"
+      TextColor       =   colAppLabel
+      Tooltip         =   "#SudokuTool.kEmail_Contact"
       Top             =   44
       Underline       =   True
       Visible         =   True
@@ -222,7 +221,7 @@ Begin WebPage MainWebPage
       SVGData         =   ""
       TabIndex        =   4
       TabStop         =   True
-      Tooltip         =   "#kURL_Paypal"
+      Tooltip         =   "#SudokuTool.kURL_Paypal"
       Top             =   44
       URL             =   ""
       Visible         =   True
@@ -234,9 +233,6 @@ End
 #tag EndWebPage
 
 #tag WindowCode
-	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Private
-	#tag EndConstant
-
 	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Private
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Kontakt"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Contact"
@@ -249,12 +245,6 @@ End
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"\xC2\xBFQuiere dar las gracias\?"
 	#tag EndConstant
 
-	#tag Constant, Name = kURL_PayPal, Type = String, Dynamic = False, Default = \"https://paypal.me/jotools", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kURL_Repository, Type = String, Dynamic = False, Default = \"https://github.com/jo-tools/sudoku", Scope = Private
-	#tag EndConstant
-
 
 #tag EndWindowCode
 
@@ -264,7 +254,15 @@ End
 		  #Pragma Unused x
 		  #Pragma Unused y
 		  
-		  Session.GoToURL(kURL_Repository)
+		  Session.GoToURL(SudokuTool.kURL_Repository)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labAppName
+	#tag Event
+		Sub Pressed()
+		  Session.GoToURL(SudokuTool.kURL_Repository)
 		  
 		End Sub
 	#tag EndEvent
@@ -285,7 +283,7 @@ End
 #tag Events labContact
 	#tag Event
 		Sub Pressed()
-		  Session.GoToURL("mailto:" + kEmail_Contact)
+		  Session.GoToURL("mailto:" + SudokuTool.kEmail_Contact)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -295,7 +293,7 @@ End
 		  #Pragma Unused x
 		  #Pragma Unused y
 		  
-		  Session.GoToURL(kURL_Paypal)
+		  Session.GoToURL(SudokuTool.kURL_Paypal)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

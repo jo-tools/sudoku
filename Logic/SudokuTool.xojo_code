@@ -1463,6 +1463,9 @@ Protected Class SudokuTool
 	#tag EndProperty
 
 
+	#tag Constant, Name = kEmail_Contact, Type = String, Dynamic = False, Default = \"xojo@jo-tools.ch", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = kJSONKeyApplication, Type = String, Dynamic = False, Default = \"application", Scope = Private
 	#tag EndConstant
 
@@ -1500,6 +1503,12 @@ Protected Class SudokuTool
 	#tag EndConstant
 
 	#tag Constant, Name = kTresholdSparse, Type = Double, Dynamic = False, Default = \"12", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kURL_PayPal, Type = String, Dynamic = False, Default = \"https://paypal.me/jotools", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = kURL_Repository, Type = String, Dynamic = False, Default = \"https://github.com/jo-tools/sudoku", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Public
