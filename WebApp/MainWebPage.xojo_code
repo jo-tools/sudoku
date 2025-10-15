@@ -85,7 +85,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   2
+      TabIndex        =   3
       TabStop         =   True
       Text            =   "Sudoku"
       TextAlignment   =   0
@@ -119,7 +119,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   5
+      TabIndex        =   6
       TabStop         =   True
       Text            =   "AppVersion"
       TextAlignment   =   0
@@ -153,7 +153,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   1
+      TabIndex        =   2
       TabStop         =   True
       Text            =   "#Translations.kLabelThanks"
       TextAlignment   =   3
@@ -187,7 +187,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   3
+      TabIndex        =   4
       TabStop         =   True
       Text            =   "#Translations.kLabelContact"
       TextAlignment   =   1
@@ -219,7 +219,7 @@ Begin WebPage MainWebPage
       PanelIndex      =   0
       Scope           =   2
       SVGData         =   ""
-      TabIndex        =   4
+      TabIndex        =   5
       TabStop         =   True
       Tooltip         =   "#SudokuTool.kURL_Paypal"
       Top             =   44
@@ -247,7 +247,7 @@ Begin WebPage MainWebPage
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   6
+      TabIndex        =   7
       TabStop         =   True
       Tooltip         =   ""
       Top             =   90
@@ -277,7 +277,7 @@ Begin WebPage MainWebPage
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   7
+      TabIndex        =   8
       TabStop         =   True
       Tooltip         =   ""
       Top             =   110
@@ -308,7 +308,7 @@ Begin WebPage MainWebPage
       Scope           =   2
       SelectedRowIndex=   0
       SelectedRowText =   ""
-      TabIndex        =   8
+      TabIndex        =   9
       TabStop         =   True
       Tooltip         =   ""
       Top             =   184
@@ -338,7 +338,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   9
+      TabIndex        =   10
       TabStop         =   True
       Text            =   "#kLabelNumClues"
       TextAlignment   =   0
@@ -372,7 +372,7 @@ Begin WebPage MainWebPage
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   10
+      TabIndex        =   11
       TabStop         =   True
       Tooltip         =   ""
       Top             =   230
@@ -402,7 +402,7 @@ Begin WebPage MainWebPage
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   11
+      TabIndex        =   12
       TabStop         =   True
       Tooltip         =   ""
       Top             =   308
@@ -432,7 +432,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   13
       TabStop         =   True
       Text            =   "#kLabelShow"
       TextAlignment   =   0
@@ -463,7 +463,7 @@ Begin WebPage MainWebPage
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   13
+      TabIndex        =   14
       TabStop         =   True
       Tooltip         =   ""
       Top             =   400
@@ -491,7 +491,7 @@ Begin WebPage MainWebPage
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   14
+      TabIndex        =   15
       TabStop         =   True
       Tooltip         =   ""
       Top             =   435
@@ -522,7 +522,7 @@ Begin WebPage MainWebPage
       Outlined        =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   15
+      TabIndex        =   16
       TabStop         =   True
       Tooltip         =   ""
       Top             =   516
@@ -552,7 +552,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   16
+      TabIndex        =   17
       TabStop         =   True
       Text            =   "#kLabelSudokuStatus"
       TextAlignment   =   2
@@ -586,7 +586,7 @@ Begin WebPage MainWebPage
       Multiline       =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   17
+      TabIndex        =   18
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   2
@@ -596,6 +596,40 @@ Begin WebPage MainWebPage
       Underline       =   False
       Visible         =   True
       Width           =   210
+      _mPanelIndex    =   -1
+   End
+   Begin WebLabel labExportPDF
+      Bold            =   False
+      ControlID       =   ""
+      CSSClasses      =   "mouse-cursor-pointer"
+      Enabled         =   True
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   35
+      Index           =   -2147483648
+      Indicator       =   ""
+      Italic          =   False
+      Left            =   440
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockHorizontal  =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   1
+      TabStop         =   True
+      Text            =   "#kLabelExportPDF"
+      TextAlignment   =   3
+      TextColor       =   colAppLabel
+      Tooltip         =   "Sudoku.pdf"
+      Top             =   48
+      Underline       =   True
+      Visible         =   True
+      Width           =   120
       _mPanelIndex    =   -1
    End
 End
@@ -614,9 +648,49 @@ End
 
 
 	#tag Method, Flags = &h21
+		Private Sub ActionDownloadStarted(file As WebFile)
+		  If (file = Me.Download) Then
+		    Me.Download = Nil
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub ActionEmpty()
 		  Me.Sudoku.ClearGrid
 		  Me.ShowSudoku
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionExportPDF()
+		  ' Setup PDF
+		  Var pdf As New PDFDocument(PDFDocument.PageSizes.A4)
+		  Var g As Graphics = pdf.Graphics
+		  
+		  ' PDF MetaData
+		  pdf.Title = "Sudoku"
+		  pdf.Subject = "Sudoku"
+		  pdf.Author = SudokuTool.kURL_Repository
+		  pdf.Creator = "Sudoku " + labAppVersion.Text + " (Xojo " + XojoVersionString + ")"
+		  pdf.Keywords = "Sudoku"
+		  
+		  ' Draw Sudoku
+		  Me.Sudoku.DrawInto(g)
+		  
+		  ' Save PDF and Download
+		  Var prepareDownload As New WebFile
+		  prepareDownload.MimeType = "application/pdf"
+		  prepareDownload.ForceDownload = True
+		  prepareDownload.FileName = "Sudoku.pdf"
+		  prepareDownload.Data = pdf.ToData
+		  
+		  AddHandler prepareDownload.Downloaded, WeakAddressOf Self.ActionDownloadStarted
+		  
+		  Me.Download = prepareDownload
+		  Call prepareDownload.Download
 		  
 		End Sub
 	#tag EndMethod
@@ -850,6 +924,10 @@ End
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private Download As WebFile
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
@@ -1092,6 +1170,14 @@ End
 	#tag Event
 		Sub Pressed()
 		  Self.ActionSolve
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labExportPDF
+	#tag Event
+		Sub Pressed()
+		  Self.ActionExportPDF
 		  
 		End Sub
 	#tag EndEvent
