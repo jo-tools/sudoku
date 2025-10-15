@@ -72,8 +72,8 @@ Begin Menu MainMenuBar
          SpecialMenu = 0
          Index = -2147483648
          Text = "#Translations.kFileQuit"
-         ShortcutKey = "#Translations.kFileQuitShortcut"
-         Shortcut = "Cmd+#Translations.kFileQuitShortcut"
+         ShortcutKey = "#App.kFileQuitShortcut"
+         Shortcut = "Cmd+#App.kFileQuitShortcut"
          MenuModifier = True
          AutoEnabled = True
          AutoEnable = True
