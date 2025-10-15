@@ -3,6 +3,10 @@
 				Begin BuildProjectStep Build
 				End
 				Begin IDEScriptBuildStep CreateTGZ , AppliesTo = 2, Architecture = 0, Target = 0
+					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
+					'So make sure this script is only being run when needed:
+					If (PropertyValue("App.InternalName") <> "SudokuDesktop") Then Return
+					
 					'**************************************************
 					' Create .tgz for Linux Builds
 					'**************************************************
@@ -112,6 +116,10 @@
 			End
 			Begin BuildStepList Mac OS X
 				Begin IDEScriptBuildStep EnsureBundleIdentifier , AppliesTo = 0, Architecture = 0, Target = 0
+					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
+					'So make sure this script is only being run when needed:
+					If (PropertyValue("App.InternalName") <> "SudokuDesktop") Then Return
+					
 					If (PropertyValue("App.Application Identifier") <> ConstantValue("App.kBundleIdentifier")) Then
 					PropertyValue("App.Application Identifier") = ConstantValue("App.kBundleIdentifier")
 					End If
@@ -133,6 +141,10 @@
 				  macOSEntitlements={"App Sandbox":"False","Hardened Runtime":"False","Notarize":"False","UserEntitlements":""}
 				End
 				Begin IDEScriptBuildStep Xojo2DMG , AppliesTo = 0, Architecture = 0, Target = 0
+					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
+					'So make sure this script is only being run when needed:
+					If (PropertyValue("App.InternalName") <> "SudokuDesktop") Then Return
+					
 					'**************************************************
 					' Create .dmg | Notarization
 					'**************************************************
@@ -143,6 +155,7 @@
 					' Have a look at the GitHub Repository to read
 					' more about Xojo2DMG.
 					'**************************************************
+					
 					
 					If (Not TargetMacOS) Then Return 'Xojo IDE must be running on macOS
 					
@@ -289,6 +302,10 @@
 					FolderItem = Li4vUmVzb3VyY2VzL0RvY3VtZW50SWNvbi5pY28=
 				End
 				Begin IDEScriptBuildStep CodeSign , AppliesTo = 2, Architecture = 0, Target = 0
+					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
+					'So make sure this script is only being run when needed:
+					If (PropertyValue("App.InternalName") <> "SudokuDesktop") Then Return
+					
 					'*********************************************************************************************
 					' CodeSign | Azure Trusted Signing | PFX | Docker
 					'*********************************************************************************************
@@ -521,6 +538,10 @@
 					
 				End
 				Begin IDEScriptBuildStep CreateZIP , AppliesTo = 2, Architecture = 0, Target = 0
+					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
+					'So make sure this script is only being run when needed:
+					If (PropertyValue("App.InternalName") <> "SudokuDesktop") Then Return
+					
 					'**************************************************
 					' Create .zip for Windows Builds
 					'**************************************************
@@ -635,6 +656,10 @@
 					
 				End
 				Begin IDEScriptBuildStep InnoSetup , AppliesTo = 2, Architecture = 0, Target = 0
+					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
+					'So make sure this script is only being run when needed:
+					If (PropertyValue("App.InternalName") <> "SudokuDesktop") Then Return
+					
 					'*********************************************************************************************
 					' InnoSetup | Azure Trusted Signing | PFX | Docker
 					'*********************************************************************************************
