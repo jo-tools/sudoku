@@ -29,7 +29,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#Translations.kSudokuSolve"
+      Caption         =   "#App.kSudokuSolve"
       Default         =   True
       Enabled         =   True
       FontName        =   "System"
@@ -60,7 +60,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#Translations.kSudokuEmpty"
+      Caption         =   "#App.kSudokuEmpty"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -155,7 +155,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#Translations.kSudokuLock"
+      Caption         =   "#App.kSudokuLock"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -453,7 +453,7 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "#Translations.kSudokuRandom"
+      Caption         =   "#App.kSudokuRandom"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
@@ -483,7 +483,7 @@ Begin DesktopWindow MainWindow
    Begin SudokuCheckbox chkShowHints
       AllowAutoDeactivate=   True
       Bold            =   False
-      Caption         =   "#Translations.kSudokuShowHints"
+      Caption         =   "#App.kSudokuShowHints"
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -513,7 +513,7 @@ Begin DesktopWindow MainWindow
    Begin SudokuCheckbox chkShowCandidates
       AllowAutoDeactivate=   True
       Bold            =   False
-      Caption         =   "#Translations.kSudokuShowCandidates"
+      Caption         =   "#App.kSudokuShowCandidates"
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -801,11 +801,11 @@ End
 		  filterPDF.Extensions = ".pdf"
 		  
 		  Var dlg As New SaveFileDialog
-		  dlg.ActionButtonCaption = Translations.kSaveDialogExport
-		  dlg.CancelButtonCaption = Translations.kSaveDialogCancel
+		  dlg.ActionButtonCaption = kSaveDialogExport
+		  dlg.CancelButtonCaption = kSaveDialogCancel
 		  dlg.SuggestedFileName = "Sudoku.pdf"
 		  dlg.Title = "Sudoku"
-		  dlg.PromptText = Translations.kSaveDialogPrompt
+		  dlg.PromptText = kSaveDialogPrompt
 		  dlg.Filter = filterPDF
 		  dlg.InitialFolder = SpecialFolder.Desktop
 		  
@@ -1455,6 +1455,24 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kSaveDialogCancel, Type = String, Dynamic = True, Default = \"Cancel", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Abbrechen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Annuler"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Cancelar"
+	#tag EndConstant
+
+	#tag Constant, Name = kSaveDialogExport, Type = String, Dynamic = True, Default = \"Export", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Export"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exportation"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar"
+	#tag EndConstant
+
+	#tag Constant, Name = kSaveDialogPrompt, Type = String, Dynamic = True, Default = \"Export Sudoku as PDF", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sudoku als PDF exportieren"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exporter le Sudoku au format PDF"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar Sudoku como PDF"
 	#tag EndConstant
 
 

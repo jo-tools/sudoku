@@ -42,7 +42,7 @@ Begin WebPage MainWebPage
       Image           =   1252120575
       Index           =   -2147483648
       Indicator       =   0
-      Left            =   0
+      Left            =   10
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
@@ -74,7 +74,7 @@ Begin WebPage MainWebPage
       Index           =   -2147483648
       Indicator       =   ""
       Italic          =   False
-      Left            =   75
+      Left            =   85
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
@@ -108,7 +108,7 @@ Begin WebPage MainWebPage
       Index           =   -2147483648
       Indicator       =   0
       Italic          =   False
-      Left            =   75
+      Left            =   85
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
@@ -236,7 +236,7 @@ Begin WebPage MainWebPage
       Enabled         =   True
       Height          =   580
       Index           =   -2147483648
-      indicator       =   0
+      Indicator       =   0
       Left            =   0
       LockBottom      =   False
       LockedInPosition=   True
@@ -265,7 +265,7 @@ Begin WebPage MainWebPage
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   5
+      Indicator       =   0
       Left            =   600
       LockBottom      =   False
       LockedInPosition=   True
@@ -390,7 +390,7 @@ Begin WebPage MainWebPage
       Enabled         =   True
       Height          =   38
       Index           =   -2147483648
-      Indicator       =   2
+      Indicator       =   5
       Left            =   600
       LockBottom      =   False
       LockedInPosition=   True
@@ -417,9 +417,9 @@ Begin WebPage MainWebPage
       Enabled         =   True
       FontName        =   ""
       FontSize        =   0.0
-      Height          =   38
+      Height          =   30
       Index           =   -2147483648
-      indicator       =   0
+      Indicator       =   0
       Italic          =   False
       Left            =   600
       LockBottom      =   False
@@ -452,7 +452,7 @@ Begin WebPage MainWebPage
       Height          =   34
       Indeterminate   =   False
       Index           =   -2147483648
-      indicator       =   0
+      Indicator       =   0
       Left            =   600
       LockBottom      =   False
       LockedInPosition=   True
@@ -466,7 +466,7 @@ Begin WebPage MainWebPage
       TabIndex        =   13
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   407
+      Top             =   400
       Value           =   False
       Visible         =   True
       Width           =   180
@@ -494,7 +494,7 @@ Begin WebPage MainWebPage
       TabIndex        =   14
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   449
+      Top             =   435
       Value           =   False
       Visible         =   True
       Width           =   180
@@ -573,9 +573,9 @@ Begin WebPage MainWebPage
       FontSize        =   0.0
       Height          =   38
       Index           =   -2147483648
-      indicator       =   0
+      Indicator       =   0
       Italic          =   False
-      Left            =   600
+      Left            =   585
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
@@ -595,7 +595,7 @@ Begin WebPage MainWebPage
       Top             =   612
       Underline       =   False
       Visible         =   True
-      Width           =   180
+      Width           =   210
       _mPanelIndex    =   -1
    End
 End
@@ -1003,7 +1003,7 @@ End
 		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
 		        Case Is >= 7
 		          Var adjustX As Double = (kCellSize/3) /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTopTop + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY - 1)
 		        End Select
 		      Next
 		    Next

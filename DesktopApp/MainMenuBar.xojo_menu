@@ -3,14 +3,14 @@ Begin Menu MainMenuBar
    Begin DesktopMenuItem FileMenu
       SpecialMenu = 0
       Index = -2147483648
-      Text = "#Translations.kFileMenu"
+      Text = "#App.kFileMenu"
       AutoEnabled = True
       AutoEnable = True
       Visible = True
       Begin DesktopMenuItem FileOpen
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kFileOpen"
+         Text = "#App.kFileOpen"
          ShortcutKey = "O"
          Shortcut = "Cmd+O"
          MenuModifier = True
@@ -21,7 +21,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem FileSaveAs
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kFileSaveAs"
+         Text = "#App.kFileSaveAs"
          ShortcutKey = "S"
          Shortcut = "Cmd+Shift+S"
          MenuModifier = True
@@ -41,7 +41,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem FilePrint
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kFilePrint"
+         Text = "#App.kFilePrint"
          ShortcutKey = "P"
          Shortcut = "Cmd+P"
          MenuModifier = True
@@ -52,7 +52,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem FileExportPDF
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kFileExportPDF"
+         Text = "#App.kFileExportPDF"
          ShortcutKey = "E"
          Shortcut = "Cmd+E"
          MenuModifier = True
@@ -71,7 +71,7 @@ Begin Menu MainMenuBar
       Begin DesktopQuitMenuItem FileQuit
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kFileQuit"
+         Text = "#App.kFileQuit"
          ShortcutKey = "#App.kFileQuitShortcut"
          Shortcut = "Cmd+#App.kFileQuitShortcut"
          MenuModifier = True
@@ -177,7 +177,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem SudokuEmpty
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kSudokuEmpty"
+         Text = "#App.kSudokuEmpty"
          ShortcutKey = "N"
          Shortcut = "Cmd+N"
          MenuModifier = True
@@ -188,7 +188,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem SudokuRandom
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kSudokuRandom"
+         Text = "#App.kSudokuRandom"
          ShortcutKey = "R"
          Shortcut = "Cmd+R"
          MenuModifier = True
@@ -207,7 +207,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem SudokuLock
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kSudokuLock"
+         Text = "#App.kSudokuLock"
          ShortcutKey = "L"
          Shortcut = "Cmd+L"
          MenuModifier = True
@@ -226,7 +226,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem SudokuShowHints
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kSudokuShowHints"
+         Text = "#App.kSudokuShowHints"
          ShortcutKey = "I"
          Shortcut = "Cmd+I"
          MenuModifier = True
@@ -237,7 +237,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem SudokuShowCandidates
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kSudokuShowCandidates"
+         Text = "#App.kSudokuShowCandidates"
          ShortcutKey = "J"
          Shortcut = "Cmd+J"
          MenuModifier = True
@@ -256,7 +256,7 @@ Begin Menu MainMenuBar
       Begin DesktopMenuItem SudokuSolve
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#Translations.kSudokuSolve"
+         Text = "#App.kSudokuSolve"
          ShortcutKey = "B"
          Shortcut = "Cmd+B"
          MenuModifier = True
