@@ -1055,12 +1055,19 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetGridCellLocked(row As Integer, col As Integer)
-		  Var index As Integer = row * SudokuTool.N + col
-		  
+		Sub SetGridCellLocked(index As Integer)
 		  If (lockedCellIndexes.IndexOf(index) < 0) Then
 		    lockedCellIndexes.Add(index)
 		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetGridCellLocked(row As Integer, col As Integer)
+		  Var index As Integer = row * SudokuTool.N + col
+		  
+		  Me.SetGridCellLocked(index)
 		  
 		End Sub
 	#tag EndMethod

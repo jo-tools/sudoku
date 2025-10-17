@@ -285,7 +285,7 @@ Begin WebPage MainWebPage
       Width           =   180
       _mPanelIndex    =   -1
    End
-   Begin WebPopupMenu lstNumClues
+   Begin SudokuPopupMenu lstNumClues
       ControlID       =   ""
       CSSClasses      =   ""
       Enabled         =   True
@@ -639,9 +639,11 @@ End
 	#tag Event
 		Sub Opening()
 		  Me.Sudoku = New SudokuTool
-		  
 		  Self.SudokuNumberFieldsInit
-		  Self.ActionRandom
+		  
+		  If (Not Self.CookieGet) Then
+		    Self.ActionRandom
+		  End If
 		  
 		End Sub
 	#tag EndEvent
@@ -739,6 +741,132 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function CookieGet() As Boolean
+		  ' Restore Session State
+		  
+		  Try
+		    
+		    Var cookie As String = Session.Cookies.Value(kCookieKeySudokuState).Trim
+		    If (cookie = "") Then Return False
+		    cookie = DecodeBase64(cookie, Encodings.UTF8)
+		    
+		    Var json As New JSONItem(cookie)
+		    
+		    If json.HasKey(kJSONKeyShowHints) Then
+		      mShowHints = json.Lookup(kJSONKeyShowHints, mShowHints).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyShowCandidates) Then
+		      mShowCandidates = json.Lookup(kJSONKeyShowCandidates, mShowCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyRandomNumClues) Then
+		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		      randomNumClues = json.Lookup(kJSONKeyRandomNumClues, randomNumClues).IntegerValue
+		      If (lstNumClues.SelectedRowText <> randomNumClues.ToString) Then
+		        Try
+		          lstNumClues.EnsureSelectRowWithText = randomNumClues.ToString
+		        Catch err As InvalidArgumentException
+		          ' Silently ignore
+		        End Try
+		      End If
+		    End If
+		    If json.HasKey(kJSONKeySudoku) Then
+		      Var sudokuString As String = json.Lookup(kJSONKeySudoku, "").StringValue.Trim
+		      
+		      Try
+		        Var sudoku As New SudokuTool(sudokuString)
+		        If (sudoku <> Nil) Then
+		          
+		          If json.HasKey(kJSONKeySudokuLockedCellIndexes) Then
+		            Var jsonLockedCellIndexes As Variant = json.Value(kJSONKeySudokuLockedCellIndexes)
+		            If (jsonLockedCellIndexes IsA JSONItem) And JsonItem(jsonLockedCellIndexes).IsArray Then
+		              
+		              For i As Integer = 0 To JsonItem(jsonLockedCellIndexes).LastRowIndex
+		                Var lockIndex As Integer = JsonItem(jsonLockedCellIndexes).ValueAt(i).IntegerValue
+		                If (lockIndex < 0) Or (lockIndex > Me.SudokuTextFields.LastIndex) Then Continue
+		                Me.SudokuTextFields(lockIndex).Lock = True
+		                sudoku.SetGridCellLocked(lockIndex)
+		              Next
+		            End If
+		          End If
+		          
+		          Me.Sudoku = sudoku
+		          Me.ShowSudoku
+		        End If
+		        
+		      Catch err As InvalidArgumentException
+		        ' Invalid String for Sudoku
+		        Return False
+		      End Try
+		    End If
+		    
+		    Return True
+		    
+		    
+		  Catch err1 As IOException
+		    ' Silently ignore
+		    Return False
+		    
+		  Catch err2 As JSONException
+		    ' Silently ignore
+		    Return False
+		    
+		  End Try
+		  
+		  Return False
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub CookieSet()
+		  ' Store Session State
+		  
+		  Var json As New JSONItem
+		  json.Value(kJSONKeyShowHints) = mShowHints
+		  json.Value(kJSONKeyShowCandidates) = mShowCandidates
+		  
+		  Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		  If (randomNumClues > 0) Then
+		    json.Value(kJSONKeyRandomNumClues) = randomNumClues
+		  End If
+		  
+		  If (Me.Sudoku <> Nil) Then
+		    json.Value(kJSONKeySudoku) = Me.Sudoku.ToString
+		    json.Value(kJSONKeySudokuLockedCellIndexes) = GetLockedCellIndexes
+		  End If
+		  
+		  Var jsonOptions As New JSONOptions
+		  jsonOptions.Compact = True
+		  
+		  Var cookieContent As String = EncodeBase64(json.ToString(jsonOptions), 0)
+		  Session.Cookies.Set(kCookieKeySudokuState, cookieContent, Nil, "", "", False, False, WebCookieManager.SameSiteStrength.Lax)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetLockedCellIndexes() As Integer()
+		  Var lockedCellIndexes() As Integer
+		  
+		  ' Are there any unlocked cells with digits?
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      
+		      If (Not SudokuTextFields(index).IsLocked) Then Continue
+		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
+		      
+		      ' Found a non-empty, locked cell
+		      lockedCellIndexes.Add(index)
+		    Next
+		  Next
+		  
+		  Return lockedCellIndexes
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
 		  For row As Integer = 0 To SudokuTool.N-1
@@ -777,9 +905,6 @@ End
 		    Redim SolveCellCandidates(-1)
 		  End If
 		  
-		  cnvSudoku.Refresh
-		  
-		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
@@ -788,6 +913,9 @@ End
 		  ' Show
 		  chkShowHints.EnsureValue = mShowHints
 		  chkShowCandidates.EnsureValue = mShowCandidates
+		  
+		  cnvSudoku.Refresh
+		  Me.CookieSet
 		  
 		  ' Status
 		  If isEmpty Then
@@ -961,6 +1089,24 @@ End
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"60", Scope = Private
 	#tag EndConstant
 
+	#tag Constant, Name = kCookieKeySudokuState, Type = String, Dynamic = False, Default = \"SudokuState", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyShowCandidates, Type = String, Dynamic = False, Default = \"showCandidates", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showHints", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudoku, Type = String, Dynamic = False, Default = \"sudoku", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySudokuLockedCellIndexes, Type = String, Dynamic = False, Default = \"sudokuLockedCellIndexes", Scope = Private
+	#tag EndConstant
+
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
 	#tag EndConstant
 
@@ -1115,7 +1261,16 @@ End
 		  Me.AddRow("56")
 		  Me.AddRow("64")
 		  
-		  Me.SelectedRowIndex = 3
+		  Me.EnsureSelectedRowIndex = 3
+		  
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma unused item
+		  
+		  Self.RefreshControls
 		  
 		End Sub
 	#tag EndEvent

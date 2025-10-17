@@ -25,6 +25,7 @@ MultiImage=PayPal;Resources/PayPal.xojo_image;&h0000000045130FFF;&h000000004E4F9
 Class=SudokuTool;Logic/SudokuTool.xojo_code;&h0000000033F527FF;&h000000003551C7FF;false
 Class=SudokuNumberField;WebApp/Controls/SudokuNumberField.xojo_code;&h000000004C10EFFF;&h0000000011507FFF;false
 Class=SudokuCheckbox;WebApp/Controls/SudokuCheckbox.xojo_code;&h00000000374C4FFF;&h0000000011507FFF;false
+Class=SudokuPopupMenu;WebApp/Controls/SudokuPopupMenu.xojo_code;&h00000000787FEFFF;&h0000000011507FFF;false
 DefaultWindow=MainWebPage
 MajorVersion=1
 MinorVersion=5

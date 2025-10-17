@@ -1,56 +1,42 @@
 #tag Class
-Protected Class SudokuNumberField
-Inherits WebTextField
+Protected Class SudokuPopupMenu
+Inherits WebPopupMenu
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  If mEnsuringValue Then Return
+		  
+		  SelectionChanged(item)
+		  
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
-		Sub Constructor()
-		  // Calling the overridden superclass constructor.
-		  // Note that this may need modifications if there are multiple constructor choices.
-		  // Possible constructor calls:
-		  // Constructor() -- From WebTextControl
-		  // Constructor() -- From WebEntryField
-		  // Constructor() -- From WebUIControl
-		  // Constructor() -- From WebControl
-		  Super.Constructor
+		Sub EnsureSelectedRowIndex(Assigns setIndex As Integer)
+		  mEnsuringValue = True
+		  Me.SelectedRowIndex = setIndex
+		  mEnsuringValue = False
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IsLocked() As Boolean
-		  return mLocked
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Lock(Assigns lock As Boolean)
-		  mLocked = lock
-		  
-		  If lock Then
-		    Me.Style.Bold = True
-		    Me.Enabled = False
-		  Else
-		    Me.Style.Bold = False
-		    me.Enabled = True
-		  End If
+		Sub EnsureSelectRowWithText(Assigns setText As String)
+		  mEnsuringValue = True
+		  Me.SelectRowWithText(setText)
+		  mEnsuringValue = False
 		  
 		End Sub
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		ColumnIndex As Integer
-	#tag EndProperty
+	#tag Hook, Flags = &h0
+		Event SelectionChanged(item As WebMenuItem)
+	#tag EndHook
+
 
 	#tag Property, Flags = &h21
-		Private mLocked As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		PositionIndex As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		RowIndex As Integer
+		Private mEnsuringValue As Boolean
 	#tag EndProperty
 
 
@@ -112,28 +98,6 @@ Inherits WebTextField
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Text"
-			Visible=true
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="TextAlignment"
-			Visible=true
-			Group="Behavior"
-			InitialValue=""
-			Type="Xojo.TextAlignments"
-			EditorType="Enum"
-			#tag EnumValues
-				"0 - Default"
-				"1 - Left"
-				"2 - Center"
-				"3 - Right"
-			#tag EndEnumValues
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="ControlID"
 			Visible=false
 			Group="Behavior"
@@ -153,7 +117,7 @@ Inherits WebTextField
 			Name="Height"
 			Visible=true
 			Group="Behavior"
-			InitialValue="38"
+			InitialValue="34"
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
@@ -217,7 +181,7 @@ Inherits WebTextField
 			Name="Width"
 			Visible=true
 			Group="Behavior"
-			InitialValue="100"
+			InitialValue="150"
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
@@ -230,52 +194,28 @@ Inherits WebTextField
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="FieldType"
-			Visible=true
+			Name="RowCount"
+			Visible=false
 			Group="Behavior"
-			InitialValue=""
-			Type="WebTextField.FieldTypes"
-			EditorType="Enum"
-			#tag EnumValues
-				"0 - Normal"
-				"1 - Password"
-				"2 - Email"
-				"3 - Number"
-				"4 - Telephone"
-				"5 - URL"
-			#tag EndEnumValues
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="ReadOnly"
-			Visible=true
-			Group="Entry Fields"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="MaximumCharactersAllowed"
-			Visible=true
-			Group="TextControl"
 			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="AllowSpellChecking"
-			Visible=true
-			Group="TextControl"
-			InitialValue="False"
-			Type="Boolean"
+			Name="LastAddedRowIndex"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Hint"
-			Visible=true
-			Group="TextControl"
+			Name="LastRowIndex"
+			Visible=false
+			Group="Behavior"
 			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
+			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="TabIndex"
@@ -306,44 +246,20 @@ Inherits WebTextField
 			#tag EndEnumValues
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="AllowAutoComplete"
+			Name="SelectedRowIndex"
 			Visible=true
-			Group="TextField"
-			InitialValue="False"
-			Type="Boolean"
+			Group="Popup Menu"
+			InitialValue=""
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Caption"
-			Visible=true
-			Group="TextField"
+			Name="SelectedRowText"
+			Visible=false
+			Group="Behavior"
 			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="RowIndex"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="ColumnIndex"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="PositionIndex"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Integer"
-			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
