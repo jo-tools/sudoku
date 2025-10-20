@@ -6,7 +6,7 @@ Begin WebPage MainWebPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   670
+   Height          =   710
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,617 +20,690 @@ Begin WebPage MainWebPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   670
-   MinimumWidth    =   800
+   MinimumHeight   =   710
+   MinimumWidth    =   840
    PanelIndex      =   0
    ScaleFactor     =   0.0
    TabIndex        =   0
    Title           =   "Sudoku"
    Top             =   0
    Visible         =   True
-   Width           =   800
+   Width           =   840
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
-   Begin WebImageViewer imgAppIcon
+   Begin WebRectangle rctSudoku
+      BorderColor     =   colAppLabel
+      BorderThickness =   0
+      ControlCount    =   0
       ControlID       =   ""
-      CSSClasses      =   "mouse-cursor-pointer"
-      DisplayMode     =   0
+      CornerSize      =   -1
+      CSSClasses      =   ""
       Enabled         =   True
-      Height          =   64
-      Image           =   1252120575
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   10
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Scope           =   2
-      SVGData         =   ""
-      TabIndex        =   0
-      TabStop         =   True
-      Tooltip         =   "#SudokuTool.kURL_Repository"
-      Top             =   20
-      URL             =   ""
-      Visible         =   True
-      Width           =   64
-      _mPanelIndex    =   -1
-      _ProtectImage   =   False
-   End
-   Begin WebLabel labAppName
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   "mouse-cursor-pointer"
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   28
+      FillColor       =   &cFFFFFF
+      HasFillColor    =   False
+      Height          =   710
       Index           =   -2147483648
       Indicator       =   ""
-      Italic          =   False
-      Left            =   85
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   3
-      TabStop         =   True
-      Text            =   "Sudoku"
-      TextAlignment   =   0
-      TextColor       =   colAppLabel
-      Tooltip         =   "#SudokuTool.kURL_Repository"
-      Top             =   24
-      Underline       =   True
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labAppVersion
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   12.0
-      Height          =   28
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   85
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   6
-      TabStop         =   True
-      Text            =   "AppVersion"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   52
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labThankYou
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   10.0
-      Height          =   24
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   590
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   2
-      TabStop         =   True
-      Text            =   "#Translations.kLabelThanks"
-      TextAlignment   =   3
-      TextColor       =   &c79797900
-      Tooltip         =   ""
-      Top             =   20
-      Underline       =   False
-      Visible         =   True
-      Width           =   190
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labContact
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   "mouse-cursor-pointer"
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   10.0
-      Height          =   26
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   615
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   4
-      TabStop         =   True
-      Text            =   "#Translations.kLabelContact"
-      TextAlignment   =   1
-      TextColor       =   colAppLabel
-      Tooltip         =   "#SudokuTool.kEmail_Contact"
-      Top             =   44
-      Underline       =   True
-      Visible         =   True
-      Width           =   65
-      _mPanelIndex    =   -1
-   End
-   Begin WebImageViewer imgPayPal
-      ControlID       =   ""
-      CSSClasses      =   "mouse-cursor-pointer"
-      DisplayMode     =   0
-      Enabled         =   True
-      Height          =   26
-      Image           =   1158877183
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   680
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Scope           =   2
-      SVGData         =   ""
-      TabIndex        =   5
-      TabStop         =   True
-      Tooltip         =   "#SudokuTool.kURL_Paypal"
-      Top             =   44
-      URL             =   ""
-      Visible         =   True
-      Width           =   100
-      _mPanelIndex    =   -1
-      _ProtectImage   =   False
-   End
-   Begin WebCanvas cnvSudoku
-      ControlID       =   ""
-      CSSClasses      =   ""
-      DiffEngineDisabled=   False
-      Enabled         =   True
-      Height          =   580
-      Index           =   -2147483648
-      Indicator       =   0
+      LayoutDirection =   "LayoutDirections.LeftToRight"
+      LayoutType      =   "LayoutTypes.Fixed"
       Left            =   0
       LockBottom      =   False
       LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
+      LockHorizontal  =   True
+      LockLeft        =   False
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   7
+      TabIndex        =   19
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   90
+      Top             =   0
       Visible         =   True
-      Width           =   580
+      Width           =   840
+      _mDesignHeight  =   0
+      _mDesignWidth   =   0
       _mPanelIndex    =   -1
-   End
-   Begin WebButton btnEmpty
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "#Translations.kSudokuEmpty"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   8
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   110
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin SudokuPopupMenu lstNumClues
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      InitialValue    =   ""
-      LastAddedRowIndex=   0
-      LastRowIndex    =   0
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      RowCount        =   0
-      Scope           =   2
-      SelectedRowIndex=   0
-      SelectedRowText =   ""
-      TabIndex        =   9
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   184
-      Visible         =   True
-      Width           =   75
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labNumClues
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   683
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   10
-      TabStop         =   True
-      Text            =   "#kLabelNumClues"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   184
-      Underline       =   False
-      Visible         =   True
-      Width           =   97
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnRandom
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "#kSudokuRandom"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   11
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   230
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnLock
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "#kSudokuLock"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   False
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   5
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   12
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   308
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labShow
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   30
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   13
-      TabStop         =   True
-      Text            =   "#kLabelShow"
-      TextAlignment   =   0
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   370
-      Underline       =   False
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin SudokuCheckbox chkShowHints
-      Caption         =   "#kSudokuShowHints"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   34
-      Indeterminate   =   False
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   14
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   400
-      Value           =   False
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin SudokuCheckbox chkShowCandidates
-      Caption         =   "#kSudokuShowCandidates"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      Height          =   34
-      Indeterminate   =   False
-      Index           =   -2147483648
-      Indicator       =   0
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   15
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   435
-      Value           =   False
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin WebButton btnSolve
-      AllowAutoDisable=   False
-      Cancel          =   False
-      Caption         =   "#kSudokuSolve"
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Default         =   True
-      Enabled         =   True
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   1
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Outlined        =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   16
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   516
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labStatusTitle
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   12.0
-      Height          =   20
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   600
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   17
-      TabStop         =   True
-      Text            =   "#kLabelSudokuStatus"
-      TextAlignment   =   2
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   584
-      Underline       =   False
-      Visible         =   True
-      Width           =   180
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labStatus
-      Bold            =   True
-      ControlID       =   ""
-      CSSClasses      =   ""
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   38
-      Index           =   -2147483648
-      Indicator       =   0
-      Italic          =   False
-      Left            =   585
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   18
-      TabStop         =   True
-      Text            =   "..."
-      TextAlignment   =   2
-      TextColor       =   &c000000FF
-      Tooltip         =   ""
-      Top             =   612
-      Underline       =   False
-      Visible         =   True
-      Width           =   210
-      _mPanelIndex    =   -1
-   End
-   Begin WebLabel labExportPDF
-      Bold            =   False
-      ControlID       =   ""
-      CSSClasses      =   "mouse-cursor-pointer"
-      Enabled         =   True
-      FontName        =   ""
-      FontSize        =   0.0
-      Height          =   35
-      Index           =   -2147483648
-      Indicator       =   ""
-      Italic          =   False
-      Left            =   440
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockHorizontal  =   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      LockVertical    =   False
-      Multiline       =   False
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   1
-      TabStop         =   True
-      Text            =   "#kLabelExportPDF"
-      TextAlignment   =   3
-      TextColor       =   colAppLabel
-      Tooltip         =   "Sudoku.pdf"
-      Top             =   48
-      Underline       =   True
-      Visible         =   True
-      Width           =   120
-      _mPanelIndex    =   -1
+      Begin WebLabel labStatus
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   605
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   0
+         TabStop         =   True
+         Text            =   "..."
+         TextAlignment   =   2
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   612
+         Underline       =   False
+         Visible         =   True
+         Width           =   210
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labStatusTitle
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   12.0
+         Height          =   20
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   1
+         TabStop         =   True
+         Text            =   "#kLabelSudokuStatus"
+         TextAlignment   =   2
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   584
+         Underline       =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnSolve
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "#kSudokuSolve"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   True
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   1
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   2
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   516
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkShowCandidates
+         Caption         =   "#kSudokuShowCandidates"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   34
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   3
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   435
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkShowHints
+         Caption         =   "#kSudokuShowHints"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   34
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   4
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   400
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labShow
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   30
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   5
+         TabStop         =   True
+         Text            =   "#kLabelShow"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   370
+         Underline       =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnLock
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "#kSudokuLock"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   5
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   6
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   308
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnRandom
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "#kSudokuRandom"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   7
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   230
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labNumClues
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   703
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   8
+         TabStop         =   True
+         Text            =   "#kLabelNumClues"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   184
+         Underline       =   False
+         Visible         =   True
+         Width           =   97
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuPopupMenu lstNumClues
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         InitialValue    =   ""
+         LastAddedRowIndex=   0
+         LastRowIndex    =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         RowCount        =   0
+         Scope           =   2
+         SelectedRowIndex=   0
+         SelectedRowText =   ""
+         TabIndex        =   9
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   184
+         Visible         =   True
+         Width           =   75
+         _mPanelIndex    =   -1
+      End
+      Begin WebButton btnEmpty
+         AllowAutoDisable=   False
+         Cancel          =   False
+         Caption         =   "#Translations.kSudokuEmpty"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Default         =   False
+         Enabled         =   True
+         Height          =   38
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Outlined        =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   10
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   110
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebCanvas cnvSudoku
+         ControlID       =   ""
+         CSSClasses      =   ""
+         DiffEngineDisabled=   False
+         Enabled         =   True
+         Height          =   580
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   11
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   90
+         Visible         =   True
+         Width           =   580
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labExportPDF
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   "mouse-cursor-pointer"
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   35
+         Index           =   -2147483648
+         Indicator       =   ""
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   460
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   12
+         TabStop         =   True
+         Text            =   "#kLabelExportPDF"
+         TextAlignment   =   3
+         TextColor       =   colAppLabel
+         Tooltip         =   "Sudoku.pdf"
+         Top             =   48
+         Underline       =   True
+         Visible         =   True
+         Width           =   120
+         _mPanelIndex    =   -1
+      End
+      Begin WebImageViewer imgPayPal
+         ControlID       =   ""
+         CSSClasses      =   "mouse-cursor-pointer"
+         DisplayMode     =   0
+         Enabled         =   True
+         Height          =   26
+         Image           =   1158877183
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   700
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         SVGData         =   ""
+         TabIndex        =   13
+         TabStop         =   True
+         Tooltip         =   "#SudokuTool.kURL_Paypal"
+         Top             =   44
+         URL             =   ""
+         Visible         =   True
+         Width           =   100
+         _mPanelIndex    =   -1
+         _ProtectImage   =   False
+      End
+      Begin WebLabel labContact
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   "mouse-cursor-pointer"
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   10.0
+         Height          =   26
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   635
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   14
+         TabStop         =   True
+         Text            =   "#Translations.kLabelContact"
+         TextAlignment   =   1
+         TextColor       =   colAppLabel
+         Tooltip         =   "#SudokuTool.kEmail_Contact"
+         Top             =   44
+         Underline       =   True
+         Visible         =   True
+         Width           =   65
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labThankYou
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   10.0
+         Height          =   24
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   610
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   15
+         TabStop         =   True
+         Text            =   "#Translations.kLabelThanks"
+         TextAlignment   =   3
+         TextColor       =   &c79797900
+         Tooltip         =   ""
+         Top             =   20
+         Underline       =   False
+         Visible         =   True
+         Width           =   190
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labAppVersion
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   12.0
+         Height          =   28
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   105
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   16
+         TabStop         =   True
+         Text            =   "AppVersion"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   52
+         Underline       =   False
+         Visible         =   True
+         Width           =   100
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labAppName
+         Bold            =   True
+         ControlID       =   ""
+         CSSClasses      =   "mouse-cursor-pointer"
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   28
+         Index           =   -2147483648
+         Indicator       =   ""
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   105
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         TabIndex        =   17
+         TabStop         =   True
+         Text            =   "Sudoku"
+         TextAlignment   =   0
+         TextColor       =   colAppLabel
+         Tooltip         =   "#SudokuTool.kURL_Repository"
+         Top             =   24
+         Underline       =   True
+         Visible         =   True
+         Width           =   100
+         _mPanelIndex    =   -1
+      End
+      Begin WebImageViewer imgAppIcon
+         ControlID       =   ""
+         CSSClasses      =   "mouse-cursor-pointer"
+         DisplayMode     =   0
+         Enabled         =   True
+         Height          =   64
+         Image           =   1252120575
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   30
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "Rectangle1"
+         Scope           =   2
+         SVGData         =   ""
+         TabIndex        =   18
+         TabStop         =   True
+         Tooltip         =   "#SudokuTool.kURL_Repository"
+         Top             =   20
+         URL             =   ""
+         Visible         =   True
+         Width           =   64
+         _mPanelIndex    =   -1
+         _ProtectImage   =   False
+      End
    End
 End
 #tag EndWebPage
@@ -1011,11 +1084,9 @@ End
 		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) /2)
 		      t.Style.BackgroundColor = &cffffffff
 		      
-		      
 		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
 		      
-		      
-		      Me.AddControl(t)
+		      rctSudoku.AddControl(t)
 		    Next
 		  Next
 		  
@@ -1113,52 +1184,92 @@ End
 
 #tag EndWindowCode
 
-#tag Events imgAppIcon
-	#tag Event
-		Sub Pressed(x As Integer, y As Integer)
-		  #Pragma Unused x
-		  #Pragma Unused y
-		  
-		  Session.GoToURL(SudokuTool.kURL_Repository)
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events labAppName
+#tag Events btnSolve
 	#tag Event
 		Sub Pressed()
-		  Session.GoToURL(SudokuTool.kURL_Repository)
+		  Self.ActionSolve
 		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events labAppVersion
+#tag Events chkShowCandidates
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowCandidates = (Not Self.mShowCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
 	#tag Event
 		Sub Opening()
-		  If (App.Version <> "") Then
-		    Me.Text = App.Version
-		    Return
-		  End If
-		  
-		  Me.Text = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
+		  Me.EnsureValue = Self.mShowCandidates
 		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events labContact
+#tag Events chkShowHints
+	#tag Event
+		Sub ValueChanged()
+		  Self.mShowHints = (Not Self.mShowHints)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mShowHints
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnLock
 	#tag Event
 		Sub Pressed()
-		  Session.GoToURL("mailto:" + SudokuTool.kEmail_Contact)
+		  Self.ActionLock
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events imgPayPal
+#tag Events btnRandom
 	#tag Event
-		Sub Pressed(x As Integer, y As Integer)
-		  #Pragma Unused x
-		  #Pragma Unused y
+		Sub Pressed()
+		  Self.ActionRandom
 		  
-		  Session.GoToURL(SudokuTool.kURL_Paypal)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstNumClues
+	#tag Event
+		Sub Opening()
+		  Me.RemoveAllRows
+		  
+		  Me.AddRow("24")
+		  Me.AddRow("28")
+		  Me.AddRow("32")
+		  Me.AddRow("40")
+		  Me.AddRow("48")
+		  Me.AddRow("56")
+		  Me.AddRow("64")
+		  
+		  Me.EnsureSelectedRowIndex = 3
+		  
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(item As WebMenuItem)
+		  #Pragma unused item
+		  
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnEmpty
+	#tag Event
+		Sub Pressed()
+		  Self.ActionEmpty
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1240,99 +1351,59 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events btnEmpty
-	#tag Event
-		Sub Pressed()
-		  Self.ActionEmpty
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events lstNumClues
-	#tag Event
-		Sub Opening()
-		  Me.RemoveAllRows
-		  
-		  Me.AddRow("24")
-		  Me.AddRow("28")
-		  Me.AddRow("32")
-		  Me.AddRow("40")
-		  Me.AddRow("48")
-		  Me.AddRow("56")
-		  Me.AddRow("64")
-		  
-		  Me.EnsureSelectedRowIndex = 3
-		  
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma unused item
-		  
-		  Self.RefreshControls
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnRandom
-	#tag Event
-		Sub Pressed()
-		  Self.ActionRandom
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnLock
-	#tag Event
-		Sub Pressed()
-		  Self.ActionLock
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events chkShowHints
-	#tag Event
-		Sub ValueChanged()
-		  Self.mShowHints = (Not Self.mShowHints)
-		  Self.RefreshControls
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Opening()
-		  Me.EnsureValue = Self.mShowHints
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events chkShowCandidates
-	#tag Event
-		Sub ValueChanged()
-		  Self.mShowCandidates = (Not Self.mShowCandidates)
-		  Self.RefreshControls
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Opening()
-		  Me.EnsureValue = Self.mShowCandidates
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnSolve
-	#tag Event
-		Sub Pressed()
-		  Self.ActionSolve
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events labExportPDF
 	#tag Event
 		Sub Pressed()
 		  Self.ActionExportPDF
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events imgPayPal
+	#tag Event
+		Sub Pressed(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
+		  Session.GoToURL(SudokuTool.kURL_Paypal)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labContact
+	#tag Event
+		Sub Pressed()
+		  Session.GoToURL("mailto:" + SudokuTool.kEmail_Contact)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labAppVersion
+	#tag Event
+		Sub Opening()
+		  If (App.Version <> "") Then
+		    Me.Text = App.Version
+		    Return
+		  End If
+		  
+		  Me.Text = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labAppName
+	#tag Event
+		Sub Pressed()
+		  Session.GoToURL(SudokuTool.kURL_Repository)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events imgAppIcon
+	#tag Event
+		Sub Pressed(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
+		  Session.GoToURL(SudokuTool.kURL_Repository)
 		  
 		End Sub
 	#tag EndEvent
