@@ -146,8 +146,8 @@ Begin WebPage MainWebPage
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       Multiline       =   False
@@ -180,8 +180,8 @@ Begin WebPage MainWebPage
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       Multiline       =   False
@@ -212,8 +212,8 @@ Begin WebPage MainWebPage
       LockBottom      =   False
       LockedInPosition=   True
       LockHorizontal  =   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
       PanelIndex      =   0
