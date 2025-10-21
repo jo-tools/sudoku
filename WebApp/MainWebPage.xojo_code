@@ -1221,7 +1221,7 @@ End
 		  "      wrapper.appendChild(el);" + EndOfLine + _
 		  "    }" + EndOfLine + _
 		  "    var baseWidth = 840;" + EndOfLine + _
-		  "    var windowWidth = Math.min(window.innerWidth, baseWidth);" + EndOfLine + _  // prevent overscaling
+		  "    var windowWidth = Math.min(window.innerWidth, baseWidth);" + EndOfLine + _
 		  "    var scale = windowWidth / baseWidth;" + EndOfLine + _
 		  "    el.style.transform = 'scale(' + scale + ')';" + EndOfLine + _
 		  "  }" + EndOfLine + _
