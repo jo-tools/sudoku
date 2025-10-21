@@ -32,6 +32,7 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -39,7 +40,7 @@ Begin WebPage MainWebPage
       ControlCount    =   0
       ControlID       =   ""
       CornerSize      =   -1
-      CSSClasses      =   ""
+      CSSClasses      =   "main-container"
       Enabled         =   True
       FillColor       =   &cFFFFFF
       HasFillColor    =   False
@@ -89,9 +90,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   0
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "..."
          TextAlignment   =   2
@@ -125,9 +127,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   1
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelSudokuStatus"
          TextAlignment   =   2
@@ -161,9 +164,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Outlined        =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   2
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   516
@@ -190,9 +194,10 @@ Begin WebPage MainWebPage
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   3
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   435
@@ -220,9 +225,10 @@ Begin WebPage MainWebPage
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   4
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   400
@@ -253,9 +259,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   5
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelShow"
          TextAlignment   =   0
@@ -289,9 +296,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Outlined        =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   6
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   308
@@ -321,9 +329,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Outlined        =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   7
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   230
@@ -353,9 +362,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   8
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelNumClues"
          TextAlignment   =   0
@@ -387,12 +397,13 @@ Begin WebPage MainWebPage
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          RowCount        =   0
          Scope           =   2
          SelectedRowIndex=   0
          SelectedRowText =   ""
          TabIndex        =   9
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   184
@@ -422,9 +433,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Outlined        =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   10
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   110
@@ -450,9 +462,10 @@ Begin WebPage MainWebPage
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   11
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
          Top             =   90
@@ -482,9 +495,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   12
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelExportPDF"
          TextAlignment   =   3
@@ -515,10 +529,11 @@ Begin WebPage MainWebPage
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
          TabIndex        =   13
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   "#SudokuTool.kURL_Paypal"
          Top             =   44
@@ -550,9 +565,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   14
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelContact"
          TextAlignment   =   1
@@ -586,9 +602,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   15
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelThanks"
          TextAlignment   =   3
@@ -622,9 +639,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   16
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "AppVersion"
          TextAlignment   =   0
@@ -658,9 +676,10 @@ Begin WebPage MainWebPage
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          TabIndex        =   17
+         TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "Sudoku"
          TextAlignment   =   0
@@ -691,10 +710,11 @@ Begin WebPage MainWebPage
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
-         Parent          =   "Rectangle1"
+         Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
          TabIndex        =   18
+         TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   "#SudokuTool.kURL_Repository"
          Top             =   20
@@ -1184,6 +1204,43 @@ End
 
 #tag EndWindowCode
 
+#tag Events rctSudoku
+	#tag Event
+		Sub Opening()
+		  Var js As String = _
+		  "(function() {" + EndOfLine + _
+		  "  var rectID = '" + Me.ControlID + "';" + EndOfLine + _
+		  "  function wrapAndScale() {" + EndOfLine + _
+		  "    var el = document.getElementById(rectID);" + EndOfLine + _
+		  "    if (!el) return;" + EndOfLine + _
+		  "    if (!el.parentElement.classList.contains('wrapper')) {" + EndOfLine + _
+		  "      var wrapper = document.createElement('div');" + EndOfLine + _
+		  "      wrapper.className = 'wrapper';" + EndOfLine + _
+		  "      el.parentNode.insertBefore(wrapper, el);" + EndOfLine + _
+		  "      wrapper.appendChild(el);" + EndOfLine + _
+		  "    }" + EndOfLine + _
+		  "    var baseWidth = 840;" + EndOfLine + _
+		  "    var windowWidth = Math.min(window.innerWidth, baseWidth);" + EndOfLine + _  // prevent overscaling
+		  "    var scale = windowWidth / baseWidth;" + EndOfLine + _
+		  "    el.style.transform = 'scale(' + scale + ')';" + EndOfLine + _
+		  "  }" + EndOfLine + _
+		  "  function waitForElement() {" + EndOfLine + _
+		  "    var el = document.getElementById(rectID);" + EndOfLine + _
+		  "    if (el) {" + EndOfLine + _
+		  "      wrapAndScale();" + EndOfLine + _
+		  "      window.addEventListener('resize', wrapAndScale);" + EndOfLine + _
+		  "    } else {" + EndOfLine + _
+		  "      setTimeout(waitForElement, 50);" + EndOfLine + _
+		  "    }" + EndOfLine + _
+		  "  }" + EndOfLine + _
+		  "  waitForElement();" + EndOfLine + _
+		  "})();"
+		  
+		  Me.ExecuteJavaScript(js)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events btnSolve
 	#tag Event
 		Sub Pressed()
