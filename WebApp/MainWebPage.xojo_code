@@ -1184,6 +1184,9 @@ End
 	#tag Constant, Name = kCookieKeySudokuState, Type = String, Dynamic = False, Default = \"SudokuState", Scope = Private
 	#tag EndConstant
 
+	#tag Constant, Name = kJavaScriptWrapper, Type = String, Dynamic = False, Default = \"(function() {\n  var rectID \x3D \'[CONTROLID]\';\n  \n  function wrapAndScale() {\n    var el \x3D document.getElementById(rectID);\n    if (!el) return;\n\n    if (!el.parentElement.classList.contains(\'wrapper\')) {\n      var wrapper \x3D document.createElement(\'div\');\n      wrapper.className \x3D \'wrapper\';\n      el.parentNode.insertBefore(wrapper\x2C el);\n      wrapper.appendChild(el);\n    }\n\n    var baseWidth \x3D 840;\n    var windowWidth \x3D Math.min(window.innerWidth\x2C baseWidth);\n    var scale \x3D windowWidth / baseWidth;\n    el.style.transform \x3D \'scale(\' + scale + \')\';\n  }\n\n  function waitForElement() {\n    var el \x3D document.getElementById(rectID);\n    if (el) {\n      wrapAndScale();\n      window.addEventListener(\'resize\'\x2C wrapAndScale);\n    } else {\n      setTimeout(waitForElement\x2C 50);\n    }\n  }\n\n  waitForElement();\n})();\n", Scope = Private
+	#tag EndConstant
+
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
 	#tag EndConstant
 
@@ -1208,36 +1211,7 @@ End
 #tag Events rctSudoku
 	#tag Event
 		Sub Opening()
-		  Var js As String = _
-		  "(function() {" + EndOfLine + _
-		  "  var rectID = '" + Me.ControlID + "';" + EndOfLine + _
-		  "  function wrapAndScale() {" + EndOfLine + _
-		  "    var el = document.getElementById(rectID);" + EndOfLine + _
-		  "    if (!el) return;" + EndOfLine + _
-		  "    if (!el.parentElement.classList.contains('wrapper')) {" + EndOfLine + _
-		  "      var wrapper = document.createElement('div');" + EndOfLine + _
-		  "      wrapper.className = 'wrapper';" + EndOfLine + _
-		  "      el.parentNode.insertBefore(wrapper, el);" + EndOfLine + _
-		  "      wrapper.appendChild(el);" + EndOfLine + _
-		  "    }" + EndOfLine + _
-		  "    var baseWidth = 840;" + EndOfLine + _
-		  "    var windowWidth = Math.min(window.innerWidth, baseWidth);" + EndOfLine + _
-		  "    var scale = windowWidth / baseWidth;" + EndOfLine + _
-		  "    el.style.transform = 'scale(' + scale + ')';" + EndOfLine + _
-		  "  }" + EndOfLine + _
-		  "  function waitForElement() {" + EndOfLine + _
-		  "    var el = document.getElementById(rectID);" + EndOfLine + _
-		  "    if (el) {" + EndOfLine + _
-		  "      wrapAndScale();" + EndOfLine + _
-		  "      window.addEventListener('resize', wrapAndScale);" + EndOfLine + _
-		  "    } else {" + EndOfLine + _
-		  "      setTimeout(waitForElement, 50);" + EndOfLine + _
-		  "    }" + EndOfLine + _
-		  "  }" + EndOfLine + _
-		  "  waitForElement();" + EndOfLine + _
-		  "})();"
-		  
-		  Me.ExecuteJavaScript(js)
+		  Me.ExecuteJavaScript(kJavaScriptWrapper.Replace("[CONTROLID]", Me.ControlID))
 		  
 		End Sub
 	#tag EndEvent
