@@ -32,7 +32,6 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1094,14 +1093,16 @@ End
 		      t.PositionIndex = index
 		      
 		      t.TextAlignment = TextAlignments.Center
-		      //t.FieldType = WebTextField.FieldTypes.Number
+		      ' FieldTypes.Number shows spinners (which we don't want)
+		      ' FieldTypes.Telephone shows a number pad on mobile devices
+		      t.FieldType = WebTextField.FieldTypes.Telephone
 		      t.MaximumCharactersAllowed = 1
 		      t.Visible = True
 		      t.Enabled = True
 		      t.Width = 40
 		      t.Height = 40
-		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) /2)
-		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) /2)
+		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) / 2)
+		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) / 2)
 		      t.Style.BackgroundColor = &cffffffff
 		      
 		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
