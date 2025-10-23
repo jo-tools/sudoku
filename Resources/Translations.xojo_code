@@ -6,10 +6,10 @@ Protected Module Translations
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
 	#tag EndConstant
 
-	#tag Constant, Name = kLabelExportPDF, Type = String, Dynamic = True, Default = \"Export PDF", Scope = Public
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Export PDF"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exporter PDF"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar PDF"
+	#tag Constant, Name = kLabelExport, Type = String, Dynamic = True, Default = \"Export", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Export"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exporter"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar"
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelNumClues, Type = String, Dynamic = True, Default = \"Clues", Scope = Public

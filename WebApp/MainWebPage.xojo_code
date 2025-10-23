@@ -472,7 +472,7 @@ Begin WebPage MainWebPage
          Width           =   580
          _mPanelIndex    =   -1
       End
-      Begin WebLabel labExportPDF
+      Begin WebLabel labExport
          Bold            =   False
          ControlID       =   ""
          CSSClasses      =   "mouse-cursor-pointer"
@@ -484,7 +484,7 @@ Begin WebPage MainWebPage
          Indicator       =   ""
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   460
+         Left            =   500
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -499,14 +499,14 @@ Begin WebPage MainWebPage
          TabIndex        =   12
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "#kLabelExportPDF"
+         Text            =   "#kLabelExport"
          TextAlignment   =   3
          TextColor       =   colAppLabel
-         Tooltip         =   "Sudoku.pdf"
+         Tooltip         =   ""
          Top             =   48
          Underline       =   True
          Visible         =   True
-         Width           =   120
+         Width           =   80
          _mPanelIndex    =   -1
       End
       Begin WebImageViewer imgPayPal
@@ -759,7 +759,54 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionExportPDF()
+		Private Sub ActionExport()
+		  Var popDownloadChoice As New DownloadChoice
+		  
+		  AddHandler popDownloadChoice.ActionPDF, WeakAddressOf ActionExportPDF
+		  AddHandler popDownloadChoice.ActionJson, WeakAddressOf ActionExportJson
+		  AddHandler popDownloadChoice.ActionTxt, WeakAddressOf ActionExportTxt
+		  
+		  popDownloadChoice.ShowPopover(labExport, WebContainer.DisplaySides.Bottom)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionExportJson(obj As DownloadChoice)
+		  ' Dismiss Popover
+		  If (obj <> Nil) Then obj.Close
+		  
+		  ' Export Json
+		  Var jsonApplication As New JSONItem
+		  jsonApplication.Value(kJSONKeyApplicationName) = "Sudoku"
+		  jsonApplication.Value(kJSONKeyApplicationVersion) = labAppVersion.Text.Trim
+		  jsonApplication.Value(kJSONKeyApplicationUrl) = SudokuTool.kURL_Repository
+		  
+		  Var json As JSONItem = Me.Sudoku.ToJson(jsonApplication)
+		  
+		  Var jsonOptions As New JSONOptions
+		  jsonOptions.Compact = False
+		  
+		  ' Save Json and Download
+		  Var prepareDownload As New WebFile
+		  prepareDownload.MimeType = "application/json"
+		  prepareDownload.ForceDownload = True
+		  prepareDownload.FileName = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"
+		  prepareDownload.Data = json.ToString(jsonOptions)
+		  
+		  AddHandler prepareDownload.Downloaded, WeakAddressOf Self.ActionDownloadStarted
+		  
+		  Me.Download = prepareDownload
+		  Call prepareDownload.Download
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionExportPDF(obj As DownloadChoice)
+		  ' Dismiss Popover
+		  If (obj <> Nil) Then obj.Close
+		  
 		  ' Setup PDF
 		  Var pdf As New PDFDocument(PDFDocument.PageSizes.A4)
 		  Var g As Graphics = pdf.Graphics
@@ -778,8 +825,31 @@ End
 		  Var prepareDownload As New WebFile
 		  prepareDownload.MimeType = "application/pdf"
 		  prepareDownload.ForceDownload = True
-		  prepareDownload.FileName = "Sudoku.pdf"
+		  prepareDownload.FileName = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".pdf"
 		  prepareDownload.Data = pdf.ToData
+		  
+		  AddHandler prepareDownload.Downloaded, WeakAddressOf Self.ActionDownloadStarted
+		  
+		  Me.Download = prepareDownload
+		  Call prepareDownload.Download
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionExportTxt(obj As DownloadChoice)
+		  ' Dismiss Popover
+		  If (obj <> Nil) Then obj.Close
+		  
+		  ' Export Txt
+		  Var txt As String = Me.Sudoku.ToString
+		  
+		  ' Save Json and Download
+		  Var prepareDownload As New WebFile
+		  prepareDownload.MimeType = "application/json"
+		  prepareDownload.ForceDownload = True
+		  prepareDownload.FileName = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"
+		  prepareDownload.Data = txt
 		  
 		  AddHandler prepareDownload.Downloaded, WeakAddressOf Self.ActionDownloadStarted
 		  
@@ -1187,6 +1257,15 @@ End
 	#tag Constant, Name = kJavaScriptWrapper, Type = String, Dynamic = False, Default = \"(function() {\n  var rectID \x3D \'[CONTROLID]\';\n  \n  function wrapAndScale() {\n    var el \x3D document.getElementById(rectID);\n    if (!el) return;\n\n    if (!el.parentElement.classList.contains(\'wrapper\')) {\n      var wrapper \x3D document.createElement(\'div\');\n      wrapper.className \x3D \'wrapper\';\n      el.parentNode.insertBefore(wrapper\x2C el);\n      wrapper.appendChild(el);\n    }\n\n    var baseWidth \x3D 840;\n    var windowWidth \x3D Math.min(window.innerWidth\x2C baseWidth);\n    var scale \x3D windowWidth / baseWidth;\n    el.style.transform \x3D \'scale(\' + scale + \')\';\n  }\n\n  function waitForElement() {\n    var el \x3D document.getElementById(rectID);\n    if (el) {\n      wrapAndScale();\n      window.addEventListener(\'resize\'\x2C wrapAndScale);\n    } else {\n      setTimeout(waitForElement\x2C 50);\n    }\n  }\n\n  waitForElement();\n})();\n", Scope = Private
 	#tag EndConstant
 
+	#tag Constant, Name = kJSONKeyApplicationName, Type = String, Dynamic = False, Default = \"name", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationUrl, Type = String, Dynamic = False, Default = \"url", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyApplicationVersion, Type = String, Dynamic = False, Default = \"version", Scope = Private
+	#tag EndConstant
+
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
 	#tag EndConstant
 
@@ -1383,10 +1462,11 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events labExportPDF
+#tag Events labExport
 	#tag Event
 		Sub Pressed()
-		  Self.ActionExportPDF
+		  Self.ActionExport
+		  
 		  
 		End Sub
 	#tag EndEvent
