@@ -319,6 +319,16 @@ Protected Class SudokuTool
 		  ' Draw current Sudoku
 		  Me.DrawSudokuInternal(g, gridX, gridY, gridSize, True)
 		  
+		  top = top + sudokuHeight
+		  
+		  ' Author
+		  Var author As String = kURL_Repository
+		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  g.FontUnit = FontUnits.Point
+		  g.FontSize = 8
+		  g.Bold = False
+		  g.DrawText(author, (g.Width - g.TextWidth(author)) / 2.0, top + g.FontAscent + g.TextHeight)
+		  
 		  ' Solution (on a clone, in order not to modify this Sudoku's state)
 		  If Me.IsSolved Then Return
 		  Var clone As New SudokuTool(Me)
