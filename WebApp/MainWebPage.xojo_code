@@ -724,6 +724,15 @@ Begin WebPage MainWebPage
          _ProtectImage   =   False
       End
    End
+   Begin SudokuCallback cbSudokuTextFields
+      ControlID       =   ""
+      Enabled         =   True
+      Index           =   -2147483648
+      LockedInPosition=   False
+      PanelIndex      =   0
+      Scope           =   2
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
@@ -1181,6 +1190,27 @@ End
 		    Next
 		  Next
 		  
+		  
+		  ' Hookup Callback for Arrow Keys
+		  Var js As String = _
+		  "var fields = [];" + EndOfLine
+		  
+		  For i As Integer = 0 To Self.SudokuTextFields.LastIndex
+		    js = js + _
+		    "fields[" + i.ToString + "] = '" + SudokuTextFields(i).ControlID + "';" + EndOfLine
+		  Next i
+		  
+		  js = js + _
+		  "for (let i = 0; i < fields.length; i++) {" + EndOfLine + _
+		  "  let tf = document.getElementById(fields[i]);" + EndOfLine + _
+		  "  if (!tf) continue;" + EndOfLine + _
+		  "  tf.addEventListener('keydown', function(e) {" + EndOfLine + _
+		  "    XojoWeb.getNamedControl('" + Self.cbSudokuTextFields.ControlID + "').arrowKeyPressed(i,e.key);"  + EndOfLine + _
+		  "  });" + EndOfLine + _
+		  "}"
+		  
+		  ExecuteJavaScript(js)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1516,6 +1546,48 @@ End
 		  #Pragma Unused y
 		  
 		  Session.GoToURL(SudokuTool.kURL_Repository)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events cbSudokuTextFields
+	#tag Event
+		Sub ArrowKeyPressed(index As Integer, arrowKey As String)
+		  Select Case arrowKey
+		    
+		  Case "ArrowLeft"
+		    While (index > 0)
+		      index = index - 1
+		      If Self.SudokuTextFields(index).IsLocked Then Continue
+		      SudokuTextFields(index).SetFocus
+		      Return
+		    Wend
+		    
+		  Case "ArrowRight"
+		    While (index < SudokuTool.N*SudokuTool.N - 1)
+		      index = index + 1
+		      If Self.SudokuTextFields(index).IsLocked Then Continue
+		      SudokuTextFields(index).SetFocus
+		      Return
+		    Wend
+		    
+		  Case "ArrowUp"
+		    While (index - SudokuTool.N >= 0)
+		      index = index - SudokuTool.N
+		      If Self.SudokuTextFields(index).IsLocked Then Continue
+		      SudokuTextFields(index).SetFocus
+		      Return
+		    Wend
+		    
+		  Case "ArrowDown"
+		    While (index + SudokuTool.N < SudokuTool.N*SudokuTool.N)
+		      index = index + SudokuTool.N
+		      If Self.SudokuTextFields(index).IsLocked Then Continue
+		      SudokuTextFields(index).SetFocus
+		      Return
+		    Wend
+		    
+		  End Select
 		  
 		End Sub
 	#tag EndEvent
