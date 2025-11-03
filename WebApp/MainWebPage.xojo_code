@@ -740,6 +740,34 @@ End
 		End Sub
 	#tag EndEvent
 
+	#tag Event
+		Sub Shown()
+		  ' Workaround: Re-Set first Focus
+		  lstNumClues.SetFocus
+		  
+		  Var focusIndex As Integer = -1
+		  
+		  For row As Integer = 0 To SudokuTool.N-1
+		    For col As Integer = 0 To SudokuTool.N-1
+		      Var index As Integer = row * SudokuTool.N + col
+		      
+		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      If value = 0 Then
+		        If (focusIndex < 0) Then focusIndex = index
+		      End If
+		      
+		      If (focusIndex >= 0) Then Exit 'Loop
+		    Next
+		    If (focusIndex >= 0) Then Exit 'Loop
+		  Next
+		  
+		  ' Set Focus into first empty field
+		  If (focusIndex >= 0) Then
+		    Me.SudokuTextFields(focusIndex).SetFocus
+		  End If
+		End Sub
+	#tag EndEvent
+
 
 	#tag Method, Flags = &h21
 		Private Sub ActionDownloadStarted(file As WebFile)
@@ -868,7 +896,7 @@ End
 		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
 		      
 		      If (value > 0) Then
-		        SudokuTextFields(index).Lock = (value > 0)
+		        Me.SudokuTextFields(index).Lock = (value > 0)
 		        Me.Sudoku.SetGridCellLocked(row, col)
 		      End If
 		    Next
@@ -1015,7 +1043,7 @@ End
 		    For col As Integer = 0 To SudokuTool.N-1
 		      Var index As Integer = row * SudokuTool.N + col
 		      
-		      If (Not SudokuTextFields(index).IsLocked) Then Continue
+		      If (Not Me.SudokuTextFields(index).IsLocked) Then Continue
 		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, locked cell
@@ -1035,7 +1063,7 @@ End
 		    For col As Integer = 0 To SudokuTool.N-1
 		      Var index As Integer = row * SudokuTool.N + col
 		      
-		      If SudokuTextFields(index).IsLocked Then Continue
+		      If Me.SudokuTextFields(index).IsLocked Then Continue
 		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
@@ -1119,24 +1147,24 @@ End
 		    For col As Integer = 0 To SudokuTool.N-1
 		      Var index As Integer = row * SudokuTool.N + col
 		      
-		      SudokuTextFields(index).Lock = False
+		      Me.SudokuTextFields(index).Lock = False
 		      
 		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
 		      If value = 0 Then
-		        SudokuTextFields(index).Text = ""
+		        Me.SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
-		        SudokuTextFields(index).Text = value.ToString
-		        SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
+		        Me.SudokuTextFields(index).Text = value.ToString
+		        Me.SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
 		  
 		  ' Focus into first empty field
 		  If (focusIndex < 0) Then
-		    self.SetFocus 'move Focus out of TextFields
+		    Self.SetFocus 'move Focus out of TextFields
 		  Else
-		    SudokuTextFields(focusIndex).SetFocus
+		    Me.SudokuTextFields(focusIndex).SetFocus
 		  End If
 		  
 		  Me.RefreshControls
@@ -1148,7 +1176,7 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
-		  Redim SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
+		  Redim Me.SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
 		  
 		  ' Create and add Sudoku Number Fields
 		  For row As Integer = 0 To SudokuTool.N-1
@@ -1157,7 +1185,7 @@ End
 		      
 		      Dim t As New SudokuNumberField
 		      
-		      SudokuTextFields(index) = t
+		      Me.SudokuTextFields(index) = t
 		      
 		      t.RowIndex = row
 		      t.ColumnIndex = col
@@ -1176,6 +1204,7 @@ End
 		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) / 2)
 		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) / 2)
 		      t.Style.BackgroundColor = &cffffffff
+		      t.TabIndex = 101 + index
 		      
 		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
 		      
@@ -1189,9 +1218,9 @@ End
 		  jsLines.Add("var documentFields = [];")
 		  jsLines.Add("var xojoWebFields = [];")
 		  
-		  For i As Integer = 0 To Self.SudokuTextFields.LastIndex
-		    jsLines.Add("documentFields[" + i.ToString + "] = document.getElementById('" + SudokuTextFields(i).ControlID + "');")
-		    jsLines.Add("xojoWebFields[" + i.ToString + "] = XojoWeb.getNamedControl('" + SudokuTextFields(i).ControlID + "');")
+		  For i As Integer = 0 To Me.SudokuTextFields.LastIndex
+		    jsLines.Add("documentFields[" + i.ToString + "] = document.getElementById('" + Me.SudokuTextFields(i).ControlID + "');")
+		    jsLines.Add("xojoWebFields[" + i.ToString + "] = XojoWeb.getNamedControl('" + Me.SudokuTextFields(i).ControlID + "');")
 		  Next i
 		  
 		  jsLines.Add("let size = " + SudokuTool.N.ToString + ";")
