@@ -7,7 +7,6 @@ Folder=WebApp;WebApp;&h000000002A72E7FF;&h0000000000000000;false
 Folder=Logic;Logic;&h000000003551C7FF;&h0000000000000000;false
 Folder=Colors;WebApp/Colors;&h0000000059FE8FFF;&h000000002A72E7FF;false
 Folder=Controls;WebApp/Controls;&h0000000011507FFF;&h000000002A72E7FF;false
-Class=SudokuCallback;WebApp/Controls/SudokuCallback.xojo_code;&h000000006AE0D7FF;&h0000000011507FFF;false
 Folder=Popup;WebApp/Popup;&h000000007E615FFF;&h000000002A72E7FF;false
 WebContainer=DownloadChoice;WebApp/Popup/DownloadChoice.xojo_code;&h000000005C53BFFF;&h000000007E615FFF;false
 ColorAsset=colAppLabel;WebApp/Colors/colAppLabel.xojo_color;&h000000005B7237FF;&h0000000059FE8FFF;false

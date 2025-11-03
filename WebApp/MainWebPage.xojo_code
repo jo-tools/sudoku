@@ -724,15 +724,6 @@ Begin WebPage MainWebPage
          _ProtectImage   =   False
       End
    End
-   Begin SudokuCallback cbSudokuTextFields
-      ControlID       =   ""
-      Enabled         =   True
-      Index           =   -2147483648
-      LockedInPosition=   False
-      PanelIndex      =   0
-      Scope           =   2
-      _mPanelIndex    =   -1
-   End
 End
 #tag EndWebPage
 
@@ -1159,6 +1150,7 @@ End
 		Private Sub SudokuNumberFieldsInit()
 		  Redim SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
 		  
+		  ' Create and add Sudoku Number Fields
 		  For row As Integer = 0 To SudokuTool.N-1
 		    For col As Integer = 0 To SudokuTool.N-1
 		      Var index As Integer = row * SudokuTool.N + col
@@ -1192,25 +1184,39 @@ End
 		  Next
 		  
 		  
-		  ' Hookup Callback for Arrow Keys
-		  Var js As String = _
-		  "var fields = [];" + EndOfLine
+		  ' Hookup Event Listeners for Arrow Keys
+		  Var jsLines() As String
+		  jsLines.Add("var documentFields = [];")
+		  jsLines.Add("var xojoWebFields = [];")
 		  
 		  For i As Integer = 0 To Self.SudokuTextFields.LastIndex
-		    js = js + _
-		    "fields[" + i.ToString + "] = '" + SudokuTextFields(i).ControlID + "';" + EndOfLine
+		    jsLines.Add("documentFields[" + i.ToString + "] = document.getElementById('" + SudokuTextFields(i).ControlID + "');")
+		    jsLines.Add("xojoWebFields[" + i.ToString + "] = XojoWeb.getNamedControl('" + SudokuTextFields(i).ControlID + "');")
 		  Next i
 		  
-		  js = js + _
-		  "for (let i = 0; i < fields.length; i++) {" + EndOfLine + _
-		  "  let tf = document.getElementById(fields[i]);" + EndOfLine + _
-		  "  if (!tf) continue;" + EndOfLine + _
-		  "  tf.addEventListener('keydown', function(e) {" + EndOfLine + _
-		  "    XojoWeb.getNamedControl('" + Self.cbSudokuTextFields.ControlID + "').arrowKeyPressed(i,e.key);"  + EndOfLine + _
-		  "  });" + EndOfLine + _
-		  "}"
+		  jsLines.Add("let size = " + SudokuTool.N.ToString + ";")
+		  jsLines.Add("for (let i = 0; i < documentFields.length; i++) {")
+		  jsLines.Add("  let tf = documentFields[i];")
+		  jsLines.Add("  if (!tf) continue;")
+		  jsLines.Add("  tf.addEventListener('keydown', function(e) {")
+		  jsLines.Add("    let nextIndex = null;")
+		  jsLines.Add("    switch(e.key) {")
+		  jsLines.Add("      case 'ArrowLeft': nextIndex = i - 1; break;")
+		  jsLines.Add("      case 'ArrowRight': nextIndex = i + 1; break;")
+		  jsLines.Add("      case 'ArrowUp': nextIndex = i - size; break;")
+		  jsLines.Add("      case 'ArrowDown': nextIndex = i + size; break;")
+		  jsLines.Add("    }")
+		  jsLines.Add("    if (nextIndex === null || nextIndex < 0 || nextIndex >= xojoWebFields.length) return;")
+		  jsLines.Add("    let next = xojoWebFields[nextIndex];")
+		  jsLines.Add("    if (next) {")
+		  jsLines.Add("      e.preventDefault();")
+		  jsLines.Add("      next.setFocus();")
+		  jsLines.Add("    }")
+		  jsLines.Add("  });")
+		  jsLines.Add("}")
 		  
-		  ExecuteJavaScript(js)
+		  ExecuteJavaScript(String.FromArray(jsLines, EndOfLine.UNIX))
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -1550,40 +1556,6 @@ End
 		  #Pragma Unused y
 		  
 		  Session.GoToURL(SudokuTool.kURL_Repository)
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events cbSudokuTextFields
-	#tag Event
-		Sub ArrowKeyPressed(index As Integer, arrowKey As String)
-		  Select Case arrowKey
-		    
-		  Case "ArrowLeft"
-		    index = index - 1
-		    If (index < 0) Then Return
-		    SudokuTextFields(index).SetFocus
-		    Return
-		    
-		  Case "ArrowRight"
-		    index = index + 1
-		    If (index > SudokuTool.N*SudokuTool.N - 1) Then Return
-		    SudokuTextFields(index).SetFocus
-		    Return
-		    
-		  Case "ArrowUp"
-		    index = index - SudokuTool.N
-		    If (index < 0) Then Return
-		    SudokuTextFields(index).SetFocus
-		    Return
-		    
-		  Case "ArrowDown"
-		    index = index + SudokuTool.N
-		    If (index > SudokuTool.N*SudokuTool.N - 1) Then Return
-		    SudokuTextFields(index).SetFocus
-		    Return
-		    
-		  End Select
 		  
 		End Sub
 	#tag EndEvent
