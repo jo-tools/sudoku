@@ -58,7 +58,7 @@ Begin WebPage MainWebPage
       LockVertical    =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   19
+      TabIndex        =   0
       TabStop         =   True
       Tooltip         =   ""
       Top             =   0
@@ -91,7 +91,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   0
+         TabIndex        =   19
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "..."
@@ -128,7 +128,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   1
+         TabIndex        =   18
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelSudokuStatus"
@@ -165,7 +165,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   2
+         TabIndex        =   17
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -195,7 +195,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   3
+         TabIndex        =   16
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -226,7 +226,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   4
+         TabIndex        =   15
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -260,7 +260,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   5
+         TabIndex        =   14
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelShow"
@@ -297,7 +297,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   6
+         TabIndex        =   13
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -330,7 +330,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   7
+         TabIndex        =   12
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -363,7 +363,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   8
+         TabIndex        =   11
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelNumClues"
@@ -401,7 +401,7 @@ Begin WebPage MainWebPage
          Scope           =   2
          SelectedRowIndex=   0
          SelectedRowText =   ""
-         TabIndex        =   9
+         TabIndex        =   10
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -434,7 +434,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   10
+         TabIndex        =   9
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -463,7 +463,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   11
+         TabIndex        =   8
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -496,7 +496,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   12
+         TabIndex        =   6
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelExport"
@@ -531,7 +531,7 @@ Begin WebPage MainWebPage
          Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
-         TabIndex        =   13
+         TabIndex        =   5
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   "#SudokuTool.kURL_Paypal"
@@ -566,7 +566,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   14
+         TabIndex        =   4
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelContact"
@@ -603,7 +603,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   15
+         TabIndex        =   2
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelThanks"
@@ -640,7 +640,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   16
+         TabIndex        =   7
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "AppVersion"
@@ -677,7 +677,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   17
+         TabIndex        =   3
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "Sudoku"
@@ -712,7 +712,7 @@ Begin WebPage MainWebPage
          Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
-         TabIndex        =   18
+         TabIndex        =   1
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   "#SudokuTool.kURL_Repository"
@@ -1236,7 +1236,7 @@ End
 		  End If
 		  
 		  ' SelectAll, so that a new number overwrites current one
-		  sender.SelectAll
+		  If (Not sender.IsLocked) And (sender.Text.ToInteger > 0) Then sender.SelectAll
 		  
 		  If (Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
 		  

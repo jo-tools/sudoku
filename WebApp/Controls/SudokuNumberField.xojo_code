@@ -3,7 +3,9 @@ Protected Class SudokuNumberField
 Inherits WebTextField
 	#tag Event
 		Sub FocusReceived()
-		  Me.SelectAll
+		  If (Not Me.IsLocked) And (Me.Text.ToInteger > 0) Then
+		    Me.SelectAll
+		  End If
 		  
 		  FocusReceived
 		End Sub
