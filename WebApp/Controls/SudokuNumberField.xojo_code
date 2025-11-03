@@ -27,10 +27,10 @@ Inherits WebTextField
 		  
 		  If lock Then
 		    Me.Style.Bold = True
-		    Me.Enabled = False
+		    Me.ReadOnly = True
 		  Else
 		    Me.Style.Bold = False
-		    me.Enabled = True
+		    me.ReadOnly = False
 		  End If
 		  
 		End Sub

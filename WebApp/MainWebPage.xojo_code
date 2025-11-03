@@ -1178,6 +1178,7 @@ End
 		      t.MaximumCharactersAllowed = 1
 		      t.Visible = True
 		      t.Enabled = True
+		      t.ReadOnly = False
 		      t.Width = 40
 		      t.Height = 40
 		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) / 2)
@@ -1556,36 +1557,28 @@ End
 		  Select Case arrowKey
 		    
 		  Case "ArrowLeft"
-		    While (index > 0)
-		      index = index - 1
-		      If Self.SudokuTextFields(index).IsLocked Then Continue
-		      SudokuTextFields(index).SetFocus
-		      Return
-		    Wend
+		    index = index - 1
+		    If (index < 0) Then Return
+		    SudokuTextFields(index).SetFocus
+		    Return
 		    
 		  Case "ArrowRight"
-		    While (index < SudokuTool.N*SudokuTool.N - 1)
-		      index = index + 1
-		      If Self.SudokuTextFields(index).IsLocked Then Continue
-		      SudokuTextFields(index).SetFocus
-		      Return
-		    Wend
+		    index = index + 1
+		    If (index > SudokuTool.N*SudokuTool.N - 1) Then Return
+		    SudokuTextFields(index).SetFocus
+		    Return
 		    
 		  Case "ArrowUp"
-		    While (index - SudokuTool.N >= 0)
-		      index = index - SudokuTool.N
-		      If Self.SudokuTextFields(index).IsLocked Then Continue
-		      SudokuTextFields(index).SetFocus
-		      Return
-		    Wend
+		    index = index - SudokuTool.N
+		    If (index < 0) Then Return
+		    SudokuTextFields(index).SetFocus
+		    Return
 		    
 		  Case "ArrowDown"
-		    While (index + SudokuTool.N < SudokuTool.N*SudokuTool.N)
-		      index = index + SudokuTool.N
-		      If Self.SudokuTextFields(index).IsLocked Then Continue
-		      SudokuTextFields(index).SetFocus
-		      Return
-		    Wend
+		    index = index + SudokuTool.N
+		    If (index > SudokuTool.N*SudokuTool.N - 1) Then Return
+		    SudokuTextFields(index).SetFocus
+		    Return
 		    
 		  End Select
 		  
