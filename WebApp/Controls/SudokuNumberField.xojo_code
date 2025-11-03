@@ -1,6 +1,15 @@
 #tag Class
 Protected Class SudokuNumberField
 Inherits WebTextField
+	#tag Event
+		Sub FocusReceived()
+		  Me.SelectAll
+		  
+		  FocusReceived
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  // Calling the overridden superclass constructor.
@@ -35,6 +44,11 @@ Inherits WebTextField
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Hook, Flags = &h0
+		Event FocusReceived()
+	#tag EndHook
 
 
 	#tag Property, Flags = &h0
