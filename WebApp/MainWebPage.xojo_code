@@ -1235,6 +1235,9 @@ End
 		    sender.Text = ""
 		  End If
 		  
+		  ' SelectAll, so that a new number overwrites current one
+		  sender.SelectAll
+		  
 		  If (Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
 		  
 		  Me.Sudoku.SetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber
