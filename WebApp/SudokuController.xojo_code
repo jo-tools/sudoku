@@ -23,7 +23,6 @@ Inherits WebSDKControl
 
 	#tag Event
 		Sub Serialize(js As JSONItem)
-		  // TODO
 		  If Self.Parent = Nil Then
 		    Return
 		  End If
@@ -49,7 +48,6 @@ Inherits WebSDKControl
 
 	#tag Event
 		Function SessionJavascriptURLs(session As WebSession) As String()
-		  // TODO
 		  Var result() As String
 		  
 		  Static jsFile As WebFile
