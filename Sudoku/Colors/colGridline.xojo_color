@@ -1,9 +1,0 @@
-#tag ColorGroup
-	CodeName=colGridline
-	#tag Color
-		Type=1
-		Platform=1
-		Light=42424200
-		Dark=C0C0C000
-	#tag EndColor
-#tag EndColorGroup

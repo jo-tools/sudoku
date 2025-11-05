@@ -5,7 +5,7 @@ Sudoku Solver & Generator
 
 ## Description
 
-This project is a Sudoku Tool written in [Xojo](https://www.xojo.com/).  
+This project is a Sudoku Tool written in [Xojo](https://www.xojo.com/) and available as a Desktop and Web Application.  
 
 ### Features
 
@@ -20,23 +20,29 @@ This project is a Sudoku Tool written in [Xojo](https://www.xojo.com/).
       - Display possible cell candidates
   - Let the solver complete the puzzle
 - Export as PDF | Print
-- Save to File | Open from File
+- Save to File | Open from File *(Desktop only)*
 
 
 ### Logic
 *The solver uses a classic backtracking algorithm with strategies and rule checking to guarantee correct solutions. Random puzzle generation is based on creating a full valid grid, applying digit shuffling, and then removing cells to reach the desired clue count while enforcing a unique solution.*
 
 
-### ScreenShot
+### ScreenShots
 
-![ScreenShot: Disk Image](ScreenShots/Sudoku.png?raw=true)
+#### Desktop Application
+
+![ScreenShot: Sudoku Desktop](ScreenShots/SudokuDesktop.png?raw=true)
+
+#### Web Application
+
+![ScreenShot: Sudoku Web](ScreenShots/SudokuWeb.png?raw=true)
 
 
 ## Xojo
 ### Requirements
 [Xojo](https://www.xojo.com/) is a rapid application development for Desktop, Web, Mobile & Raspberry Pi.  
 
-The Desktop application Xojo project ```Sudoku.xojo_project``` is using:
+The Xojo projects `SudokuDesktop.xojo_project` and `SudokuWeb.xojo_project` are using:
 - Xojo 2025r2.1
 - API 2
 

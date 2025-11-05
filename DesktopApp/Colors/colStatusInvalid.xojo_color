@@ -1,0 +1,8 @@
+#tag ColorGroup
+	CodeName=colStatusInvalid
+	#tag Color
+		Type=0
+		Platform=1
+		Light=94110000
+	#tag EndColor
+#tag EndColorGroup

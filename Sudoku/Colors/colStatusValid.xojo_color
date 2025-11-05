@@ -1,8 +1,0 @@
-#tag ColorGroup
-	CodeName=colStatusValid
-	#tag Color
-		Type=0
-		Platform=1
-		Light=FF930000
-	#tag EndColor
-#tag EndColorGroup

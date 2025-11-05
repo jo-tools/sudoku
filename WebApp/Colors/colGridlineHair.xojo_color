@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=colGridlineHair
+	#tag Color
+		Type=1
+		Platform=3
+		Light=A9A9A900
+		Dark=5E5E5E00
+	#tag EndColor
+#tag EndColorGroup
