@@ -724,6 +724,16 @@ Begin WebPage MainWebPage
          _ProtectImage   =   False
       End
    End
+   Begin SudokuController Controller
+      ControlID       =   ""
+      Enabled         =   True
+      Index           =   -2147483648
+      LockedInPosition=   False
+      PanelIndex      =   0
+      Scope           =   2
+      Size            =   9
+      _mPanelIndex    =   -1
+   End
 End
 #tag EndWebPage
 
@@ -1211,42 +1221,6 @@ End
 		      rctSudoku.AddControl(t)
 		    Next
 		  Next
-		  
-		  
-		  ' Hookup Event Listeners for Arrow Keys
-		  Var jsLines() As String
-		  jsLines.Add("var documentFields = [];")
-		  jsLines.Add("var xojoWebFields = [];")
-		  
-		  For i As Integer = 0 To Me.SudokuTextFields.LastIndex
-		    jsLines.Add("documentFields[" + i.ToString + "] = document.getElementById('" + Me.SudokuTextFields(i).ControlID + "');")
-		    jsLines.Add("xojoWebFields[" + i.ToString + "] = XojoWeb.getNamedControl('" + Me.SudokuTextFields(i).ControlID + "');")
-		  Next i
-		  
-		  jsLines.Add("let size = " + SudokuTool.N.ToString + ";")
-		  jsLines.Add("for (let i = 0; i < documentFields.length; i++) {")
-		  jsLines.Add("  let tf = documentFields[i];")
-		  jsLines.Add("  if (!tf) continue;")
-		  jsLines.Add("  tf.addEventListener('keydown', function(e) {")
-		  jsLines.Add("    let nextIndex = null;")
-		  jsLines.Add("    switch(e.key) {")
-		  jsLines.Add("      case 'ArrowLeft': nextIndex = i - 1; break;")
-		  jsLines.Add("      case 'ArrowRight': nextIndex = i + 1; break;")
-		  jsLines.Add("      case 'ArrowUp': nextIndex = i - size; break;")
-		  jsLines.Add("      case 'ArrowDown': nextIndex = i + size; break;")
-		  jsLines.Add("    }")
-		  jsLines.Add("    if (nextIndex === null || nextIndex < 0 || nextIndex >= xojoWebFields.length) return;")
-		  jsLines.Add("    let next = xojoWebFields[nextIndex];")
-		  jsLines.Add("    if (next) {")
-		  jsLines.Add("      e.preventDefault();")
-		  jsLines.Add("      next.setFocus();")
-		  jsLines.Add("    }")
-		  jsLines.Add("  });")
-		  jsLines.Add("}")
-		  
-		  ExecuteJavaScript(String.FromArray(jsLines, EndOfLine.UNIX))
-		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -1586,6 +1560,13 @@ End
 		  
 		  Session.GoToURL(SudokuTool.kURL_Repository)
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Controller
+	#tag Event
+		Sub Opening()
+		  Me.Size = SudokuTool.N
 		End Sub
 	#tag EndEvent
 #tag EndEvents
