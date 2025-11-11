@@ -301,7 +301,9 @@ Protected Class SudokuTool
 		  
 		  ' Sudoku Title
 		  Var title As String = "Sudoku"
-		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  // This will not show any Text at all on Linux/WebApp
+		  // So just use the Default Font for now...
+		  // g.FontName = PDFDocument.StandardFontNames.Helvetica
 		  g.FontUnit = FontUnits.Point
 		  g.FontSize = 18
 		  g.Bold = True
@@ -323,7 +325,9 @@ Protected Class SudokuTool
 		  
 		  ' Author
 		  Var author As String = kURL_Repository
-		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  // This will not show any Text at all on Linux/WebApp
+		  // So just use the Default Font for now...
+		  // g.FontName = PDFDocument.StandardFontNames.Helvetica
 		  g.FontUnit = FontUnits.Point
 		  g.FontSize = 8
 		  g.Bold = False
@@ -389,7 +393,9 @@ Protected Class SudokuTool
 		  
 		  ' Draw digits (centered)
 		  g.FontUnit = FontUnits.Point
-		  g.FontName = PDFDocument.StandardFontNames.Helvetica
+		  // This will not show any Text at all on Linux/WebApp
+		  // So just use the Default Font for now...
+		  // g.FontName = PDFDocument.StandardFontNames.Helvetica
 		  g.Bold = isPuzzle 'not bold for solution
 		  
 		  For row As Integer = 0 To N - 1
