@@ -2,6 +2,14 @@
 			Begin BuildStepList Linux
 				Begin BuildProjectStep Build
 				End
+				Begin CopyFilesBuildStep CopyAppFontsLinux
+					AppliesTo = 0
+					Architecture = 0
+					Target = 0
+					Destination = 1
+					Subdirectory = AppFonts
+					FolderItem = Li4vUmVzb3VyY2VzL0ZvbnRzL1JvYm90by50dGY=
+				End
 				Begin IDEScriptBuildStep CreateTGZ , AppliesTo = 2, Architecture = 0, Target = 0
 					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
 					'So make sure this script is only being run when needed:
@@ -295,6 +303,14 @@
 				End
 				Begin BuildProjectStep Build
 				End
+				Begin CopyFilesBuildStep CopyAppFontsMacOs
+					AppliesTo = 0
+					Architecture = 0
+					Target = 0
+					Destination = 1
+					Subdirectory = AppFonts
+					FolderItem = Li4vUmVzb3VyY2VzL0ZvbnRzL1JvYm90by50dGY=
+				End
 				Begin CopyFilesBuildStep AssetsCar
 					AppliesTo = 0
 					Architecture = 0
@@ -307,6 +323,7 @@
 				End
 				Begin SignProjectStep Sign
 				  DeveloperID=
+				  macOSEntitlements={"App Sandbox":"False","Hardened Runtime":"False","Notarize":"False","UserEntitlements":""}
 				End
 				Begin IDEScriptBuildStep Xojo2DMG , AppliesTo = 0, Architecture = 0, Target = 0
 					'This is a MonoRepo with multiple Projects (which therefore share the Build Automation steps).
@@ -459,6 +476,14 @@
 			End
 			Begin BuildStepList Windows
 				Begin BuildProjectStep Build
+				End
+				Begin CopyFilesBuildStep CopyAppFontsWindows
+					AppliesTo = 0
+					Architecture = 0
+					Target = 0
+					Destination = 1
+					Subdirectory = AppFonts
+					FolderItem = Li4vUmVzb3VyY2VzL0ZvbnRzL1JvYm90by50dGY=
 				End
 				Begin CopyFilesBuildStep CopyIcoFiles
 					AppliesTo = 0
