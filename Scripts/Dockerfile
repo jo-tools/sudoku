@@ -15,7 +15,7 @@ ENV FONTCONFIG_PATH=/etc/fonts
 #INSTALL REQUIRED LIBRARIES
 ARG DEBIAN_FRONTEND=noninteractive
 
-# WORKAROUND TO BUILD ON INTEL MAC FOR TARGET ARM64V8 
+#WORKAROUND TO BUILD ON INTEL MAC FOR TARGET ARM64V8 
 RUN if [ "${BUILDPLATFORM}" = "linux/amd64" ] && [ "${ARCH:-amd64}" = "arm64v8" ]; then \
         rm /var/lib/dpkg/info/libc-bin.* && \
         apt-get clean && \
@@ -30,6 +30,10 @@ RUN apt-get install -y \
 		libsoup2.4-1 \
 		libpango-1.0-0 \
 		fontconfig
+
+#ADD APP FONTS TO SYSTEM
+COPY ["SudokuWeb Resources/AppFonts/", "/usr/share/fonts/truetype/"]
+RUN fc-cache -f -v
 
 #ADD APPLICATION TO DOCKER IMAGE
 ADD / /app/
