@@ -3,6 +3,9 @@ Protected Class SudokuController
 Inherits WebSDKControl
 	#tag Event
 		Function ExecuteEvent(name As String, parameters As JSONItem) As Boolean
+		  #Pragma unused name
+		  #Pragma unused parameters
+		  
 		  // Ignored for this control
 		  Return False
 		End Function
@@ -10,6 +13,9 @@ Inherits WebSDKControl
 
 	#tag Event
 		Function HandleRequest(request As WebRequest, response As WebResponse) As Boolean
+		  #Pragma unused request
+		  #Pragma unused response
+		  
 		  // Ignored for this control
 		  Return False
 		End Function
@@ -41,6 +47,8 @@ Inherits WebSDKControl
 
 	#tag Event
 		Function SessionHead(session As WebSession) As String
+		  #Pragma unused session
+		  
 		  // Ignored for this control
 		  Return ""
 		End Function
@@ -48,6 +56,8 @@ Inherits WebSDKControl
 
 	#tag Event
 		Function SessionJavascriptURLs(session As WebSession) As String()
+		  #Pragma unused session
+		  
 		  Var result() As String
 		  
 		  Static jsFile As WebFile

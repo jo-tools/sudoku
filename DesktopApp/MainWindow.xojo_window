@@ -585,6 +585,8 @@ End
 
 	#tag Event
 		Sub DropObject(obj As DragItem, action As DragItem.Types)
+		  #Pragma unused action
+		  
 		  If (obj <> Nil) And (obj.FolderItem <> Nil) And (Not obj.FolderItem.IsFolder) And obj.FolderItem.Exists Then
 		    Me.ActionOpen(obj.FolderItem)
 		  End If
