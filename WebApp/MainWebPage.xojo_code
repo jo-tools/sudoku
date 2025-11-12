@@ -849,6 +849,13 @@ End
 		  Var pdf As New PDFDocument(PDFDocument.PageSizes.A4)
 		  Var g As Graphics = pdf.Graphics
 		  
+		  ' Try use App Font
+		  Var appFontFile As FolderItem = g.UseAppFont
+		  If (appFontFile <> Nil) Then
+		    pdf.AddFonts(appFontFile.Parent)
+		    pdf.EmbeddedFonts = True
+		  End If
+		  
 		  ' PDF MetaData
 		  pdf.Title = "Sudoku"
 		  pdf.Subject = "Sudoku"

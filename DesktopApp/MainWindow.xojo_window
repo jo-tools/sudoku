@@ -840,6 +840,13 @@ End
 		  Var pdf As New PDFDocument(pdfPaperSize)
 		  Var g As Graphics = pdf.Graphics
 		  
+		  ' Try use App Font
+		  Var appFontFile As FolderItem = g.UseAppFont
+		  If (appFontFile <> Nil) Then
+		    pdf.AddFonts(appFontFile.Parent)
+		    pdf.EmbeddedFonts = True
+		  End If
+		  
 		  ' PDF MetaData
 		  pdf.Title = "Sudoku"
 		  pdf.Subject = "Sudoku"
@@ -1163,9 +1170,11 @@ End
 		  Var g As Graphics = ps.ShowPrinterDialog(Self)
 		  If (g = Nil) Then Return
 		  
+		  ' Try use App Font
+		  Call g.UseAppFont
+		  
 		  ' Draw Sudoku
 		  Me.Sudoku.DrawInto(g)
-		  
 		  
 		End Sub
 	#tag EndMethod

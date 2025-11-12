@@ -31,6 +31,8 @@ Inherits DesktopApplication
 		Sub Opening()
 		  Me.AllowAutoQuit = True
 		  
+		  Fonts.ActivateFont
+		  
 		  ' Note: Multiple Sudoku Windows aren't
 		  ' supported (yet). We're using only
 		  ' 1 Main Window.

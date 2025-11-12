@@ -21,6 +21,7 @@ Class=App;WebApp/App.xojo_code;&h0000000019F28FFF;&h000000002A72E7FF;false
 WebSession=Session;WebApp/Session.xojo_code;&h00000000752FEFFF;&h000000002A72E7FF;false
 WebView=MainWebPage;WebApp/MainWebPage.xojo_code;&h00000000361937FF;&h000000002A72E7FF;false
 Folder=Resources;Resources;&h000000004E4F9FFF;&h0000000000000000;false
+Module=Fonts;Resources/Fonts.xojo_code;&h000000000F4517FF;&h000000004E4F9FFF;false
 Module=Translations;Resources/Translations.xojo_code;&h0000000074521FFF;&h000000004E4F9FFF;false
 MultiImage=AppIcon_64;Resources/AppIcon_64.xojo_image;&h000000004AA1D7FF;&h000000004E4F9FFF;false
 MultiImage=PayPal;Resources/PayPal.xojo_image;&h0000000045130FFF;&h000000004E4F9FFF;false
