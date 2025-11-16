@@ -815,7 +815,7 @@ End
 		  If (obj <> Nil) Then obj.Close
 		  
 		  ' Export Json
-		  Var json As JSONItem = Me.Sudoku.ToJson(App.GetJsonApplication)
+		  Var json As JSONItem = Me.Sudoku.ToJson(App.GetJsonApplication, False)
 		  
 		  Var jsonOptions As New JSONOptions
 		  jsonOptions.Compact = False
@@ -852,7 +852,7 @@ End
 		  pdf.Keywords = "Sudoku"
 		  
 		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g)
+		  Me.Sudoku.DrawInto(g, True)
 		  
 		  ' Save PDF and Download
 		  Var prepareDownload As New WebFile

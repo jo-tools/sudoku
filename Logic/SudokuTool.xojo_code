@@ -291,7 +291,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DrawInto(g As Graphics)
+		Sub DrawInto(g As Graphics, addSolution As Boolean)
 		  g.DrawingColor = Color.Black
 		  
 		  ' Heights
@@ -341,6 +341,8 @@ Protected Class SudokuTool
 		  #Else
 		    g.DrawText(author, (g.Width - g.TextWidth(author)) / 2.0, top + g.FontAscent + g.TextHeight)
 		  #EndIf
+		  
+		  If (Not addSolution) Then Return
 		  
 		  ' Solution (on a clone, in order not to modify this Sudoku's state)
 		  If Me.IsSolved Then Return
@@ -1068,12 +1070,29 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub LockCurrentState()
+		  ' Lock current state (used for Export in API only)
+		  For row As Integer = 0 To Me.N-1
+		    For col As Integer = 0 To Me.N-1
+		      Var index As Integer = row * Me.N + col
+		      Var value As Integer = Me.GetGridCell(row, col)
+		      
+		      If (value > 0) Then
+		        Me.SetGridCellLocked(row, col)
+		      End If
+		    Next
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function SaveTo(f As FolderItem, application As JSONItem) As Boolean
 		  ' Save to FolderItem (as JSON)
 		  ' Note: Raises an Exception on failure
 		  
 		  ' Write File
-		  Var json As JSONItem = Me.ToJson(application)
+		  Var json As JSONItem = Me.ToJson(application, False)
 		  
 		  Var jsonOptions As New JSONOptions
 		  jsonOptions.Compact = False
@@ -1442,7 +1461,7 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToJson(application As JSONItem) As JSONItem
+		Function ToJson(application As JSONItem, addSolution As Boolean) As JSONItem
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -1468,6 +1487,22 @@ Protected Class SudokuTool
 		    json.Value(kJSONKeyApplication) = application
 		  End If
 		  json.Value(kJSONKeySudoku) = jsonSudoku
+		  
+		  If (Not addSolution) Then Return json
+		  
+		  ' Solution (on a clone, in order not to modify this Sudoku's state)
+		  Var clone As New SudokuTool(Me)
+		  Var hasSolution As Boolean = clone.Solve
+		  
+		  If hasSolution Then
+		    clone.LockCurrentState
+		    Var jsonOfSolution As JSONItem = clone.ToJson(Nil, False)
+		    Var jsonSolution As JSONItem = jsonOfSolution.Value(kJSONKeySudoku)
+		    
+		    json.Value(kJSONKeySolution) = jsonSolution
+		  Else
+		    json.Value(kJSONKeySolution) = Nil
+		  End If
 		  
 		  Return json
 		  
@@ -1527,6 +1562,9 @@ Protected Class SudokuTool
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyApplicationVersion, Type = String, Dynamic = False, Default = \"version", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeySolution, Type = String, Dynamic = False, Default = \"solution", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeySudoku, Type = String, Dynamic = False, Default = \"sudoku", Scope = Private

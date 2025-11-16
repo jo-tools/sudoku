@@ -848,7 +848,7 @@ End
 		  pdf.Keywords = "Sudoku"
 		  
 		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g)
+		  Me.Sudoku.DrawInto(g, True)
 		  
 		  ' Save PDF
 		  pdf.Save(f)
@@ -1153,7 +1153,7 @@ End
 		  If (g = Nil) Then Return
 		  
 		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g)
+		  Me.Sudoku.DrawInto(g, True)
 		  
 		  
 		End Sub

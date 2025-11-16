@@ -60,12 +60,11 @@ Inherits WebApplication
 		Private Function HandleApiRequest(request As WebRequest, response As WebResponse) As Boolean
 		  If (request.Path = "") Then Return False
 		  
-		  ' Handle /api Requests
+		  ' Handle /api/sudoku Requests
 		  Var pathParts() As String = request.Path.Split("/")
-		  If (pathParts.LastIndex < 1) Or (pathParts(0) <> "api") Then Return False
-		  pathParts.RemoveAt(0)
+		  If (pathParts.LastIndex < 2) Or (pathParts(0) <> "api") Or (pathParts(1) <> "sudoku") Then Return False
 		  
-		  Select Case pathParts(0)
+		  Select Case pathParts(2)
 		    
 		  Case "info"
 		    Return HandleApiRequestInfo(request, response)
@@ -100,16 +99,26 @@ Inherits WebApplication
 		  If (numClues < 24) Then numClues = 24
 		  If (numClues > SudokuTool.N*SudokuTool.N) Then numClues = SudokuTool.N*SudokuTool.N
 		  
+		  var addSolution As Boolean = dictParams.Lookup("addSolution", false).BooleanValue
+		  
 		  Var sudoku As New SudokuTool
 		  Call sudoku.GenerateRandomPuzzle(numClues)
+		  sudoku.LockCurrentState
 		  
 		  Select Case dictParams.Lookup("format", "json").StringValue
 		    
 		  Case "json"
-		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication)
+		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication, addSolution)
 		    WriteResponseJson(response, json)
 		    
 		  Case "txt", "text"
+		    If addSolution Then
+		      response.Status = 400
+		      response.MIMEType ="text/plain"
+		      response.Write("Add Solution is not supported in Text Format. Use /solve instead.")
+		      Return True
+		    End If
+		    
 		    Var txt As String = sudoku.ToString
 		    WriteResponseTxt(response, txt)
 		    
@@ -126,7 +135,7 @@ Inherits WebApplication
 		    pdf.Keywords = "Sudoku"
 		    
 		    ' Draw Sudoku
-		    sudoku.DrawInto(g)
+		    sudoku.DrawInto(g, addSolution)
 		    
 		    ' Save PDF and Download
 		    WriteResponsePdf(response, pdf)
