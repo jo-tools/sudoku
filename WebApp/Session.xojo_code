@@ -9,6 +9,23 @@ Inherits WebSession
   ColorMode=0
   SendEventsInBatches=False
 #tag EndSession
+	#tag Event
+		Sub Closing(appQuitting As Boolean)
+		  #Pragma unused appQuitting
+		  
+		  Print "Session '" + Me.Identifier + "': Closing"
+		  
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Opening()
+		  Print "Session '" + Me.Identifier + "': Opening"
+		  
+		End Sub
+	#tag EndEvent
+
+
 	#tag Constant, Name = kSessionDisconnect, Type = String, Dynamic = True, Default = \"You have been disconnected from this application.", Scope = Private
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sie wurden von dieser Anwendung getrennt."
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Vous avez \xC3\xA9t\xC3\xA9 d\xC3\xA9connect\xC3\xA9 de cette application."
