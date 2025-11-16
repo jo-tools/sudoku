@@ -21,11 +21,37 @@ This project is a Sudoku Tool written in [Xojo](https://www.xojo.com/) and avail
   - Let the solver complete the puzzle
 - Export as PDF | Print
 - Save to File | Open from File *(Desktop only)*
+- Web Application
+  - API to generate and solve Sudoku Puzzles *(Formats: Txt, Json, PDF)*
 
 
 ### Logic
+
 *The solver uses a classic backtracking algorithm with strategies and rule checking to guarantee correct solutions. Random puzzle generation is based on creating a full valid grid, applying digit shuffling, and then removing cells to reach the desired clue count while enforcing a unique solution.*
 
+
+### Web Application
+
+The Web Application can be used with it's User Interface.  
+Sudoku Puzzles can be exported as JSON or Text *(these files can be opened in the corresponding Desktop Application)*, or downloaded as PDF.
+
+#### Sudoku API
+
+The Web Application also provides an API to generate and solve Sudoku Puzzles.  
+See also the included [Postman Collection: Sudoku API](./Resources/Sudoku.postman_collection.json) *(Note: Change the `WebAppBaseUrl` in the Collection Variables according to your environment)*.
+
+Endpoints:  
+- `GET: /api/sudoku/info`  
+  Returns JSON information about the Web Application
+- `GET: /api/sudoku/generate?numClues=40&format=json&addSolution=false`  
+  Generates a Sudoku according to the Query Params:  
+  - `numClues`: Number of Clues *(Min: `24`, Max: `81`; Default: `40`)*
+  - `format`: Download Format *(Available: [`json` | `txt` | `pdf`]; Default: `json`)*
+  - `addSolution`: Add Solution in Response *(Default: `false`; not available in Format txt)*
+- `POST: /api/sudoku/solve?format=json`  
+  Solves the posted Sudoku Puzzle.  
+  The Body Content can be either in Text or Json Format.  
+  - `format`: Response Format *(Available: [`json` | `txt`]; Default: empty - returns in posted format)*
 
 ### ScreenShots
 
