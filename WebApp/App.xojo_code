@@ -73,7 +73,7 @@ Inherits WebApplication
 		    Return HandleApiRequestGenerate(request, response)
 		    
 		  Case "solve"
-		    Break
+		    Return HandleApiRequestSolve(request, response)
 		    
 		  End Select
 		  
@@ -156,6 +156,111 @@ Inherits WebApplication
 	#tag Method, Flags = &h21
 		Private Function HandleApiRequestInfo(request As WebRequest, response As WebResponse) As Boolean
 		  WriteResponseJson(response, GetJsonApplication)
+		  Return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function HandleApiRequestSolve(request As WebRequest, response As WebResponse) As Boolean
+		  If (request.Method <> "POST") Then
+		    response.Status = 405
+		    response.MIMEType ="text/plain"
+		    response.Write("Method '" + request.Method + "' not allowed." + EndOfLine.UNIX + _
+		    "Supported Method: POST")
+		    Return True
+		  End If
+		  
+		  Var dictParams As Dictionary = Me.GetQueryStringAsDictionary(request)
+		  var responseFormat As String = dictParams.Lookup("format", "").StringValue
+		  
+		  ' Load Sudoku from POST content
+		  Var sudoku As SudokuTool
+		  
+		  If (request.Body.LeftBytes(1) = "{") And (request.Body.MiddleBytes(request.Body.Bytes-1, 1) = "}") Then
+		    ' Assume it's a JSON Content
+		    Try
+		      Var json As New JSONItem(request.Body)
+		      
+		      sudoku = New SudokuTool(json)
+		      
+		      If (sudoku <> Nil) And (responseFormat = "") Then
+		        responseFormat = "json"
+		      End If
+		      
+		    Catch err1 As JSONException
+		      ' Invalid JSON
+		    Catch err2 As InvalidArgumentException
+		      ' Invalid JSON for Sudoku
+		    End Try
+		  End If
+		  
+		  If (sudoku = Nil) Then
+		    ' Otherwise try to load from Txt content
+		    Try
+		      sudoku = New SudokuTool(request.Body)
+		      
+		      If (sudoku <> Nil) And (responseFormat = "") Then
+		        responseFormat = "txt"
+		      End If
+		      
+		    Catch err As InvalidArgumentException
+		      ' Invalid String representation of a Sudoku
+		      
+		    End Try
+		  End If
+		  
+		  If (sudoku = Nil) Then
+		    response.Status = 400
+		    response.MIMEType ="text/plain"
+		    response.Write("Invalid Content. Expects a Sudoku in JSON or TXT format.")
+		    Return True
+		  End If
+		  
+		  ' Sudoku State Checks
+		  sudoku.LockCurrentState
+		  Var isEmpty As Boolean = sudoku.IsEmpty
+		  Var isValid As Boolean = isEmpty Or sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
+		  Var isSolvable As Boolean = isEmpty Or (isValid And sudoku.IsSolvable)
+		  
+		  If isEmpty Then
+		    response.Status = 400
+		    response.MIMEType ="text/plain"
+		    response.Write("Sudoku is empty.")
+		    Return True
+		  End If
+		  If (Not isValid) Then
+		    response.Status = 400
+		    response.MIMEType ="text/plain"
+		    response.Write("Sudoku is not valid.")
+		    Return True
+		  End If
+		  If (Not isSolvable) Or (Not sudoku.Solve) Then
+		    response.Status = 400
+		    response.MIMEType ="text/plain"
+		    response.Write("Sudoku is not solvable.")
+		    Return True
+		  End If
+		  
+		  ' We now have the solved Sudoku
+		  Select Case responseFormat
+		    
+		  Case "json"
+		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication, False)
+		    WriteResponseJson(response, json)
+		    
+		  case "txt", "text"
+		    Var txt As String = sudoku.ToString
+		    WriteResponseTxt(response, txt)
+		    
+		  Else
+		    response.Status = 400
+		    response.MIMEType ="text/plain"
+		    response.Write("Unsupported Format '" + dictParams.Lookup("format", "json").StringValue + "'." + EndOfLine.UNIX + _
+		    "Supported Formats: [json (default) | txt | text | pdf])")
+		    
+		  End Select
+		  
 		  Return True
 		  
 		End Function
