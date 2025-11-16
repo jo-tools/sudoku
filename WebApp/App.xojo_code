@@ -68,56 +68,86 @@ Inherits WebApplication
 		  Select Case pathParts(0)
 		    
 		  Case "info"
-		    WriteResponseJson(response, GetJsonApplication)
-		    Return True
+		    Return HandleApiRequestInfo(request, response)
 		    
 		  Case "generate"
-		    If (request.Method <> "GET") Then
-		      response.Status = 405
-		      response.MIMEType ="text/plain"
-		      response.Write("Method '" + request.Method + "' not allowed." + EndOfLine.UNIX + _
-		      "Supported Method: GET")
-		      Return True
-		    End If
-		    
-		    
-		    Var dictParams As Dictionary = Me.GetQueryStringAsDictionary(request)
-		    
-		    Var numClues As Integer = dictParams.Lookup("numClues", 40).IntegerValue
-		    If (numClues < 24) Then numClues = 24
-		    If (numClues > SudokuTool.N*SudokuTool.N) Then numClues = SudokuTool.N*SudokuTool.N
-		    
-		    Var sudoku As New SudokuTool
-		    Call sudoku.GenerateRandomPuzzle(numClues)
-		    
-		    Select Case dictParams.Lookup("format", "json").StringValue
-		      
-		    Case "json"
-		      Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication)
-		      WriteResponseJson(response, json)
-		      
-		    Case "txt", "text"
-		      Var txt As String = sudoku.ToString
-		      WriteResponseTxt(response, txt)
-		      
-		    Else
-		      response.Status = 400
-		      response.MIMEType ="text/plain"
-		      response.Write("Unsupported Format '" + dictParams.Lookup("format", "json").StringValue + "'." + EndOfLine.UNIX + _
-		      "Supported Formats: [txt | text | json (default)])")
-		      
-		    End Select
-		    
-		    Return True
-		    
+		    Return HandleApiRequestGenerate(request, response)
 		    
 		  Case "solve"
 		    Break
 		    
-		    
 		  End Select
 		  
 		  Return False
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function HandleApiRequestGenerate(request As WebRequest, response As WebResponse) As Boolean
+		  If (request.Method <> "GET") Then
+		    response.Status = 405
+		    response.MIMEType ="text/plain"
+		    response.Write("Method '" + request.Method + "' not allowed." + EndOfLine.UNIX + _
+		    "Supported Method: GET")
+		    Return True
+		  End If
+		  
+		  
+		  Var dictParams As Dictionary = Me.GetQueryStringAsDictionary(request)
+		  
+		  Var numClues As Integer = dictParams.Lookup("numClues", 40).IntegerValue
+		  If (numClues < 24) Then numClues = 24
+		  If (numClues > SudokuTool.N*SudokuTool.N) Then numClues = SudokuTool.N*SudokuTool.N
+		  
+		  Var sudoku As New SudokuTool
+		  Call sudoku.GenerateRandomPuzzle(numClues)
+		  
+		  Select Case dictParams.Lookup("format", "json").StringValue
+		    
+		  Case "json"
+		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication)
+		    WriteResponseJson(response, json)
+		    
+		  Case "txt", "text"
+		    Var txt As String = sudoku.ToString
+		    WriteResponseTxt(response, txt)
+		    
+		  Case "pdf"
+		    ' Setup PDF
+		    Var pdf As New PDFDocument(PDFDocument.PageSizes.A4)
+		    Var g As Graphics = pdf.Graphics
+		    
+		    ' PDF MetaData
+		    pdf.Title = "Sudoku"
+		    pdf.Subject = "Sudoku"
+		    pdf.Author = SudokuTool.kURL_Repository
+		    pdf.Creator = "Sudoku " + me.GetVersion + " (Xojo " + XojoVersionString + ")"
+		    pdf.Keywords = "Sudoku"
+		    
+		    ' Draw Sudoku
+		    sudoku.DrawInto(g)
+		    
+		    ' Save PDF and Download
+		    WriteResponsePdf(response, pdf)
+		    
+		  Else
+		    response.Status = 400
+		    response.MIMEType ="text/plain"
+		    response.Write("Unsupported Format '" + dictParams.Lookup("format", "json").StringValue + "'." + EndOfLine.UNIX + _
+		    "Supported Formats: [json (default) | txt | text | pdf])")
+		    
+		  End Select
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function HandleApiRequestInfo(request As WebRequest, response As WebResponse) As Boolean
+		  WriteResponseJson(response, GetJsonApplication)
+		  Return True
 		  
 		End Function
 	#tag EndMethod
@@ -144,8 +174,19 @@ Inherits WebApplication
 		  jsonOptions.Compact = False
 		  
 		  response.Status = 200
+		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"""
 		  response.MIMEType ="application/json"
 		  response.Write(json.ToString(jsonOptions))
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub WriteResponsePdf(response As WebResponse, pdf As PDFDocument)
+		  response.Status = 200
+		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".pdf"""
+		  response.MIMEType ="application/pdf"
+		  response.Write(pdf.ToData)
 		  
 		End Sub
 	#tag EndMethod
@@ -156,6 +197,7 @@ Inherits WebApplication
 		  jsonOptions.Compact = False
 		  
 		  response.Status = 200
+		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"""
 		  response.MIMEType ="text/plain"
 		  response.Write(txt)
 		  
