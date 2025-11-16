@@ -6,6 +6,7 @@ Sudoku Solver & Generator
 ## Description
 
 This project is a Sudoku Tool written in [Xojo](https://www.xojo.com/) and available as a Desktop and Web Application.  
+The Web Application is also available as a [Docker Image: jotools/sudoku](https://hub.docker.com/r/jotools/sudoku).
 
 ### Features
 
@@ -33,7 +34,8 @@ This project is a Sudoku Tool written in [Xojo](https://www.xojo.com/) and avail
 ### Web Application
 
 The Web Application can be used with it's User Interface.  
-Sudoku Puzzles can be exported as JSON or Text *(these files can be opened in the corresponding Desktop Application)*, or downloaded as PDF.
+Sudoku Puzzles can be exported as JSON or Text *(these files can be opened in the corresponding Desktop Application)*, or downloaded as PDF.  
+The Web Application is also available as a [Docker Image: jotools/sudoku](https://hub.docker.com/r/jotools/sudoku).
 
 #### Sudoku API
 
