@@ -331,7 +331,16 @@ Protected Class SudokuTool
 		  g.FontUnit = FontUnits.Point
 		  g.FontSize = 8
 		  g.Bold = False
-		  g.DrawText(author, (g.Width - g.TextWidth(author)) / 2.0, top + g.FontAscent + g.TextHeight)
+		  #If (TargetWeb or TargetConsole) And TargetLinux Then
+		    // Alignment on (headless) Linux is totally wrong
+		    // So just use some Default Values for now
+		    Var gTextWidth As Double = 118.0
+		    Var gTextHeight As Double = 9.0
+		    Var gFontAscent As Double = 6.0
+		    g.DrawText(author, (g.Width - gTextWidth) / 2.0, top + gFontAscent + gTextHeight)
+		  #Else
+		    g.DrawText(author, (g.Width - g.TextWidth(author)) / 2.0, top + g.FontAscent + g.TextHeight)
+		  #EndIf
 		  
 		  ' Solution (on a clone, in order not to modify this Sudoku's state)
 		  If Me.IsSolved Then Return
@@ -347,9 +356,18 @@ Protected Class SudokuTool
 		  title = kSolution
 		  g.FontSize = 12
 		  g.Bold = False
-		  g.DrawText(title, (g.Width - g.TextWidth(title)) / 2.0, top + g.FontAscent)
-		  
-		  titleHeight = g.TextHeight * 1.5
+		  #If (TargetWeb or TargetConsole) And TargetLinux Then
+		    // Alignment on (headless) Linux is totally wrong
+		    // So just use some Default Values for now (not respecting Text localization, too...)
+		    gTextWidth = kSolutionPdfTextWidth
+		    gTextHeight = 13.0
+		    gFontAscent = 9.0
+		    g.DrawText(title, (g.Width - gTextWidth) / 2.0, top + gFontAscent)
+		    titleHeight = gTextHeight * 1.5
+		  #Else
+		    g.DrawText(title, (g.Width - g.TextWidth(title)) / 2.0, top + g.FontAscent)
+		    titleHeight = g.TextHeight * 1.5
+		  #EndIf
 		  top = top + titleHeight
 		  sudokuHeight = sudokuHeight - titleHeight
 		  
@@ -408,6 +426,16 @@ Protected Class SudokuTool
 		        Var w As Double = g.TextWidth(s)
 		        Var h As Double = g.TextHeight(s, cell)
 		        Var ascent As Double = g.FontAscent
+		        
+		        #If (TargetWeb Or TargetConsole) And TargetLinux Then
+		          // Alignment on (headless) Linux is totally wrong
+		          // So just use some Default Values for now (not respecting Text localization, too...)
+		          If (g.FontSize < 8.0) Then
+		            w = 4.0
+		            h = 8.0
+		            ascent = 6.0
+		          End If
+		        #EndIf
 		        
 		        ' Compute left and baseline to center horizontally and vertically
 		        Var xText As Double = topLeftX + col * cell + (cell - w) / 2.0
@@ -1514,6 +1542,12 @@ Protected Class SudokuTool
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"L\xC3\xB6sung"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Solution"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Soluci\xC3\xB3n"
+	#tag EndConstant
+
+	#tag Constant, Name = kSolutionPdfTextWidth, Type = Double, Dynamic = False, Default = \"44.0", Scope = Private
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"39.0"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"44.0"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"46.0"
 	#tag EndConstant
 
 	#tag Constant, Name = kTresholdAssumeIsSolvable, Type = Double, Dynamic = False, Default = \"14", Scope = Private
