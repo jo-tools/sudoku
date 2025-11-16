@@ -32,7 +32,6 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -878,9 +877,9 @@ End
 		  ' Export Txt
 		  Var txt As String = Me.Sudoku.ToString
 		  
-		  ' Save Json and Download
+		  ' Save Txt and Download
 		  Var prepareDownload As New WebFile
-		  prepareDownload.MimeType = "application/json"
+		  prepareDownload.MimeType = "text/plain"
 		  prepareDownload.ForceDownload = True
 		  prepareDownload.FileName = "Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"
 		  prepareDownload.Data = txt
