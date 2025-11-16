@@ -11,6 +11,8 @@ Inherits WebSession
 #tag EndSession
 	#tag Event
 		Sub Closing(appQuitting As Boolean)
+		  #Pragma unused appQuitting
+		  
 		  Print "Session '" + Me.Identifier + "': Closing"
 		  
 		End Sub
