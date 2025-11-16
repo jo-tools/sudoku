@@ -41,6 +41,26 @@ Inherits DesktopApplication
 	#tag EndEvent
 
 
+	#tag Method, Flags = &h0
+		Function GetJsonApplication() As JSONItem
+		  Var jsonApplication As New JSONItem
+		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationName) = "Sudoku"
+		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationVersion) = Me.GetVersion
+		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationUrl) = SudokuTool.kURL_Repository
+		  Return jsonApplication
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetVersion() As String
+		  If (Me.Version <> "") Then Return Me.Version
+		  Return Me.MajorVersion.ToString + "." + Me.MinorVersion.ToString + "." + Me.BugVersion.ToString
+		  
+		End Function
+	#tag EndMethod
+
+
 	#tag Property, Flags = &h21
 		Private SudokuWindow As MainWindow
 	#tag EndProperty

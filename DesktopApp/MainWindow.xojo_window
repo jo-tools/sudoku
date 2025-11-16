@@ -921,7 +921,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
 		    If (f = Nil) Then Return
 		    
-		    Call Me.Sudoku.SaveTo(f, GetJsonApplication)
+		    Call Me.Sudoku.SaveTo(f, App.GetJsonApplication)
 		    
 		  Catch e As IOException
 		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
@@ -948,7 +948,7 @@ End
 		  Try
 		    Var f As FolderItem = GetUsersCurrentSudokuStateFile(True)
 		    If (f <> Nil) Then
-		      Call Me.Sudoku.SaveTo(f, GetJsonApplication)
+		      Call Me.Sudoku.SaveTo(f, App.GetJsonApplication)
 		    End If
 		    
 		  Catch err As IOException
@@ -960,7 +960,7 @@ End
 		    Var f As FolderItem = GetUsersCurrentSettingsFile(True)
 		    If (f <> Nil) Then
 		      Var json As New JSONItem
-		      json.Value(kJSONKeyApplication) = GetJsonApplication
+		      json.Value(SudokuTool.kJSONKeyApplication) = App.GetJsonApplication
 		      json.Value(kJSONKeyShowHints) = mShowHints
 		      json.Value(kJSONKeyShowCandidates) = mShowCandidates
 		      
@@ -1070,17 +1070,6 @@ End
 		  End Try
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function GetJsonApplication() As JSONItem
-		  Var jsonApplication As New JSONItem
-		  jsonApplication.Value(kJSONKeyApplicationName) = "Sudoku"
-		  jsonApplication.Value(kJSONKeyApplicationVersion) = labAppVersion.Text.Trim
-		  jsonApplication.Value(kJSONKeyApplicationUrl) = SudokuTool.kURL_Repository
-		  Return jsonApplication
-		  
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -1435,18 +1424,6 @@ End
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kJSONKeyApplication, Type = String, Dynamic = False, Default = \"application", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kJSONKeyApplicationName, Type = String, Dynamic = False, Default = \"name", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kJSONKeyApplicationUrl, Type = String, Dynamic = False, Default = \"url", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kJSONKeyApplicationVersion, Type = String, Dynamic = False, Default = \"version", Scope = Private
-	#tag EndConstant
-
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
 	#tag EndConstant
 
@@ -1657,12 +1634,7 @@ End
 #tag Events labAppVersion
 	#tag Event
 		Sub Opening()
-		  If (App.Version <> "") Then
-		    Me.Text = App.Version
-		    Return
-		  End If
-		  
-		  Me.Text = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
+		  Me.Text = App.GetVersion
 		  
 		End Sub
 	#tag EndEvent
