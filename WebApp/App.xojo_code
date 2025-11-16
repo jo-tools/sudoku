@@ -111,7 +111,7 @@ Inherits WebApplication
 		    
 		  Case "json"
 		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication, addSolution)
-		    WriteResponseJson(response, json)
+		    WriteResponseFileJson(response, json)
 		    
 		  Case "txt", "text"
 		    If addSolution Then
@@ -122,7 +122,7 @@ Inherits WebApplication
 		    End If
 		    
 		    Var txt As String = sudoku.ToString
-		    WriteResponseTxt(response, txt)
+		    WriteResponseFileTxt(response, txt)
 		    
 		  Case "pdf"
 		    ' Setup PDF
@@ -140,7 +140,7 @@ Inherits WebApplication
 		    sudoku.DrawInto(g, addSolution)
 		    
 		    ' Save PDF and Download
-		    WriteResponsePdf(response, pdf)
+		    WriteResponseFilePdf(response, pdf)
 		    
 		  Else
 		    response.Status = 400
@@ -253,11 +253,11 @@ Inherits WebApplication
 		    
 		  Case "json"
 		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication, False)
-		    WriteResponseJson(response, json)
+		    WriteResponseFileJson(response, json)
 		    
 		  case "txt", "text"
 		    Var txt As String = sudoku.ToString
-		    WriteResponseTxt(response, txt)
+		    WriteResponseFileTxt(response, txt)
 		    
 		  Else
 		    response.Status = 400
@@ -289,7 +289,7 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub WriteResponseJson(response As WebResponse, json As JSONItem)
+		Private Sub WriteResponseFileJson(response As WebResponse, json As JSONItem)
 		  Var jsonOptions As New JSONOptions
 		  jsonOptions.Compact = False
 		  
@@ -302,7 +302,7 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub WriteResponsePdf(response As WebResponse, pdf As PDFDocument)
+		Private Sub WriteResponseFilePdf(response As WebResponse, pdf As PDFDocument)
 		  response.Status = 200
 		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".pdf"""
 		  response.MIMEType ="application/pdf"
@@ -312,7 +312,7 @@ Inherits WebApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub WriteResponseTxt(response As WebResponse, txt As String)
+		Private Sub WriteResponseFileTxt(response As WebResponse, txt As String)
 		  Var jsonOptions As New JSONOptions
 		  jsonOptions.Compact = False
 		  
@@ -320,6 +320,18 @@ Inherits WebApplication
 		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"""
 		  response.MIMEType ="text/plain"
 		  response.Write(txt)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub WriteResponseJson(response As WebResponse, json As JSONItem)
+		  Var jsonOptions As New JSONOptions
+		  jsonOptions.Compact = False
+		  
+		  response.Status = 200
+		  response.MIMEType ="application/json"
+		  response.Write(json.ToString(jsonOptions))
 		  
 		End Sub
 	#tag EndMethod
