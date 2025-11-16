@@ -84,6 +84,8 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h21
 		Private Function HandleApiRequestGenerate(request As WebRequest, response As WebResponse) As Boolean
+		  Print("API Request: " + request.Path)
+		  
 		  If (request.Method <> "GET") Then
 		    response.Status = 405
 		    response.MIMEType ="text/plain"
@@ -155,6 +157,8 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h21
 		Private Function HandleApiRequestInfo(request As WebRequest, response As WebResponse) As Boolean
+		  Print("API Request: " + request.Path)
+		  
 		  WriteResponseJson(response, GetJsonApplication)
 		  Return True
 		  
@@ -163,6 +167,8 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h21
 		Private Function HandleApiRequestSolve(request As WebRequest, response As WebResponse) As Boolean
+		  Print("API Request: " + request.Path)
+		  
 		  If (request.Method <> "POST") Then
 		    response.Status = 405
 		    response.MIMEType ="text/plain"

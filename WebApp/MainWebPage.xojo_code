@@ -790,6 +790,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionEmpty()
+		  Print "Session '" + Session.Identifier + "': Action Empty"
+		  
 		  Me.Sudoku.ClearGrid
 		  Me.ShowSudoku
 		  
@@ -811,6 +813,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionExportJson(obj As DownloadChoice)
+		  Print "Session '" + Session.Identifier + "': Action Export Json"
+		  
 		  ' Dismiss Popover
 		  If (obj <> Nil) Then obj.Close
 		  
@@ -837,6 +841,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionExportPDF(obj As DownloadChoice)
+		  Print "Session '" + Session.Identifier + "': Action Export Pdf"
+		  
 		  ' Dismiss Popover
 		  If (obj <> Nil) Then obj.Close
 		  
@@ -871,6 +877,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionExportTxt(obj As DownloadChoice)
+		  Print "Session '" + Session.Identifier + "': Action Export Txt"
+		  
 		  ' Dismiss Popover
 		  If (obj <> Nil) Then obj.Close
 		  
@@ -894,6 +902,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
+		  Print "Session '" + Session.Identifier + "': Action Lock"
+		  
 		  ' Lock current state
 		  For row As Integer = 0 To SudokuTool.N-1
 		    For col As Integer = 0 To SudokuTool.N-1
@@ -915,6 +925,9 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionRandom()
 		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		  
+		  Print "Session '" + Session.Identifier + "': Action Random (" + numClues.ToString + ")"
+		  
 		  Call Me.Sudoku.GenerateRandomPuzzle(numClues)
 		  Me.ShowSudoku
 		  Me.ActionLock
@@ -924,6 +937,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionSolve()
+		  Print "Session '" + Session.Identifier + "': Action Solve"
+		  
 		  ' Sanity Check
 		  If (Not Me.Sudoku.IsSolvable) Then Return
 		  
