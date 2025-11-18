@@ -625,10 +625,10 @@ End
 		    End If
 		  #EndIf
 		  
-		  If Me.mShowHints And (Me.SolveCellHints.LastIndex >= 0) Then
+		  If Me.mShowHints And (Me.CellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    For Each h As SudokuTool.SolveCellHint In Me.SolveCellHints
+		    For Each h As SudokuTool.CellHint In Me.CellHints
 		      Select Case h.SolveHint
 		      Case SudokuTool.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
@@ -663,12 +663,12 @@ End
 		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		  g.FontSize = 8
 		  
-		  If Me.mShowCandidates And (Me.SolveCellCandidates.LastIndex >= 0) Then
+		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
 		    ' Draw Cell Candidates
 		    Var hintRowSize As Double = (kCellSize - self.SudokuTextFields(0).Height) / 2
 		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
 		    
-		    For Each h As SudokuTool.SolveCellCandidate In Me.SolveCellCandidates
+		    For Each h As SudokuTool.CellCandidates In Me.CellCandidates
 		      For Each candidate As Int8 In h.Candidates
 		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
 		        
@@ -1167,15 +1167,15 @@ End
 		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
+		    Me.CellHints = Me.Sudoku.GetCellHints
 		  Else
-		    Redim SolveCellHints(-1)
+		    Redim CellHints(-1)
 		  End If
 		  
 		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
+		    Me.CellCandidates = Me.Sudoku.GetCellCandidates
 		  Else
-		    Redim SolveCellCandidates(-1)
+		    Redim CellCandidates(-1)
 		  End If
 		  
 		  Self.Refresh(False)
@@ -1393,6 +1393,14 @@ End
 
 
 	#tag Property, Flags = &h21
+		Private CellCandidates() As SudokuTool.CellCandidates
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private CellHints() As SudokuTool.CellHint
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
 	#tag EndProperty
 
@@ -1402,14 +1410,6 @@ End
 
 	#tag Property, Flags = &h21
 		Private mShowHints As Boolean = True
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private SolveCellCandidates() As SudokuTool.SolveCellCandidate
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private SolveCellHints() As SudokuTool.SolveCellHint
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

@@ -265,8 +265,8 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function CreateSolveCellHint(row As Integer, col As Integer, solveHint As SolveHint, solutionValue As Integer) As SolveCellHint
-		  Var h As SolveCellHint
+		Private Function CreateCellHint(row As Integer, col As Integer, solveHint As SolveHint, solutionValue As Integer) As CellHint
+		  Var h As CellHint
 		  h.Row = row
 		  h.Col = col
 		  h.SolveHint = solveHint
@@ -661,6 +661,117 @@ Protected Class SudokuTool
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetCellCandidates() As CellCandidates()
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var cellCandidates() As CellCandidates
+		  
+		  ' Add Solve Cell Candidates
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      ' No Candidates in non empty Cells
+		      If grid(row, col) <> 0 Then
+		        Continue
+		      End If
+		      
+		      Var candidates() As Integer = Me.SolveGetCellCandidates(row, col)
+		      If (candidates.Count < 1) Then Continue
+		      
+		      
+		      Var solveCellCandidate As CellCandidates
+		      solveCellCandidate.Row = row
+		      solveCellCandidate.Col = col
+		      
+		      For value As Integer = 1 To N
+		        If (candidates.IndexOf(value) >= 0) Then
+		          solveCellCandidate.Candidates(value-1) = CType(value, Int8)
+		        Else
+		          solveCellCandidate.Candidates(value-1) = CType(0, Int8)
+		        End If
+		      Next
+		      
+		      cellCandidates.Add(solveCellCandidate)
+		    Next
+		  Next
+		  
+		  Return cellCandidates
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetCellHint(row As Integer, col As Integer) As CellHint
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var cellHint As CellHint
+		  cellHint.Row = row
+		  cellHint.Col = col
+		  cellHint.SolveHint = SolveHint.None
+		  cellHint.SolutionValue = 0
+		  
+		  ' No Hints in non empty Cells
+		  If grid(row, col) <> 0 Then
+		    Return Me.CreateCellHint(row, col, SolveHint.None, 0)
+		  End If
+		  
+		  ' 1. Basic Sudoku Rules (Naked Single)
+		  ' Distinct digit in each row/col/block
+		  Var candidates() As Integer
+		  For value As Integer = 1 To N
+		    If Me.IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
+		      candidates.Add(value)
+		      If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
+		    End If
+		  Next
+		  
+		  If candidates.Count = 1 Then
+		    Return Me.CreateCellHint(row, col, SolveHint.NakedSingle, candidates(0))
+		  End If
+		  
+		  ' 2. Hidden Single
+		  ' Only one spot for a digit in row/col/block
+		  For value As Integer = 1 To N
+		    If Me.IsValueHiddenSingle(row, col, value) Then
+		      Return Me.CreateCellHint(row, col, SolveHint.HiddenSingle, value)
+		      Exit 
+		    End If
+		  Next
+		  
+		  Return Me.CreateCellHint(row, col, SolveHint.None, 0)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetCellHints() As CellHint()
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var cellHints() As CellHint
+		  
+		  ' Add Solve Cell Hints
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      ' No Hints in non empty Cells
+		      If grid(row, col) <> 0 Then
+		        Continue
+		      End If
+		      
+		      Var solveCellHint As CellHint = Me.GetCellHint(row, col)
+		      If (solveCellHint.SolveHint = SolveHint.None) Then Continue
+		      
+		      cellHints.Add(solveCellHint)
+		    Next
+		  Next
+		  
+		  Return cellHints
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function GetCountNonEmpty() As Integer
 		  #Pragma DisableBackgroundTasks
@@ -688,117 +799,6 @@ Protected Class SudokuTool
 	#tag Method, Flags = &h0
 		Function GetGridCell(row As Integer, col As Integer) As Integer
 		  Return grid(row, col)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetSolveCellCandidates() As SolveCellCandidate()
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  Var solveCellCandidates() As SolveCellCandidate
-		  
-		  ' Add Solve Cell Candidates
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      ' No Candidates in non empty Cells
-		      If grid(row, col) <> 0 Then
-		        Continue
-		      End If
-		      
-		      Var candidates() As Integer = Me.SolveGetCellCandidates(row, col)
-		      If (candidates.Count < 1) Then Continue
-		      
-		      
-		      Var solveCellCandidate As SolveCellCandidate
-		      solveCellCandidate.Row = row
-		      solveCellCandidate.Col = col
-		      
-		      For value As Integer = 1 To N
-		        If (candidates.IndexOf(value) >= 0) Then
-		          solveCellCandidate.Candidates(value-1) = CType(value, Int8)
-		        Else
-		          solveCellCandidate.Candidates(value-1) = CType(0, Int8)
-		        End If
-		      Next
-		      
-		      solveCellCandidates.Add(solveCellCandidate)
-		    Next
-		  Next
-		  
-		  Return solveCellCandidates
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function GetSolveCellHint(row As Integer, col As Integer) As SolveCellHint
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  Var solveCellHint As SolveCellHint
-		  solveCellHint.Row = row
-		  solveCellHint.Col = col
-		  solveCellHint.SolveHint = SolveHint.None
-		  solveCellHint.SolutionValue = 0
-		  
-		  ' No Hints in non empty Cells
-		  If grid(row, col) <> 0 Then
-		    Return Me.CreateSolveCellHint(row, col, SolveHint.None, 0)
-		  End If
-		  
-		  ' 1. Basic Sudoku Rules (Naked Single)
-		  ' Distinct digit in each row/col/block
-		  Var candidates() As Integer
-		  For value As Integer = 1 To N
-		    If Me.IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
-		      candidates.Add(value)
-		      If (candidates.Count > 1) Then Exit ' We just need to know of more than two candidates for the Naked Single Check
-		    End If
-		  Next
-		  
-		  If candidates.Count = 1 Then
-		    Return Me.CreateSolveCellHint(row, col, SolveHint.NakedSingle, candidates(0))
-		  End If
-		  
-		  ' 2. Hidden Single
-		  ' Only one spot for a digit in row/col/block
-		  For value As Integer = 1 To N
-		    If Me.IsValueHiddenSingle(row, col, value) Then
-		      Return Me.CreateSolveCellHint(row, col, SolveHint.HiddenSingle, value)
-		      Exit 
-		    End If
-		  Next
-		  
-		  Return Me.CreateSolveCellHint(row, col, SolveHint.None, 0)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetSolveCellHints() As SolveCellHint()
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  Var solveCellHints() As SolveCellHint
-		  
-		  ' Add Solve Cell Hints
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      ' No Hints in non empty Cells
-		      If grid(row, col) <> 0 Then
-		        Continue
-		      End If
-		      
-		      Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
-		      If (solveCellHint.SolveHint = SolveHint.None) Then Continue
-		      
-		      solveCellHints.Add(solveCellHint)
-		    Next
-		  Next
-		  
-		  Return solveCellHints
 		  
 		End Function
 	#tag EndMethod
@@ -1013,7 +1013,7 @@ Protected Class SudokuTool
 		  
 		  ' 4. Advanced Checks: Naked Single, Hidden Single
 		  If (checkType = ValidCheck.AdvancedChecks) Then
-		    Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
+		    Var solveCellHint As CellHint = Me.GetCellHint(row, col)
 		    Select Case solveCellHint.SolveHint
 		    Case SolveHint.NakedSingle, SolveHint.HiddenSingle
 		      If (solveCellHint.SolutionValue <> value) Then Return False
@@ -1169,11 +1169,11 @@ Protected Class SudokuTool
 		  
 		  Do
 		    Var appliedThisPass As Boolean = False
-		    Var solveCellHints() As SolveCellHint = Me.GetSolveCellHints()
+		    Var cellHints() As CellHint = Me.GetCellHints()
 		    
-		    For Each h As SolveCellHint In solveCellHints
+		    For Each h As CellHint In cellHints
 		      ' Check that this move is still valid under current state
-		      ' Note: No need to check with ValidCheck.AdvancedChecks since we got them from SolveCellHints
+		      ' Note: No need to check with ValidCheck.AdvancedChecks since we got them from cellHints
 		      If Me.IsValueValid(h.Row, h.Col, h.SolutionValue, ValidCheck.BasicSudokuRules) Then
 		        ' Apply
 		        Me.SolveApplyMove(Me.CreateSolveMove(h.Row, h.Col, grid(h.Row, h.Col), h.SolutionValue))
@@ -1305,7 +1305,7 @@ Protected Class SudokuTool
 		    
 		  Case Is <= kTresholdMedium
 		    ' Medium density: Try strategies if we find hints right away
-		    Var hints() As SolveCellHint = Me.GetSolveCellHints
+		    Var hints() As CellHint = Me.GetCellHints
 		    If hints.LastIndex >= 0 Then
 		      Return Me.SolveInternalWithStrategies
 		    Else
@@ -1342,7 +1342,7 @@ Protected Class SudokuTool
 		  Var tryNumberFrom As Integer = 1
 		  Var tryNumberTo As Integer = N
 		  
-		  Var solveCellHint As SolveCellHint = Me.GetSolveCellHint(row, col)
+		  Var solveCellHint As CellHint = Me.GetCellHint(row, col)
 		  Select Case solveCellHint.SolveHint
 		  Case SolveHint.NakedSingle, SolveHint.HiddenSingle
 		    ' No need to try all numbers, since we found a Naked/Hidden Single
@@ -1352,7 +1352,7 @@ Protected Class SudokuTool
 		  
 		  For value As Integer = tryNumberFrom To tryNumberTo
 		    ' Check if placing value here is allowed by Sudoku rules
-		    ' Note: No need to check with ValidCheck.AdvancedChecks since we checked Naked/Hidden Singles in GetSolveCellHint
+		    ' Note: No need to check with ValidCheck.AdvancedChecks since we checked Naked/Hidden Singles in GetCellHint
 		    If Me.IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
 		      ' Tentatively place value in the cell
 		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, grid(row, col), value))
@@ -1619,13 +1619,13 @@ Protected Class SudokuTool
 	#tag EndConstant
 
 
-	#tag Structure, Name = SolveCellCandidate, Flags = &h0
+	#tag Structure, Name = CellCandidates, Flags = &h0
 		Row As Integer
 		  Col As Integer
 		Candidates(8) As Int8
 	#tag EndStructure
 
-	#tag Structure, Name = SolveCellHint, Flags = &h0
+	#tag Structure, Name = CellHint, Flags = &h0
 		Row As Integer
 		  Col As Integer
 		  SolveHint As SolveHint
