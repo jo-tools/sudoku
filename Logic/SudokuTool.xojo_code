@@ -685,16 +685,26 @@ Protected Class SudokuTool
 		      solveCellCandidate.Col = col
 		      
 		      For value As Integer = 1 To N
+		        Var candidate As Candidate
+		        candidate.Value = value
+		        
 		        If (candidates.IndexOf(value) >= 0) Then
-		          solveCellCandidate.Candidates(value-1) = CType(value, Int8)
+		          candidate.Hint = CandidateHint.Candidate
 		        Else
-		          solveCellCandidate.Candidates(value-1) = CType(0, Int8)
+		          candidate.Hint = CandidateHint.NoCandidate
 		        End If
+		        
+		        solveCellCandidate.Candidates(value-1) = candidate
 		      Next
 		      
 		      cellCandidates.Add(solveCellCandidate)
 		    Next
 		  Next
+		  
+		  // TODO: Filter Candidates
+		  // Find Locked Candidates, mark as CandidateHint.ExcludedAsLockedCandidate
+		  // Find Naked Subsets, mark as CandidateHint.ExcludedAsNakedSubset
+		  // Find Hidden Subsets, mark as CandidateHint.ExcludedAsHiddenSubset
 		  
 		  Return cellCandidates
 		  
@@ -1619,10 +1629,15 @@ Protected Class SudokuTool
 	#tag EndConstant
 
 
+	#tag Structure, Name = Candidate, Flags = &h0
+		Value As Integer
+		Hint As CandidateHint
+	#tag EndStructure
+
 	#tag Structure, Name = CellCandidates, Flags = &h0
 		Row As Integer
 		  Col As Integer
-		Candidates(8) As Int8
+		Candidates(8) As Candidate
 	#tag EndStructure
 
 	#tag Structure, Name = CellHint, Flags = &h0
@@ -1639,6 +1654,14 @@ Protected Class SudokuTool
 		NewValue As Integer
 	#tag EndStructure
 
+
+	#tag Enum, Name = CandidateHint, Type = UInt8, Flags = &h0
+		NoCandidate=0
+		  Candidate=1
+		  ExcludedAsLockedCandidate=2
+		  ExcludedAsNakedSubset=3
+		ExcludedAsHiddenSubset=4
+	#tag EndEnum
 
 	#tag Enum, Name = IsSolvableState, Type = Integer, Flags = &h21
 		Unknown = 0

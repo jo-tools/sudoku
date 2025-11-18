@@ -669,22 +669,23 @@ End
 		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
 		    
 		    For Each h As SudokuTool.CellCandidates In Me.CellCandidates
-		      For Each candidate As Int8 In h.Candidates
-		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
+		      For Each candidate As SudokuTool.Candidate In h.Candidates
+		        If (candidate.Value < 1) Or (candidate.Value > SudokuTool.N) Then Continue
+		        If (candidate.Hint = SudokuTool.CandidateHint.NoCandidate) Then Continue
 		        
-		        Select Case candidate
+		        Select Case candidate.Value
 		        Case Is <= 4
-		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
+		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.Value.ToString)) / 2
+		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
 		        Case 5
-		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
+		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
 		        Case 6
-		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
+		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
 		        Case Is >= 7
-		          Var adjustX As Double = ((kCellSize/3) - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		          Var adjustX As Double = ((kCellSize/3) - g.TextWidth(candidate.Value.ToString)) / 2
+		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/3)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
 		        End Select
 		      Next
 		    Next
