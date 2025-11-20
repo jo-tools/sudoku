@@ -660,11 +660,11 @@ End
 		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
 		  Next
 		  
-		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
-		  g.FontSize = 8
-		  
 		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
 		    ' Draw Cell Candidates
+		    g.FontSize = 8
+		    g.PenSize = 1
+		    
 		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
 		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
 		    
@@ -676,7 +676,6 @@ End
 		        If (candidate.Value < 1) Or (candidate.Value > SudokuTool.N) Then Continue
 		        If (candidate.Hint = SudokuTool.CandidateHint.NoCandidate) Then Continue
 		        
-		        g.PenSize = 1
 		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		        
 		        Select Case candidate.Value
@@ -735,7 +734,6 @@ End
 		      Next
 		    Next
 		  End If
-		  
 		  
 		End Sub
 	#tag EndEvent
