@@ -665,31 +665,77 @@ End
 		  
 		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
 		    ' Draw Cell Candidates
-		    Var hintRowSize As Double = (kCellSize - self.SudokuTextFields(0).Height) / 2
+		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
 		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
+		    
+		    Var crossCenterX As Double
+		    Var crossCenterY As Double
 		    
 		    For Each h As SudokuTool.CellCandidates In Me.CellCandidates
 		      For Each candidate As SudokuTool.Candidate In h.Candidates
 		        If (candidate.Value < 1) Or (candidate.Value > SudokuTool.N) Then Continue
 		        If (candidate.Hint = SudokuTool.CandidateHint.NoCandidate) Then Continue
 		        
+		        g.PenSize = 1
+		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
+		        
 		        Select Case candidate.Value
 		        Case Is <= 4
 		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.Value.ToString)) / 2
 		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + ((kCellSize/4) / 2)
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (hintRowSize / 2)
 		        Case 5
 		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
 		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + (hintRowSize / 2)
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize / 2)
 		        Case 6
 		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
 		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + kCellSize - (hintRowSize / 2)
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize / 2)
 		        Case Is >= 7
-		          Var adjustX As Double = ((kCellSize/3) - g.TextWidth(candidate.Value.ToString)) / 2
-		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/3)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.Value.ToString)) / 2
+		          Select Case candidate.Value
+		          Case 7
+		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + ((kCellSize/4) / 2)
+		          Case 8
+		            adjustX = (kCellSize - g.TextWidth(candidate.Value.ToString)) / 2
+		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + (kCellSize / 2)
+		          Case 9
+		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + ((kCellSize/4) / 2)
+		          End Select
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - (hintRowSize / 2))
 		        End Select
+		        
+		        ' Mark excluded candidates
+		        Select Case candidate.Hint
+		        Case SudokuTool.CandidateHint.NoCandidate
+		          Continue ' not a candidate
+		        Case SudokuTool.CandidateHint.Candidate
+		          Continue ' just display candidate
+		        Case SudokuTool.CandidateHint.ExcludedAsLockedCandidate
+		          g.DrawingColor = Color.Red
+		        Case SudokuTool.CandidateHint.ExcludedAsNakedSubset
+		          g.DrawingColor = Color.Orange
+		        Case SudokuTool.CandidateHint.ExcludedAsHiddenSubset
+		          g.DrawingColor = Color.Orange
+		        Case SudokuTool.CandidateHint.ExcludedAsXWing
+		          g.DrawingColor = Color.Yellow
+		        Else
+		          Continue
+		        End Select
+		        
+		        g.PenSize = 0.5
+		        g.DrawLine(crossCenterX - hintRowSize*0.25, crossCenterY + hintRowSize*0.25, crossCenterX + hintRowSize*0.25, crossCenterY - hintRowSize*0.25)
 		      Next
 		    Next
 		  End If
+		  
 		  
 		End Sub
 	#tag EndEvent

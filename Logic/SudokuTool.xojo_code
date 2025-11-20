@@ -1660,7 +1660,8 @@ Protected Class SudokuTool
 		  Candidate=1
 		  ExcludedAsLockedCandidate=2
 		  ExcludedAsNakedSubset=3
-		ExcludedAsHiddenSubset=4
+		  ExcludedAsHiddenSubset=4
+		ExcludedAsXWing=5
 	#tag EndEnum
 
 	#tag Enum, Name = IsSolvableState, Type = Integer, Flags = &h21
