@@ -735,7 +735,7 @@ Protected Class SudokuTool
 		    ' Apply all filters
 		    GetCellCandidatesFilterLockedCandidates(cellCandidates)
 		    GetCellCandidatesFilterNakedSubsets(cellCandidates)
-		    'ApplyHiddenSubsets(cellCandidates)
+		    GetCellCandidatesFilterHiddenSubsets(cellCandidates)
 		    'ApplyXWing(cellCandidates)
 		    
 		    ' Compare snapshot to see if anything changed
@@ -749,6 +749,100 @@ Protected Class SudokuTool
 		      If changed Then Exit ' Loop
 		    Next
 		  Wend
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterHiddenSubsets(ByRef cellCandidates() As CellCandidates)
+		  #Pragma DisableBackgroundTasks
+		  
+		  ' Note: Currently Hardcoded for 9x9 Sudoku
+		  For r As Integer = 0 To 8
+		    GetCellCandidatesFilterHiddenSubsetsProcessUnit(cellCandidates, GetCellCandidatesGetRowIndices(r))
+		  Next
+		  For c As Integer = 0 To 8
+		    GetCellCandidatesFilterHiddenSubsetsProcessUnit(cellCandidates, GetCellCandidatesGetColIndices(c))
+		  Next
+		  For br As Integer = 0 To 2
+		    For bc As Integer = 0 To 2
+		      GetCellCandidatesFilterHiddenSubsetsProcessUnit(cellCandidates, GetCellCandidatesGetBlockIndices(br, bc))
+		    Next
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterHiddenSubsetsProcessUnit(ByRef cellCandidates() As CellCandidates, unitPositions() As Integer)
+		  Dim cells() As Integer
+		  For Each p As Integer In unitPositions
+		    If GetCellCandidatesHasCandidates(cellCandidates(p)) Then cells.Add(p)
+		  Next
+		  If cells.Count < 2 Then Return
+		  
+		  Dim valueList() As Integer
+		  Dim valueCellsList() As Variant
+		  For value As Integer = 1 To 9
+		    Dim occ() As Integer
+		    For Each ci As Integer In cells
+		      For k As Integer = 0 To 8
+		        If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(ci).Candidates(k).Value = value Then
+		          occ.Add(ci)
+		          Exit
+		        End If
+		      Next
+		    Next
+		    If occ.Count > 0 Then
+		      valueList.Add(value)
+		      valueCellsList.Add(occ)
+		    End If
+		  Next
+		  If valueList.Count < 2 Then Return
+		  
+		  Dim maxSubset As Integer = Min(4, valueList.Count)
+		  Dim tmpIdx(3) As Integer
+		  For subsetSize As Integer = 2 To maxSubset
+		    GetCellCandidatesFilterHiddenSubsetsProcessUnitRecurse(cellCandidates, cells, valueList, valueCellsList, subsetSize, 0, 0, tmpIdx)
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterHiddenSubsetsProcessUnitRecurse(ByRef cellCandidates() As CellCandidates, cells() As Integer, valueList() As Integer, valueCellsList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer)
+		  Dim n As Integer = valueList.Count
+		  If level = subsetSize Then
+		    Dim unionCells() As Integer
+		    For i As Integer = 0 To subsetSize - 1
+		      Dim vci() As Integer = valueCellsList(currentIdx(i))
+		      For Each cidx As Integer In vci
+		        If unionCells.IndexOf(cidx) = -1 Then unionCells.Add(cidx)
+		      Next
+		    Next
+		    If unionCells.Count = subsetSize Then
+		      Dim allowedVals() As Integer
+		      For i As Integer = 0 To subsetSize - 1
+		        allowedVals.Add(valueList(currentIdx(i)))
+		      Next
+		      For Each ci as integer In unionCells
+		        For k As Integer = 0 To 8
+		          If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
+		            If allowedVals.IndexOf(cellCandidates(ci).Candidates(k).Value) = -1 Then
+		              cellCandidates(ci).Candidates(k).Hint = CandidateHint.ExcludedAsHiddenSubset
+		            End If
+		          End If
+		        Next
+		      Next
+		    End If
+		    Exit Sub
+		  End If
+		  
+		  Dim maxStart As Integer = n - (subsetSize - level)
+		  For i As Integer = start To maxStart
+		    currentIdx(level) = i
+		    GetCellCandidatesFilterHiddenSubsetsProcessUnitRecurse(cellCandidates, cells, valueList, valueCellsList, subsetSize, i + 1, level + 1, currentIdx)
+		  Next
 		  
 		End Sub
 	#tag EndMethod
