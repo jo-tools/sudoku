@@ -736,7 +736,7 @@ Protected Class SudokuTool
 		    GetCellCandidatesFilterLockedCandidates(cellCandidates)
 		    GetCellCandidatesFilterNakedSubsets(cellCandidates)
 		    GetCellCandidatesFilterHiddenSubsets(cellCandidates)
-		    'ApplyXWing(cellCandidates)
+		    GetCellCandidatesFilterXWing(cellCandidates)
 		    
 		    ' Compare snapshot to see if anything changed
 		    For i As Integer = 0 To Me.N*Me.N-1
@@ -775,16 +775,16 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Sub GetCellCandidatesFilterHiddenSubsetsProcessUnit(ByRef cellCandidates() As CellCandidates, unitPositions() As Integer)
-		  Dim cells() As Integer
+		  Var cells() As Integer
 		  For Each p As Integer In unitPositions
 		    If GetCellCandidatesHasCandidates(cellCandidates(p)) Then cells.Add(p)
 		  Next
 		  If cells.Count < 2 Then Return
 		  
-		  Dim valueList() As Integer
-		  Dim valueCellsList() As Variant
+		  Var valueList() As Integer
+		  Var valueCellsList() As Variant
 		  For value As Integer = 1 To 9
-		    Dim occ() As Integer
+		    Var occ() As Integer
 		    For Each ci As Integer In cells
 		      For k As Integer = 0 To 8
 		        If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(ci).Candidates(k).Value = value Then
@@ -800,8 +800,8 @@ Protected Class SudokuTool
 		  Next
 		  If valueList.Count < 2 Then Return
 		  
-		  Dim maxSubset As Integer = Min(4, valueList.Count)
-		  Dim tmpIdx(3) As Integer
+		  Var maxSubset As Integer = Min(4, valueList.Count)
+		  Var tmpIdx(3) As Integer
 		  For subsetSize As Integer = 2 To maxSubset
 		    GetCellCandidatesFilterHiddenSubsetsProcessUnitRecurse(cellCandidates, cells, valueList, valueCellsList, subsetSize, 0, 0, tmpIdx)
 		  Next
@@ -811,17 +811,17 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Sub GetCellCandidatesFilterHiddenSubsetsProcessUnitRecurse(ByRef cellCandidates() As CellCandidates, cells() As Integer, valueList() As Integer, valueCellsList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer)
-		  Dim n As Integer = valueList.Count
+		  Var n As Integer = valueList.Count
 		  If level = subsetSize Then
-		    Dim unionCells() As Integer
+		    Var unionCells() As Integer
 		    For i As Integer = 0 To subsetSize - 1
-		      Dim vci() As Integer = valueCellsList(currentIdx(i))
+		      Var vci() As Integer = valueCellsList(currentIdx(i))
 		      For Each cidx As Integer In vci
 		        If unionCells.IndexOf(cidx) = -1 Then unionCells.Add(cidx)
 		      Next
 		    Next
 		    If unionCells.Count = subsetSize Then
-		      Dim allowedVals() As Integer
+		      Var allowedVals() As Integer
 		      For i As Integer = 0 To subsetSize - 1
 		        allowedVals.Add(valueList(currentIdx(i)))
 		      Next
@@ -838,7 +838,7 @@ Protected Class SudokuTool
 		    Exit Sub
 		  End If
 		  
-		  Dim maxStart As Integer = n - (subsetSize - level)
+		  Var maxStart As Integer = n - (subsetSize - level)
 		  For i As Integer = start To maxStart
 		    currentIdx(level) = i
 		    GetCellCandidatesFilterHiddenSubsetsProcessUnitRecurse(cellCandidates, cells, valueList, valueCellsList, subsetSize, i + 1, level + 1, currentIdx)
@@ -855,17 +855,17 @@ Protected Class SudokuTool
 		  ' Note: Currently Hardcoded for 9x9 Sudoku
 		  For blockRow As Integer = 0 To 2
 		    For blockCol As Integer = 0 To 2
-		      Dim blockR As Integer = blockRow * 3
-		      Dim blockC As Integer = blockCol * 3
+		      Var blockR As Integer = blockRow * 3
+		      Var blockC As Integer = blockCol * 3
 		      
 		      For value As Integer = 1 To 9
-		        Dim positions() As Integer
+		        Var positions() As Integer
 		        For rr As Integer = blockR To blockR + 2
 		          For cc As Integer = blockC To blockC + 2
-		            Dim idx As Integer = rr * 9 + cc
+		            Var idx As Integer = rr * 9 + cc
 		            If GetCellCandidatesHasCandidates(cellCandidates(idx)) Then
 		              For k As Integer = 0 To 8
-		                Dim cand As Candidate = cellCandidates(idx).Candidates(k)
+		                Var cand As Candidate = cellCandidates(idx).Candidates(k)
 		                If cand.Hint = CandidateHint.Candidate and cand.Value = value Then
 		                  positions.Add(idx)
 		                  Exit For
@@ -877,10 +877,10 @@ Protected Class SudokuTool
 		        
 		        If positions.Count = 0 Then Continue
 		        
-		        Dim sameRow As Boolean = True
-		        Dim sameCol As Boolean = True
-		        Dim firstR As Integer = positions(0) \ 9
-		        Dim firstC As Integer = positions(0) Mod 9
+		        Var sameRow As Boolean = True
+		        Var sameCol As Boolean = True
+		        Var firstR As Integer = positions(0) \ 9
+		        Var firstC As Integer = positions(0) Mod 9
 		        
 		        For i As Integer = 1 To positions.LastIndex
 		          If (positions(i) \ 9) <> firstR Then sameRow = False
@@ -893,7 +893,7 @@ Protected Class SudokuTool
 		        If sameRow Then
 		          For cc As Integer = 0 To 8
 		            If cc >= blockC And cc <= blockC + 2 Then Continue
-		            Dim idx2 As Integer = firstR * 9 + cc
+		            Var idx2 As Integer = firstR * 9 + cc
 		            If GetCellCandidatesHasCandidates(cellCandidates(idx2)) Then
 		              For k As Integer = 0 To 8
 		                If cellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(idx2).Candidates(k).Value = value Then
@@ -907,7 +907,7 @@ Protected Class SudokuTool
 		        If sameCol Then
 		          For rr As Integer = 0 To 8
 		            If rr >= blockR And rr <= blockR + 2 Then Continue For
-		            Dim idx2 As Integer = rr * 9 + firstC
+		            Var idx2 As Integer = rr * 9 + firstC
 		            If GetCellCandidatesHasCandidates(cellCandidates(idx2)) Then
 		              For k As Integer = 0 To 8
 		                If cellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(idx2).Candidates(k).Value = value Then
@@ -947,15 +947,15 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Sub GetCellCandidatesFilterNakedSubsetsProcessUnit(ByRef cellCandidates() As CellCandidates, unitPositions() As Integer)
-		  Dim cells() As Integer
+		  Var cells() As Integer
 		  For Each p As Integer In unitPositions
 		    If GetCellCandidatesHasCandidates(cellCandidates(p)) Then cells.Add(p)
 		  Next
 		  If cells.Count < 2 Then Return
 		  
-		  Dim candList() As Variant
+		  Var candList() As Variant
 		  For Each ci As Integer In cells
-		    Dim list() As Integer
+		    Var list() As Integer
 		    For k As Integer = 0 To 8
 		      If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
 		        list.Add(cellCandidates(ci).Candidates(k).Value)
@@ -965,8 +965,8 @@ Protected Class SudokuTool
 		  Next
 		  If candList.Count < 2 Then Return
 		  
-		  Dim maxSubset As Integer = Min(4, candList.Count)
-		  Dim tmpIdx(3) As Integer
+		  Var maxSubset As Integer = Min(4, candList.Count)
+		  Var tmpIdx(3) As Integer
 		  For subsetSize As Integer = 2 To maxSubset
 		    GetCellCandidatesFilterNakedSubsetsProcessUnitRecurse(cellCandidates, cells, candList, subsetSize, 0, 0, tmpIdx)
 		  Next
@@ -976,14 +976,14 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Sub GetCellCandidatesFilterNakedSubsetsProcessUnitRecurse(ByRef cellCandidates() As CellCandidates, cells() As Integer, candList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer)
-		  Dim n As Integer = candList.Count
+		  Var n As Integer = candList.Count
 		  
 		  If level = subsetSize Then
 		    ' unionVals will hold all values in the selected subset
-		    Dim unionVals() As Integer
+		    Var unionVals() As Integer
 		    
 		    For i As Integer = 0 To subsetSize - 1
-		      Dim candArr() As Integer = candList(currentIdx(i))  ' cast Variant → Integer()
+		      Var candArr() As Integer = candList(currentIdx(i))  ' cast Variant → Integer()
 		      For j As Integer = 0 To candArr.LastIndex
 		        If unionVals.IndexOf(candArr(j)) = -1 Then unionVals.Add(candArr(j))
 		      Next
@@ -993,7 +993,7 @@ Protected Class SudokuTool
 		    If unionVals.Count = subsetSize Then
 		      For other As Integer = 0 To cells.LastIndex
 		        ' Skip cells that are part of the subset
-		        Dim inSubset As Boolean = False
+		        Var inSubset As Boolean = False
 		        For i As Integer = 0 To subsetSize - 1
 		          If currentIdx(i) = other Then
 		            inSubset = True
@@ -1003,7 +1003,7 @@ Protected Class SudokuTool
 		        Next
 		        If inSubset Then Continue For
 		        
-		        Dim ciOther As Integer = cells(other)
+		        Var ciOther As Integer = cells(other)
 		        For k As Integer = 0 To 8
 		          If cellCandidates(ciOther).Candidates(k).Hint = CandidateHint.Candidate And _
 		            unionVals.IndexOf(cellCandidates(ciOther).Candidates(k).Value) <> -1 Then
@@ -1017,7 +1017,7 @@ Protected Class SudokuTool
 		  End If
 		  
 		  ' Recursive combination
-		  Dim maxStart As Integer = n - (subsetSize - level)
+		  Var maxStart As Integer = n - (subsetSize - level)
 		  For i As Integer = start To maxStart
 		    currentIdx(level) = i
 		    GetCellCandidatesFilterNakedSubsetsProcessUnitRecurse(cellCandidates, cells, candList, subsetSize, i + 1, level + 1, currentIdx)
@@ -1026,9 +1026,83 @@ Protected Class SudokuTool
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterXWing(ByRef cellCandidates() As CellCandidates)
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Note: Currently Hardcoded for 9x9 Sudoku
+		  For v As Integer = 1 To 9
+		    ' Row-based X-Wing
+		    Var rowCols(8) As Variant
+		    For r As Integer = 0 To 8
+		      Var cols() As Integer
+		      For c As Integer = 0 To 8
+		        Var idx As Integer = r*9 + c
+		        If cellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
+		          cols.Add(c)
+		        End If
+		      Next
+		      rowCols(r) = cols
+		    Next
+		    GetCellCandidatesFilterXWingFindPairs(cellCandidates, rowCols, v, True)
+		    
+		    ' Column-based X-Wing
+		    Var colRows(8) As Variant
+		    For c As Integer = 0 To 8
+		      Var rows() As Integer
+		      For r As Integer = 0 To 8
+		        Var idx As Integer = r*9 + c
+		        If cellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
+		          rows.Add(r)
+		        End If
+		      Next
+		      colRows(c) = rows
+		    Next
+		    GetCellCandidatesFilterXWingFindPairs(cellCandidates, colRows, v, False)
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterXWingFindPairs(ByRef cellCandidates() As CellCandidates, lines() As Variant, v As Integer, isRow As Boolean)
+		  ' Compare all pairs of lines (rows or columns)
+		  For l1 As Integer = 0 To 7
+		    Var indices1() As Integer = lines(l1)
+		    If indices1.Count <> 2 Then Continue  ' X-Wing only
+		    For l2 As Integer = l1 + 1 To 8
+		      Var indices2() As Integer = lines(l2)
+		      If indices2.Count <> 2 Then Continue
+		      
+		      ' Same candidate positions -> X-Wing found
+		      If indices1(0) = indices2(0) And indices1(1) = indices2(1) Then
+		        ' Exclude candidate from other lines
+		        For line As Integer = 0 To 8
+		          If line = l1 Or line = l2 Then Continue
+		          For i As Integer = 0 To 1
+		            Var idx As Integer
+		            If isRow Then
+		              idx = line*9 + indices1(i)
+		            Else
+		              idx = indices1(i)*9 + line
+		            End If
+		            Var hint As CandidateHint = cellCandidates(idx).Candidates(v-1).Hint
+		            If hint = CandidateHint.Candidate Then
+		              cellCandidates(idx).Candidates(v-1).Hint = CandidateHint.ExcludedAsXWing
+		            End If
+		          Next
+		        Next
+		      End If
+		    Next
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function GetCellCandidatesGetBlockIndices(blockRow As Integer, blockCol As Integer) As Integer()
-		  Dim pos(8) As Integer
-		  Dim idx As Integer = 0
+		  Var pos(8) As Integer
+		  Var idx As Integer = 0
 		  For r As Integer = blockRow * 3 To blockRow * 3 + 2
 		    For c As Integer = blockCol * 3 To blockCol * 3 + 2
 		      pos(idx) = r * 9 + c
@@ -1041,7 +1115,7 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Function GetCellCandidatesGetColIndices(col As Integer) As Integer()
-		  Dim pos(8) As Integer
+		  Var pos(8) As Integer
 		  For row As Integer = 0 To 8
 		    pos(row) = row * 9 + col
 		  Next
@@ -1051,7 +1125,7 @@ Protected Class SudokuTool
 
 	#tag Method, Flags = &h21
 		Private Function GetCellCandidatesGetRowIndices(row As Integer) As Integer()
-		  Dim pos(8) As Integer
+		  Var pos(8) As Integer
 		  For col As Integer = 0 To 8
 		    pos(col) = row * 9 + col
 		  Next
