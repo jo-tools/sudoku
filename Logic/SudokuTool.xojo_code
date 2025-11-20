@@ -30,8 +30,8 @@ Protected Class SudokuTool
 		  ' Init with JSON representation of a Sudoku-grid
 		  Const kExceptionMessage = "Invalid JSON representation of a Sudoku"
 		  
-		  Dim dictSudoku As New Dictionary
-		  Dim loadedLockedCellIndexes() As Integer
+		  Var dictSudoku As New Dictionary
+		  Var loadedLockedCellIndexes() As Integer
 		  
 		  Try
 		    If (json = Nil) Or (Not json.HasKey(kJSONKeySudoku)) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
@@ -666,48 +666,177 @@ Protected Class SudokuTool
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Array for each Sudoku Cell
 		  Var cellCandidates() As CellCandidates
+		  cellCandidates.ResizeTo(Me.N*Me.N-1)
 		  
-		  ' Add Solve Cell Candidates
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      ' No Candidates in non empty Cells
-		      If grid(row, col) <> 0 Then
-		        Continue
+		  ' Fill Solve Cell Candidates
+		  For row As Integer = 0 To Me.N-1
+		    For col As Integer = 0 To Me.N-1
+		      Var idx As Integer = row * Me.N + col
+		      
+		      Var c As CellCandidates
+		      c.Row = row
+		      c.Col = col
+		      
+		      If grid(row, col) = 0 Then
+		        ' Empty Cell - has Candidates
+		        Var candidates() As Integer = SolveGetCellCandidates(row, col)
+		        For v As Integer = 1 To 9
+		          Var cand As Candidate
+		          cand.Value = v
+		          If candidates.IndexOf(v) >= 0 Then
+		            cand.Hint = CandidateHint.Candidate
+		          Else
+		            cand.Hint = CandidateHint.NoCandidate
+		          End If
+		          c.Candidates(v - 1) = cand
+		        Next
+		      Else
+		        ' Non-Empty Cell: No Candidates
+		        For v As Integer = 1 To Me.N
+		          Var cand As Candidate
+		          cand.Value = v
+		          cand.Hint = CandidateHint.NoCandidate
+		          c.Candidates(v - 1) = cand
+		        Next
 		      End If
 		      
-		      Var candidates() As Integer = Me.SolveGetCellCandidates(row, col)
-		      If (candidates.Count < 1) Then Continue
-		      
-		      
-		      Var solveCellCandidate As CellCandidates
-		      solveCellCandidate.Row = row
-		      solveCellCandidate.Col = col
-		      
-		      For value As Integer = 1 To N
-		        Var candidate As Candidate
-		        candidate.Value = value
-		        
-		        If (candidates.IndexOf(value) >= 0) Then
-		          candidate.Hint = CandidateHint.Candidate
-		        Else
-		          candidate.Hint = CandidateHint.NoCandidate
-		        End If
-		        
-		        solveCellCandidate.Candidates(value-1) = candidate
-		      Next
-		      
-		      cellCandidates.Add(solveCellCandidate)
+		      cellCandidates(idx) = c
 		    Next
 		  Next
 		  
-		  // TODO: Filter Candidates
-		  // Find Locked Candidates, mark as CandidateHint.ExcludedAsLockedCandidate
-		  // Find Naked Subsets, mark as CandidateHint.ExcludedAsNakedSubset
-		  // Find Hidden Subsets, mark as CandidateHint.ExcludedAsHiddenSubset
-		  
+		  GetCellCandidatesFiltered(cellCandidates)
 		  Return cellCandidates
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFiltered(ByRef cellCandidates() As CellCandidates)
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var changed As Boolean = True
+		  
+		  ' Applying Filters might reveal new Exclusions
+		  ' So loop until we don't find anything new to be excluded
+		  While changed = True
+		    changed = False
+		    
+		    ' Store current state of all candidate hints
+		    Var snapshot(Me.N*Me.N-1, Me.N-1) As CandidateHint
+		    For i As Integer = 0 To Me.N*Me.N-1
+		      For k As Integer = 0 To Me.N-1
+		        snapshot(i, k) = cellCandidates(i).Candidates(k).Hint
+		      Next
+		    Next
+		    
+		    ' Apply all filters
+		    GetCellCandidatesFilterLockedCandidates(cellCandidates)
+		    'ApplyNakedSubsets(cellCandidates)
+		    'ApplyHiddenSubsets(cellCandidates)
+		    'ApplyXWing(cellCandidates)
+		    
+		    ' Compare snapshot to see if anything changed
+		    For i As Integer = 0 To Me.N*Me.N-1
+		      For k As Integer = 0 To Me.N-1
+		        If cellCandidates(i).Candidates(k).Hint <> snapshot(i, k) Then
+		          changed = True
+		          Exit ' inner Loop
+		        End If
+		      Next
+		      If changed Then Exit ' Loop
+		    Next
+		  Wend
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterLockedCandidates(ByRef cellCandidates() As CellCandidates)
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  ' Note: Currently Hardcoded for 9x9 Sudoku
+		  For blockRow As Integer = 0 To 2
+		    For blockCol As Integer = 0 To 2
+		      Dim blockR As Integer = blockRow * 3
+		      Dim blockC As Integer = blockCol * 3
+		      
+		      For value As Integer = 1 To 9
+		        Dim positions() As Integer
+		        For rr As Integer = blockR To blockR + 2
+		          For cc As Integer = blockC To blockC + 2
+		            Dim idx As Integer = rr * 9 + cc
+		            If GetCellCandidatesHasCandidates(cellCandidates(idx)) Then
+		              For k As Integer = 0 To 8
+		                Dim cand As Candidate = cellCandidates(idx).Candidates(k)
+		                If cand.Hint = CandidateHint.Candidate and cand.Value = value Then
+		                  positions.Add(idx)
+		                  Exit For
+		                End If
+		              Next
+		            End If
+		          Next
+		        Next
+		        
+		        If positions.Count = 0 Then Continue
+		        
+		        Dim sameRow As Boolean = True
+		        Dim sameCol As Boolean = True
+		        Dim firstR As Integer = positions(0) \ 9
+		        Dim firstC As Integer = positions(0) Mod 9
+		        
+		        For i As Integer = 1 To positions.LastIndex
+		          If (positions(i) \ 9) <> firstR Then sameRow = False
+		          If (positions(i) Mod 9) <> firstC Then sameCol = False
+		        Next
+		        
+		        If (Not sameRow) And (Not sameCol) Then Continue
+		        
+		        ' Remove outside-block candidates
+		        If sameRow Then
+		          For cc As Integer = 0 To 8
+		            If cc >= blockC And cc <= blockC + 2 Then Continue
+		            Dim idx2 As Integer = firstR * 9 + cc
+		            If GetCellCandidatesHasCandidates(cellCandidates(idx2)) Then
+		              For k As Integer = 0 To 8
+		                If cellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(idx2).Candidates(k).Value = value Then
+		                  cellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
+		                End If
+		              Next
+		            End If
+		          Next
+		        End If
+		        
+		        If sameCol Then
+		          For rr As Integer = 0 To 8
+		            If rr >= blockR And rr <= blockR + 2 Then Continue For
+		            Dim idx2 As Integer = rr * 9 + firstC
+		            If GetCellCandidatesHasCandidates(cellCandidates(idx2)) Then
+		              For k As Integer = 0 To 8
+		                If cellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(idx2).Candidates(k).Value = value Then
+		                  cellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
+		                End If
+		              Next
+		            End If
+		          Next
+		        End If
+		        
+		      Next
+		    Next
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetCellCandidatesHasCandidates(c As CellCandidates) As Boolean
+		  For k As Integer = 0 To 8
+		    If c.Candidates(k).Hint = CandidateHint.Candidate Then Return True
+		  Next
+		  Return False
 		End Function
 	#tag EndMethod
 
