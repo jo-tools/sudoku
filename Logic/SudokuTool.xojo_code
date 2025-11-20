@@ -734,7 +734,7 @@ Protected Class SudokuTool
 		    
 		    ' Apply all filters
 		    GetCellCandidatesFilterLockedCandidates(cellCandidates)
-		    'ApplyNakedSubsets(cellCandidates)
+		    GetCellCandidatesFilterNakedSubsets(cellCandidates)
 		    'ApplyHiddenSubsets(cellCandidates)
 		    'ApplyXWing(cellCandidates)
 		    
@@ -829,6 +829,140 @@ Protected Class SudokuTool
 		  Next
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterNakedSubsets(ByRef cellCandidates() As CellCandidates)
+		  #Pragma DisableBackgroundTasks
+		  
+		  ' Note: Currently Hardcoded for 9x9 Sudoku
+		  For r As Integer = 0 To 8
+		    GetCellCandidatesFilterNakedSubsetsProcessUnit(cellCandidates, GetCellCandidatesGetRowIndices(r))
+		  Next
+		  For c As Integer = 0 To 8
+		    GetCellCandidatesFilterNakedSubsetsProcessUnit(cellCandidates, GetCellCandidatesGetColIndices(c))
+		  Next
+		  For br As Integer = 0 To 2
+		    For bc As Integer = 0 To 2
+		      GetCellCandidatesFilterNakedSubsetsProcessUnit(cellCandidates, GetCellCandidatesGetBlockIndices(br, bc))
+		    Next
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterNakedSubsetsProcessUnit(ByRef cellCandidates() As CellCandidates, unitPositions() As Integer)
+		  Dim cells() As Integer
+		  For Each p As Integer In unitPositions
+		    If GetCellCandidatesHasCandidates(cellCandidates(p)) Then cells.Add(p)
+		  Next
+		  If cells.Count < 2 Then Return
+		  
+		  Dim candList() As Variant
+		  For Each ci As Integer In cells
+		    Dim list() As Integer
+		    For k As Integer = 0 To 8
+		      If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
+		        list.Add(cellCandidates(ci).Candidates(k).Value)
+		      End If
+		    Next
+		    candList.Add(list)
+		  Next
+		  If candList.Count < 2 Then Return
+		  
+		  Dim maxSubset As Integer = Min(4, candList.Count)
+		  Dim tmpIdx(3) As Integer
+		  For subsetSize As Integer = 2 To maxSubset
+		    GetCellCandidatesFilterNakedSubsetsProcessUnitRecurse(cellCandidates, cells, candList, subsetSize, 0, 0, tmpIdx)
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub GetCellCandidatesFilterNakedSubsetsProcessUnitRecurse(ByRef cellCandidates() As CellCandidates, cells() As Integer, candList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer)
+		  Dim n As Integer = candList.Count
+		  
+		  If level = subsetSize Then
+		    ' unionVals will hold all values in the selected subset
+		    Dim unionVals() As Integer
+		    
+		    For i As Integer = 0 To subsetSize - 1
+		      Dim candArr() As Integer = candList(currentIdx(i))  ' cast Variant → Integer()
+		      For j As Integer = 0 To candArr.LastIndex
+		        If unionVals.IndexOf(candArr(j)) = -1 Then unionVals.Add(candArr(j))
+		      Next
+		    Next
+		    
+		    ' Check if union size equals subset size
+		    If unionVals.Count = subsetSize Then
+		      For other As Integer = 0 To cells.LastIndex
+		        ' Skip cells that are part of the subset
+		        Dim inSubset As Boolean = False
+		        For i As Integer = 0 To subsetSize - 1
+		          If currentIdx(i) = other Then
+		            inSubset = True
+		            Exit For
+		          End If
+		          
+		        Next
+		        If inSubset Then Continue For
+		        
+		        Dim ciOther As Integer = cells(other)
+		        For k As Integer = 0 To 8
+		          If cellCandidates(ciOther).Candidates(k).Hint = CandidateHint.Candidate And _
+		            unionVals.IndexOf(cellCandidates(ciOther).Candidates(k).Value) <> -1 Then
+		            cellCandidates(ciOther).Candidates(k).Hint = CandidateHint.ExcludedAsNakedSubset
+		          End If
+		        Next
+		      Next
+		    End If
+		    
+		    Exit Sub
+		  End If
+		  
+		  ' Recursive combination
+		  Dim maxStart As Integer = n - (subsetSize - level)
+		  For i As Integer = start To maxStart
+		    currentIdx(level) = i
+		    GetCellCandidatesFilterNakedSubsetsProcessUnitRecurse(cellCandidates, cells, candList, subsetSize, i + 1, level + 1, currentIdx)
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetCellCandidatesGetBlockIndices(blockRow As Integer, blockCol As Integer) As Integer()
+		  Dim pos(8) As Integer
+		  Dim idx As Integer = 0
+		  For r As Integer = blockRow * 3 To blockRow * 3 + 2
+		    For c As Integer = blockCol * 3 To blockCol * 3 + 2
+		      pos(idx) = r * 9 + c
+		      idx = idx + 1
+		    Next
+		  Next
+		  Return pos
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetCellCandidatesGetColIndices(col As Integer) As Integer()
+		  Dim pos(8) As Integer
+		  For row As Integer = 0 To 8
+		    pos(row) = row * 9 + col
+		  Next
+		  Return pos
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetCellCandidatesGetRowIndices(row As Integer) As Integer()
+		  Dim pos(8) As Integer
+		  For col As Integer = 0 To 8
+		    pos(col) = row * 9 + col
+		  Next
+		  Return pos
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21

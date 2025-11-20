@@ -730,7 +730,7 @@ End
 		          Continue
 		        End Select
 		        
-		        g.PenSize = 0.5
+		        g.PenSize = 1.0
 		        g.DrawLine(crossCenterX - hintRowSize*0.25, crossCenterY + hintRowSize*0.25, crossCenterX + hintRowSize*0.25, crossCenterY - hintRowSize*0.25)
 		      Next
 		    Next
