@@ -6,7 +6,7 @@ Begin WebPage MainWebPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   710
+   Height          =   730
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,7 +20,7 @@ Begin WebPage MainWebPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   710
+   MinimumHeight   =   730
    MinimumWidth    =   840
    PanelIndex      =   0
    ScaleFactor     =   0.0
@@ -43,7 +43,7 @@ Begin WebPage MainWebPage
       Enabled         =   True
       FillColor       =   &cFFFFFF
       HasFillColor    =   False
-      Height          =   710
+      Height          =   730
       Index           =   -2147483648
       Indicator       =   ""
       LayoutDirection =   "LayoutDirections.LeftToRight"
@@ -74,12 +74,12 @@ Begin WebPage MainWebPage
          Enabled         =   True
          FontName        =   ""
          FontSize        =   0.0
-         Height          =   38
+         Height          =   30
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   605
+         Left            =   322
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -91,54 +91,17 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   19
+         TabIndex        =   23
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "..."
-         TextAlignment   =   2
+         TextAlignment   =   1
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   612
+         Top             =   678
          Underline       =   False
          Visible         =   True
-         Width           =   210
-         _mPanelIndex    =   -1
-      End
-      Begin WebLabel labStatusTitle
-         Bold            =   False
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   ""
-         FontSize        =   12.0
-         Height          =   20
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         Italic          =   False
-         Left            =   620
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         Scope           =   2
-         TabIndex        =   18
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "#kLabelSudokuStatus"
-         TextAlignment   =   2
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   584
-         Underline       =   False
-         Visible         =   True
-         Width           =   180
+         Width           =   280
          _mPanelIndex    =   -1
       End
       Begin WebButton btnSolve
@@ -165,52 +128,21 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   17
+         TabIndex        =   21
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   516
+         Top             =   612
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
       End
       Begin SudokuCheckbox chkShowCandidates
-         Caption         =   "#kSudokuShowCandidates"
+         Caption         =   "#Translations.kSudokuShowCandidates"
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         Height          =   34
-         Indeterminate   =   False
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         Left            =   620
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         Scope           =   2
-         TabIndex        =   16
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   435
-         Value           =   False
-         Visible         =   True
-         Width           =   180
-         _mPanelIndex    =   -1
-      End
-      Begin SudokuCheckbox chkShowHints
-         Caption         =   "#kSudokuShowHints"
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         Height          =   34
+         Height          =   30
          Indeterminate   =   False
          Index           =   -2147483648
          Indicator       =   0
@@ -230,8 +162,39 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   400
-         Value           =   False
+         Top             =   390
+         Value           =   True
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkShowHints
+         Caption         =   "#Translations.kSudokuShowHints"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   14
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   360
+         Value           =   True
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
@@ -260,14 +223,14 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   14
+         TabIndex        =   13
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "#kLabelShow"
+         Text            =   "#Translations.kLabelShow"
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   370
+         Top             =   330
          Underline       =   False
          Visible         =   True
          Width           =   180
@@ -276,7 +239,7 @@ Begin WebPage MainWebPage
       Begin WebButton btnLock
          AllowAutoDisable=   False
          Cancel          =   False
-         Caption         =   "#kSudokuLock"
+         Caption         =   "#Translations.kSudokuLock"
          ControlID       =   ""
          CSSClasses      =   ""
          Default         =   False
@@ -297,11 +260,11 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   13
+         TabIndex        =   12
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   308
+         Top             =   275
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
@@ -309,7 +272,7 @@ Begin WebPage MainWebPage
       Begin WebButton btnRandom
          AllowAutoDisable=   False
          Cancel          =   False
-         Caption         =   "#kSudokuRandom"
+         Caption         =   "#Translations.kSudokuRandom"
          ControlID       =   ""
          CSSClasses      =   ""
          Default         =   False
@@ -330,11 +293,11 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   12
+         TabIndex        =   11
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   230
+         Top             =   216
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
@@ -363,14 +326,14 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   11
+         TabIndex        =   10
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "#kLabelNumClues"
+         Text            =   "#Translations.kLabelNumClues"
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   184
+         Top             =   170
          Underline       =   False
          Visible         =   True
          Width           =   97
@@ -401,11 +364,11 @@ Begin WebPage MainWebPage
          Scope           =   2
          SelectedRowIndex=   0
          SelectedRowText =   ""
-         TabIndex        =   10
+         TabIndex        =   9
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   184
+         Top             =   170
          Visible         =   True
          Width           =   75
          _mPanelIndex    =   -1
@@ -434,7 +397,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   9
+         TabIndex        =   8
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -463,7 +426,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   8
+         TabIndex        =   7
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -496,10 +459,10 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   6
+         TabIndex        =   5
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "#kLabelExport"
+         Text            =   "#Translations.kLabelExport"
          TextAlignment   =   3
          TextColor       =   colAppLabel
          Tooltip         =   ""
@@ -531,7 +494,7 @@ Begin WebPage MainWebPage
          Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
-         TabIndex        =   5
+         TabIndex        =   4
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   "#Sudoku.kURL_Paypal"
@@ -566,7 +529,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   4
+         TabIndex        =   3
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelContact"
@@ -603,7 +566,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   2
+         TabIndex        =   1
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelThanks"
@@ -640,7 +603,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   7
+         TabIndex        =   6
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "AppVersion"
@@ -677,7 +640,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   3
+         TabIndex        =   2
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "Sudoku"
@@ -712,7 +675,7 @@ Begin WebPage MainWebPage
          Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
-         TabIndex        =   1
+         TabIndex        =   0
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   "#Sudoku.kURL_Repository"
@@ -723,12 +686,205 @@ Begin WebPage MainWebPage
          _mPanelIndex    =   -1
          _ProtectImage   =   False
       End
+      Begin WebLabel labExclusion
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   30
+         Index           =   -2147483648
+         Indicator       =   0
+         Italic          =   False
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   16
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "#Translations.kLabelExclusion"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   430
+         Underline       =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeLockedCandidates
+         Caption         =   "Locked Candidates"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   17
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   460
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeNakedSubsets
+         Caption         =   "Naked Subsets"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   18
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   490
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labStatusTitle
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   12.0
+         Height          =   30
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   20
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   22
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "#kLabelSudokuStatus"
+         TextAlignment   =   3
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   678
+         Underline       =   False
+         Visible         =   True
+         Width           =   280
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeHiddenSubsets
+         Caption         =   "Hidden Subsets"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   19
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   520
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeXWing
+         Caption         =   "X-Wing"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   20
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   550
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
    End
    Begin SudokuController Controller
       ControlID       =   ""
       Enabled         =   True
       Index           =   -2147483648
-      LockedInPosition=   False
+      LockedInPosition=   True
       PanelIndex      =   0
       Scope           =   2
       Size            =   9
@@ -950,6 +1106,15 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  Me.mExclusionParams = Sudoku.CreateExclusionParams
+		  
+		  Super.Constructor
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function CookieGet() As Boolean
 		  ' Restore Session State
@@ -967,6 +1132,18 @@ End
 		    End If
 		    If json.HasKey(kJSONKeyShowCandidates) Then
 		      mShowCandidates = json.Lookup(kJSONKeyShowCandidates, mShowCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeLockedCandidates) Then
+		      mExclusionParams.ExcludeLockedCandidates = json.Lookup(kJSONKeyExcludeLockedCandidates, mExclusionParams.ExcludeLockedCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeNakedSubsets) Then
+		      mExclusionParams.ExcludeNakedSubsets = json.Lookup(kJSONKeyExcludeNakedSubsets, mExclusionParams.ExcludeNakedSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeHiddenSubsets) Then
+		      mExclusionParams.ExcludeHiddenSubsets = json.Lookup(kJSONKeyExcludeHiddenSubsets, mExclusionParams.ExcludeHiddenSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeXWing) Then
+		      mExclusionParams.ExcludeXWing = json.Lookup(kJSONKeyExcludeXWing, mExclusionParams.ExcludeXWing).BooleanValue
 		    End If
 		    If json.HasKey(kJSONKeyRandomNumClues) Then
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
@@ -1034,6 +1211,11 @@ End
 		  Var json As New JSONItem
 		  json.Value(kJSONKeyShowHints) = mShowHints
 		  json.Value(kJSONKeyShowCandidates) = mShowCandidates
+		  
+		  json.Value(kJSONKeyExcludeLockedCandidates) = mExclusionParams.ExcludeLockedCandidates
+		  json.Value(kJSONKeyExcludeNakedSubsets) = mExclusionParams.ExcludeNakedSubsets
+		  json.Value(kJSONKeyExcludeHiddenSubsets) = mExclusionParams.ExcludeHiddenSubsets
+		  json.Value(kJSONKeyExcludeXWing) = mExclusionParams.ExcludeXWing
 		  
 		  Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		  If (randomNumClues > 0) Then
@@ -1110,7 +1292,7 @@ End
 		  End If
 		  
 		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates
+		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates(mExclusionParams)
 		  Else
 		    Redim CellCandidates(-1)
 		  End If
@@ -1120,9 +1302,20 @@ End
 		  btnEmpty.Enabled = (Not isEmpty)
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
 		  
+		  labExclusion.Enabled = Me.mShowCandidates
+		  chkExcludeLockedCandidates.Enabled = Me.mShowCandidates
+		  chkExcludeNakedSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeHiddenSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeXWing.Enabled = Me.mShowCandidates
+		  
 		  ' Show
 		  chkShowHints.EnsureValue = mShowHints
 		  chkShowCandidates.EnsureValue = mShowCandidates
+		  
+		  chkExcludeLockedCandidates.EnsureValue = mExclusionParams.ExcludeLockedCandidates
+		  chkExcludeNakedSubsets.EnsureValue = mExclusionParams.ExcludeNakedSubsets
+		  chkExcludeHiddenSubsets.EnsureValue = mExclusionParams.ExcludeHiddenSubsets
+		  chkExcludeXWing.EnsureValue = mExclusionParams.ExcludeXWing
 		  
 		  cnvSudoku.Refresh
 		  Me.CookieSet
@@ -1281,6 +1474,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mExclusionParams As Sudoku.ExclusionParams
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
 	#tag EndProperty
 
@@ -1308,6 +1505,18 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kJavaScriptWrapper, Type = String, Dynamic = False, Default = \"(function() {\n  var rectID \x3D \'[CONTROLID]\';\n  \n  function wrapAndScale() {\n    var el \x3D document.getElementById(rectID);\n    if (!el) return;\n\n    if (!el.parentElement.classList.contains(\'wrapper\')) {\n      var wrapper \x3D document.createElement(\'div\');\n      wrapper.className \x3D \'wrapper\';\n      el.parentNode.insertBefore(wrapper\x2C el);\n      wrapper.appendChild(el);\n    }\n\n    var baseWidth \x3D 840;\n    var windowWidth \x3D Math.min(window.innerWidth\x2C baseWidth);\n    var scale \x3D windowWidth / baseWidth;\n    el.style.transform \x3D \'scale(\' + scale + \')\';\n  }\n\n  function waitForElement() {\n    var el \x3D document.getElementById(rectID);\n    if (el) {\n      wrapAndScale();\n      window.addEventListener(\'resize\'\x2C wrapAndScale);\n    } else {\n      setTimeout(waitForElement\x2C 50);\n    }\n  }\n\n  waitForElement();\n})();\n", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeHiddenSubsets, Type = String, Dynamic = False, Default = \"excludeHiddenSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeLockedCandidates, Type = String, Dynamic = False, Default = \"excludeLockedCandidates", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeNakedSubsets, Type = String, Dynamic = False, Default = \"excludeNakedSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeXWing, Type = String, Dynamic = False, Default = \"excludeXWing", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
@@ -1350,6 +1559,8 @@ End
 #tag Events chkShowCandidates
 	#tag Event
 		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Show Candidates"
+		  
 		  Self.mShowCandidates = (Not Self.mShowCandidates)
 		  Self.RefreshControls
 		  
@@ -1365,6 +1576,8 @@ End
 #tag Events chkShowHints
 	#tag Event
 		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Show Hints"
+		  
 		  Self.mShowHints = (Not Self.mShowHints)
 		  Self.RefreshControls
 		  
@@ -1601,6 +1814,74 @@ End
 		  #Pragma Unused y
 		  
 		  Session.GoToURL(Sudoku.kURL_Repository)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeLockedCandidates
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude Locked Candidates"
+		  
+		  Self.mExclusionParams.ExcludeLockedCandidates = (Not Self.mExclusionParams.ExcludeLockedCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeLockedCandidates
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeNakedSubsets
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude Naked Subsets"
+		  
+		  Self.mExclusionParams.ExcludeNakedSubsets = (Not Self.mExclusionParams.ExcludeNakedSubsets)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeNakedSubsets
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeHiddenSubsets
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude Hidden Subsets"
+		  
+		  Self.mExclusionParams.ExcludeHiddenSubsets = (Not Self.mExclusionParams.ExcludeHiddenSubsets)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeHiddenSubsets
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeXWing
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude X-Wing"
+		  
+		  Self.mExclusionParams.ExcludeXWing = (Not Self.mExclusionParams.ExcludeXWing)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeXWing And Self.mExclusionParams.ExcludeXWing
 		  
 		End Sub
 	#tag EndEvent

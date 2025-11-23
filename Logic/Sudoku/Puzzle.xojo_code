@@ -547,8 +547,8 @@ Protected Class Puzzle
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetCellCandidates() As CellCandidates()
-		  Return Me.candidatesSearcher.Get(True)
+		Function GetCellCandidates(exclusionParams As Sudoku.ExclusionParams) As CellCandidates()
+		  Return Me.candidatesSearcher.Get(exclusionParams)
 		  
 		End Function
 	#tag EndMethod

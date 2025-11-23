@@ -123,6 +123,12 @@ Inherits DesktopApplication
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Vac\xC3\xADo"
 	#tag EndConstant
 
+	#tag Constant, Name = kSudokuExclusion, Type = String, Dynamic = True, Default = \"Exclusion", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Ausschluss"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exclusion"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exclusi\xC3\xB3n"
+	#tag EndConstant
+
 	#tag Constant, Name = kSudokuLock, Type = String, Dynamic = True, Default = \"&Lock", Scope = Public
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Sperren"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Verrou"

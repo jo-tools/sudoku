@@ -11,20 +11,20 @@ Begin DesktopWindow MainWindow
    HasMaximizeButton=   False
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   560
+   Height          =   620
    ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   1342697471
    MenuBarVisible  =   False
-   MinimumHeight   =   560
-   MinimumWidth    =   560
+   MinimumHeight   =   620
+   MinimumWidth    =   600
    Resizeable      =   False
    Title           =   "Sudoku"
    Type            =   0
    Visible         =   True
-   Width           =   560
+   Width           =   600
    Begin SudokuButton btnSolve
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -46,15 +46,15 @@ Begin DesktopWindow MainWindow
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   15
+      TabIndex        =   20
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   430
+      Top             =   510
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin SudokuButton btnEmpty
       AllowAutoDeactivate=   True
@@ -85,7 +85,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin DesktopLabel labStatusTitle
       AllowAutoDeactivate=   True
@@ -106,18 +106,18 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   16
+      TabIndex        =   21
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelSudokuStatus"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   488
+      Top             =   548
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin DesktopLabel labStatus
       AllowAutoDeactivate=   True
@@ -129,7 +129,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   405
+      Left            =   420
       LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   False
@@ -138,18 +138,18 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   17
+      TabIndex        =   22
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   520
+      Top             =   580
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   150
+      Width           =   160
    End
    Begin SudokuButton btnLock
       AllowAutoDeactivate=   True
@@ -176,11 +176,11 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   275
+      Top             =   245
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin DesktopCanvas cnvAppIcon
       AllowAutoDeactivate=   True
@@ -237,7 +237,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   True
       Visible         =   True
-      Width           =   140
+      Width           =   180
    End
    Begin DesktopLabel labThanks
       AllowAutoDeactivate=   True
@@ -249,7 +249,7 @@ Begin DesktopWindow MainWindow
       Height          =   30
       Index           =   -2147483648
       Italic          =   False
-      Left            =   310
+      Left            =   350
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -301,7 +301,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   140
+      Width           =   180
    End
    Begin DesktopLabel labContact
       AllowAutoDeactivate=   True
@@ -313,7 +313,7 @@ Begin DesktopWindow MainWindow
       Height          =   30
       Index           =   -2147483648
       Italic          =   False
-      Left            =   355
+      Left            =   395
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -344,7 +344,7 @@ Begin DesktopWindow MainWindow
       Enabled         =   True
       Height          =   30
       Index           =   -2147483648
-      Left            =   434
+      Left            =   474
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -382,7 +382,7 @@ Begin DesktopWindow MainWindow
       Top             =   100
       Transparent     =   False
       Visible         =   True
-      Width           =   560
+      Width           =   600
       _mIndex         =   0
       _mInitialParent =   ""
       _mName          =   ""
@@ -411,7 +411,7 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   185
+      Top             =   165
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -443,7 +443,7 @@ Begin DesktopWindow MainWindow
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   185
+      Top             =   165
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -474,11 +474,11 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   220
+      Top             =   200
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin SudokuCheckbox chkShowHints
       AllowAutoDeactivate=   True
@@ -502,12 +502,12 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   355
+      Top             =   315
       Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
-      VisualState     =   0
+      VisualState     =   1
       Width           =   120
    End
    Begin SudokuCheckbox chkShowCandidates
@@ -532,12 +532,12 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   380
+      Top             =   340
       Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
-      VisualState     =   0
+      VisualState     =   1
       Width           =   120
    End
    Begin SudokuLabel labShow
@@ -566,11 +566,163 @@ Begin DesktopWindow MainWindow
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   330
+      Top             =   290
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   120
+   End
+   Begin SudokuLabel labExclusion
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   15
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "#Translations.kLabelExclusion"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   370
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
+   End
+   Begin SudokuCheckbox chkExcludeLockedCandidates
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "Locked Candidates"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   16
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   395
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
+   End
+   Begin SudokuCheckbox chkExcludeNakedSubsets
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "Naked Subsets"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   17
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   420
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
+   End
+   Begin SudokuCheckbox chkExcludeXWing
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "X-Wing"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   19
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   470
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
+   End
+   Begin SudokuCheckbox chkExcludeHiddenSubsets
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "Hidden Subsets"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   18
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   445
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
    End
 End
 #tag EndDesktopWindow
@@ -718,13 +870,13 @@ End
 		        Case Sudoku.CandidateHint.Candidate
 		          Continue ' just display candidate
 		        Case Sudoku.CandidateHint.ExcludedAsLockedCandidate
-		          g.DrawingColor = Color.Red
+		          g.DrawingColor = colExcludeLockedCandidates
 		        Case Sudoku.CandidateHint.ExcludedAsNakedSubset
-		          g.DrawingColor = Color.Orange
+		          g.DrawingColor = colExcludeNakedSubsets
 		        Case Sudoku.CandidateHint.ExcludedAsHiddenSubset
-		          g.DrawingColor = Color.Orange
+		          g.DrawingColor = colExcludeHiddenSubsets
 		        Case Sudoku.CandidateHint.ExcludedAsXWing
-		          g.DrawingColor = Color.Yellow
+		          g.DrawingColor = colExcludeXWing
 		        Else
 		          Continue
 		        End Select
@@ -759,7 +911,7 @@ End
 
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
-		  Self.Print
+		  Self.ActionPrint
 		  
 		  Return True
 		  
@@ -778,6 +930,46 @@ End
 	#tag MenuHandler
 		Function SudokuEmpty() As Boolean Handles SudokuEmpty.Action
 		  Self.ActionEmpty
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionHiddenSubsets() As Boolean Handles SudokuExclusionHiddenSubsets.Action
+		  Self.mExclusionParams.ExcludeHiddenSubsets = (Not Self.mExclusionParams.ExcludeHiddenSubsets)
+		  Self.RefreshControls
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionLockedCandidates() As Boolean Handles SudokuExclusionLockedCandidates.Action
+		  Self.mExclusionParams.ExcludeLockedCandidates = (Not Self.mExclusionParams.ExcludeLockedCandidates)
+		  Self.RefreshControls
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionNakedSubsets() As Boolean Handles SudokuExclusionNakedSubsets.Action
+		  Self.mExclusionParams.ExcludeNakedSubsets = (Not Self.mExclusionParams.ExcludeNakedSubsets)
+		  Self.RefreshControls
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionXWing() As Boolean Handles SudokuExclusionXWing.Action
+		  Self.mExclusionParams.ExcludeXWing = (Not Self.mExclusionParams.ExcludeXWing)
+		  Self.RefreshControls
 		  
 		  Return True
 		  
@@ -950,6 +1142,21 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub ActionPrint()
+		  ' Setup Printing
+		  Var ps As New PrinterSetup
+		  ps.Landscape = False
+		  Var g As Graphics = ps.ShowPrinterDialog(Self)
+		  If (g = Nil) Then Return
+		  
+		  ' Draw Sudoku
+		  Me.SudokuPuzzle.DrawInto(g, True)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub ActionRandom()
 		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		  Call Me.SudokuPuzzle.GenerateRandomPuzzle(numClues)
@@ -988,6 +1195,16 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  Me.mExclusionParams = Sudoku.CreateExclusionParams
+		  
+		  Super.Constructor
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub DocumentClose()
 		  Try
@@ -1008,6 +1225,10 @@ End
 		      json.Value(Sudoku.kJSONKeyApplication) = App.GetJsonApplication
 		      json.Value(kJSONKeyShowHints) = mShowHints
 		      json.Value(kJSONKeyShowCandidates) = mShowCandidates
+		      json.Value(kJSONKeyExcludeLockedCandidates) = mExclusionParams.ExcludeLockedCandidates
+		      json.Value(kJSONKeyExcludeNakedSubsets) = mExclusionParams.ExcludeNakedSubsets
+		      json.Value(kJSONKeyExcludeHiddenSubsets) = mExclusionParams.ExcludeHiddenSubsets
+		      json.Value(kJSONKeyExcludeXWing) = mExclusionParams.ExcludeXWing
 		      
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		      If (randomNumClues > 0) Then
@@ -1062,6 +1283,18 @@ End
 		    End If
 		    If json.HasKey(kJSONKeyShowCandidates) Then
 		      mShowCandidates = json.Lookup(kJSONKeyShowCandidates, mShowCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeLockedCandidates) Then
+		      mExclusionParams.ExcludeLockedCandidates = json.Lookup(kJSONKeyExcludeLockedCandidates, mExclusionParams.ExcludeLockedCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeNakedSubsets) Then
+		      mExclusionParams.ExcludeNakedSubsets = json.Lookup(kJSONKeyExcludeNakedSubsets, mExclusionParams.ExcludeNakedSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeHiddenSubsets) Then
+		      mExclusionParams.ExcludeHiddenSubsets = json.Lookup(kJSONKeyExcludeHiddenSubsets, mExclusionParams.ExcludeHiddenSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeXWing) Then
+		      mExclusionParams.ExcludeXWing = json.Lookup(kJSONKeyExcludeXWing, mExclusionParams.ExcludeXWing).BooleanValue
 		    End If
 		    If json.HasKey(kJSONKeyRandomNumClues) Then
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
@@ -1190,21 +1423,6 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub Print()
-		  ' Setup Printing
-		  Var ps As New PrinterSetup
-		  ps.Landscape = False
-		  Var g As Graphics = ps.ShowPrinterDialog(Self)
-		  If (g = Nil) Then Return
-		  
-		  ' Draw Sudoku
-		  Me.SudokuPuzzle.DrawInto(g, True)
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
 		  Var isEmpty As Boolean = Me.SudokuPuzzle.IsEmpty
 		  Var isValid As Boolean = isEmpty Or Me.SudokuPuzzle.IsValid
@@ -1218,7 +1436,7 @@ End
 		  End If
 		  
 		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates
+		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates(mExclusionParams)
 		  Else
 		    Redim CellCandidates(-1)
 		  End If
@@ -1230,15 +1448,31 @@ End
 		  btnEmpty.Enabled = (Not isEmpty)
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
 		  
+		  labExclusion.Enabled = me.mShowCandidates
+		  chkExcludeLockedCandidates.Enabled = me.mShowCandidates
+		  chkExcludeNakedSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeHiddenSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeXWing.Enabled = me.mShowCandidates
+		  
 		  ' Menu
 		  SudokuEmpty.Enabled = btnEmpty.Enabled
 		  SudokuRandom.Enabled = btnRandom.Enabled
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
+		  
 		  chkShowHints.EnsureValue = mShowHints
 		  chkShowCandidates.EnsureValue = mShowCandidates
+		  chkExcludeLockedCandidates.EnsureValue = mExclusionParams.ExcludeLockedCandidates
+		  chkExcludeNakedSubsets.EnsureValue = mExclusionParams.ExcludeNakedSubsets
+		  chkExcludeHiddenSubsets.EnsureValue = mExclusionParams.ExcludeHiddenSubsets
+		  chkExcludeXWing.EnsureValue = mExclusionParams.ExcludeXWing
+		  
 		  SudokuShowHints.HasCheckMark = mShowHints
 		  SudokuShowCandidates.HasCheckMark = mShowCandidates
+		  SudokuExclusionLockedCandidates.HasCheckMark = mExclusionParams.ExcludeLockedCandidates
+		  SudokuExclusionNakedSubsets.HasCheckMark = mExclusionParams.ExcludeNakedSubsets
+		  SudokuExclusionHiddenSubsets.HasCheckMark = mExclusionParams.ExcludeHiddenSubsets
+		  SudokuExclusionXWing.HasCheckMark = mExclusionParams.ExcludeXWing
 		  
 		  ' Status
 		  If isEmpty Then
@@ -1446,6 +1680,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mExclusionParams As Sudoku.ExclusionParams
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
 	#tag EndProperty
 
@@ -1467,6 +1705,18 @@ End
 
 
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeHiddenSubsets, Type = String, Dynamic = False, Default = \"excludeHiddenSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeLockedCandidates, Type = String, Dynamic = False, Default = \"excludeLockedCandidates", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeNakedSubsets, Type = String, Dynamic = False, Default = \"excludeNakedSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeXWing, Type = String, Dynamic = False, Default = \"excludeXWing", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
@@ -1807,6 +2057,66 @@ End
 	#tag Event
 		Sub ValueChanged()
 		  Self.mShowCandidates = (Not Self.mShowCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeLockedCandidates
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeLockedCandidates
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeLockedCandidates = (Not Self.mExclusionParams.ExcludeLockedCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeNakedSubsets
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeNakedSubsets
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeNakedSubsets = (Not Self.mExclusionParams.ExcludeNakedSubsets)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeXWing
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeXWing And Self.mExclusionParams.ExcludeXWing
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeXWing = (Not Self.mExclusionParams.ExcludeXWing)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeHiddenSubsets
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeHiddenSubsets
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeHiddenSubsets = (Not Self.mExclusionParams.ExcludeHiddenSubsets)
 		  Self.RefreshControls
 		  
 		End Sub

@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=colExcludeNakedSubsets
+	#tag Color
+		Type=1
+		Platform=1
+		Light=94520000
+		Dark=FF930000
+	#tag EndColor
+#tag EndColorGroup

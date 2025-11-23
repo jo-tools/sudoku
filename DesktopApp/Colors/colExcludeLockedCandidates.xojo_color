@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=colExcludeLockedCandidates
+	#tag Color
+		Type=1
+		Platform=1
+		Light=94110000
+		Dark=FF260000
+	#tag EndColor
+#tag EndColorGroup

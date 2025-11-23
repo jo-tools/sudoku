@@ -1,5 +1,18 @@
 #tag Module
 Protected Module Sudoku
+	#tag CompatibilityFlags = API2Only and ( (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) )
+	#tag Method, Flags = &h1
+		Protected Function CreateExclusionParams() As ExclusionParams
+		  Var exclusionParams As ExclusionParams
+		  exclusionParams.ExcludeLockedCandidates = False
+		  exclusionParams.ExcludeNakedSubsets = False
+		  exclusionParams.ExcludeHiddenSubsets = False
+		  exclusionParams.ExcludeXWing = False
+		  Return exclusionParams
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
 		Protected Function LoadFrom(f As FolderItem) As Puzzle
 		  ' Load from FolderItem (as JSON | as Text)
@@ -76,26 +89,33 @@ Protected Module Sudoku
 	#tag EndConstant
 
 
-	#tag Structure, Name = Candidate, Flags = &h0
+	#tag Structure, Name = Candidate, Flags = &h1
 		Value As Integer
 		Hint As CandidateHint
 	#tag EndStructure
 
-	#tag Structure, Name = CellCandidates, Flags = &h0
+	#tag Structure, Name = CellCandidates, Flags = &h1
 		Row As Integer
 		  Col As Integer
 		Candidates(8) As Candidate
 	#tag EndStructure
 
-	#tag Structure, Name = CellHint, Flags = &h0
+	#tag Structure, Name = CellHint, Flags = &h1
 		Row As Integer
 		  Col As Integer
 		  SolveHint As SolveHint
 		SolutionValue As Integer
 	#tag EndStructure
 
+	#tag Structure, Name = ExclusionParams, Flags = &h1
+		ExcludeLockedCandidates As Boolean
+		  ExcludeNakedSubsets As Boolean
+		  ExcludeHiddenSubsets As Boolean
+		ExcludeXWing As Boolean
+	#tag EndStructure
 
-	#tag Enum, Name = CandidateHint, Flags = &h0
+
+	#tag Enum, Name = CandidateHint, Flags = &h1
 		NoCandidate=0
 		  Candidate=1
 		  ExcludedAsLockedCandidate=2
@@ -104,7 +124,7 @@ Protected Module Sudoku
 		ExcludedAsXWing=5
 	#tag EndEnum
 
-	#tag Enum, Name = SolveHint, Flags = &h0
+	#tag Enum, Name = SolveHint, Flags = &h1
 		None=0
 		  NakedSingle=1
 		HiddenSingle=2

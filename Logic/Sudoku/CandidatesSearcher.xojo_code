@@ -1,7 +1,7 @@
 #tag Class
 Private Class CandidatesSearcher
 	#tag Method, Flags = &h21
-		Private Sub ApplyFilters()
+		Private Sub ApplyFilters(exclusionParams As Sudoku.ExclusionParams)
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -13,22 +13,22 @@ Private Class CandidatesSearcher
 		    foundExclusion = False
 		    
 		    ' Apply all filters
-		    If FilterLockedCandidates Then
+		    If exclusionParams.ExcludeLockedCandidates And FilterLockedCandidates Then
 		      foundExclusion = True
 		      Continue
 		    End If
 		    
-		    If FilterNakedSubsets Then
+		    If exclusionParams.ExcludeNakedSubsets And FilterNakedSubsets Then
 		      foundExclusion = True
 		      Continue
 		    End If
 		    
-		    If FilterHiddenSubsets Then
+		    If exclusionParams.ExcludeHiddenSubsets And FilterHiddenSubsets Then
 		      foundExclusion = True
 		      Continue
 		    End If
 		    
-		    If FilterXWing Then
+		    If exclusionParams.ExcludeXWing And FilterXWing Then
 		      foundExclusion = True
 		      Continue
 		    End If
@@ -430,7 +430,7 @@ Private Class CandidatesSearcher
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Get(applyFilter As Boolean) As CellCandidates()
+		Function Get(exclusionParams As Sudoku.ExclusionParams) As CellCandidates()
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
@@ -474,9 +474,7 @@ Private Class CandidatesSearcher
 		    Next
 		  Next
 		  
-		  If applyFilter Then
-		    ApplyFilters
-		  End If
+		  ApplyFilters(exclusionParams)
 		  
 		  Return cellCandidates
 		  

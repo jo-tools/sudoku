@@ -6,6 +6,12 @@ Protected Module Translations
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
 	#tag EndConstant
 
+	#tag Constant, Name = kLabelExclusion, Type = String, Dynamic = True, Default = \"Exclusion", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Ausschluss"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exclusion"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exclusi\xC3\xB3n"
+	#tag EndConstant
+
 	#tag Constant, Name = kLabelExport, Type = String, Dynamic = True, Default = \"Export", Scope = Public
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Export"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exporter"

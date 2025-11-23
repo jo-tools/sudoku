@@ -245,6 +245,47 @@ Begin Menu MainMenuBar
          AutoEnable = True
          Visible = True
       End
+      Begin DesktopMenuItem SudokuExclusion
+         SpecialMenu = 0
+         Index = -2147483648
+         Text = "#App.kSudokuExclusion"
+         AutoEnabled = True
+         AutoEnable = True
+         SubMenu = True
+         Visible = True
+         Begin DesktopMenuItem SudokuExclusionLockedCandidates
+            SpecialMenu = 0
+            Index = -2147483648
+            Text = "Locked Candidates"
+            AutoEnabled = True
+            AutoEnable = True
+            Visible = True
+         End
+         Begin DesktopMenuItem SudokuExclusionNakedSubsets
+            SpecialMenu = 0
+            Index = -2147483648
+            Text = "Naked Subsets"
+            AutoEnabled = True
+            AutoEnable = True
+            Visible = True
+         End
+         Begin DesktopMenuItem SudokuExclusionHiddenSubsets
+            SpecialMenu = 0
+            Index = -2147483648
+            Text = "Hidden Subsets"
+            AutoEnabled = True
+            AutoEnable = True
+            Visible = True
+         End
+         Begin DesktopMenuItem SudokuExclusionXWing
+            SpecialMenu = 0
+            Index = -2147483648
+            Text = "X-Wing"
+            AutoEnabled = True
+            AutoEnable = True
+            Visible = True
+         End
+      End
       Begin DesktopMenuItem SudokuSeparator3
          SpecialMenu = 0
          Index = -2147483648
