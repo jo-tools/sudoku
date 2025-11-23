@@ -294,8 +294,9 @@ Inherits WebApplication
 		  jsonOptions.Compact = False
 		  
 		  response.Status = 200
+		  response.Header("X-Powered-By") = "Sudoku " + me.GetVersion
 		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"""
-		  response.MIMEType ="application/json"
+		  response.MIMEType ="application/json; charset=utf-8"
 		  response.Write(json.ToString(jsonOptions))
 		  
 		End Sub
@@ -304,6 +305,7 @@ Inherits WebApplication
 	#tag Method, Flags = &h21
 		Private Sub WriteResponseFilePdf(response As WebResponse, pdf As PDFDocument)
 		  response.Status = 200
+		  response.Header("X-Powered-By") = "Sudoku " + Me.GetVersion
 		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".pdf"""
 		  response.MIMEType ="application/pdf"
 		  response.Write(pdf.ToData)
@@ -317,8 +319,9 @@ Inherits WebApplication
 		  jsonOptions.Compact = False
 		  
 		  response.Status = 200
+		  response.Header("X-Powered-By") = "Sudoku " + Me.GetVersion
 		  response.Header("Content-Disposition") = "attachment; filename=""Sudoku " + DateTime.now.SQLDateTime.ReplaceAll(":", "-") + ".sudoku"""
-		  response.MIMEType ="text/plain"
+		  response.MIMEType ="text/plain; charset=utf-8"
 		  response.Write(txt)
 		  
 		End Sub
@@ -330,7 +333,8 @@ Inherits WebApplication
 		  jsonOptions.Compact = False
 		  
 		  response.Status = 200
-		  response.MIMEType ="application/json"
+		  response.Header("X-Powered-By") = "Sudoku " + Me.GetVersion
+		  response.MIMEType ="application/json; charset=utf-8"
 		  response.Write(json.ToString(jsonOptions))
 		  
 		End Sub
