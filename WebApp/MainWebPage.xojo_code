@@ -6,7 +6,7 @@ Begin WebPage MainWebPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   730
+   Height          =   690
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,7 +20,7 @@ Begin WebPage MainWebPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   730
+   MinimumHeight   =   690
    MinimumWidth    =   840
    PanelIndex      =   0
    ScaleFactor     =   0.0
@@ -43,7 +43,7 @@ Begin WebPage MainWebPage
       Enabled         =   True
       FillColor       =   &cFFFFFF
       HasFillColor    =   False
-      Height          =   730
+      Height          =   690
       Index           =   -2147483648
       Indicator       =   ""
       LayoutDirection =   "LayoutDirections.LeftToRight"
@@ -74,12 +74,12 @@ Begin WebPage MainWebPage
          Enabled         =   True
          FontName        =   ""
          FontSize        =   0.0
-         Height          =   30
+         Height          =   28
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   322
+         Left            =   200
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -91,17 +91,17 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   23
+         TabIndex        =   8
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "..."
-         TextAlignment   =   1
+         TextAlignment   =   2
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   678
+         Top             =   52
          Underline       =   False
          Visible         =   True
-         Width           =   280
+         Width           =   220
          _mPanelIndex    =   -1
       End
       Begin WebButton btnSolve
@@ -128,7 +128,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   21
+         TabIndex        =   23
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -158,7 +158,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   15
+         TabIndex        =   17
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -189,7 +189,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   14
+         TabIndex        =   16
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -223,7 +223,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   13
+         TabIndex        =   15
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelShow"
@@ -260,7 +260,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   12
+         TabIndex        =   14
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -293,7 +293,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   11
+         TabIndex        =   13
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -326,7 +326,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   10
+         TabIndex        =   12
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelNumClues"
@@ -364,7 +364,7 @@ Begin WebPage MainWebPage
          Scope           =   2
          SelectedRowIndex=   0
          SelectedRowText =   ""
-         TabIndex        =   9
+         TabIndex        =   11
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -397,7 +397,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   8
+         TabIndex        =   10
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -426,7 +426,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   7
+         TabIndex        =   9
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -459,7 +459,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   5
+         TabIndex        =   6
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelExport"
@@ -494,7 +494,7 @@ Begin WebPage MainWebPage
          Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
-         TabIndex        =   4
+         TabIndex        =   5
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   "#Sudoku.kURL_Paypal"
@@ -529,7 +529,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   3
+         TabIndex        =   4
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelContact"
@@ -603,7 +603,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   6
+         TabIndex        =   7
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "AppVersion"
@@ -613,7 +613,7 @@ Begin WebPage MainWebPage
          Top             =   52
          Underline       =   False
          Visible         =   True
-         Width           =   100
+         Width           =   70
          _mPanelIndex    =   -1
       End
       Begin WebLabel labAppName
@@ -709,7 +709,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   16
+         TabIndex        =   18
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelExclusion"
@@ -742,7 +742,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   17
+         TabIndex        =   19
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -772,7 +772,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   18
+         TabIndex        =   20
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -789,12 +789,12 @@ Begin WebPage MainWebPage
          Enabled         =   True
          FontName        =   ""
          FontSize        =   12.0
-         Height          =   30
+         Height          =   28
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   20
+         Left            =   250
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -806,17 +806,17 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   22
+         TabIndex        =   3
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#kLabelSudokuStatus"
-         TextAlignment   =   3
+         TextAlignment   =   2
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   678
+         Top             =   24
          Underline       =   False
          Visible         =   True
-         Width           =   280
+         Width           =   120
          _mPanelIndex    =   -1
       End
       Begin SudokuCheckbox chkExcludeHiddenSubsets
@@ -839,7 +839,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   19
+         TabIndex        =   21
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -869,7 +869,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   20
+         TabIndex        =   22
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
