@@ -14,9 +14,9 @@ Inherits WebApplication
 	#tag Method, Flags = &h0
 		Function GetJsonApplication() As JSONItem
 		  Var jsonApplication As New JSONItem
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationName) = "Sudoku"
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationVersion) = Me.GetVersion
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationUrl) = SudokuTool.kURL_Repository
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationName) = "Sudoku"
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationVersion) = Me.GetVersion
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationUrl) = Sudoku.kURL_Repository
 		  
 		  Return jsonApplication
 		  
@@ -99,18 +99,18 @@ Inherits WebApplication
 		  
 		  Var numClues As Integer = dictParams.Lookup("numClues", 40).IntegerValue
 		  If (numClues < 24) Then numClues = 24
-		  If (numClues > SudokuTool.N*SudokuTool.N) Then numClues = SudokuTool.N*SudokuTool.N
+		  If (numClues > Sudoku.N*Sudoku.N) Then numClues = Sudoku.N*Sudoku.N
 		  
 		  var addSolution As Boolean = dictParams.Lookup("addSolution", false).BooleanValue
 		  
-		  Var sudoku As New SudokuTool
-		  Call sudoku.GenerateRandomPuzzle(numClues)
-		  sudoku.LockCurrentState
+		  Var sudokuPuzzle As New Sudoku.Puzzle
+		  Call sudokuPuzzle.GenerateRandomPuzzle(numClues)
+		  sudokuPuzzle.LockCurrentState
 		  
 		  Select Case dictParams.Lookup("format", "json").StringValue
 		    
 		  Case "json"
-		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication, addSolution)
+		    Var json As JSONItem = sudokuPuzzle.ToJson(Me.GetJsonApplication, addSolution)
 		    WriteResponseFileJson(response, json)
 		    
 		  Case "txt", "text"
@@ -121,7 +121,7 @@ Inherits WebApplication
 		      Return True
 		    End If
 		    
-		    Var txt As String = sudoku.ToString
+		    Var txt As String = sudokuPuzzle.ToString
 		    WriteResponseFileTxt(response, txt)
 		    
 		  Case "pdf"
@@ -132,12 +132,12 @@ Inherits WebApplication
 		    ' PDF MetaData
 		    pdf.Title = "Sudoku"
 		    pdf.Subject = "Sudoku"
-		    pdf.Author = SudokuTool.kURL_Repository
+		    pdf.Author = Sudoku.kURL_Repository
 		    pdf.Creator = "Sudoku " + me.GetVersion + " (Xojo " + XojoVersionString + ")"
 		    pdf.Keywords = "Sudoku"
 		    
 		    ' Draw Sudoku
-		    sudoku.DrawInto(g, addSolution)
+		    sudokuPuzzle.DrawInto(g, addSolution)
 		    
 		    ' Save PDF and Download
 		    WriteResponseFilePdf(response, pdf)
@@ -181,16 +181,16 @@ Inherits WebApplication
 		  var responseFormat As String = dictParams.Lookup("format", "").StringValue
 		  
 		  ' Load Sudoku from POST content
-		  Var sudoku As SudokuTool
+		  Var sudokuPuzzle As Sudoku.Puzzle
 		  
 		  If (request.Body.LeftBytes(1) = "{") And (request.Body.MiddleBytes(request.Body.Bytes-1, 1) = "}") Then
 		    ' Assume it's a JSON Content
 		    Try
 		      Var json As New JSONItem(request.Body)
 		      
-		      sudoku = New SudokuTool(json)
+		      sudokuPuzzle = New Sudoku.Puzzle(json)
 		      
-		      If (sudoku <> Nil) And (responseFormat = "") Then
+		      If (sudokuPuzzle <> Nil) And (responseFormat = "") Then
 		        responseFormat = "json"
 		      End If
 		      
@@ -201,12 +201,12 @@ Inherits WebApplication
 		    End Try
 		  End If
 		  
-		  If (sudoku = Nil) Then
+		  If (sudokuPuzzle = Nil) Then
 		    ' Otherwise try to load from Txt content
 		    Try
-		      sudoku = New SudokuTool(request.Body)
+		      sudokuPuzzle = New Sudoku.Puzzle(request.Body)
 		      
-		      If (sudoku <> Nil) And (responseFormat = "") Then
+		      If (sudokuPuzzle <> Nil) And (responseFormat = "") Then
 		        responseFormat = "txt"
 		      End If
 		      
@@ -216,7 +216,7 @@ Inherits WebApplication
 		    End Try
 		  End If
 		  
-		  If (sudoku = Nil) Then
+		  If (sudokuPuzzle = Nil) Then
 		    response.Status = 400
 		    response.MIMEType ="text/plain"
 		    response.Write("Invalid Content. Expects a Sudoku in JSON or TXT format.")
@@ -224,10 +224,10 @@ Inherits WebApplication
 		  End If
 		  
 		  ' Sudoku State Checks
-		  sudoku.LockCurrentState
-		  Var isEmpty As Boolean = sudoku.IsEmpty
-		  Var isValid As Boolean = isEmpty Or sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
-		  Var isSolvable As Boolean = isEmpty Or (isValid And sudoku.IsSolvable)
+		  sudokuPuzzle.LockCurrentState
+		  Var isEmpty As Boolean = sudokuPuzzle.IsEmpty
+		  Var isValid As Boolean = isEmpty Or sudokuPuzzle.IsValid
+		  Var isSolvable As Boolean = isEmpty Or (isValid And sudokuPuzzle.IsSolvable)
 		  
 		  If isEmpty Then
 		    response.Status = 400
@@ -241,7 +241,7 @@ Inherits WebApplication
 		    response.Write("Sudoku is not valid.")
 		    Return True
 		  End If
-		  If (Not isSolvable) Or (Not sudoku.Solve) Then
+		  If (Not isSolvable) Or (Not sudokuPuzzle.Solve) Then
 		    response.Status = 400
 		    response.MIMEType ="text/plain"
 		    response.Write("Sudoku is not solvable.")
@@ -252,11 +252,11 @@ Inherits WebApplication
 		  Select Case responseFormat
 		    
 		  Case "json"
-		    Var json As JSONItem = sudoku.ToJson(Me.GetJsonApplication, False)
+		    Var json As JSONItem = sudokuPuzzle.ToJson(Me.GetJsonApplication, False)
 		    WriteResponseFileJson(response, json)
 		    
 		  case "txt", "text"
-		    Var txt As String = sudoku.ToString
+		    Var txt As String = sudokuPuzzle.ToString
 		    WriteResponseFileTxt(response, txt)
 		    
 		  Else

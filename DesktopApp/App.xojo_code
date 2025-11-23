@@ -44,9 +44,9 @@ Inherits DesktopApplication
 	#tag Method, Flags = &h0
 		Function GetJsonApplication() As JSONItem
 		  Var jsonApplication As New JSONItem
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationName) = "Sudoku"
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationVersion) = Me.GetVersion
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationUrl) = SudokuTool.kURL_Repository
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationName) = "Sudoku"
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationVersion) = Me.GetVersion
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationUrl) = Sudoku.kURL_Repository
 		  Return jsonApplication
 		  
 		End Function

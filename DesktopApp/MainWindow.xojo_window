@@ -201,7 +201,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      Tooltip         =   "#SudokuTool.kURL_Repository"
+      Tooltip         =   "#Sudoku.kURL_Repository"
       Top             =   20
       Transparent     =   False
       Visible         =   True
@@ -232,7 +232,7 @@ Begin DesktopWindow MainWindow
       Text            =   "Sudoku"
       TextAlignment   =   0
       TextColor       =   &c0072D800
-      Tooltip         =   "#SudokuTool.kURL_Repository"
+      Tooltip         =   "#Sudoku.kURL_Repository"
       Top             =   20
       Transparent     =   False
       Underline       =   True
@@ -328,7 +328,7 @@ Begin DesktopWindow MainWindow
       Text            =   "#Translations.kLabelContact"
       TextAlignment   =   1
       TextColor       =   &c0072CE00
-      Tooltip         =   "#SudokuTool.kEmail_Contact"
+      Tooltip         =   "#Sudoku.kEmail_Contact"
       Top             =   54
       Transparent     =   False
       Underline       =   True
@@ -354,7 +354,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
-      Tooltip         =   "#SudokuTool.kURL_PayPal"
+      Tooltip         =   "#Sudoku.kURL_PayPal"
       Top             =   54
       Transparent     =   False
       Visible         =   True
@@ -599,14 +599,14 @@ End
 		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
 		  
 		  ' Layout
-		  Me.Height = sepTop.Top + 2 * kMarginWindow + SudokuTool.N * kCellSize
+		  Me.Height = sepTop.Top + 2 * kMarginWindow + Sudoku.N * kCellSize
 		  Me.MinimumHeight = Me.Height
 		  
-		  Me.Width = 2 * kMarginWindow + SudokuTool.N * kCellSize + 20 + btnSolve.Width
+		  Me.Width = 2 * kMarginWindow + Sudoku.N * kCellSize + 20 + btnSolve.Width
 		  Me.MaximumWidth = Me.Width
 		  
 		  ' Init Sudoku
-		  Me.Sudoku = New SudokuTool
+		  Me.SudokuPuzzle = New Sudoku.Puzzle
 		  Me.SudokuNumberFieldsInit
 		  
 		  Me.DocumentInit
@@ -621,19 +621,19 @@ End
 		  #If TargetWindows Then
 		    If (Not Color.IsDarkMode) Then
 		      g.DrawingColor = Color.White
-		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, SudokuTool.N * kCellSize, SudokuTool.N * kCellSize)
+		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, Sudoku.N * kCellSize, Sudoku.N * kCellSize)
 		    End If
 		  #EndIf
 		  
 		  If Me.mShowHints And (Me.CellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    For Each h As SudokuTool.CellHint In Me.CellHints
+		    For Each h As Sudoku.CellHint In Me.CellHints
 		      Select Case h.SolveHint
-		      Case SudokuTool.SolveHint.NakedSingle
+		      Case Sudoku.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
 		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
-		      Case SudokuTool.SolveHint.HiddenSingle
+		      Case Sudoku.SolveHint.HiddenSingle
 		        g.DrawingColor = colSolveHintHiddenSingle
 		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
 		      End Select
@@ -643,21 +643,21 @@ End
 		  ' Draw all thin "hair" lines first (gray)
 		  g.DrawingColor = colGridlineHair
 		  g.PenSize = 1
-		  For i As Integer = 1 To SudokuTool.N-1 ' skip outer border (0 and N)
+		  For i As Integer = 1 To Sudoku.N-1 ' skip outer border (0 and N)
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + Sudoku.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + Sudoku.N * kCellSize)
 		  Next
 		  
 		  ' Draw thicker red 3x3 block lines on top
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  For i As Integer = 0 To SudokuTool.N Step 3
+		  For i As Integer = 0 To Sudoku.N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2)
 		  Next
 		  
 		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
@@ -671,10 +671,10 @@ End
 		    Var crossCenterX As Double
 		    Var crossCenterY As Double
 		    
-		    For Each h As SudokuTool.CellCandidates In Me.CellCandidates
-		      For Each candidate As SudokuTool.Candidate In h.Candidates
-		        If (candidate.Value < 1) Or (candidate.Value > SudokuTool.N) Then Continue
-		        If (candidate.Hint = SudokuTool.CandidateHint.NoCandidate) Then Continue
+		    For Each h As Sudoku.CellCandidates In Me.CellCandidates
+		      For Each candidate As Sudoku.Candidate In h.Candidates
+		        If (candidate.Value < 1) Or (candidate.Value > Sudoku.N) Then Continue
+		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
 		        
 		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		        
@@ -713,17 +713,17 @@ End
 		        
 		        ' Mark excluded candidates
 		        Select Case candidate.Hint
-		        Case SudokuTool.CandidateHint.NoCandidate
+		        Case Sudoku.CandidateHint.NoCandidate
 		          Continue ' not a candidate
-		        Case SudokuTool.CandidateHint.Candidate
+		        Case Sudoku.CandidateHint.Candidate
 		          Continue ' just display candidate
-		        Case SudokuTool.CandidateHint.ExcludedAsLockedCandidate
+		        Case Sudoku.CandidateHint.ExcludedAsLockedCandidate
 		          g.DrawingColor = Color.Red
-		        Case SudokuTool.CandidateHint.ExcludedAsNakedSubset
+		        Case Sudoku.CandidateHint.ExcludedAsNakedSubset
 		          g.DrawingColor = Color.Orange
-		        Case SudokuTool.CandidateHint.ExcludedAsHiddenSubset
+		        Case Sudoku.CandidateHint.ExcludedAsHiddenSubset
 		          g.DrawingColor = Color.Orange
-		        Case SudokuTool.CandidateHint.ExcludedAsXWing
+		        Case Sudoku.CandidateHint.ExcludedAsXWing
 		          g.DrawingColor = Color.Yellow
 		        Else
 		          Continue
@@ -834,7 +834,7 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionEmpty()
-		  Me.Sudoku.ClearGrid
+		  Me.SudokuPuzzle.ClearGrid
 		  Me.ShowSudoku
 		  
 		End Sub
@@ -888,12 +888,12 @@ End
 		  ' PDF MetaData
 		  pdf.Title = "Sudoku"
 		  pdf.Subject = "Sudoku"
-		  pdf.Author = SudokuTool.kURL_Repository
+		  pdf.Author = Sudoku.kURL_Repository
 		  pdf.Creator = "Sudoku " + labAppVersion.Text + " (Xojo " + XojoVersionString + ")"
 		  pdf.Keywords = "Sudoku"
 		  
 		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g, True)
+		  Me.SudokuPuzzle.DrawInto(g, True)
 		  
 		  ' Save PDF
 		  pdf.Save(f)
@@ -904,14 +904,14 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
 		  ' Lock current state
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
+		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      
 		      If (value > 0) Then
 		        SudokuTextFields(index).Lock = (value > 0)
-		        Me.Sudoku.SetGridCellLocked(row, col)
+		        Me.SudokuPuzzle.SetGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
@@ -930,13 +930,13 @@ End
 		    
 		    If (f = Nil) Then Return
 		    
-		    Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		    Var newSudokuPuzzle As Sudoku.Puzzle = Sudoku.LoadFrom(f)
 		    
-		    If (newSudoku <> Nil) Then
-		      Me.Sudoku = newSudoku
+		    If (newSudokuPuzzle <> Nil) Then
+		      Me.SudokuPuzzle = newSudokuPuzzle
 		      Me.ShowSudoku
 		    Else
-		      Me.Sudoku.ClearGrid
+		      Me.SudokuPuzzle.ClearGrid
 		      Me.ShowSudoku
 		    End If
 		    
@@ -952,7 +952,7 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionRandom()
 		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		  Call Me.Sudoku.GenerateRandomPuzzle(numClues)
+		  Call Me.SudokuPuzzle.GenerateRandomPuzzle(numClues)
 		  Me.ShowSudoku
 		  Me.ActionLock
 		  
@@ -966,7 +966,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
 		    If (f = Nil) Then Return
 		    
-		    Call Me.Sudoku.SaveTo(f, App.GetJsonApplication)
+		    Call Me.SudokuPuzzle.SaveTo(f, App.GetJsonApplication)
 		    
 		  Catch e As IOException
 		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
@@ -978,10 +978,10 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionSolve()
 		  ' Sanity Check
-		  If (Not Me.Sudoku.IsSolvable) Then Return
+		  If (Not Me.SudokuPuzzle.IsSolvable) Then Return
 		  
 		  ' Solve and Show
-		  Call Me.Sudoku.Solve
+		  Call Me.SudokuPuzzle.Solve
 		  Me.ShowSudoku
 		  Me.ActionLock
 		  
@@ -993,7 +993,7 @@ End
 		  Try
 		    Var f As FolderItem = GetUsersCurrentSudokuStateFile(True)
 		    If (f <> Nil) Then
-		      Call Me.Sudoku.SaveTo(f, App.GetJsonApplication)
+		      Call Me.SudokuPuzzle.SaveTo(f, App.GetJsonApplication)
 		    End If
 		    
 		  Catch err As IOException
@@ -1005,7 +1005,7 @@ End
 		    Var f As FolderItem = GetUsersCurrentSettingsFile(True)
 		    If (f <> Nil) Then
 		      Var json As New JSONItem
-		      json.Value(SudokuTool.kJSONKeyApplication) = App.GetJsonApplication
+		      json.Value(Sudoku.kJSONKeyApplication) = App.GetJsonApplication
 		      json.Value(kJSONKeyShowHints) = mShowHints
 		      json.Value(kJSONKeyShowCandidates) = mShowCandidates
 		      
@@ -1096,10 +1096,10 @@ End
 		    
 		    
 		    If (f <> Nil) Then
-		      Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		      Var newSudokuPuzzle As Sudoku.Puzzle = Sudoku.LoadFrom(f)
 		      
-		      If (newSudoku <> Nil) Then
-		        Me.Sudoku = newSudoku
+		      If (newSudokuPuzzle <> Nil) Then
+		        Me.SudokuPuzzle = newSudokuPuzzle
 		        Me.ShowSudoku
 		        Return
 		      end if
@@ -1172,12 +1172,12 @@ End
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      If SudokuTextFields(index).IsLocked Then Continue
-		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
+		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
 		      Return True
@@ -1198,7 +1198,7 @@ End
 		  If (g = Nil) Then Return
 		  
 		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g, True)
+		  Me.SudokuPuzzle.DrawInto(g, True)
 		  
 		  
 		End Sub
@@ -1206,19 +1206,19 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
-		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
-		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
-		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.Sudoku.IsSolvable)
-		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
+		  Var isEmpty As Boolean = Me.SudokuPuzzle.IsEmpty
+		  Var isValid As Boolean = isEmpty Or Me.SudokuPuzzle.IsValid
+		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.SudokuPuzzle.IsSolvable)
+		  Var isSolved As Boolean = (Not isEmpty) And Me.SudokuPuzzle.IsSolved
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.CellHints = Me.Sudoku.GetCellHints
+		    Me.CellHints = Me.SudokuPuzzle.GetCellHints
 		  Else
 		    Redim CellHints(-1)
 		  End If
 		  
 		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.CellCandidates = Me.Sudoku.GetCellCandidates
+		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates
 		  Else
 		    Redim CellCandidates(-1)
 		  End If
@@ -1228,7 +1228,7 @@ End
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
-		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.Sudoku.SolveEnabled
+		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
 		  
 		  ' Menu
 		  SudokuEmpty.Enabled = btnEmpty.Enabled
@@ -1276,19 +1276,19 @@ End
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      SudokuTextFields(index).Lock = False
 		      
-		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      If value = 0 Then
 		        SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
 		        SudokuTextFields(index).Text = value.ToString
-		        SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
+		        SudokuTextFields(index).Lock = Me.SudokuPuzzle.IsGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
@@ -1323,18 +1323,18 @@ End
 		    
 		  Case Chr(29) ' Right arrow
 		    Var rightIndex As Integer = sender.PositionIndex + 1
-		    if (rightIndex < SudokuTool.N*SudokuTool.N) then SudokuTextFields(rightIndex).SetFocus
+		    if (rightIndex < Sudoku.N*Sudoku.N) then SudokuTextFields(rightIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.PositionIndex - SudokuTool.N
+		    Var upIndex As Integer = sender.PositionIndex - Sudoku.N
 		    ' Move focus to previous (unlocked) cell
 		    if (upIndex >= 0) then SudokuTextFields(upIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.PositionIndex + SudokuTool.N
-		    if (downIndex < SudokuTool.N*SudokuTool.N) then SudokuTextFields(downIndex).SetFocus
+		    Var downIndex As Integer = sender.PositionIndex + Sudoku.N
+		    if (downIndex < Sudoku.N*Sudoku.N) then SudokuTextFields(downIndex).SetFocus
 		    Return True
 		    
 		    ' Other special keys
@@ -1356,9 +1356,9 @@ End
 		  End If
 		  
 		  ' Allow entering Digits 0-N
-		  If key >= "0" And key <= SudokuTool.N.ToString Then
+		  If key >= "0" And key <= Sudoku.N.ToString Then
 		    ' Update Number
-		    Me.Sudoku.SetGridCell(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
+		    Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
 		    
 		    If (key = "0") Then
 		      sender.Text = ""
@@ -1380,11 +1380,11 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
-		  Redim SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
+		  Redim SudokuTextFields(Sudoku.N*Sudoku.N-1)
 		  
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      ' Create Sudoku Number TextField
 		      SudokuTextFields(index) = New SudokuNumberField
@@ -1414,7 +1414,7 @@ End
 		  If sender.IsLocked Then
 		    ' Make sure original grid value is not being overwritten
 		    ' we don't set .Readonly to get arrow navigation
-		    Var gridVal As String = Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex).ToString
+		    Var gridVal As String = Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex).ToString
 		    If (gridVal = "0") Then gridVal = ""
 		    If (sender.Text <> gridVal) Then sender.Text = gridVal
 		    Return
@@ -1422,9 +1422,9 @@ End
 		  
 		  ' Update Number if necessary
 		  Var currentNumber As Integer = sender.Text.ToInteger
-		  If (Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
+		  If (Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
 		  
-		  Me.Sudoku.SetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		  Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber
 		  
 		  If (currentNumber < 1) And (sender.Text <> "") Then
 		    sender.Text = ""
@@ -1438,11 +1438,11 @@ End
 
 
 	#tag Property, Flags = &h21
-		Private CellCandidates() As SudokuTool.CellCandidates
+		Private CellCandidates() As Sudoku.CellCandidates
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private CellHints() As SudokuTool.CellHint
+		Private CellHints() As Sudoku.CellHint
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1458,7 +1458,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private Sudoku As SudokuTool
+		Private SudokuPuzzle As Sudoku.Puzzle
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1564,12 +1564,12 @@ End
 		    End Select
 		    
 		    If (loadSudoku <> "") Then
-		      Self.Sudoku.ClearGrid
+		      Self.SudokuPuzzle.ClearGrid
 		      
-		      For row As Integer = 0 To SudokuTool.N-1
-		        For col As Integer = 0 To SudokuTool.N-1
-		          Var index As Integer = row * SudokuTool.N + col
-		          Self.Sudoku.SetGridCell(row, col) = loadSudoku.Middle(index, 1).ToInteger
+		      For row As Integer = 0 To Sudoku.N-1
+		        For col As Integer = 0 To Sudoku.N-1
+		          Var index As Integer = row * Sudoku.N + col
+		          Self.SudokuPuzzle.SetGridValue(row, col) = loadSudoku.Middle(index, 1).ToInteger
 		        Next
 		      Next
 		      
@@ -1602,7 +1602,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(SudokuTool.kURL_Repository)
+		    System.GotoURL(Sudoku.kURL_Repository)
 		  End If
 		  
 		End Sub
@@ -1640,7 +1640,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(SudokuTool.kURL_Repository)
+		    System.GotoURL(Sudoku.kURL_Repository)
 		  End If
 		  
 		End Sub
@@ -1707,7 +1707,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL("mailto:" + SudokuTool.kEmail_Contact)
+		    System.GotoURL("mailto:" + Sudoku.kEmail_Contact)
 		  End If
 		End Sub
 	#tag EndEvent
@@ -1741,7 +1741,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(SudokuTool.kURL_PayPal)
+		    System.GotoURL(Sudoku.kURL_PayPal)
 		  End If
 		  
 		End Sub
