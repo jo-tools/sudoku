@@ -38,16 +38,18 @@ Private Class HintsSearcher
 		  
 		  ' 1. Basic Sudoku Rules (Naked Single)
 		  ' Distinct digit in each row/col/block
-		  Var candidates() As Integer
+		  Var candidateCount As Integer
+		  Var singleCandidateValue As Integer
 		  For value As Integer = 1 To mGrid.Settings.N
 		    If mGrid.IsValueValid(row, col, value) Then
-		      candidates.Add(value)
-		      If (candidates.Count > 1) Then Exit ' We just need to know if more than two candidates for the Naked Single Check
+		      candidateCount = candidateCount + 1
+		      singleCandidateValue = value
+		      If (candidateCount > 1) Then Exit ' We just need to know if more than two candidates for the Naked Single Check
 		    End If
 		  Next
 		  
-		  If candidates.Count = 1 Then
-		    Return Me.CreateCellHint(row, col, SolveHint.NakedSingle, candidates(0))
+		  If candidateCount = 1 Then
+		    Return Me.CreateCellHint(row, col, SolveHint.NakedSingle, singleCandidateValue)
 		  End If
 		  
 		  ' 2. Hidden Single
@@ -99,42 +101,48 @@ Private Class HintsSearcher
 		  ' Check if value at Grid(row, col) is a hidden single.
 		  
 		  ' Row check
-		  Var possibleCols() As Integer
+		  Var rowCandidateCount As Integer
+		  Var rowCandidateCol As Integer = -1
 		  For cc As Integer = 0 To mGrid.Settings.N-1
 		    If mGrid.Get(row, cc) = 0 And mGrid.IsValueValid(row, cc, value) Then
-		      possibleCols.Add(cc)
-		      If (possibleCols.Count > 1) Then Exit ' We just need to know if more than one candidate
+		      rowCandidateCount = rowCandidateCount + 1
+		      rowCandidateCol = cc
+		      If (rowCandidateCount > 1) Then Exit ' We just need to know if more than one candidate
 		    End If
 		  Next
-		  If possibleCols.Count = 1 And possibleCols(0) = col Then
+		  If rowCandidateCount = 1 And rowCandidateCol = col Then
 		    Return True
 		  End If
 		  
 		  ' Column check
-		  Var possibleRows() As Integer
+		  Var colCandidateCount As Integer
+		  Var colCandidateRow As Integer = -1
 		  For rr As Integer = 0 To mGrid.Settings.N-1
 		    If mGrid.Get(rr, col) = 0 And mGrid.IsValueValid(rr, col, value) Then
-		      If (possibleRows.Count > 1) Then Exit ' We just need to know if more than one candidate
-		      possibleRows.Add(rr)
+		      colCandidateCount = colCandidateCount + 1
+		      colCandidateRow = rr
+		      If (colCandidateCount > 1) Then Exit ' We just need to know if more than one candidate
 		    End If
 		  Next
-		  If possibleRows.Count = 1 And possibleRows(0) = row Then
+		  If colCandidateCount = 1 And colCandidateRow = row Then
 		    Return True
 		  End If
 		  
 		  ' Block check
 		  Var blockR As Integer = (row \ mGrid.Settings.BoxHeight) * mGrid.Settings.BoxHeight
 		  Var blockC As Integer = (col \ mGrid.Settings.BoxWidth) * mGrid.Settings.BoxWidth
-		  Var possibleBlockCells() As Integer
+		  Var blockCandidateCount As Integer
+		  Var blockCandidateIndex As Integer = -1
 		  For rr As Integer = blockR To blockR + mGrid.Settings.BoxHeight - 1
 		    For cc As Integer = blockC To blockC + mGrid.Settings.BoxWidth - 1
 		      If mGrid.Get(rr, cc) = 0 And mGrid.IsValueValid(rr, cc, value) Then
-		        possibleBlockCells.Add(rr * mGrid.Settings.N + cc)
+		        blockCandidateCount = blockCandidateCount + 1
+		        blockCandidateIndex = mGrid.GetIndex(rr, cc)
 		      End If
 		    Next
 		  Next
 		  
-		  If possibleBlockCells.Count = 1 And possibleBlockCells(0) = mGrid.GetIndex(row, col) Then
+		  If blockCandidateCount = 1 And blockCandidateIndex = mGrid.GetIndex(row, col) Then
 		    Return True
 		  End If
 		  
