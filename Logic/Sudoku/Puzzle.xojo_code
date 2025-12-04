@@ -18,7 +18,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  Var grid As New Grid
+		  Var grid As New Grid(9)
 		  Me.Constructor(grid)
 		  
 		End Sub
