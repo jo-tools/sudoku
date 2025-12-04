@@ -2,7 +2,7 @@
 Private Class HintsSearcher
 	#tag Method, Flags = &h0
 		Sub Constructor(grid As Grid)
-		  Me.grid = grid
+		  mGrid = grid
 		  
 		End Sub
 	#tag EndMethod
@@ -32,15 +32,15 @@ Private Class HintsSearcher
 		  cellHint.SolutionValue = 0
 		  
 		  ' No Hints in non empty Cells
-		  If Me.grid.Get(row, col) <> 0 Then
+		  If mGrid.Get(row, col) <> 0 Then
 		    Return Me.CreateCellHint(row, col, SolveHint.None, 0)
 		  End If
 		  
 		  ' 1. Basic Sudoku Rules (Naked Single)
 		  ' Distinct digit in each row/col/block
 		  Var candidates() As Integer
-		  For value As Integer = 1 To N
-		    If Me.grid.IsValueValid(row, col, value) Then
+		  For value As Integer = 1 To mGrid.Settings.N
+		    If mGrid.IsValueValid(row, col, value) Then
 		      candidates.Add(value)
 		      If (candidates.Count > 1) Then Exit ' We just need to know if more than two candidates for the Naked Single Check
 		    End If
@@ -52,7 +52,7 @@ Private Class HintsSearcher
 		  
 		  ' 2. Hidden Single
 		  ' Only one spot for a digit in row/col/block
-		  For value As Integer = 1 To N
+		  For value As Integer = 1 To mGrid.Settings.N
 		    If Me.IsValueHiddenSingle(row, col, value) Then
 		      Return Me.CreateCellHint(row, col, SolveHint.HiddenSingle, value)
 		      Exit 
@@ -72,10 +72,10 @@ Private Class HintsSearcher
 		  Var cellHints() As CellHint
 		  
 		  ' Add Solve Cell Hints
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
+		  For row As Integer = 0 To mGrid.Settings.N-1
+		    For col As Integer = 0 To mGrid.Settings.N-1
 		      ' No Hints in non empty Cells
-		      If Me.grid.Get(row, col) <> 0 Then
+		      If mGrid.Get(row, col) <> 0 Then
 		        Continue
 		      End If
 		      
@@ -93,15 +93,15 @@ Private Class HintsSearcher
 
 	#tag Method, Flags = &h21
 		Private Function IsValueHiddenSingle(row As Integer, col As Integer, value As Integer) As Boolean
-		  ' Check if value at grid(r,c) is a hidden single.
-		  
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Check if value at Grid(row, col) is a hidden single.
+		  
 		  ' Row check
 		  Var possibleCols() As Integer
-		  For cc As Integer = 0 To N-1
-		    If Me.grid.Get(row, cc) = 0 And Me.grid.IsValueValid(row, cc, value) Then
+		  For cc As Integer = 0 To mGrid.Settings.N-1
+		    If mGrid.Get(row, cc) = 0 And mGrid.IsValueValid(row, cc, value) Then
 		      possibleCols.Add(cc)
 		      If (possibleCols.Count > 1) Then Exit ' We just need to know if more than one candidate
 		    End If
@@ -112,8 +112,8 @@ Private Class HintsSearcher
 		  
 		  ' Column check
 		  Var possibleRows() As Integer
-		  For rr As Integer = 0 To N-1
-		    If Me.grid.Get(rr, col) = 0 And Me.grid.IsValueValid(rr, col, value) Then
+		  For rr As Integer = 0 To mGrid.Settings.N-1
+		    If mGrid.Get(rr, col) = 0 And mGrid.IsValueValid(rr, col, value) Then
 		      If (possibleRows.Count > 1) Then Exit ' We just need to know if more than one candidate
 		      possibleRows.Add(rr)
 		    End If
@@ -128,13 +128,13 @@ Private Class HintsSearcher
 		  Var possibleBlockCells() As Integer
 		  For rr As Integer = blockR To blockR+2
 		    For cc As Integer = blockC To blockC+2
-		      If Me.grid.Get(rr, cc) = 0 And Me.grid.IsValueValid(rr, cc, value) Then
-		        possibleBlockCells.Add(rr * N + cc)
+		      If mGrid.Get(rr, cc) = 0 And mGrid.IsValueValid(rr, cc, value) Then
+		        possibleBlockCells.Add(rr * mGrid.Settings.N + cc)
 		      End If
 		    Next
 		  Next
 		  
-		  Var index As Integer = row * N + col
+		  Var index As Integer = row * mGrid.Settings.N + col
 		  If possibleBlockCells.Count = 1 And possibleBlockCells(0) = index Then
 		    Return True
 		  End If
@@ -146,7 +146,7 @@ Private Class HintsSearcher
 
 
 	#tag Property, Flags = &h21
-		Private grid As Grid
+		Private mGrid As Grid
 	#tag EndProperty
 
 
