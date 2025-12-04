@@ -123,19 +123,18 @@ Private Class HintsSearcher
 		  End If
 		  
 		  ' Block check
-		  Var blockR As Integer = (row \ 3) * 3
-		  Var blockC As Integer = (col \ 3) * 3
+		  Var blockR As Integer = (row \ mGrid.Settings.BoxHeight) * mGrid.Settings.BoxHeight
+		  Var blockC As Integer = (col \ mGrid.Settings.BoxWidth) * mGrid.Settings.BoxWidth
 		  Var possibleBlockCells() As Integer
-		  For rr As Integer = blockR To blockR+2
-		    For cc As Integer = blockC To blockC+2
+		  For rr As Integer = blockR To blockR + mGrid.Settings.BoxHeight - 1
+		    For cc As Integer = blockC To blockC + mGrid.Settings.BoxWidth - 1
 		      If mGrid.Get(rr, cc) = 0 And mGrid.IsValueValid(rr, cc, value) Then
 		        possibleBlockCells.Add(rr * mGrid.Settings.N + cc)
 		      End If
 		    Next
 		  Next
 		  
-		  Var index As Integer = row * mGrid.Settings.N + col
-		  If possibleBlockCells.Count = 1 And possibleBlockCells(0) = index Then
+		  If possibleBlockCells.Count = 1 And possibleBlockCells(0) = mGrid.GetIndex(row, col) Then
 		    Return True
 		  End If
 		  
