@@ -79,7 +79,7 @@ Private Class Grid
 		    
 		  End Select
 		  
-		  Me.mSettings = s
+		  mSettings = s
 		  
 		  Me.Clear
 		End Sub
@@ -227,10 +227,10 @@ Private Class Grid
 		  ' 3. Check the blocks
 		  ' Each block must contain unique numbers
 		  ' Calculate the top-left corner of the block containing (row, col)
-		  Var br As Integer = (row \ Me.mSettings.BoxHeight) * Me.mSettings.BoxHeight
+		  Var br As Integer = (row \ mSettings.BoxHeight) * mSettings.BoxHeight
 		  Var bc As Integer = (col \ mSettings.BoxWidth) * mSettings.BoxWidth
 		  
-		  For rr As Integer = br To br + Me.mSettings.BoxHeight - 1
+		  For rr As Integer = br To br + mSettings.BoxHeight - 1
 		    For cc As Integer = bc To bc + mSettings.BoxWidth - 1
 		      If mGrid(rr, cc) = value Then
 		        ' value already exists in this block → invalid
