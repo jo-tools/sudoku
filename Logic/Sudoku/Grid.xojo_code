@@ -182,6 +182,7 @@ Private Class Grid
 		      ' so that it behaves such as the value is going to overwritten (later).
 		      Var checkResult As Boolean
 		      Var currentValue As Integer = mGrid(row, col)
+		      mGrid(row, col) = 0
 		      checkResult = IsValueValidInternal(row, col, value)
 		      mGrid(row, col) = currentValue
 		      Return checkResult
@@ -284,6 +285,13 @@ Private Class Grid
 		  mGrid(row, col) = value
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Settings() As Settings
+		  Return mSettings
+		  
+		End Function
 	#tag EndMethod
 
 
