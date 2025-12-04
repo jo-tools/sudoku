@@ -121,7 +121,7 @@ Begin WebContainer DownloadChoice
       Tooltip         =   ""
       Top             =   90
       Underline       =   False
-      URL             =   "#SudokuTool.kURL_Repository"
+      URL             =   "#Sudoku.kURL_Repository"
       Visible         =   True
       Width           =   210
       _mPanelIndex    =   -1
@@ -223,7 +223,7 @@ End
 #tag Events labSudokuDesktop
 	#tag Event
 		Sub Opening()
-		  Me.URL = SudokuTool.kURL_Repository + "/releases"
+		  Me.URL = Sudoku.kURL_Repository + "/releases"
 		  Me.Tooltip = Me.URL
 		  
 		End Sub

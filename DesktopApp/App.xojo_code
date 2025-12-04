@@ -44,9 +44,9 @@ Inherits DesktopApplication
 	#tag Method, Flags = &h0
 		Function GetJsonApplication() As JSONItem
 		  Var jsonApplication As New JSONItem
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationName) = "Sudoku"
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationVersion) = Me.GetVersion
-		  jsonApplication.Value(SudokuTool.kJSONKeyApplicationUrl) = SudokuTool.kURL_Repository
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationName) = "Sudoku"
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationVersion) = Me.GetVersion
+		  jsonApplication.Value(Sudoku.kJSONKeyApplicationUrl) = Sudoku.kURL_Repository
 		  Return jsonApplication
 		  
 		End Function
@@ -121,6 +121,12 @@ Inherits DesktopApplication
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"L&eer"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"V&ide"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Vac\xC3\xADo"
+	#tag EndConstant
+
+	#tag Constant, Name = kSudokuExclusion, Type = String, Dynamic = True, Default = \"Exclusion", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Ausschluss"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exclusion"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exclusi\xC3\xB3n"
 	#tag EndConstant
 
 	#tag Constant, Name = kSudokuLock, Type = String, Dynamic = True, Default = \"&Lock", Scope = Public

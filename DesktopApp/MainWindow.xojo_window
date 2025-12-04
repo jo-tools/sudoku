@@ -11,20 +11,20 @@ Begin DesktopWindow MainWindow
    HasMaximizeButton=   False
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   560
+   Height          =   620
    ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   1342697471
    MenuBarVisible  =   False
-   MinimumHeight   =   560
-   MinimumWidth    =   560
+   MinimumHeight   =   620
+   MinimumWidth    =   600
    Resizeable      =   False
    Title           =   "Sudoku"
    Type            =   0
    Visible         =   True
-   Width           =   560
+   Width           =   600
    Begin SudokuButton btnSolve
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -46,15 +46,15 @@ Begin DesktopWindow MainWindow
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   15
+      TabIndex        =   20
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   430
+      Top             =   510
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin SudokuButton btnEmpty
       AllowAutoDeactivate=   True
@@ -85,7 +85,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin DesktopLabel labStatusTitle
       AllowAutoDeactivate=   True
@@ -106,18 +106,18 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   16
+      TabIndex        =   21
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelSudokuStatus"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   488
+      Top             =   548
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin DesktopLabel labStatus
       AllowAutoDeactivate=   True
@@ -129,7 +129,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   405
+      Left            =   420
       LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   False
@@ -138,18 +138,18 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   17
+      TabIndex        =   22
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   520
+      Top             =   580
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   150
+      Width           =   160
    End
    Begin SudokuButton btnLock
       AllowAutoDeactivate=   True
@@ -176,11 +176,11 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   275
+      Top             =   245
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin DesktopCanvas cnvAppIcon
       AllowAutoDeactivate=   True
@@ -201,7 +201,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
-      Tooltip         =   "#SudokuTool.kURL_Repository"
+      Tooltip         =   "#Sudoku.kURL_Repository"
       Top             =   20
       Transparent     =   False
       Visible         =   True
@@ -232,12 +232,12 @@ Begin DesktopWindow MainWindow
       Text            =   "Sudoku"
       TextAlignment   =   0
       TextColor       =   &c0072D800
-      Tooltip         =   "#SudokuTool.kURL_Repository"
+      Tooltip         =   "#Sudoku.kURL_Repository"
       Top             =   20
       Transparent     =   False
       Underline       =   True
       Visible         =   True
-      Width           =   140
+      Width           =   180
    End
    Begin DesktopLabel labThanks
       AllowAutoDeactivate=   True
@@ -249,7 +249,7 @@ Begin DesktopWindow MainWindow
       Height          =   30
       Index           =   -2147483648
       Italic          =   False
-      Left            =   310
+      Left            =   350
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -301,7 +301,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   140
+      Width           =   180
    End
    Begin DesktopLabel labContact
       AllowAutoDeactivate=   True
@@ -313,7 +313,7 @@ Begin DesktopWindow MainWindow
       Height          =   30
       Index           =   -2147483648
       Italic          =   False
-      Left            =   355
+      Left            =   395
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -328,7 +328,7 @@ Begin DesktopWindow MainWindow
       Text            =   "#Translations.kLabelContact"
       TextAlignment   =   1
       TextColor       =   &c0072CE00
-      Tooltip         =   "#SudokuTool.kEmail_Contact"
+      Tooltip         =   "#Sudoku.kEmail_Contact"
       Top             =   54
       Transparent     =   False
       Underline       =   True
@@ -344,7 +344,7 @@ Begin DesktopWindow MainWindow
       Enabled         =   True
       Height          =   30
       Index           =   -2147483648
-      Left            =   434
+      Left            =   474
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -354,7 +354,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
-      Tooltip         =   "#SudokuTool.kURL_PayPal"
+      Tooltip         =   "#Sudoku.kURL_PayPal"
       Top             =   54
       Transparent     =   False
       Visible         =   True
@@ -382,7 +382,7 @@ Begin DesktopWindow MainWindow
       Top             =   100
       Transparent     =   False
       Visible         =   True
-      Width           =   560
+      Width           =   600
       _mIndex         =   0
       _mInitialParent =   ""
       _mName          =   ""
@@ -411,7 +411,7 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   185
+      Top             =   165
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -443,7 +443,7 @@ Begin DesktopWindow MainWindow
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   185
+      Top             =   165
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -474,11 +474,11 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   220
+      Top             =   200
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   120
+      Width           =   160
    End
    Begin SudokuCheckbox chkShowHints
       AllowAutoDeactivate=   True
@@ -502,12 +502,12 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   355
+      Top             =   315
       Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
-      VisualState     =   0
+      VisualState     =   1
       Width           =   120
    End
    Begin SudokuCheckbox chkShowCandidates
@@ -532,12 +532,12 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   380
+      Top             =   340
       Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
-      VisualState     =   0
+      VisualState     =   1
       Width           =   120
    End
    Begin SudokuLabel labShow
@@ -566,11 +566,163 @@ Begin DesktopWindow MainWindow
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   330
+      Top             =   290
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   120
+   End
+   Begin SudokuLabel labExclusion
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   15
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "#Translations.kLabelExclusion"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   370
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
+   End
+   Begin SudokuCheckbox chkExcludeLockedCandidates
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "Locked Candidates"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   16
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   395
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
+   End
+   Begin SudokuCheckbox chkExcludeNakedSubsets
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "Naked Subsets"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   17
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   420
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
+   End
+   Begin SudokuCheckbox chkExcludeXWing
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "X-Wing"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   19
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   470
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
+   End
+   Begin SudokuCheckbox chkExcludeHiddenSubsets
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "Hidden Subsets"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   18
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   445
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   170
    End
 End
 #tag EndDesktopWindow
@@ -599,14 +751,14 @@ End
 		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
 		  
 		  ' Layout
-		  Me.Height = sepTop.Top + 2 * kMarginWindow + SudokuTool.N * kCellSize
+		  Me.Height = sepTop.Top + 2 * kMarginWindow + Sudoku.N * kCellSize
 		  Me.MinimumHeight = Me.Height
 		  
-		  Me.Width = 2 * kMarginWindow + SudokuTool.N * kCellSize + 20 + btnSolve.Width
+		  Me.Width = 2 * kMarginWindow + Sudoku.N * kCellSize + 20 + btnSolve.Width
 		  Me.MaximumWidth = Me.Width
 		  
 		  ' Init Sudoku
-		  Me.Sudoku = New SudokuTool
+		  Me.SudokuPuzzle = New Sudoku.Puzzle
 		  Me.SudokuNumberFieldsInit
 		  
 		  Me.DocumentInit
@@ -621,19 +773,19 @@ End
 		  #If TargetWindows Then
 		    If (Not Color.IsDarkMode) Then
 		      g.DrawingColor = Color.White
-		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, SudokuTool.N * kCellSize, SudokuTool.N * kCellSize)
+		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, Sudoku.N * kCellSize, Sudoku.N * kCellSize)
 		    End If
 		  #EndIf
 		  
-		  If Me.mShowHints And (Me.SolveCellHints.LastIndex >= 0) Then
+		  If Me.mShowHints And (Me.CellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    For Each h As SudokuTool.SolveCellHint In Me.SolveCellHints
+		    For Each h As Sudoku.CellHint In Me.CellHints
 		      Select Case h.SolveHint
-		      Case SudokuTool.SolveHint.NakedSingle
+		      Case Sudoku.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
 		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
-		      Case SudokuTool.SolveHint.HiddenSingle
+		      Case Sudoku.SolveHint.HiddenSingle
 		        g.DrawingColor = colSolveHintHiddenSingle
 		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
 		      End Select
@@ -643,49 +795,94 @@ End
 		  ' Draw all thin "hair" lines first (gray)
 		  g.DrawingColor = colGridlineHair
 		  g.PenSize = 1
-		  For i As Integer = 1 To SudokuTool.N-1 ' skip outer border (0 and N)
+		  For i As Integer = 1 To Sudoku.N-1 ' skip outer border (0 and N)
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + Sudoku.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + Sudoku.N * kCellSize)
 		  Next
 		  
 		  ' Draw thicker red 3x3 block lines on top
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  For i As Integer = 0 To SudokuTool.N Step 3
+		  For i As Integer = 0 To Sudoku.N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2)
 		  Next
 		  
-		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
-		  g.FontSize = 8
-		  
-		  If Me.mShowCandidates And (Me.SolveCellCandidates.LastIndex >= 0) Then
+		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
 		    ' Draw Cell Candidates
-		    Var hintRowSize As Double = (kCellSize - self.SudokuTextFields(0).Height) / 2
+		    g.FontSize = 8
+		    g.PenSize = 1
+		    
+		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
 		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
 		    
-		    For Each h As SudokuTool.SolveCellCandidate In Me.SolveCellCandidates
-		      For Each candidate As Int8 In h.Candidates
-		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
+		    Var crossCenterX As Double
+		    Var crossCenterY As Double
+		    
+		    For Each h As Sudoku.CellCandidates In Me.CellCandidates
+		      For Each candidate As Sudoku.Candidate In h.Candidates
+		        If (candidate.Value < 1) Or (candidate.Value > Sudoku.N) Then Continue
+		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
 		        
-		        Select Case candidate
+		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
+		        
+		        Select Case candidate.Value
 		        Case Is <= 4
-		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
+		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.Value.ToString)) / 2
+		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + ((kCellSize/4) / 2)
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (hintRowSize / 2)
 		        Case 5
-		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
+		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + (hintRowSize / 2)
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize / 2)
 		        Case 6
-		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
+		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + kCellSize - (hintRowSize / 2)
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize / 2)
 		        Case Is >= 7
-		          Var adjustX As Double = ((kCellSize/3) - g.TextWidth(candidate.ToString)) / 2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.Value.ToString)) / 2
+		          Select Case candidate.Value
+		          Case 7
+		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + ((kCellSize/4) / 2)
+		          Case 8
+		            adjustX = (kCellSize - g.TextWidth(candidate.Value.ToString)) / 2
+		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + (kCellSize / 2)
+		          Case 9
+		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + ((kCellSize/4) / 2)
+		          End Select
+		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - (hintRowSize / 2))
 		        End Select
+		        
+		        ' Mark excluded candidates
+		        Select Case candidate.Hint
+		        Case Sudoku.CandidateHint.NoCandidate
+		          Continue ' not a candidate
+		        Case Sudoku.CandidateHint.Candidate
+		          Continue ' just display candidate
+		        Case Sudoku.CandidateHint.ExcludedAsLockedCandidate
+		          g.DrawingColor = colExcludeLockedCandidates
+		        Case Sudoku.CandidateHint.ExcludedAsNakedSubset
+		          g.DrawingColor = colExcludeNakedSubsets
+		        Case Sudoku.CandidateHint.ExcludedAsHiddenSubset
+		          g.DrawingColor = colExcludeHiddenSubsets
+		        Case Sudoku.CandidateHint.ExcludedAsXWing
+		          g.DrawingColor = colExcludeXWing
+		        Else
+		          Continue
+		        End Select
+		        
+		        g.PenSize = 1.0
+		        g.DrawLine(crossCenterX - hintRowSize*0.25, crossCenterY + hintRowSize*0.25, crossCenterX + hintRowSize*0.25, crossCenterY - hintRowSize*0.25)
 		      Next
 		    Next
 		  End If
@@ -714,7 +911,7 @@ End
 
 	#tag MenuHandler
 		Function FilePrint() As Boolean Handles FilePrint.Action
-		  Self.Print
+		  Self.ActionPrint
 		  
 		  Return True
 		  
@@ -733,6 +930,46 @@ End
 	#tag MenuHandler
 		Function SudokuEmpty() As Boolean Handles SudokuEmpty.Action
 		  Self.ActionEmpty
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionHiddenSubsets() As Boolean Handles SudokuExclusionHiddenSubsets.Action
+		  Self.mExclusionParams.ExcludeHiddenSubsets = (Not Self.mExclusionParams.ExcludeHiddenSubsets)
+		  Self.RefreshControls
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionLockedCandidates() As Boolean Handles SudokuExclusionLockedCandidates.Action
+		  Self.mExclusionParams.ExcludeLockedCandidates = (Not Self.mExclusionParams.ExcludeLockedCandidates)
+		  Self.RefreshControls
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionNakedSubsets() As Boolean Handles SudokuExclusionNakedSubsets.Action
+		  Self.mExclusionParams.ExcludeNakedSubsets = (Not Self.mExclusionParams.ExcludeNakedSubsets)
+		  Self.RefreshControls
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function SudokuExclusionXWing() As Boolean Handles SudokuExclusionXWing.Action
+		  Self.mExclusionParams.ExcludeXWing = (Not Self.mExclusionParams.ExcludeXWing)
+		  Self.RefreshControls
 		  
 		  Return True
 		  
@@ -789,7 +1026,7 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionEmpty()
-		  Me.Sudoku.ClearGrid
+		  Me.SudokuPuzzle.ClearGrid
 		  Me.ShowSudoku
 		  
 		End Sub
@@ -843,12 +1080,12 @@ End
 		  ' PDF MetaData
 		  pdf.Title = "Sudoku"
 		  pdf.Subject = "Sudoku"
-		  pdf.Author = SudokuTool.kURL_Repository
+		  pdf.Author = Sudoku.kURL_Repository
 		  pdf.Creator = "Sudoku " + labAppVersion.Text + " (Xojo " + XojoVersionString + ")"
 		  pdf.Keywords = "Sudoku"
 		  
 		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g, True)
+		  Me.SudokuPuzzle.DrawInto(g, True)
 		  
 		  ' Save PDF
 		  pdf.Save(f)
@@ -859,14 +1096,14 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
 		  ' Lock current state
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
+		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      
 		      If (value > 0) Then
 		        SudokuTextFields(index).Lock = (value > 0)
-		        Me.Sudoku.SetGridCellLocked(row, col)
+		        Me.SudokuPuzzle.SetGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
@@ -885,13 +1122,13 @@ End
 		    
 		    If (f = Nil) Then Return
 		    
-		    Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		    Var newSudokuPuzzle As Sudoku.Puzzle = Sudoku.LoadFrom(f)
 		    
-		    If (newSudoku <> Nil) Then
-		      Me.Sudoku = newSudoku
+		    If (newSudokuPuzzle <> Nil) Then
+		      Me.SudokuPuzzle = newSudokuPuzzle
 		      Me.ShowSudoku
 		    Else
-		      Me.Sudoku.ClearGrid
+		      Me.SudokuPuzzle.ClearGrid
 		      Me.ShowSudoku
 		    End If
 		    
@@ -905,9 +1142,24 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub ActionPrint()
+		  ' Setup Printing
+		  Var ps As New PrinterSetup
+		  ps.Landscape = False
+		  Var g As Graphics = ps.ShowPrinterDialog(Self)
+		  If (g = Nil) Then Return
+		  
+		  ' Draw Sudoku
+		  Me.SudokuPuzzle.DrawInto(g, True)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub ActionRandom()
 		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		  Call Me.Sudoku.GenerateRandomPuzzle(numClues)
+		  Call Me.SudokuPuzzle.GenerateRandomPuzzle(numClues)
 		  Me.ShowSudoku
 		  Me.ActionLock
 		  
@@ -921,7 +1173,7 @@ End
 		    Var f As FolderItem = FolderItem.ShowSaveFileDialog(SudokuFileTypeGroup.Sudoku, suggestedFilename)
 		    If (f = Nil) Then Return
 		    
-		    Call Me.Sudoku.SaveTo(f, App.GetJsonApplication)
+		    Call Me.SudokuPuzzle.SaveTo(f, App.GetJsonApplication)
 		    
 		  Catch e As IOException
 		    MessageBox e.Message + " (" + e.ErrorNumber.ToString + ")"
@@ -933,12 +1185,22 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionSolve()
 		  ' Sanity Check
-		  If (Not Me.Sudoku.IsSolvable) Then Return
+		  If (Not Me.SudokuPuzzle.IsSolvable) Then Return
 		  
 		  ' Solve and Show
-		  Call Me.Sudoku.Solve
+		  Call Me.SudokuPuzzle.Solve
 		  Me.ShowSudoku
 		  Me.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  Me.mExclusionParams = Sudoku.CreateExclusionParams
+		  
+		  Super.Constructor
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -948,7 +1210,7 @@ End
 		  Try
 		    Var f As FolderItem = GetUsersCurrentSudokuStateFile(True)
 		    If (f <> Nil) Then
-		      Call Me.Sudoku.SaveTo(f, App.GetJsonApplication)
+		      Call Me.SudokuPuzzle.SaveTo(f, App.GetJsonApplication)
 		    End If
 		    
 		  Catch err As IOException
@@ -960,9 +1222,13 @@ End
 		    Var f As FolderItem = GetUsersCurrentSettingsFile(True)
 		    If (f <> Nil) Then
 		      Var json As New JSONItem
-		      json.Value(SudokuTool.kJSONKeyApplication) = App.GetJsonApplication
+		      json.Value(Sudoku.kJSONKeyApplication) = App.GetJsonApplication
 		      json.Value(kJSONKeyShowHints) = mShowHints
 		      json.Value(kJSONKeyShowCandidates) = mShowCandidates
+		      json.Value(kJSONKeyExcludeLockedCandidates) = mExclusionParams.ExcludeLockedCandidates
+		      json.Value(kJSONKeyExcludeNakedSubsets) = mExclusionParams.ExcludeNakedSubsets
+		      json.Value(kJSONKeyExcludeHiddenSubsets) = mExclusionParams.ExcludeHiddenSubsets
+		      json.Value(kJSONKeyExcludeXWing) = mExclusionParams.ExcludeXWing
 		      
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		      If (randomNumClues > 0) Then
@@ -1018,6 +1284,18 @@ End
 		    If json.HasKey(kJSONKeyShowCandidates) Then
 		      mShowCandidates = json.Lookup(kJSONKeyShowCandidates, mShowCandidates).BooleanValue
 		    End If
+		    If json.HasKey(kJSONKeyExcludeLockedCandidates) Then
+		      mExclusionParams.ExcludeLockedCandidates = json.Lookup(kJSONKeyExcludeLockedCandidates, mExclusionParams.ExcludeLockedCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeNakedSubsets) Then
+		      mExclusionParams.ExcludeNakedSubsets = json.Lookup(kJSONKeyExcludeNakedSubsets, mExclusionParams.ExcludeNakedSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeHiddenSubsets) Then
+		      mExclusionParams.ExcludeHiddenSubsets = json.Lookup(kJSONKeyExcludeHiddenSubsets, mExclusionParams.ExcludeHiddenSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeXWing) Then
+		      mExclusionParams.ExcludeXWing = json.Lookup(kJSONKeyExcludeXWing, mExclusionParams.ExcludeXWing).BooleanValue
+		    End If
 		    If json.HasKey(kJSONKeyRandomNumClues) Then
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		      randomNumClues = json.Lookup(kJSONKeyRandomNumClues, randomNumClues).IntegerValue
@@ -1051,10 +1329,10 @@ End
 		    
 		    
 		    If (f <> Nil) Then
-		      Var newSudoku As SudokuTool = SudokuTool.LoadFrom(f)
+		      Var newSudokuPuzzle As Sudoku.Puzzle = Sudoku.LoadFrom(f)
 		      
-		      If (newSudoku <> Nil) Then
-		        Me.Sudoku = newSudoku
+		      If (newSudokuPuzzle <> Nil) Then
+		        Me.SudokuPuzzle = newSudokuPuzzle
 		        Me.ShowSudoku
 		        Return
 		      end if
@@ -1127,12 +1405,12 @@ End
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      If SudokuTextFields(index).IsLocked Then Continue
-		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
+		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
 		      Return True
@@ -1145,37 +1423,22 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub Print()
-		  ' Setup Printing
-		  Var ps As New PrinterSetup
-		  ps.Landscape = False
-		  Var g As Graphics = ps.ShowPrinterDialog(Self)
-		  If (g = Nil) Then Return
-		  
-		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g, True)
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
-		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
-		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
-		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.Sudoku.IsSolvable)
-		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
+		  Var isEmpty As Boolean = Me.SudokuPuzzle.IsEmpty
+		  Var isValid As Boolean = isEmpty Or Me.SudokuPuzzle.IsValid
+		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.SudokuPuzzle.IsSolvable)
+		  Var isSolved As Boolean = (Not isEmpty) And Me.SudokuPuzzle.IsSolved
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
+		    Me.CellHints = Me.SudokuPuzzle.GetCellHints
 		  Else
-		    Redim SolveCellHints(-1)
+		    Redim CellHints(-1)
 		  End If
 		  
 		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
+		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates(mExclusionParams)
 		  Else
-		    Redim SolveCellCandidates(-1)
+		    Redim CellCandidates(-1)
 		  End If
 		  
 		  Self.Refresh(False)
@@ -1183,17 +1446,33 @@ End
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
-		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.Sudoku.SolveEnabled
+		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
+		  
+		  labExclusion.Enabled = me.mShowCandidates
+		  chkExcludeLockedCandidates.Enabled = me.mShowCandidates
+		  chkExcludeNakedSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeHiddenSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeXWing.Enabled = me.mShowCandidates
 		  
 		  ' Menu
 		  SudokuEmpty.Enabled = btnEmpty.Enabled
 		  SudokuRandom.Enabled = btnRandom.Enabled
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
+		  
 		  chkShowHints.EnsureValue = mShowHints
 		  chkShowCandidates.EnsureValue = mShowCandidates
+		  chkExcludeLockedCandidates.EnsureValue = mExclusionParams.ExcludeLockedCandidates
+		  chkExcludeNakedSubsets.EnsureValue = mExclusionParams.ExcludeNakedSubsets
+		  chkExcludeHiddenSubsets.EnsureValue = mExclusionParams.ExcludeHiddenSubsets
+		  chkExcludeXWing.EnsureValue = mExclusionParams.ExcludeXWing
+		  
 		  SudokuShowHints.HasCheckMark = mShowHints
 		  SudokuShowCandidates.HasCheckMark = mShowCandidates
+		  SudokuExclusionLockedCandidates.HasCheckMark = mExclusionParams.ExcludeLockedCandidates
+		  SudokuExclusionNakedSubsets.HasCheckMark = mExclusionParams.ExcludeNakedSubsets
+		  SudokuExclusionHiddenSubsets.HasCheckMark = mExclusionParams.ExcludeHiddenSubsets
+		  SudokuExclusionXWing.HasCheckMark = mExclusionParams.ExcludeXWing
 		  
 		  ' Status
 		  If isEmpty Then
@@ -1231,19 +1510,19 @@ End
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      SudokuTextFields(index).Lock = False
 		      
-		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      If value = 0 Then
 		        SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
 		        SudokuTextFields(index).Text = value.ToString
-		        SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
+		        SudokuTextFields(index).Lock = Me.SudokuPuzzle.IsGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
@@ -1278,18 +1557,18 @@ End
 		    
 		  Case Chr(29) ' Right arrow
 		    Var rightIndex As Integer = sender.PositionIndex + 1
-		    if (rightIndex < SudokuTool.N*SudokuTool.N) then SudokuTextFields(rightIndex).SetFocus
+		    if (rightIndex < Sudoku.N*Sudoku.N) then SudokuTextFields(rightIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.PositionIndex - SudokuTool.N
+		    Var upIndex As Integer = sender.PositionIndex - Sudoku.N
 		    ' Move focus to previous (unlocked) cell
 		    if (upIndex >= 0) then SudokuTextFields(upIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.PositionIndex + SudokuTool.N
-		    if (downIndex < SudokuTool.N*SudokuTool.N) then SudokuTextFields(downIndex).SetFocus
+		    Var downIndex As Integer = sender.PositionIndex + Sudoku.N
+		    if (downIndex < Sudoku.N*Sudoku.N) then SudokuTextFields(downIndex).SetFocus
 		    Return True
 		    
 		    ' Other special keys
@@ -1311,9 +1590,9 @@ End
 		  End If
 		  
 		  ' Allow entering Digits 0-N
-		  If key >= "0" And key <= SudokuTool.N.ToString Then
+		  If key >= "0" And key <= Sudoku.N.ToString Then
 		    ' Update Number
-		    Me.Sudoku.SetGridCell(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
+		    Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
 		    
 		    If (key = "0") Then
 		      sender.Text = ""
@@ -1335,11 +1614,11 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
-		  Redim SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
+		  Redim SudokuTextFields(Sudoku.N*Sudoku.N-1)
 		  
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      ' Create Sudoku Number TextField
 		      SudokuTextFields(index) = New SudokuNumberField
@@ -1369,7 +1648,7 @@ End
 		  If sender.IsLocked Then
 		    ' Make sure original grid value is not being overwritten
 		    ' we don't set .Readonly to get arrow navigation
-		    Var gridVal As String = Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex).ToString
+		    Var gridVal As String = Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex).ToString
 		    If (gridVal = "0") Then gridVal = ""
 		    If (sender.Text <> gridVal) Then sender.Text = gridVal
 		    Return
@@ -1377,9 +1656,9 @@ End
 		  
 		  ' Update Number if necessary
 		  Var currentNumber As Integer = sender.Text.ToInteger
-		  If (Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
+		  If (Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
 		  
-		  Me.Sudoku.SetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		  Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber
 		  
 		  If (currentNumber < 1) And (sender.Text <> "") Then
 		    sender.Text = ""
@@ -1391,6 +1670,18 @@ End
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private CellCandidates() As Sudoku.CellCandidates
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private CellHints() As Sudoku.CellHint
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mExclusionParams As Sudoku.ExclusionParams
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mIsShowingSudoku As Boolean
@@ -1405,15 +1696,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private SolveCellCandidates() As SudokuTool.SolveCellCandidate
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private SolveCellHints() As SudokuTool.SolveCellHint
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private Sudoku As SudokuTool
+		Private SudokuPuzzle As Sudoku.Puzzle
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1422,6 +1705,18 @@ End
 
 
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeHiddenSubsets, Type = String, Dynamic = False, Default = \"excludeHiddenSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeLockedCandidates, Type = String, Dynamic = False, Default = \"excludeLockedCandidates", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeNakedSubsets, Type = String, Dynamic = False, Default = \"excludeNakedSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeXWing, Type = String, Dynamic = False, Default = \"excludeXWing", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
@@ -1519,12 +1814,12 @@ End
 		    End Select
 		    
 		    If (loadSudoku <> "") Then
-		      Self.Sudoku.ClearGrid
+		      Self.SudokuPuzzle.ClearGrid
 		      
-		      For row As Integer = 0 To SudokuTool.N-1
-		        For col As Integer = 0 To SudokuTool.N-1
-		          Var index As Integer = row * SudokuTool.N + col
-		          Self.Sudoku.SetGridCell(row, col) = loadSudoku.Middle(index, 1).ToInteger
+		      For row As Integer = 0 To Sudoku.N-1
+		        For col As Integer = 0 To Sudoku.N-1
+		          Var index As Integer = row * Sudoku.N + col
+		          Self.SudokuPuzzle.SetGridValue(row, col) = loadSudoku.Middle(index, 1).ToInteger
 		        Next
 		      Next
 		      
@@ -1557,7 +1852,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(SudokuTool.kURL_Repository)
+		    System.GotoURL(Sudoku.kURL_Repository)
 		  End If
 		  
 		End Sub
@@ -1595,7 +1890,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(SudokuTool.kURL_Repository)
+		    System.GotoURL(Sudoku.kURL_Repository)
 		  End If
 		  
 		End Sub
@@ -1662,7 +1957,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL("mailto:" + SudokuTool.kEmail_Contact)
+		    System.GotoURL("mailto:" + Sudoku.kEmail_Contact)
 		  End If
 		End Sub
 	#tag EndEvent
@@ -1696,7 +1991,7 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
-		    System.GotoURL(SudokuTool.kURL_PayPal)
+		    System.GotoURL(Sudoku.kURL_PayPal)
 		  End If
 		  
 		End Sub
@@ -1762,6 +2057,66 @@ End
 	#tag Event
 		Sub ValueChanged()
 		  Self.mShowCandidates = (Not Self.mShowCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeLockedCandidates
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeLockedCandidates
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeLockedCandidates = (Not Self.mExclusionParams.ExcludeLockedCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeNakedSubsets
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeNakedSubsets
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeNakedSubsets = (Not Self.mExclusionParams.ExcludeNakedSubsets)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeXWing
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeXWing And Self.mExclusionParams.ExcludeXWing
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeXWing = (Not Self.mExclusionParams.ExcludeXWing)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeHiddenSubsets
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeHiddenSubsets
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub ValueChanged()
+		  Self.mExclusionParams.ExcludeHiddenSubsets = (Not Self.mExclusionParams.ExcludeHiddenSubsets)
 		  Self.RefreshControls
 		  
 		End Sub

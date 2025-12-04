@@ -18,7 +18,8 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
     - On-the-fly validation
     - Hints
       - Highlight easiest cells to solve *(Naked Singles, Hidden Singles)*
-      - Display possible cell candidates
+      - Display all possible cell candidates
+      - Optionally mark cell candidates that can be excluded *(Locked Candidates, Naked Subsets, Hidden Subsets, X-Wing)*
   - Let the solver complete the puzzle
 - Export as PDF | Print
 - Save to File | Open from File *(Desktop only)*

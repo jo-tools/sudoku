@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=colExcludeXWing
+	#tag Color
+		Type=1
+		Platform=1
+		Light=00919300
+		Dark=00FDFF00
+	#tag EndColor
+#tag EndColorGroup

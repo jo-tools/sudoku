@@ -6,7 +6,7 @@ Begin WebPage MainWebPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   710
+   Height          =   690
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,7 +20,7 @@ Begin WebPage MainWebPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   710
+   MinimumHeight   =   690
    MinimumWidth    =   840
    PanelIndex      =   0
    ScaleFactor     =   0.0
@@ -43,7 +43,7 @@ Begin WebPage MainWebPage
       Enabled         =   True
       FillColor       =   &cFFFFFF
       HasFillColor    =   False
-      Height          =   710
+      Height          =   690
       Index           =   -2147483648
       Indicator       =   ""
       LayoutDirection =   "LayoutDirections.LeftToRight"
@@ -74,12 +74,12 @@ Begin WebPage MainWebPage
          Enabled         =   True
          FontName        =   ""
          FontSize        =   0.0
-         Height          =   38
+         Height          =   28
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   605
+         Left            =   200
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -91,54 +91,17 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   19
+         TabIndex        =   8
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "..."
          TextAlignment   =   2
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   612
+         Top             =   52
          Underline       =   False
          Visible         =   True
-         Width           =   210
-         _mPanelIndex    =   -1
-      End
-      Begin WebLabel labStatusTitle
-         Bold            =   False
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   ""
-         FontSize        =   12.0
-         Height          =   20
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         Italic          =   False
-         Left            =   620
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         Scope           =   2
-         TabIndex        =   18
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "#kLabelSudokuStatus"
-         TextAlignment   =   2
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   584
-         Underline       =   False
-         Visible         =   True
-         Width           =   180
+         Width           =   220
          _mPanelIndex    =   -1
       End
       Begin WebButton btnSolve
@@ -165,21 +128,52 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   17
+         TabIndex        =   23
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   516
+         Top             =   612
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
       End
       Begin SudokuCheckbox chkShowCandidates
-         Caption         =   "#kSudokuShowCandidates"
+         Caption         =   "#Translations.kSudokuShowCandidates"
          ControlID       =   ""
          CSSClasses      =   ""
          Enabled         =   True
-         Height          =   34
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   17
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   390
+         Value           =   True
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkShowHints
+         Caption         =   "#Translations.kSudokuShowHints"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
          Indeterminate   =   False
          Index           =   -2147483648
          Indicator       =   0
@@ -199,39 +193,8 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   435
-         Value           =   False
-         Visible         =   True
-         Width           =   180
-         _mPanelIndex    =   -1
-      End
-      Begin SudokuCheckbox chkShowHints
-         Caption         =   "#kSudokuShowHints"
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         Height          =   34
-         Indeterminate   =   False
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         Left            =   620
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         Scope           =   2
-         TabIndex        =   15
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   400
-         Value           =   False
+         Top             =   360
+         Value           =   True
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
@@ -260,14 +223,14 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   14
+         TabIndex        =   15
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "#kLabelShow"
+         Text            =   "#Translations.kLabelShow"
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   370
+         Top             =   330
          Underline       =   False
          Visible         =   True
          Width           =   180
@@ -276,7 +239,7 @@ Begin WebPage MainWebPage
       Begin WebButton btnLock
          AllowAutoDisable=   False
          Cancel          =   False
-         Caption         =   "#kSudokuLock"
+         Caption         =   "#Translations.kSudokuLock"
          ControlID       =   ""
          CSSClasses      =   ""
          Default         =   False
@@ -297,11 +260,11 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   13
+         TabIndex        =   14
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   308
+         Top             =   275
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
@@ -309,7 +272,7 @@ Begin WebPage MainWebPage
       Begin WebButton btnRandom
          AllowAutoDisable=   False
          Cancel          =   False
-         Caption         =   "#kSudokuRandom"
+         Caption         =   "#Translations.kSudokuRandom"
          ControlID       =   ""
          CSSClasses      =   ""
          Default         =   False
@@ -330,11 +293,11 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   12
+         TabIndex        =   13
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   230
+         Top             =   216
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
@@ -363,14 +326,14 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   11
+         TabIndex        =   12
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "#kLabelNumClues"
+         Text            =   "#Translations.kLabelNumClues"
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   184
+         Top             =   170
          Underline       =   False
          Visible         =   True
          Width           =   97
@@ -401,11 +364,11 @@ Begin WebPage MainWebPage
          Scope           =   2
          SelectedRowIndex=   0
          SelectedRowText =   ""
-         TabIndex        =   10
+         TabIndex        =   11
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   184
+         Top             =   170
          Visible         =   True
          Width           =   75
          _mPanelIndex    =   -1
@@ -434,7 +397,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   9
+         TabIndex        =   10
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -463,7 +426,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   8
+         TabIndex        =   9
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
@@ -499,7 +462,7 @@ Begin WebPage MainWebPage
          TabIndex        =   6
          TabPanelIndex   =   0
          TabStop         =   True
-         Text            =   "#kLabelExport"
+         Text            =   "#Translations.kLabelExport"
          TextAlignment   =   3
          TextColor       =   colAppLabel
          Tooltip         =   ""
@@ -534,7 +497,7 @@ Begin WebPage MainWebPage
          TabIndex        =   5
          TabPanelIndex   =   0
          TabStop         =   True
-         Tooltip         =   "#SudokuTool.kURL_Paypal"
+         Tooltip         =   "#Sudoku.kURL_Paypal"
          Top             =   44
          URL             =   ""
          Visible         =   True
@@ -572,7 +535,7 @@ Begin WebPage MainWebPage
          Text            =   "#Translations.kLabelContact"
          TextAlignment   =   1
          TextColor       =   colAppLabel
-         Tooltip         =   "#SudokuTool.kEmail_Contact"
+         Tooltip         =   "#Sudoku.kEmail_Contact"
          Top             =   44
          Underline       =   True
          Visible         =   True
@@ -603,7 +566,7 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   2
+         TabIndex        =   1
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "#Translations.kLabelThanks"
@@ -650,7 +613,7 @@ Begin WebPage MainWebPage
          Top             =   52
          Underline       =   False
          Visible         =   True
-         Width           =   100
+         Width           =   70
          _mPanelIndex    =   -1
       End
       Begin WebLabel labAppName
@@ -677,13 +640,13 @@ Begin WebPage MainWebPage
          PanelIndex      =   0
          Parent          =   "rctSudoku"
          Scope           =   2
-         TabIndex        =   3
+         TabIndex        =   2
          TabPanelIndex   =   0
          TabStop         =   True
          Text            =   "Sudoku"
          TextAlignment   =   0
          TextColor       =   colAppLabel
-         Tooltip         =   "#SudokuTool.kURL_Repository"
+         Tooltip         =   "#Sudoku.kURL_Repository"
          Top             =   24
          Underline       =   True
          Visible         =   True
@@ -712,10 +675,10 @@ Begin WebPage MainWebPage
          Parent          =   "rctSudoku"
          Scope           =   2
          SVGData         =   ""
-         TabIndex        =   1
+         TabIndex        =   0
          TabPanelIndex   =   0
          TabStop         =   True
-         Tooltip         =   "#SudokuTool.kURL_Repository"
+         Tooltip         =   "#Sudoku.kURL_Repository"
          Top             =   20
          URL             =   ""
          Visible         =   True
@@ -723,12 +686,205 @@ Begin WebPage MainWebPage
          _mPanelIndex    =   -1
          _ProtectImage   =   False
       End
+      Begin WebLabel labExclusion
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   0.0
+         Height          =   30
+         Index           =   -2147483648
+         Indicator       =   0
+         Italic          =   False
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   18
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "#Translations.kLabelExclusion"
+         TextAlignment   =   0
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   430
+         Underline       =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeLockedCandidates
+         Caption         =   "Locked Candidates"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   19
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   460
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeNakedSubsets
+         Caption         =   "Naked Subsets"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   20
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   490
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin WebLabel labStatusTitle
+         Bold            =   False
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         FontName        =   ""
+         FontSize        =   12.0
+         Height          =   28
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Italic          =   False
+         Left            =   250
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         Multiline       =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   3
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "#kLabelSudokuStatus"
+         TextAlignment   =   2
+         TextColor       =   &c000000FF
+         Tooltip         =   ""
+         Top             =   24
+         Underline       =   False
+         Visible         =   True
+         Width           =   120
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeHiddenSubsets
+         Caption         =   "Hidden Subsets"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   21
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   520
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
+      Begin SudokuCheckbox chkExcludeXWing
+         Caption         =   "X-Wing"
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         Height          =   30
+         Indeterminate   =   False
+         Index           =   -2147483648
+         Indicator       =   0
+         Left            =   620
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   22
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   550
+         Value           =   False
+         Visible         =   True
+         Width           =   180
+         _mPanelIndex    =   -1
+      End
    End
    Begin SudokuController Controller
       ControlID       =   ""
       Enabled         =   True
       Index           =   -2147483648
-      LockedInPosition=   False
+      LockedInPosition=   True
       PanelIndex      =   0
       Scope           =   2
       Size            =   9
@@ -740,7 +896,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  Me.Sudoku = New SudokuTool
+		  Me.SudokuPuzzle = New Sudoku.Puzzle
 		  Self.SudokuNumberFieldsInit
 		  
 		  If (Not Self.CookieGet) Then
@@ -757,11 +913,11 @@ End
 		  
 		  Var focusIndex As Integer = -1
 		  
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
-		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      If value = 0 Then
 		        If (focusIndex < 0) Then focusIndex = index
 		      End If
@@ -792,7 +948,7 @@ End
 		Private Sub ActionEmpty()
 		  Print "Session '" + Session.Identifier + "': Action Empty"
 		  
-		  Me.Sudoku.ClearGrid
+		  Me.SudokuPuzzle.ClearGrid
 		  Me.ShowSudoku
 		  
 		End Sub
@@ -819,7 +975,7 @@ End
 		  If (obj <> Nil) Then obj.Close
 		  
 		  ' Export Json
-		  Var json As JSONItem = Me.Sudoku.ToJson(App.GetJsonApplication, False)
+		  Var json As JSONItem = Me.SudokuPuzzle.ToJson(App.GetJsonApplication, False)
 		  
 		  Var jsonOptions As New JSONOptions
 		  jsonOptions.Compact = False
@@ -853,12 +1009,12 @@ End
 		  ' PDF MetaData
 		  pdf.Title = "Sudoku"
 		  pdf.Subject = "Sudoku"
-		  pdf.Author = SudokuTool.kURL_Repository
+		  pdf.Author = Sudoku.kURL_Repository
 		  pdf.Creator = "Sudoku " + labAppVersion.Text + " (Xojo " + XojoVersionString + ")"
 		  pdf.Keywords = "Sudoku"
 		  
 		  ' Draw Sudoku
-		  Me.Sudoku.DrawInto(g, True)
+		  Me.SudokuPuzzle.DrawInto(g, True)
 		  
 		  ' Save PDF and Download
 		  Var prepareDownload As New WebFile
@@ -883,7 +1039,7 @@ End
 		  If (obj <> Nil) Then obj.Close
 		  
 		  ' Export Txt
-		  Var txt As String = Me.Sudoku.ToString
+		  Var txt As String = Me.SudokuPuzzle.ToString
 		  
 		  ' Save Txt and Download
 		  Var prepareDownload As New WebFile
@@ -905,14 +1061,14 @@ End
 		  Print "Session '" + Session.Identifier + "': Action Lock"
 		  
 		  ' Lock current state
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
-		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
+		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      
 		      If (value > 0) Then
 		        Me.SudokuTextFields(index).Lock = (value > 0)
-		        Me.Sudoku.SetGridCellLocked(row, col)
+		        Me.SudokuPuzzle.SetGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
@@ -928,7 +1084,7 @@ End
 		  
 		  Print "Session '" + Session.Identifier + "': Action Random (" + numClues.ToString + ")"
 		  
-		  Call Me.Sudoku.GenerateRandomPuzzle(numClues)
+		  Call Me.SudokuPuzzle.GenerateRandomPuzzle(numClues)
 		  Me.ShowSudoku
 		  Me.ActionLock
 		  
@@ -940,12 +1096,21 @@ End
 		  Print "Session '" + Session.Identifier + "': Action Solve"
 		  
 		  ' Sanity Check
-		  If (Not Me.Sudoku.IsSolvable) Then Return
+		  If (Not Me.SudokuPuzzle.IsSolvable) Then Return
 		  
 		  ' Solve and Show
-		  Call Me.Sudoku.Solve
+		  Call Me.SudokuPuzzle.Solve
 		  Me.ShowSudoku
 		  Me.ActionLock
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  Me.mExclusionParams = Sudoku.CreateExclusionParams
+		  
+		  Super.Constructor
 		  
 		End Sub
 	#tag EndMethod
@@ -968,6 +1133,18 @@ End
 		    If json.HasKey(kJSONKeyShowCandidates) Then
 		      mShowCandidates = json.Lookup(kJSONKeyShowCandidates, mShowCandidates).BooleanValue
 		    End If
+		    If json.HasKey(kJSONKeyExcludeLockedCandidates) Then
+		      mExclusionParams.ExcludeLockedCandidates = json.Lookup(kJSONKeyExcludeLockedCandidates, mExclusionParams.ExcludeLockedCandidates).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeNakedSubsets) Then
+		      mExclusionParams.ExcludeNakedSubsets = json.Lookup(kJSONKeyExcludeNakedSubsets, mExclusionParams.ExcludeNakedSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeHiddenSubsets) Then
+		      mExclusionParams.ExcludeHiddenSubsets = json.Lookup(kJSONKeyExcludeHiddenSubsets, mExclusionParams.ExcludeHiddenSubsets).BooleanValue
+		    End If
+		    If json.HasKey(kJSONKeyExcludeXWing) Then
+		      mExclusionParams.ExcludeXWing = json.Lookup(kJSONKeyExcludeXWing, mExclusionParams.ExcludeXWing).BooleanValue
+		    End If
 		    If json.HasKey(kJSONKeyRandomNumClues) Then
 		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		      randomNumClues = json.Lookup(kJSONKeyRandomNumClues, randomNumClues).IntegerValue
@@ -983,8 +1160,8 @@ End
 		      Var sudokuString As String = json.Lookup(kJSONKeySudoku, "").StringValue.Trim
 		      
 		      Try
-		        Var sudoku As New SudokuTool(sudokuString)
-		        If (sudoku <> Nil) Then
+		        Var sudokuPuzzle As New Sudoku.Puzzle(sudokuString)
+		        If (sudokuPuzzle <> Nil) Then
 		          
 		          If json.HasKey(kJSONKeySudokuLockedCellIndexes) Then
 		            Var jsonLockedCellIndexes As Variant = json.Value(kJSONKeySudokuLockedCellIndexes)
@@ -994,12 +1171,12 @@ End
 		                Var lockIndex As Integer = JsonItem(jsonLockedCellIndexes).ValueAt(i).IntegerValue
 		                If (lockIndex < 0) Or (lockIndex > Me.SudokuTextFields.LastIndex) Then Continue
 		                Me.SudokuTextFields(lockIndex).Lock = True
-		                sudoku.SetGridCellLocked(lockIndex)
+		                sudokuPuzzle.SetGridCellLocked(lockIndex)
 		              Next
 		            End If
 		          End If
 		          
-		          Me.Sudoku = sudoku
+		          Me.SudokuPuzzle = sudokuPuzzle
 		          Me.ShowSudoku
 		        End If
 		        
@@ -1035,13 +1212,18 @@ End
 		  json.Value(kJSONKeyShowHints) = mShowHints
 		  json.Value(kJSONKeyShowCandidates) = mShowCandidates
 		  
+		  json.Value(kJSONKeyExcludeLockedCandidates) = mExclusionParams.ExcludeLockedCandidates
+		  json.Value(kJSONKeyExcludeNakedSubsets) = mExclusionParams.ExcludeNakedSubsets
+		  json.Value(kJSONKeyExcludeHiddenSubsets) = mExclusionParams.ExcludeHiddenSubsets
+		  json.Value(kJSONKeyExcludeXWing) = mExclusionParams.ExcludeXWing
+		  
 		  Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
 		  If (randomNumClues > 0) Then
 		    json.Value(kJSONKeyRandomNumClues) = randomNumClues
 		  End If
 		  
-		  If (Me.Sudoku <> Nil) Then
-		    json.Value(kJSONKeySudoku) = Me.Sudoku.ToString
+		  If (Me.SudokuPuzzle <> Nil) Then
+		    json.Value(kJSONKeySudoku) = Me.SudokuPuzzle.ToString
 		    json.Value(kJSONKeySudokuLockedCellIndexes) = GetLockedCellIndexes
 		  End If
 		  
@@ -1059,12 +1241,12 @@ End
 		  Var lockedCellIndexes() As Integer
 		  
 		  ' Are there any unlocked cells with digits?
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      If (Not Me.SudokuTextFields(index).IsLocked) Then Continue
-		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
+		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, locked cell
 		      lockedCellIndexes.Add(index)
@@ -1079,12 +1261,12 @@ End
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      If Me.SudokuTextFields(index).IsLocked Then Continue
-		      If (Me.Sudoku.GetGridCell(row, col) < 1) Then Continue 'Is empty
+		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
 		      Return True
@@ -1098,31 +1280,42 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub RefreshControls()
-		  Var isEmpty As Boolean = Me.Sudoku.IsEmpty
-		  Var isValid As Boolean = isEmpty Or Me.Sudoku.IsValid(SudokuTool.ValidCheck.BasicSudokuRules)
-		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.Sudoku.IsSolvable)
-		  Var isSolved As Boolean = (Not isEmpty) And Me.Sudoku.IsSolved
+		  Var isEmpty As Boolean = Me.SudokuPuzzle.IsEmpty
+		  Var isValid As Boolean = isEmpty Or Me.SudokuPuzzle.IsValid
+		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.SudokuPuzzle.IsSolvable)
+		  Var isSolved As Boolean = (Not isEmpty) And Me.SudokuPuzzle.IsSolved
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.SolveCellHints = Me.Sudoku.GetSolveCellHints
+		    Me.CellHints = Me.SudokuPuzzle.GetCellHints
 		  Else
-		    Redim SolveCellHints(-1)
+		    Redim CellHints(-1)
 		  End If
 		  
 		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.SolveCellCandidates = Me.Sudoku.GetSolveCellCandidates
+		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates(mExclusionParams)
 		  Else
-		    Redim SolveCellCandidates(-1)
+		    Redim CellCandidates(-1)
 		  End If
 		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnEmpty.Enabled = (Not isEmpty)
-		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.Sudoku.SolveEnabled
+		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
+		  
+		  labExclusion.Enabled = Me.mShowCandidates
+		  chkExcludeLockedCandidates.Enabled = Me.mShowCandidates
+		  chkExcludeNakedSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeHiddenSubsets.Enabled = Me.mShowCandidates
+		  chkExcludeXWing.Enabled = Me.mShowCandidates
 		  
 		  ' Show
 		  chkShowHints.EnsureValue = mShowHints
 		  chkShowCandidates.EnsureValue = mShowCandidates
+		  
+		  chkExcludeLockedCandidates.EnsureValue = mExclusionParams.ExcludeLockedCandidates
+		  chkExcludeNakedSubsets.EnsureValue = mExclusionParams.ExcludeNakedSubsets
+		  chkExcludeHiddenSubsets.EnsureValue = mExclusionParams.ExcludeHiddenSubsets
+		  chkExcludeXWing.EnsureValue = mExclusionParams.ExcludeXWing
 		  
 		  cnvSudoku.Refresh
 		  Me.CookieSet
@@ -1163,19 +1356,19 @@ End
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      Me.SudokuTextFields(index).Lock = False
 		      
-		      Var value As Integer = Me.Sudoku.GetGridCell(row, col)
+		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      If value = 0 Then
 		        Me.SudokuTextFields(index).Text = ""
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
 		        Me.SudokuTextFields(index).Text = value.ToString
-		        Me.SudokuTextFields(index).Lock = Me.Sudoku.IsGridCellLocked(row, col)
+		        Me.SudokuTextFields(index).Lock = Me.SudokuPuzzle.IsGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
@@ -1196,12 +1389,12 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
-		  Redim Me.SudokuTextFields(SudokuTool.N*SudokuTool.N-1)
+		  Redim Me.SudokuTextFields(Sudoku.N*Sudoku.N-1)
 		  
 		  ' Create and add Sudoku Number Fields
-		  For row As Integer = 0 To SudokuTool.N-1
-		    For col As Integer = 0 To SudokuTool.N-1
-		      Var index As Integer = row * SudokuTool.N + col
+		  For row As Integer = 0 To Sudoku.N-1
+		    For col As Integer = 0 To Sudoku.N-1
+		      Var index As Integer = row * Sudoku.N + col
 		      
 		      Dim t As New SudokuNumberField
 		      
@@ -1241,7 +1434,7 @@ End
 		  If sender.IsLocked Then
 		    ' Make sure original grid value is not being overwritten
 		    ' we don't set .Readonly to get arrow navigation
-		    Var gridVal As String = Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex).ToString
+		    Var gridVal As String = Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex).ToString
 		    If (gridVal = "0") Then gridVal = ""
 		    If (sender.Text <> gridVal) Then sender.Text = gridVal
 		    Return
@@ -1257,9 +1450,9 @@ End
 		  ' SelectAll, so that a new number overwrites current one
 		  If (Not sender.IsLocked) And (sender.Text.ToInteger > 0) Then sender.SelectAll
 		  
-		  If (Me.Sudoku.GetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
+		  If (Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
 		  
-		  Me.Sudoku.SetGridCell(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		  Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber
 		  
 		  ' Update Status
 		  Me.RefreshControls
@@ -1269,7 +1462,19 @@ End
 
 
 	#tag Property, Flags = &h21
+		Private CellCandidates() As Sudoku.CellCandidates
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private CellHints() As Sudoku.CellHint
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private Download As WebFile
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mExclusionParams As Sudoku.ExclusionParams
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1285,15 +1490,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private SolveCellCandidates() As SudokuTool.SolveCellCandidate
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private SolveCellHints() As SudokuTool.SolveCellHint
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private Sudoku As SudokuTool
+		Private SudokuPuzzle As Sudoku.Puzzle
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1308,6 +1505,18 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kJavaScriptWrapper, Type = String, Dynamic = False, Default = \"(function() {\n  var rectID \x3D \'[CONTROLID]\';\n  \n  function wrapAndScale() {\n    var el \x3D document.getElementById(rectID);\n    if (!el) return;\n\n    if (!el.parentElement.classList.contains(\'wrapper\')) {\n      var wrapper \x3D document.createElement(\'div\');\n      wrapper.className \x3D \'wrapper\';\n      el.parentNode.insertBefore(wrapper\x2C el);\n      wrapper.appendChild(el);\n    }\n\n    var baseWidth \x3D 840;\n    var windowWidth \x3D Math.min(window.innerWidth\x2C baseWidth);\n    var scale \x3D windowWidth / baseWidth;\n    el.style.transform \x3D \'scale(\' + scale + \')\';\n  }\n\n  function waitForElement() {\n    var el \x3D document.getElementById(rectID);\n    if (el) {\n      wrapAndScale();\n      window.addEventListener(\'resize\'\x2C wrapAndScale);\n    } else {\n      setTimeout(waitForElement\x2C 50);\n    }\n  }\n\n  waitForElement();\n})();\n", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeHiddenSubsets, Type = String, Dynamic = False, Default = \"excludeHiddenSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeLockedCandidates, Type = String, Dynamic = False, Default = \"excludeLockedCandidates", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeNakedSubsets, Type = String, Dynamic = False, Default = \"excludeNakedSubsets", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kJSONKeyExcludeXWing, Type = String, Dynamic = False, Default = \"excludeXWing", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
@@ -1350,6 +1559,8 @@ End
 #tag Events chkShowCandidates
 	#tag Event
 		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Show Candidates"
+		  
 		  Self.mShowCandidates = (Not Self.mShowCandidates)
 		  Self.RefreshControls
 		  
@@ -1365,6 +1576,8 @@ End
 #tag Events chkShowHints
 	#tag Event
 		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Show Hints"
+		  
 		  Self.mShowHints = (Not Self.mShowHints)
 		  Self.RefreshControls
 		  
@@ -1431,15 +1644,15 @@ End
 #tag Events cnvSudoku
 	#tag Event
 		Sub Paint(g As WebGraphics)
-		  If Self.mShowHints And (Self.SolveCellHints.LastIndex >= 0) Then
+		  If Self.mShowHints And (Self.CellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
 		    g.PenSize = 4
-		    For Each h As SudokuTool.SolveCellHint In Self.SolveCellHints
+		    For Each h As Sudoku.CellHint In Self.CellHints
 		      Select Case h.SolveHint
-		      Case SudokuTool.SolveHint.NakedSingle
+		      Case Sudoku.SolveHint.NakedSingle
 		        g.DrawingColor = colSolveHintNakedSingle
 		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
-		      Case SudokuTool.SolveHint.HiddenSingle
+		      Case Sudoku.SolveHint.HiddenSingle
 		        g.DrawingColor = colSolveHintHiddenSingle
 		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
 		      End Select
@@ -1449,50 +1662,96 @@ End
 		  ' Draw all thin "hair" lines first (gray)
 		  g.DrawingColor = colGridlineHair
 		  g.PenSize = 1
-		  For i As Integer = 1 To SudokuTool.N-1 ' skip outer border (0 and N)
+		  For i As Integer = 1 To Sudoku.N-1 ' skip outer border (0 and N)
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize, kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + Sudoku.N * kCellSize, kMarginWindow + i * kCellSize)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + SudokuTool.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize, kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + Sudoku.N * kCellSize)
 		  Next
 		  
 		  ' Draw thicker red 3x3 block lines on top
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  For i As Integer = 0 To SudokuTool.N Step 3
+		  For i As Integer = 0 To Sudoku.N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + SudokuTool.N * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2)
 		  Next
 		  
-		  g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
-		  g.FontSize = 8
-		  
-		  If Self.mShowCandidates And (Self.SolveCellCandidates.LastIndex >= 0) Then
+		  If Self.mShowCandidates And (Self.CellCandidates.LastIndex >= 0) Then
 		    ' Draw Cell Candidates
+		    g.FontSize = 8
+		    g.PenSize = 1
 		    g.TextAlignment = TextAlignments.Center
+		    
 		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
 		    Var adjustY As Double = (hintRowSize/2) + 3
 		    
-		    For Each h As SudokuTool.SolveCellCandidate In Self.SolveCellCandidates
-		      For Each candidate As Int8 In h.Candidates
-		        If (candidate < 1) Or (candidate > SudokuTool.N) Then Continue
+		    Var crossCenterX As Double
+		    Var crossCenterY As Double
+		    
+		    For Each h As Sudoku.CellCandidates In Self.CellCandidates
+		      For Each candidate As Sudoku.Candidate In h.Candidates
+		        If (candidate.Value < 1) Or (candidate.Value > Sudoku.N) Then Continue
+		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
 		        
-		        Select Case candidate
+		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
+		        
+		        Select Case candidate.Value
 		        Case Is <= 4
-		          Var adjustX As Double = (kCellSize/4) /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-1) * (kCellSize/4)) + adjustX, kMarginWindow + h.Row * kCellSize + adjustY)
+		          Var adjustX As Double = (kCellSize/4) / 2
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + adjustX
+		          crossCenterY = kMarginWindow + h.Row * kCellSize + adjustY
+		          g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
 		        Case 5
-		          Var adjustX As Double = hintRowSize /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + adjustX, kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          Var adjustX As Double = hintRowSize / 2
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + adjustX
+		          crossCenterY = kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY
+		          g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
 		        Case 6
-		          Var adjustX As Double = hintRowSize /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
+		          Var adjustX As Double = hintRowSize / 2
+		          crossCenterX = kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX
+		          crossCenterY = kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY
+		          g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
 		        Case Is >= 7
-		          Var adjustX As Double = (kCellSize/3) /2
-		          g.DrawText(candidate.ToString, kMarginWindow + h.Col * kCellSize + ((candidate-7) * (kCellSize/3)) + adjustX, kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY - 1)
+		          Var adjustX As Double = (kCellSize/4) / 2
+		          crossCenterY = kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY - 1
+		          Select Case candidate.Value
+		          Case 7
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + adjustX
+		            g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
+		          Case 8
+		            adjustX = kCellSize / 2
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + adjustX
+		            g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
+		          Case 9
+		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + adjustX
+		            g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
+		          End Select
 		        End Select
+		        
+		        ' Mark excluded candidates
+		        Select Case candidate.Hint
+		        Case Sudoku.CandidateHint.NoCandidate
+		          Continue ' not a candidate
+		        Case Sudoku.CandidateHint.Candidate
+		          Continue ' just display candidate
+		        Case Sudoku.CandidateHint.ExcludedAsLockedCandidate
+		          g.DrawingColor = Color.Red
+		        Case Sudoku.CandidateHint.ExcludedAsNakedSubset
+		          g.DrawingColor = Color.Orange
+		        Case Sudoku.CandidateHint.ExcludedAsHiddenSubset
+		          g.DrawingColor = Color.Orange
+		        Case Sudoku.CandidateHint.ExcludedAsXWing
+		          g.DrawingColor = Color.Yellow
+		        Else
+		          Continue
+		        End Select
+		        
+		        crossCenterY = crossCenterY - 2
+		        g.PenSize = 1.0
+		        g.DrawLine(crossCenterX - hintRowSize*0.25, crossCenterY + hintRowSize*0.25, crossCenterX + hintRowSize*0.25, crossCenterY - hintRowSize*0.25)
 		      Next
 		    Next
 		  End If
@@ -1521,14 +1780,14 @@ End
 		  #Pragma Unused x
 		  #Pragma Unused y
 		  
-		  Session.GoToURL(SudokuTool.kURL_Paypal)
+		  Session.GoToURL(Sudoku.kURL_Paypal)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events labContact
 	#tag Event
 		Sub Pressed()
-		  Session.GoToURL("mailto:" + SudokuTool.kEmail_Contact)
+		  Session.GoToURL("mailto:" + Sudoku.kEmail_Contact)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1543,7 +1802,7 @@ End
 #tag Events labAppName
 	#tag Event
 		Sub Pressed()
-		  Session.GoToURL(SudokuTool.kURL_Repository)
+		  Session.GoToURL(Sudoku.kURL_Repository)
 		  
 		End Sub
 	#tag EndEvent
@@ -1554,7 +1813,75 @@ End
 		  #Pragma Unused x
 		  #Pragma Unused y
 		  
-		  Session.GoToURL(SudokuTool.kURL_Repository)
+		  Session.GoToURL(Sudoku.kURL_Repository)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeLockedCandidates
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude Locked Candidates"
+		  
+		  Self.mExclusionParams.ExcludeLockedCandidates = (Not Self.mExclusionParams.ExcludeLockedCandidates)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeLockedCandidates
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeNakedSubsets
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude Naked Subsets"
+		  
+		  Self.mExclusionParams.ExcludeNakedSubsets = (Not Self.mExclusionParams.ExcludeNakedSubsets)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeNakedSubsets
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeHiddenSubsets
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude Hidden Subsets"
+		  
+		  Self.mExclusionParams.ExcludeHiddenSubsets = (Not Self.mExclusionParams.ExcludeHiddenSubsets)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeHiddenSubsets
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events chkExcludeXWing
+	#tag Event
+		Sub ValueChanged()
+		  Print "Session '" + Session.Identifier + "': Exclude X-Wing"
+		  
+		  Self.mExclusionParams.ExcludeXWing = (Not Self.mExclusionParams.ExcludeXWing)
+		  Self.RefreshControls
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.EnsureValue = Self.mExclusionParams.ExcludeXWing And Self.mExclusionParams.ExcludeXWing
 		  
 		End Sub
 	#tag EndEvent
@@ -1562,7 +1889,7 @@ End
 #tag Events Controller
 	#tag Event
 		Sub Opening()
-		  Me.Size = SudokuTool.N
+		  Me.Size = Sudoku.N
 		End Sub
 	#tag EndEvent
 #tag EndEvents
