@@ -159,10 +159,50 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function IsValueValid(row As Integer, col As Integer, value As Integer) As Boolean
+		  ' Check if placing value at Grid(row, col) is allowed according to Basic Sudoku rules.
+		  ' Returns True if valid, False otherwise.
+		  
+		  Select Case value
+		    
+		  Case Is < 0
+		    ' Negative values are invalid
+		    Return False
+		    
+		  Case 0
+		    ' Clearing out the value is always allowed
+		    Return True
+		    
+		  Case Is <= mSettings.N
+		    ' A valid number - let's check according to Sudoku Rules
+		    If (mGrid(row, col) < 1) Then
+		      ' Value is currently empty
+		      Return IsValueValidInternal(row, col, value)
+		    Else
+		      ' Value is not currently empty. Set it temporarily to empty for this check,
+		      ' so that it behaves such as the value is going to overwritten (later).
+		      Var checkResult As Boolean
+		      Var currentValue As Integer = mGrid(row, col)
+		      checkResult = IsValueValidInternal(row, col, value)
+		      mGrid(row, col) = currentValue
+		      Return checkResult
+		    End If
+		    
+		  Else
+		    ' Value out of range is not valid
+		    Return False
+		    
+		  End Select
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function IsValueValidInternal(row As Integer, col As Integer, value As Integer) As Boolean
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Check if placing value at Grid(row, col) is allowed according to Basic Sudoku rules.
+		  ' Note: The value at Grid(row, col) needs to be empty when calling this method!
 		  ' Returns True if valid, False otherwise.
 		  
 		  ' 1. Check the rows
@@ -185,7 +225,7 @@ Private Class Grid
 		  
 		  ' 3. Check the blocks
 		  ' Each block must contain unique numbers
-		  ' Calculate the top-left corner of the block containing (r, c)
+		  ' Calculate the top-left corner of the block containing (row, col)
 		  Var br As Integer = (row \ Me.mSettings.BoxHeight) * Me.mSettings.BoxHeight
 		  Var bc As Integer = (col \ mSettings.BoxWidth) * mSettings.BoxWidth
 		  
