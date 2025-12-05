@@ -119,7 +119,7 @@ Private Class Solver
 		    
 		    Select Case mGrid.Settings.N
 		    Case Is <= 6
-		      ' 4x4, 6x6: always check by solving on a clone (further below)
+		      ' Small Sudoku Grid: always check by solving on a clone (further below)
 		      
 		    Else
 		      Var limitAssumeIsSolvable As Integer = Ceiling(kTresholdFactorAssumeIsSolvable * (mGrid.Settings.N * mGrid.Settings.N))
@@ -279,11 +279,10 @@ Private Class Solver
 
 	#tag Method, Flags = &h0
 		Function SolveEnabled() As Boolean
-		  ' Should the UI enable the Solve Button?
-		  ' No valid 9x9 Sudoku with unique solution can have fewer than 17 clues.
-		  ' While even a blank Sudoku or one with just a couple of numbers can be solved
-		  ' (without unique solution), that probably is not the intent.
-		  ' We're using the Treshold Factor value to do this check for various other Sudoku sizes.
+		  ' Should the UI enable the Solve button?
+		  ' 9x9 Sudokus with a unique solution need at least 17 clues.
+		  ' We approximate this "enough clues" requirement by using a
+		  ' threshold factor for any Sudoku size.
 		  
 		  Var threshold As Integer = Ceiling(kTresholdFactorSolveEnabled * (mGrid.Settings.N * mGrid.Settings.N))
 		  Return mGrid.GetCountNonEmpty >= threshold
