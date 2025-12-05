@@ -111,30 +111,39 @@ Private Class Solver
 		    Return False
 		    
 		  Else
-		    
+		    ' Check validity
 		    If (Not Me.IsValid(ValidCheck.AdvancedChecks)) Then
 		      mCacheIsSolvable = IsSolvableState.NotSolvable
 		      Return False
 		    End If
 		    
-		    If (mGrid.GetCountNonEmpty <= kTresholdAssumeIsSolvable) Then
-		      ' Only check validity (above), skip heavy solving
-		      ' Assume solvable for now (don’t trigger full backtracking)
-		      ' Almost any sparse Sudoku with less than x numbers is solvable
-		      mCacheIsSolvable = IsSolvableState.Solvable
-		      Return True
+		    Var currentlyFilled As Integer = mGrid.GetCountNonEmpty
+		    
+		    Select Case mGrid.Settings.N
+		    Case Is <= 6
+		      ' 4x4, 6x6: always check by solving on a clone (further below)
 		      
 		    Else
-		      ' Try solve on a clone, so that this grid is not being modified
-		      Var clone As New Solver(mGrid.Clone)
-		      If clone.Solve Then
+		      Var limitAssumeIsSolvable As Integer = Ceiling(kTresholdFactorAssumeIsSolvable * (mGrid.Settings.N * mGrid.Settings.N))
+		      
+		      If (currentlyFilled <= limitAssumeIsSolvable) Then
+		        ' Only check validity (above), skip heavy solving
+		        ' Assume solvable for now (don’t trigger full backtracking)
+		        ' Almost any sparse Sudoku with less than x numbers is solvable
 		        mCacheIsSolvable = IsSolvableState.Solvable
 		        Return True
-		      Else
-		        mCacheIsSolvable = IsSolvableState.NotSolvable
-		        Return False
 		      End If
 		      
+		    End Select
+		    
+		    ' Try solve on a clone, so that this grid is not being modified
+		    Var clone As New Solver(mGrid.Clone)
+		    If clone.Solve Then
+		      mCacheIsSolvable = IsSolvableState.Solvable
+		      Return True
+		    Else
+		      mCacheIsSolvable = IsSolvableState.NotSolvable
+		      Return False
 		    End If
 		    
 		  End Select
@@ -273,12 +282,13 @@ Private Class Solver
 	#tag Method, Flags = &h0
 		Function SolveEnabled() As Boolean
 		  ' Should the UI enable the Solve Button?
-		  ' No valid Sudoku with unique solution can have fewer than 17 clues.
-		  ' While even a blank Sudoku or one with just a couple of numbers
-		  ' can be solved (without unique solution), that probably is not the
-		  ' intent.
+		  ' No valid 9x9 Sudoku with unique solution can have fewer than 17 clues.
+		  ' While even a blank Sudoku or one with just a couple of numbers can be solved
+		  ' (without unique solution), that probably is not the intent.
+		  ' We're using the Treshold Factor value to do this check for various other Sudoku sizes.
 		  
-		  Return mGrid.GetCountNonEmpty >= kTresholdSolveEnabled
+		  Var threshold As Integer = Ceiling(kTresholdFactorSolveEnabled * (mGrid.Settings.N * mGrid.Settings.N))
+		  Return mGrid.GetCountNonEmpty >= threshold
 		  
 		End Function
 	#tag EndMethod
@@ -336,13 +346,16 @@ Private Class Solver
 		  ' then use the Solver with Strategies.
 		  ' Otherwise use the plain Backtracking Solver (and hope it is faster ;-)
 		  
+		  Var tresholdSparse As Integer = Ceiling(kTresholdFactorSparse * (mGrid.Settings.N*mGrid.Settings.N))
+		  Var tresholdMedium As Integer = Ceiling(kTresholdFactorMedium * (mGrid.Settings.N*mGrid.Settings.N))
+		  
 		  Select Case mGrid.GetCountNonEmpty
 		    
-		  Case Is <= kTresholdSparse
+		  Case Is <= tresholdSparse
 		    ' Sparse: Use Backtracking
 		    Return Me.SolveInternalWithBacktracking
 		    
-		  Case Is <= kTresholdMedium
+		  Case Is <= tresholdMedium
 		    ' Medium density: Try strategies if we find hints right away
 		    Var hints() As CellHint = mHintsSearcher.GetCellHints
 		    If hints.LastIndex >= 0 Then
@@ -521,16 +534,16 @@ Private Class Solver
 	#tag EndProperty
 
 
-	#tag Constant, Name = kTresholdAssumeIsSolvable, Type = Double, Dynamic = False, Default = \"14", Scope = Private
+	#tag Constant, Name = kTresholdFactorAssumeIsSolvable, Type = Double, Dynamic = False, Default = \"0.172", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kTresholdMedium, Type = Double, Dynamic = False, Default = \"25", Scope = Private
+	#tag Constant, Name = kTresholdFactorMedium, Type = Double, Dynamic = False, Default = \"0.308", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kTresholdSolveEnabled, Type = Double, Dynamic = False, Default = \"17", Scope = Private
+	#tag Constant, Name = kTresholdFactorSolveEnabled, Type = Double, Dynamic = False, Default = \"0.209", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kTresholdSparse, Type = Double, Dynamic = False, Default = \"12", Scope = Private
+	#tag Constant, Name = kTresholdFactorSparse, Type = Double, Dynamic = False, Default = \"0.148", Scope = Private
 	#tag EndConstant
 
 
