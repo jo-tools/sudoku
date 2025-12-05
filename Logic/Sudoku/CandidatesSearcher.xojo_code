@@ -452,12 +452,12 @@ Private Class CandidatesSearcher
 		  
 		  ' Reset Array for each Sudoku Cell
 		  Redim mCellCandidates(-1)
-		  mCellCandidates.ResizeTo(N*N-1)
+		  mCellCandidates.ResizeTo(mGrid.Settings.N*mGrid.Settings.N-1)
 		  
 		  ' Fill Solve Cell Candidates
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      Var idx As Integer = row * N + col
+		  For row As Integer = 0 To mGrid.Settings.N-1
+		    For col As Integer = 0 To mGrid.Settings.N-1
+		      Var idx As Integer = row * mGrid.Settings.N + col
 		      
 		      Var c As CellCandidates
 		      c.Row = row
@@ -466,7 +466,7 @@ Private Class CandidatesSearcher
 		      If mGrid.Get(row, col) = 0 Then
 		        ' Empty Cell - has Candidates
 		        Var candidates() As Integer = GetAllCellCandidates(row, col)
-		        For v As Integer = 1 To N
+		        For v As Integer = 1 To mGrid.Settings.N
 		          Var cand As Candidate
 		          cand.Value = v
 		          If candidates.IndexOf(v) >= 0 Then
@@ -478,7 +478,7 @@ Private Class CandidatesSearcher
 		        Next
 		      Else
 		        ' Non-Empty Cell: No Candidates
-		        For v As Integer = 1 To N
+		        For v As Integer = 1 To mGrid.Settings.N
 		          Var cand As Candidate
 		          cand.Value = v
 		          cand.Hint = CandidateHint.NoCandidate
@@ -490,7 +490,13 @@ Private Class CandidatesSearcher
 		    Next
 		  Next
 		  
-		  ApplyFilters(exclusionParams)
+		  // TODO: Logic in ApplyFilters is currently hardcoded for a 9x9 Sudoku
+		  // Therefore we can currently only apply these Filters on that Sudoku Size.
+		  // Once the Logic works for all supported Sudoku Sizes, ApplyFilter can be
+		  // available for all.
+		  If (mGrid.Settings.N = 9) Then
+		    ApplyFilters(exclusionParams)
+		  End If
 		  
 		  Return mCellCandidates
 		  
@@ -506,7 +512,7 @@ Private Class CandidatesSearcher
 		  Var candidates() As Integer
 		  If (mGrid.Get(row, col) > 0) Then Return candidates
 		  
-		  For value As Integer = 1 To N
+		  For value As Integer = 1 To mGrid.Settings.N
 		    If mGrid.IsValueValid(row, col, value) Then
 		      candidates.Add(value)
 		    End If
