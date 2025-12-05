@@ -82,6 +82,7 @@ Private Class Solver
 	#tag Method, Flags = &h21
 		Private Function CreateSolveMove(row As Integer, col As Integer, oldValue As Integer, newValue As Integer) As SolveMove
 		  Var m As SolveMove
+		  
 		  m.Row = row
 		  m.Col = col
 		  m.OldValue = oldValue
@@ -100,8 +101,8 @@ Private Class Solver
 		  Var count As Integer = 0
 		  
 		  ' Count non empty cells
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
+		  For row As Integer = 0 To mGrid.Settings.N-1
+		    For col As Integer = 0 To mGrid.Settings.N-1
 		      If mGrid.Get(row, col) < 1 Then
 		        Continue
 		      End If
@@ -169,20 +170,12 @@ Private Class Solver
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
+		  For row As Integer = 0 To mGrid.Settings.N-1
+		    For col As Integer = 0 To mGrid.Settings.N-1
 		      Var value As Integer = mGrid.Get(row, col)
 		      If value <> 0 Then
-		        ' Temporarily remove the number
-		        mGrid.Set(row, col) = 0
-		        
 		        ' Check number in this cell
-		        Var numIsValid As Boolean = Me.IsValueValid(row, col, value, checkType)
-		        
-		        ' Restore the number
-		        mGrid.Set(row, col) = value
-		        
-		        If (Not numIsValid) Then
+		        If (Not Me.IsValueValid(row, col, value, checkType)) Then
 		          Return False
 		        End If
 		      End If
@@ -315,14 +308,17 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveFindBestNextCell(ByRef bestRow As Integer, ByRef bestCol As Integer, ByRef bestCandidates() As Integer) As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  ' Find to-be-solved cells with the least possible candidate values
 		  bestRow = -1
 		  bestCol = -1
 		  Redim bestCandidates(-1)
 		  Var bestCount As Integer = 9999
 		  
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
+		  For row As Integer = 0 To mGrid.Settings.N-1
+		    For col As Integer = 0 To mGrid.Settings.N-1
 		      If (mGrid.Get(row, col) > 0) Then Continue
 		      
 		      Var candidates() As Integer = mCandidatesSearcher.GetAllCellCandidates(row, col)
@@ -404,9 +400,9 @@ Private Class Solver
 		    Return True
 		  End If
 		  
-		  ' Try all possible numbers (1-9) for this empty cell
+		  ' Try all possible numbers for this empty cell
 		  Var tryNumberFrom As Integer = 1
-		  Var tryNumberTo As Integer = N
+		  Var tryNumberTo As Integer = mGrid.Settings.N
 		  
 		  Var solveCellHint As CellHint = mHintsSearcher.Get(row, col)
 		  Select Case solveCellHint.SolveHint
