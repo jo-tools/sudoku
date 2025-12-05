@@ -39,7 +39,7 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h0
 		Sub Constructor(grid As Grid)
-		  Me.grid = grid
+		  mGrid = Grid
 		  
 		End Sub
 	#tag EndMethod
@@ -47,6 +47,7 @@ Private Class CandidatesSearcher
 	#tag Method, Flags = &h21
 		Private Function FilterHiddenSubsets() As Boolean
 		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
 		  
 		  Var foundExclusion As Boolean
 		  
@@ -68,9 +69,12 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterHiddenSubsetsProcessUnit(unitPositions() As Integer) As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var cells() As Integer
 		  For Each p As Integer In unitPositions
-		    If HasCandidates(cellCandidates(p)) Then cells.Add(p)
+		    If HasCandidates(mCellCandidates(p)) Then cells.Add(p)
 		  Next
 		  If cells.Count < 2 Then Return False
 		  
@@ -80,7 +84,7 @@ Private Class CandidatesSearcher
 		    Var occ() As Integer
 		    For Each ci As Integer In cells
 		      For k As Integer = 0 To 8
-		        If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(ci).Candidates(k).Value = value Then
+		        If mCellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate And mCellCandidates(ci).Candidates(k).Value = value Then
 		          occ.Add(ci)
 		          Exit
 		        End If
@@ -108,6 +112,9 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterHiddenSubsetsProcessUnitRecurse(cells() As Integer, valueList() As Integer, valueCellsList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer) As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var foundExclusion As Boolean
 		  
 		  Var n As Integer = valueList.Count
@@ -126,9 +133,9 @@ Private Class CandidatesSearcher
 		      Next
 		      For Each ci as integer In unionCells
 		        For k As Integer = 0 To 8
-		          If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
-		            If allowedVals.IndexOf(cellCandidates(ci).Candidates(k).Value) = -1 Then
-		              cellCandidates(ci).Candidates(k).Hint = CandidateHint.ExcludedAsHiddenSubset
+		          If mCellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
+		            If allowedVals.IndexOf(mCellCandidates(ci).Candidates(k).Value) = -1 Then
+		              mCellCandidates(ci).Candidates(k).Hint = CandidateHint.ExcludedAsHiddenSubset
 		              foundExclusion = True
 		            End If
 		          End If
@@ -168,9 +175,9 @@ Private Class CandidatesSearcher
 		        For rr As Integer = blockR To blockR + 2
 		          For cc As Integer = blockC To blockC + 2
 		            Var idx As Integer = rr * 9 + cc
-		            If HasCandidates(cellCandidates(idx)) Then
+		            If HasCandidates(mCellCandidates(idx)) Then
 		              For k As Integer = 0 To 8
-		                Var cand As Candidate = cellCandidates(idx).Candidates(k)
+		                Var cand As Candidate = mCellCandidates(idx).Candidates(k)
 		                If cand.Hint = CandidateHint.Candidate and cand.Value = value Then
 		                  positions.Add(idx)
 		                  Exit For
@@ -199,10 +206,10 @@ Private Class CandidatesSearcher
 		          For cc As Integer = 0 To 8
 		            If cc >= blockC And cc <= blockC + 2 Then Continue
 		            Var idx2 As Integer = firstR * 9 + cc
-		            If HasCandidates(cellCandidates(idx2)) Then
+		            If HasCandidates(mCellCandidates(idx2)) Then
 		              For k As Integer = 0 To 8
-		                If cellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(idx2).Candidates(k).Value = value Then
-		                  cellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
+		                If mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And mCellCandidates(idx2).Candidates(k).Value = value Then
+		                  mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
 		                  foundExclusion = True
 		                End If
 		              Next
@@ -214,10 +221,10 @@ Private Class CandidatesSearcher
 		          For rr As Integer = 0 To 8
 		            If rr >= blockR And rr <= blockR + 2 Then Continue For
 		            Var idx2 As Integer = rr * 9 + firstC
-		            If HasCandidates(cellCandidates(idx2)) Then
+		            If HasCandidates(mCellCandidates(idx2)) Then
 		              For k As Integer = 0 To 8
-		                If cellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And cellCandidates(idx2).Candidates(k).Value = value Then
-		                  cellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
+		                If mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And mCellCandidates(idx2).Candidates(k).Value = value Then
+		                  mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
 		                  foundExclusion = True
 		                End If
 		              Next
@@ -237,6 +244,7 @@ Private Class CandidatesSearcher
 	#tag Method, Flags = &h21
 		Private Function FilterNakedSubsets() As Boolean
 		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
 		  
 		  Var foundExclusion As Boolean
 		  
@@ -260,9 +268,12 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterNakedSubsetsProcessUnit(unitPositions() As Integer) As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var cells() As Integer
 		  For Each p As Integer In unitPositions
-		    If HasCandidates(cellCandidates(p)) Then cells.Add(p)
+		    If HasCandidates(mCellCandidates(p)) Then cells.Add(p)
 		  Next
 		  If cells.Count < 2 Then Return False
 		  
@@ -270,8 +281,8 @@ Private Class CandidatesSearcher
 		  For Each ci As Integer In cells
 		    Var list() As Integer
 		    For k As Integer = 0 To 8
-		      If cellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
-		        list.Add(cellCandidates(ci).Candidates(k).Value)
+		      If mCellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
+		        list.Add(mCellCandidates(ci).Candidates(k).Value)
 		      End If
 		    Next
 		    candList.Add(list)
@@ -293,6 +304,9 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterNakedSubsetsProcessUnitRecurse(cells() As Integer, candList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer) As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var foundExclusion As Boolean
 		  
 		  Var n As Integer = candList.Count
@@ -318,15 +332,14 @@ Private Class CandidatesSearcher
 		            inSubset = True
 		            Exit
 		          End If
-		          
 		        Next
 		        If inSubset Then Continue
 		        
 		        Var ciOther As Integer = cells(other)
 		        For k As Integer = 0 To 8
-		          If cellCandidates(ciOther).Candidates(k).Hint = CandidateHint.Candidate And _
-		            unionVals.IndexOf(cellCandidates(ciOther).Candidates(k).Value) <> -1 Then
-		            cellCandidates(ciOther).Candidates(k).Hint = CandidateHint.ExcludedAsNakedSubset
+		          If mCellCandidates(ciOther).Candidates(k).Hint = CandidateHint.Candidate And _
+		            unionVals.IndexOf(mCellCandidates(ciOther).Candidates(k).Value) <> -1 Then
+		            mCellCandidates(ciOther).Candidates(k).Hint = CandidateHint.ExcludedAsNakedSubset
 		            foundExclusion = True
 		          End If
 		        Next
@@ -362,7 +375,7 @@ Private Class CandidatesSearcher
 		      Var cols() As Integer
 		      For c As Integer = 0 To 8
 		        Var idx As Integer = r*9 + c
-		        If cellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
+		        If mCellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
 		          cols.Add(c)
 		        End If
 		      Next
@@ -376,7 +389,7 @@ Private Class CandidatesSearcher
 		      Var rows() As Integer
 		      For r As Integer = 0 To 8
 		        Var idx As Integer = r*9 + c
-		        If cellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
+		        If mCellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
 		          rows.Add(r)
 		        End If
 		      Next
@@ -391,6 +404,9 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterXWingFindPairs(lines() As Variant, v As Integer, isRow As Boolean) As Boolean
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
 		  Var foundExclusion As Boolean
 		  
 		  ' Compare all pairs of lines (rows or columns)
@@ -413,9 +429,9 @@ Private Class CandidatesSearcher
 		            Else
 		              idx = indices1(i)*9 + line
 		            End If
-		            Var hint As CandidateHint = cellCandidates(idx).Candidates(v-1).Hint
+		            Var hint As CandidateHint = mCellCandidates(idx).Candidates(v-1).Hint
 		            If hint = CandidateHint.Candidate Then
-		              cellCandidates(idx).Candidates(v-1).Hint = CandidateHint.ExcludedAsXWing
+		              mCellCandidates(idx).Candidates(v-1).Hint = CandidateHint.ExcludedAsXWing
 		              foundExclusion = true
 		            End If
 		          Next
@@ -435,8 +451,8 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Reset Array for each Sudoku Cell
-		  Redim cellCandidates(-1)
-		  cellCandidates.ResizeTo(N*N-1)
+		  Redim mCellCandidates(-1)
+		  mCellCandidates.ResizeTo(N*N-1)
 		  
 		  ' Fill Solve Cell Candidates
 		  For row As Integer = 0 To N-1
@@ -447,7 +463,7 @@ Private Class CandidatesSearcher
 		      c.Row = row
 		      c.Col = col
 		      
-		      If Me.grid.Get(row, col) = 0 Then
+		      If mGrid.Get(row, col) = 0 Then
 		        ' Empty Cell - has Candidates
 		        Var candidates() As Integer = GetAllCellCandidates(row, col)
 		        For v As Integer = 1 To N
@@ -470,13 +486,13 @@ Private Class CandidatesSearcher
 		        Next
 		      End If
 		      
-		      cellCandidates(idx) = c
+		      mCellCandidates(idx) = c
 		    Next
 		  Next
 		  
 		  ApplyFilters(exclusionParams)
 		  
-		  Return cellCandidates
+		  Return mCellCandidates
 		  
 		End Function
 	#tag EndMethod
@@ -488,10 +504,10 @@ Private Class CandidatesSearcher
 		  
 		  ' Return candidate values for cell according to Basic Sudoku Rules
 		  Var candidates() As Integer
-		  If (Me.grid.Get(row, col) > 0) Then Return candidates
+		  If (mGrid.Get(row, col) > 0) Then Return candidates
 		  
 		  For value As Integer = 1 To N
-		    If Me.grid.IsValueValid(row, col, value) Then
+		    If mGrid.IsValueValid(row, col, value) Then
 		      candidates.Add(value)
 		    End If
 		  Next
@@ -546,11 +562,11 @@ Private Class CandidatesSearcher
 
 
 	#tag Property, Flags = &h21
-		Private cellCandidates() As CellCandidates
+		Private mCellCandidates() As CellCandidates
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private grid As Grid
+		Private mGrid As Grid
 	#tag EndProperty
 
 
