@@ -117,8 +117,6 @@ Private Class Solver
 		      Return False
 		    End If
 		    
-		    Var currentlyFilled As Integer = mGrid.GetCountNonEmpty
-		    
 		    Select Case mGrid.Settings.N
 		    Case Is <= 6
 		      ' 4x4, 6x6: always check by solving on a clone (further below)
@@ -126,7 +124,7 @@ Private Class Solver
 		    Else
 		      Var limitAssumeIsSolvable As Integer = Ceiling(kTresholdFactorAssumeIsSolvable * (mGrid.Settings.N * mGrid.Settings.N))
 		      
-		      If (currentlyFilled <= limitAssumeIsSolvable) Then
+		      If (mGrid.GetCountNonEmpty <= limitAssumeIsSolvable) Then
 		        ' Only check validity (above), skip heavy solving
 		        ' Assume solvable for now (don’t trigger full backtracking)
 		        ' Almost any sparse Sudoku with less than x numbers is solvable
