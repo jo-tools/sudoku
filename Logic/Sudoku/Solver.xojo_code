@@ -93,29 +93,6 @@ Private Class Solver
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Function GetCountNonEmpty() As Integer
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  Var count As Integer = 0
-		  
-		  ' Count non empty cells
-		  For row As Integer = 0 To mGrid.Settings.N-1
-		    For col As Integer = 0 To mGrid.Settings.N-1
-		      If mGrid.Get(row, col) < 1 Then
-		        Continue
-		      End If
-		      
-		      count = count + 1
-		    Next
-		  Next
-		  
-		  Return count
-		  
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Sub Invalidate()
 		  mCacheIsSolvable = IsSolvableState.Unknown
@@ -140,7 +117,7 @@ Private Class Solver
 		      Return False
 		    End If
 		    
-		    If (Me.GetCountNonEmpty <= kTresholdAssumeIsSolvable) Then
+		    If (mGrid.GetCountNonEmpty <= kTresholdAssumeIsSolvable) Then
 		      ' Only check validity (above), skip heavy solving
 		      ' Assume solvable for now (don’t trigger full backtracking)
 		      ' Almost any sparse Sudoku with less than x numbers is solvable
@@ -301,7 +278,7 @@ Private Class Solver
 		  ' can be solved (without unique solution), that probably is not the
 		  ' intent.
 		  
-		  Return Me.GetCountNonEmpty >= kTresholdSolveEnabled
+		  Return mGrid.GetCountNonEmpty >= kTresholdSolveEnabled
 		  
 		End Function
 	#tag EndMethod
@@ -359,7 +336,7 @@ Private Class Solver
 		  ' then use the Solver with Strategies.
 		  ' Otherwise use the plain Backtracking Solver (and hope it is faster ;-)
 		  
-		  Select Case Me.GetCountNonEmpty
+		  Select Case mGrid.GetCountNonEmpty
 		    
 		  Case Is <= kTresholdSparse
 		    ' Sparse: Use Backtracking

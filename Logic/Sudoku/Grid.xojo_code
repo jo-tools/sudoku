@@ -113,6 +113,29 @@ Private Class Grid
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetCountNonEmpty() As Integer
+		  #Pragma DisableBackgroundTasks
+		  #Pragma DisableBoundsChecking
+		  
+		  Var count As Integer = 0
+		  
+		  ' Count non empty cells
+		  For row As Integer = 0 To mSettings.N-1
+		    For col As Integer = 0 To mSettings.N-1
+		      If Me.Get(row, col) < 1 Then
+		        Continue
+		      End If
+		      
+		      count = count + 1
+		    Next
+		  Next
+		  
+		  Return count
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetIndex(row As Integer, col As Integer) As Integer
 		  Return row * mSettings.N + col
 		  
