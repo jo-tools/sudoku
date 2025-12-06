@@ -776,9 +776,9 @@ End
 		  
 		  If (Me.SudokuPuzzle = Nil) Then Return
 		  
-		  // TODO: This method is still hardcoded for a 3x3 Sudoku
-		  // Needs to be changed to use Me.SudokuPuzzle.GetGridSettings (N, BoxWidth, BoxHeight)
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  Var boxWidth As Integer = Me.SudokuPuzzle.GetGridSettings.BoxWidth
+		  Var boxHeight As Integer = Me.SudokuPuzzle.GetGridSettings.BoxHeight
 		  
 		  #If TargetWindows Then
 		    If (Not Color.IsDarkMode) Then
@@ -812,14 +812,16 @@ End
 		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + N * kCellSize)
 		  Next
 		  
-		  ' Draw thicker red 3x3 block lines on top
+		  ' Draw thicker red block lines on top
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  For i As Integer = 0 To N Step 3
+		  For rowBlock As Integer = 0 To N Step boxHeight
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + rowBlock * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + rowBlock * kCellSize - g.PenSize/2)
+		  Next
+		  For colBlock As Integer = 0 To N Step boxWidth
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + N * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow + colBlock * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + colBlock * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + N * kCellSize - g.PenSize/2)
 		  Next
 		  
 		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
@@ -827,11 +829,17 @@ End
 		    g.FontSize = 8
 		    g.PenSize = 1
 		    
-		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
-		    Var adjustY As Double = (hintRowSize/2) + g.FontAscent - (g.TextHeight / 2)
+		    Var maxPerRow As Integer = CType(Ceiling(Sqrt(N)), Integer)
+		    If maxPerRow < 1 Then maxPerRow = 1
+		    Var numRows As Integer = CType(Ceiling(N / maxPerRow), Integer)
+		    If numRows < 1 Then numRows = 1
 		    
-		    Var crossCenterX As Double
-		    Var crossCenterY As Double
+		    Var slotW As Double = kCellSize / maxPerRow
+		    Var slotH As Double = kCellSize / numRows
+		    Var crossSize As Double = Min(slotW, slotH) * 0.5
+		    
+		    Var centerX As Double
+		    Var centerY As Double
 		    
 		    For Each h As Sudoku.CellCandidates In Me.CellCandidates
 		      For Each candidate As Sudoku.Candidate In h.Candidates
@@ -840,38 +848,26 @@ End
 		        
 		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		        
-		        Select Case candidate.Value
-		        Case Is <= 4
-		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.Value.ToString)) / 2
-		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + adjustY)
-		          crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + ((kCellSize/4) / 2)
-		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (hintRowSize / 2)
-		        Case 5
-		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
-		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
-		          crossCenterX = kMarginWindow + h.Col * kCellSize + (hintRowSize / 2)
-		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize / 2)
-		        Case 6
-		          Var adjustX As Double = (hintRowSize - g.TextWidth(candidate.Value.ToString)) / 2
-		          g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY)
-		          crossCenterX = kMarginWindow + h.Col * kCellSize + kCellSize - (hintRowSize / 2)
-		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize / 2)
-		        Case Is >= 7
-		          Var adjustX As Double = ((kCellSize/4) - g.TextWidth(candidate.Value.ToString)) / 2
-		          Select Case candidate.Value
-		          Case 7
-		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
-		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + ((kCellSize/4) / 2)
-		          Case 8
-		            adjustX = (kCellSize - g.TextWidth(candidate.Value.ToString)) / 2
-		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
-		            crossCenterX = kMarginWindow + h.Col * kCellSize + (kCellSize / 2)
-		          Case 9
-		            g.DrawText(candidate.Value.ToString, kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + adjustX, sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY)
-		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + ((kCellSize/4) / 2)
-		          End Select
-		          crossCenterY = sepTop.Top + kMarginWindow + h.Row * kCellSize + (kCellSize - (hintRowSize / 2))
-		        End Select
+		        Var idx As Integer = candidate.Value - 1
+		        Var candRow As Integer = idx \ maxPerRow
+		        Var candCol As Integer = idx Mod maxPerRow
+		        
+		        Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
+		        Var cellTop As Double = sepTop.Top + kMarginWindow + h.Row * kCellSize
+		        Var baseX As Double = cellLeft + candCol * slotW
+		        Var baseY As Double = cellTop + candRow * slotH
+		        
+		        centerX = baseX + slotW / 2
+		        centerY = baseY + slotH / 2
+		        
+		        Var s As String = candidate.Value.ToString
+		        Var textW As Double = g.TextWidth(s)
+		        Var textH As Double = g.TextHeight(s, slotW)
+		        Var ascent As Double = g.FontAscent
+		        Var xText As Double = centerX - textW / 2
+		        Var yBase As Double = centerY + ascent - textH / 2
+		        
+		        g.DrawText(s, xText, yBase)
 		        
 		        ' Mark excluded candidates
 		        Select Case candidate.Hint
@@ -892,7 +888,7 @@ End
 		        End Select
 		        
 		        g.PenSize = 1.0
-		        g.DrawLine(crossCenterX - hintRowSize*0.25, crossCenterY + hintRowSize*0.25, crossCenterX + hintRowSize*0.25, crossCenterY - hintRowSize*0.25)
+		        g.DrawLine(centerX - crossSize*0.25, centerY + crossSize*0.25, centerX + crossSize*0.25, centerY - crossSize*0.25)
 		      Next
 		    Next
 		  End If

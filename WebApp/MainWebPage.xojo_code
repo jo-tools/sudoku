@@ -32,6 +32,7 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1648,9 +1649,9 @@ End
 #tag Events cnvSudoku
 	#tag Event
 		Sub Paint(g As WebGraphics)
-		  // TODO: This method is still hardcoded for a 3x3 Sudoku
-		  // Needs to be changed to use Self.SudokuPuzzle.GetGridSettings (N, BoxWidth, BoxHeight)
 		  Var N As Integer = Self.SudokuPuzzle.GetGridSettings.N
+		  Var boxWidth As Integer = Self.SudokuPuzzle.GetGridSettings.BoxWidth
+		  Var boxHeight As Integer = Self.SudokuPuzzle.GetGridSettings.BoxHeight
 		  
 		  If Self.mShowHints And (Self.CellHints.LastIndex >= 0) Then
 		    ' Draw next solvable cells
@@ -1677,14 +1678,16 @@ End
 		    g.DrawLine(kMarginWindow + i * kCellSize, kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + N * kCellSize)
 		  Next
 		  
-		  ' Draw thicker red 3x3 block lines on top
+		  ' Draw thicker red block lines on top
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  For i As Integer = 0 To N Step 3
+		  For rowBlock As Integer = 0 To N Step boxHeight
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, kMarginWindow + rowBlock * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2, kMarginWindow + rowBlock * kCellSize - g.PenSize/2)
+		  Next
+		  For colBlock As Integer = 0 To N Step boxWidth
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow + colBlock * kCellSize - g.PenSize/2, kMarginWindow - g.PenSize/2, kMarginWindow + colBlock * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2)
 		  Next
 		  
 		  If Self.mShowCandidates And (Self.CellCandidates.LastIndex >= 0) Then
@@ -1693,8 +1696,14 @@ End
 		    g.PenSize = 1
 		    g.TextAlignment = TextAlignments.Center
 		    
-		    Var hintRowSize As Double = (kCellSize - Self.SudokuTextFields(0).Height) / 2
-		    Var adjustY As Double = (hintRowSize/2) + 3
+		    Var maxPerRow As Integer = CType(Ceil(Sqrt(N)), Integer)
+		    If maxPerRow < 1 Then maxPerRow = 1
+		    Var numRows As Integer = CType(Ceil(N / maxPerRow), Integer)
+		    If numRows < 1 Then numRows = 1
+		    
+		    Var slotW As Double = kCellSize / maxPerRow
+		    Var slotH As Double = kCellSize / numRows
+		    Var crossSize As Double = Min(slotW, slotH) * 0.5
 		    
 		    Var crossCenterX As Double
 		    Var crossCenterY As Double
@@ -1706,38 +1715,19 @@ End
 		        
 		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		        
-		        Select Case candidate.Value
-		        Case Is <= 4
-		          Var adjustX As Double = (kCellSize/4) / 2
-		          crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-1) * (kCellSize/4)) + adjustX
-		          crossCenterY = kMarginWindow + h.Row * kCellSize + adjustY
-		          g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
-		        Case 5
-		          Var adjustX As Double = hintRowSize / 2
-		          crossCenterX = kMarginWindow + h.Col * kCellSize + adjustX
-		          crossCenterY = kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY
-		          g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
-		        Case 6
-		          Var adjustX As Double = hintRowSize / 2
-		          crossCenterX = kMarginWindow + h.Col * kCellSize + (kCellSize - hintRowSize) + adjustX
-		          crossCenterY = kMarginWindow + h.Row * kCellSize + (kCellSize/2 - hintRowSize/2) + adjustY
-		          g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
-		        Case Is >= 7
-		          Var adjustX As Double = (kCellSize/4) / 2
-		          crossCenterY = kMarginWindow + h.Row * kCellSize + (kCellSize - hintRowSize) + adjustY - 1
-		          Select Case candidate.Value
-		          Case 7
-		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-7) * (kCellSize/4)) + adjustX
-		            g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
-		          Case 8
-		            adjustX = kCellSize / 2
-		            crossCenterX = kMarginWindow + h.Col * kCellSize + adjustX
-		            g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
-		          Case 9
-		            crossCenterX = kMarginWindow + h.Col * kCellSize + ((candidate.Value-6) * (kCellSize/4)) + adjustX
-		            g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
-		          End Select
-		        End Select
+		        Var idx As Integer = candidate.Value - 1
+		        Var candRow As Integer = idx \ maxPerRow
+		        Var candCol As Integer = idx Mod maxPerRow
+		        
+		        Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
+		        Var cellTop As Double = kMarginWindow + h.Row * kCellSize
+		        Var baseX As Double = cellLeft + candCol * slotW
+		        Var baseY As Double = cellTop + candRow * slotH
+		        
+		        crossCenterX = baseX + slotW / 2
+		        crossCenterY = baseY + slotH / 2
+		        
+		        g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
 		        
 		        ' Mark excluded candidates
 		        Select Case candidate.Hint
@@ -1759,7 +1749,7 @@ End
 		        
 		        crossCenterY = crossCenterY - 2
 		        g.PenSize = 1.0
-		        g.DrawLine(crossCenterX - hintRowSize*0.25, crossCenterY + hintRowSize*0.25, crossCenterX + hintRowSize*0.25, crossCenterY - hintRowSize*0.25)
+		        g.DrawLine(crossCenterX - crossSize*0.25, crossCenterY + crossSize*0.25, crossCenterX + crossSize*0.25, crossCenterY - crossSize*0.25)
 		      Next
 		    Next
 		  End If
