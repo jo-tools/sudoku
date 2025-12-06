@@ -825,23 +825,81 @@ End
 		  Next
 		  
 		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
-		    ' Draw Cell Candidates
+		    ' Draw Cell Candidates in the margin area outside the TextField
+		    ' TextField is centered in cell; candidates go in the outer margin areas
+		    
+		    ' SudokuNumberField dimensions
+		    Var textFieldWidth As Double = Self.SudokuTextFields(0).Width
+		    Var textFieldHeight As Double = Self.SudokuTextFields(0).Height
+		    
+		    ' Calculate margin areas (space between cell border and TextField)
+		    Var marginH As Double = (kCellSize - textFieldWidth) / 2   ' left/right margin
+		    Var marginV As Double = (kCellSize - textFieldHeight) / 2  ' top/bottom margin
+		    
+		    ' Candidate slot layout based on N
+		    ' Order: top row → left side → right side → bottom row
+		    ' Determine layout parameters based on N
+		    Var slotsTop As Integer
+		    Var slotsLeft As Integer
+		    Var slotsRight As Integer
+		    Var slotsBottom As Integer
+		    
+		    ' Layout patterns:
+		    ' This matches the visual layout requested:
+		    '   N=4:  1,2 top; 3,4 bottom
+		    '   N=6:  1,2 top; 3 left; 4 right; 5,6 bottom
+		    '   N=8:  1,2,3 top; 4 left; 5 right; 6,7,8 bottom
+		    '   N=9:  1,2,3,4 top; 5 left; 6 right; 7,8,9 bottom
+		    '   N=12: 1,2,3,4 top; 5,6 left; 7,8 right; 9,10,11,12 bottom
+		    '   N=16: 1,2,3,4,5 top; 6,7,8 left; 9,10,11 right; 12,13,14,15,16 bottom
+		    
+		    Select Case N
+		    Case 4
+		      slotsTop = 2
+		      slotsLeft = 0
+		      slotsRight = 0
+		      slotsBottom = 2
+		    Case 6
+		      slotsTop = 2
+		      slotsLeft = 1
+		      slotsRight = 1
+		      slotsBottom = 2
+		    Case 8
+		      slotsTop = 3
+		      slotsLeft = 1
+		      slotsRight = 1
+		      slotsBottom = 3
+		    Case 9
+		      slotsTop = 4
+		      slotsLeft = 1
+		      slotsRight = 1
+		      slotsBottom = 3
+		    Case 12
+		      slotsTop = 4
+		      slotsLeft = 2
+		      slotsRight = 2
+		      slotsBottom = 4
+		    Case 16
+		      slotsTop = 5
+		      slotsLeft = 3
+		      slotsRight = 3
+		      slotsBottom = 5
+		    Else
+		      ' Fallback for any other N: distribute evenly
+		      slotsTop = (N + 3) \ 4
+		      slotsBottom = (N + 3) \ 4
+		      Var remaining As Integer = N - slotsTop - slotsBottom
+		      slotsLeft = (remaining + 1) \ 2
+		      slotsRight = remaining - slotsLeft
+		    End Select
+		    
 		    g.FontSize = 8
 		    g.PenSize = 1
 		    
-		    Var maxPerRow As Integer = CType(Ceiling(Sqrt(N)), Integer)
-		    If maxPerRow < 1 Then maxPerRow = 1
-		    Var numRows As Integer = CType(Ceiling(N / maxPerRow), Integer)
-		    If numRows < 1 Then numRows = 1
-		    
-		    Var slotW As Double = kCellSize / maxPerRow
-		    Var slotH As Double = kCellSize / numRows
-		    Var crossSize As Double = Min(slotW, slotH) * 0.5
-		    
-		    Var centerX As Double
-		    Var centerY As Double
-		    
 		    For Each h As Sudoku.CellCandidates In Me.CellCandidates
+		      Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
+		      Var cellTop As Double = sepTop.Top + kMarginWindow + h.Row * kCellSize
+		      
 		      For Each candidate As Sudoku.Candidate In h.Candidates
 		        If (candidate.Value < 1) Or (candidate.Value > N) Then Continue
 		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
@@ -849,27 +907,48 @@ End
 		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		        
 		        Var idx As Integer = candidate.Value - 1
-		        Var candRow As Integer = idx \ maxPerRow
-		        Var candCol As Integer = idx Mod maxPerRow
+		        Var centerX As Double
+		        Var centerY As Double
 		        
-		        Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
-		        Var cellTop As Double = sepTop.Top + kMarginWindow + h.Row * kCellSize
-		        Var baseX As Double = cellLeft + candCol * slotW
-		        Var baseY As Double = cellTop + candRow * slotH
-		        
-		        centerX = baseX + slotW / 2
-		        centerY = baseY + slotH / 2
+		        ' Determine position based on slot assignment
+		        ' Order: top row → left side → right side → bottom row
+		        If idx < slotsTop Then
+		          ' Top row (candidates 1..slotsTop)
+		          Var slotWidth As Double = kCellSize / slotsTop
+		          centerX = cellLeft + idx * slotWidth + slotWidth / 2
+		          centerY = cellTop + marginV / 2
+		        ElseIf idx < slotsTop + slotsLeft Then
+		          ' Left side (candidates slotsTop+1..slotsTop+slotsLeft)
+		          Var leftIdx As Integer = idx - slotsTop
+		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
+		          centerX = cellLeft + marginH / 2
+		          centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
+		        ElseIf idx < slotsTop + slotsLeft + slotsRight Then
+		          ' Right side (candidates slotsTop+slotsLeft+1..slotsTop+slotsLeft+slotsRight)
+		          Var rightIdx As Integer = idx - slotsTop - slotsLeft
+		          Var slotHeight As Double = textFieldHeight / Max(slotsRight, 1)
+		          centerX = cellLeft + kCellSize - marginH / 2
+		          centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
+		        Else
+		          ' Bottom row (remaining candidates)
+		          Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight
+		          Var slotWidth As Double = kCellSize / slotsBottom
+		          centerX = cellLeft + bottomIdx * slotWidth + slotWidth / 2
+		          centerY = cellTop + kCellSize - marginV / 2
+		        End If
 		        
 		        Var s As String = candidate.Value.ToString
 		        Var textW As Double = g.TextWidth(s)
-		        Var textH As Double = g.TextHeight(s, slotW)
+		        Var textH As Double = g.TextHeight(s, kCellSize)
 		        Var ascent As Double = g.FontAscent
 		        Var xText As Double = centerX - textW / 2
 		        Var yBase As Double = centerY + ascent - textH / 2
 		        
 		        g.DrawText(s, xText, yBase)
 		        
-		        ' Mark excluded candidates
+		        ' Mark excluded candidates with a strike-through line
+		        Var crossSize As Double = 8
+		        
 		        Select Case candidate.Hint
 		        Case Sudoku.CandidateHint.NoCandidate
 		          Continue ' not a candidate

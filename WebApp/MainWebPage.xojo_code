@@ -1649,6 +1649,8 @@ End
 #tag Events cnvSudoku
 	#tag Event
 		Sub Paint(g As WebGraphics)
+		  If (Self.SudokuPuzzle = Nil) Then Return
+		  
 		  Var N As Integer = Self.SudokuPuzzle.GetGridSettings.N
 		  Var boxWidth As Integer = Self.SudokuPuzzle.GetGridSettings.BoxWidth
 		  Var boxHeight As Integer = Self.SudokuPuzzle.GetGridSettings.BoxHeight
@@ -1691,24 +1693,80 @@ End
 		  Next
 		  
 		  If Self.mShowCandidates And (Self.CellCandidates.LastIndex >= 0) Then
-		    ' Draw Cell Candidates
+		    ' Draw Cell Candidates in the margin area outside the TextField
+		    ' TextField is centered in cell; candidates go in the outer margin areas
+		    
+		    ' SudokuNumberField dimensions
+		    Var textFieldWidth As Double = Self.SudokuTextFields(0).Width
+		    Var textFieldHeight As Double = Self.SudokuTextFields(0).Height
+		    
+		    ' Calculate margin areas (space between cell border and TextField)
+		    Var marginH As Double = (kCellSize - textFieldWidth) / 2   ' left/right margin
+		    Var marginV As Double = (kCellSize - textFieldHeight) / 2  ' top/bottom margin
+		    
+		    ' Candidate slot layout based on N
+		    ' Order: top row → left side → right side → bottom row
+		    ' Determine layout parameters based on N
+		    Var slotsTop As Integer
+		    Var slotsLeft As Integer
+		    Var slotsRight As Integer
+		    Var slotsBottom As Integer
+		    
+		    ' Layout patterns:
+		    '   N=4:  1,2 top; 3,4 bottom
+		    '   N=6:  1,2 top; 3 left; 4 right; 5,6 bottom
+		    '   N=8:  1,2,3 top; 4 left; 5 right; 6,7,8 bottom
+		    '   N=9:  1,2,3,4 top; 5 left; 6 right; 7,8,9 bottom
+		    '   N=12: 1,2,3,4 top; 5,6 left; 7,8 right; 9,10,11,12 bottom
+		    '   N=16: 1,2,3,4,5 top; 6,7,8 left; 9,10,11 right; 12,13,14,15,16 bottom
+		    
+		    Select Case N
+		    Case 4
+		      slotsTop = 2
+		      slotsLeft = 0
+		      slotsRight = 0
+		      slotsBottom = 2
+		    Case 6
+		      slotsTop = 2
+		      slotsLeft = 1
+		      slotsRight = 1
+		      slotsBottom = 2
+		    Case 8
+		      slotsTop = 3
+		      slotsLeft = 1
+		      slotsRight = 1
+		      slotsBottom = 3
+		    Case 9
+		      slotsTop = 4
+		      slotsLeft = 1
+		      slotsRight = 1
+		      slotsBottom = 3
+		    Case 12
+		      slotsTop = 4
+		      slotsLeft = 2
+		      slotsRight = 2
+		      slotsBottom = 4
+		    Case 16
+		      slotsTop = 5
+		      slotsLeft = 3
+		      slotsRight = 3
+		      slotsBottom = 5
+		    Else
+		      ' Fallback for any other N: distribute evenly
+		      slotsTop = (N + 3) \ 4
+		      slotsBottom = (N + 3) \ 4
+		      Var remaining As Integer = N - slotsTop - slotsBottom
+		      slotsLeft = (remaining + 1) \ 2
+		      slotsRight = remaining - slotsLeft
+		    End Select
+		    
 		    g.FontSize = 8
 		    g.PenSize = 1
-		    g.TextAlignment = TextAlignments.Center
-		    
-		    Var maxPerRow As Integer = CType(Ceil(Sqrt(N)), Integer)
-		    If maxPerRow < 1 Then maxPerRow = 1
-		    Var numRows As Integer = CType(Ceil(N / maxPerRow), Integer)
-		    If numRows < 1 Then numRows = 1
-		    
-		    Var slotW As Double = kCellSize / maxPerRow
-		    Var slotH As Double = kCellSize / numRows
-		    Var crossSize As Double = Min(slotW, slotH) * 0.5
-		    
-		    Var crossCenterX As Double
-		    Var crossCenterY As Double
 		    
 		    For Each h As Sudoku.CellCandidates In Self.CellCandidates
+		      Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
+		      Var cellTop As Double = kMarginWindow + h.Row * kCellSize
+		      
 		      For Each candidate As Sudoku.Candidate In h.Candidates
 		        If (candidate.Value < 1) Or (candidate.Value > N) Then Continue
 		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
@@ -1716,20 +1774,47 @@ End
 		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
 		        
 		        Var idx As Integer = candidate.Value - 1
-		        Var candRow As Integer = idx \ maxPerRow
-		        Var candCol As Integer = idx Mod maxPerRow
+		        Var centerX As Double
+		        Var centerY As Double
 		        
-		        Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
-		        Var cellTop As Double = kMarginWindow + h.Row * kCellSize
-		        Var baseX As Double = cellLeft + candCol * slotW
-		        Var baseY As Double = cellTop + candRow * slotH
+		        ' Determine position based on slot assignment
+		        ' Order: top row → left side → right side → bottom row
+		        If idx < slotsTop Then
+		          ' Top row (candidates 1..slotsTop)
+		          Var slotWidth As Double = kCellSize / slotsTop
+		          centerX = cellLeft + idx * slotWidth + slotWidth / 2
+		          centerY = cellTop + marginV / 2
+		        ElseIf idx < slotsTop + slotsLeft Then
+		          ' Left side (candidates slotsTop+1..slotsTop+slotsLeft)
+		          Var leftIdx As Integer = idx - slotsTop
+		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
+		          centerX = cellLeft + marginH / 2
+		          centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
+		        ElseIf idx < slotsTop + slotsLeft + slotsRight Then
+		          ' Right side (candidates slotsTop+slotsLeft+1..slotsTop+slotsLeft+slotsRight)
+		          Var rightIdx As Integer = idx - slotsTop - slotsLeft
+		          Var slotHeight As Double = textFieldHeight / Max(slotsRight, 1)
+		          centerX = cellLeft + kCellSize - marginH / 2
+		          centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
+		        Else
+		          ' Bottom row (remaining candidates)
+		          Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight
+		          Var slotWidth As Double = kCellSize / slotsBottom
+		          centerX = cellLeft + bottomIdx * slotWidth + slotWidth / 2
+		          centerY = cellTop + kCellSize - marginV / 2
+		        End If
 		        
-		        crossCenterX = baseX + slotW / 2
-		        crossCenterY = baseY + slotH / 2
+		        ' WebGraphics.DrawText with TextAlignment.Center uses x as center point
+		        ' and y as the vertical center (not baseline like Desktop),
+		        ' However, WebGraphics seems to vertically center text differently,
+		        ' that's why we adjust it here manually with "+2" just for drawing text,
+		        ' but keep the variable for further placement caluclations
+		        g.TextAlignment = TextAlignments.Center
+		        g.DrawText(candidate.Value.ToString, centerX, centerY+2)
 		        
-		        g.DrawText(candidate.Value.ToString, crossCenterX, crossCenterY)
+		        ' Mark excluded candidates with a strike-through line
+		        Var crossSize As Double = 8
 		        
-		        ' Mark excluded candidates
 		        Select Case candidate.Hint
 		        Case Sudoku.CandidateHint.NoCandidate
 		          Continue ' not a candidate
@@ -1747,9 +1832,9 @@ End
 		          Continue
 		        End Select
 		        
-		        crossCenterY = crossCenterY - 2
+		        Var crossCenterY As Double = centerY
 		        g.PenSize = 1.0
-		        g.DrawLine(crossCenterX - crossSize*0.25, crossCenterY + crossSize*0.25, crossCenterX + crossSize*0.25, crossCenterY - crossSize*0.25)
+		        g.DrawLine(centerX - crossSize*0.25, crossCenterY + crossSize*0.25, centerX + crossSize*0.25, crossCenterY - crossSize*0.25)
 		      Next
 		    Next
 		  End If
@@ -1758,8 +1843,9 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Shown()
-		  Me.Width = 2 * kMarginWindow + 9 * kCellSize
-		  me.Height = 2 * kMarginWindow + 9 * kCellSize
+		  Var N As Integer = Self.SudokuPuzzle.GetGridSettings.N
+		  Me.Width = 2 * kMarginWindow + N * kCellSize
+		  Me.Height = 2 * kMarginWindow + N * kCellSize
 		End Sub
 	#tag EndEvent
 #tag EndEvents
