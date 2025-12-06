@@ -94,7 +94,7 @@ Protected Module Sudoku
 	#tag Structure, Name = CellCandidates, Flags = &h1
 		Row As Integer
 		  Col As Integer
-		Candidates(8) As Candidate
+		Candidates(15) As Candidate
 	#tag EndStructure
 
 	#tag Structure, Name = CellHint, Flags = &h1

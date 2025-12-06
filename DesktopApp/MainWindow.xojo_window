@@ -750,21 +750,6 @@ End
 		Sub Opening()
 		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
 		  
-		  // TODO: This is still hardcoded for a 3x3 Sudoku
-		  // Needs to be changed to use Me.SudokuPuzzle.GetGridSettings.N (N, BoxWidth, BoxHeight)
-		  Var N As Integer = 9
-		  
-		  ' Layout
-		  Me.Height = sepTop.Top + 2 * kMarginWindow + N * kCellSize
-		  Me.MinimumHeight = Me.Height
-		  
-		  Me.Width = 2 * kMarginWindow + N * kCellSize + 20 + btnSolve.Width
-		  Me.MaximumWidth = Me.Width
-		  
-		  ' Init Sudoku
-		  Me.SudokuPuzzle = New Sudoku.Puzzle(N)
-		  Me.SudokuNumberFieldsInit
-		  
 		  Me.DocumentInit
 		  
 		End Sub
@@ -1716,6 +1701,13 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
+		  ' Close current Sudoku Number Fields
+		  For Each c As SudokuNumberField In SudokuTextFields
+		    Me.RemoveControl(c)
+		    c.Close
+		  Next
+		  
+		  ' Init Sudoku Number Fields
 		  Redim SudokuTextFields(Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N-1)
 		  
 		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
@@ -1798,8 +1790,36 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private SudokuPuzzle As Sudoku.Puzzle
+		Private mSudokuPuzzle As Sudoku.Puzzle
 	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h21
+		#tag Getter
+			Get
+			  Return mSudokuPuzzle
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mSudokuPuzzle = value
+			  
+			  ' Adjust Layout for current Sudoku Puzzle
+			  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
+			  
+			  Me.Width = 2 * kMarginWindow + Max(N, 5) * kCellSize + 20 + btnSolve.Width
+			  Me.MaximumWidth = Me.Width
+			  
+			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 150 ' Solve and Status are bottom-locked
+			  Me.Height = Max(sepTop.Top + 2 * kMarginWindow + N * kCellSize, minLayoutHeight)
+			  Me.MinimumHeight = Me.Height
+			  
+			  ' Init Sudoku Number Fields
+			  Me.SudokuNumberFieldsInit
+			  
+			End Set
+		#tag EndSetter
+		Private SudokuPuzzle As Sudoku.Puzzle
+	#tag EndComputedProperty
 
 	#tag Property, Flags = &h21
 		Private SudokuTextFields() As SudokuNumberField
