@@ -750,15 +750,19 @@ End
 		Sub Opening()
 		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
 		  
+		  // TODO: This is still hardcoded for a 3x3 Sudoku
+		  // Needs to be changed to use Me.SudokuPuzzle.GetGridSettings.N (N, BoxWidth, BoxHeight)
+		  Var N As Integer = 9
+		  
 		  ' Layout
-		  Me.Height = sepTop.Top + 2 * kMarginWindow + Sudoku.N * kCellSize
+		  Me.Height = sepTop.Top + 2 * kMarginWindow + N * kCellSize
 		  Me.MinimumHeight = Me.Height
 		  
-		  Me.Width = 2 * kMarginWindow + Sudoku.N * kCellSize + 20 + btnSolve.Width
+		  Me.Width = 2 * kMarginWindow + N * kCellSize + 20 + btnSolve.Width
 		  Me.MaximumWidth = Me.Width
 		  
 		  ' Init Sudoku
-		  Me.SudokuPuzzle = New Sudoku.Puzzle
+		  Me.SudokuPuzzle = New Sudoku.Puzzle(N)
 		  Me.SudokuNumberFieldsInit
 		  
 		  Me.DocumentInit
@@ -770,10 +774,16 @@ End
 		Sub Paint(g As Graphics, areas() As Rect)
 		  #Pragma unused areas
 		  
+		  If (Me.SudokuPuzzle = Nil) Then Return
+		  
+		  // TODO: This method is still hardcoded for a 3x3 Sudoku
+		  // Needs to be changed to use Me.SudokuPuzzle.GetGridSettings (N, BoxWidth, BoxHeight)
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  
 		  #If TargetWindows Then
 		    If (Not Color.IsDarkMode) Then
 		      g.DrawingColor = Color.White
-		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, Sudoku.N * kCellSize, Sudoku.N * kCellSize)
+		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, N * kCellSize, N * kCellSize)
 		    End If
 		  #EndIf
 		  
@@ -795,21 +805,21 @@ End
 		  ' Draw all thin "hair" lines first (gray)
 		  g.DrawingColor = colGridlineHair
 		  g.PenSize = 1
-		  For i As Integer = 1 To Sudoku.N-1 ' skip outer border (0 and N)
+		  For i As Integer = 1 To N-1 ' skip outer border (0 and N)
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + Sudoku.N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
+		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + Sudoku.N * kCellSize)
+		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + N * kCellSize)
 		  Next
 		  
 		  ' Draw thicker red 3x3 block lines on top
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  For i As Integer = 0 To Sudoku.N Step 3
+		  For i As Integer = 0 To N Step 3
 		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + i * kCellSize - g.PenSize/2)
 		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + Sudoku.N * kCellSize - g.PenSize/2)
+		    g.DrawLine(kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + i * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + N * kCellSize - g.PenSize/2)
 		  Next
 		  
 		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
@@ -825,7 +835,7 @@ End
 		    
 		    For Each h As Sudoku.CellCandidates In Me.CellCandidates
 		      For Each candidate As Sudoku.Candidate In h.Candidates
-		        If (candidate.Value < 1) Or (candidate.Value > Sudoku.N) Then Continue
+		        If (candidate.Value < 1) Or (candidate.Value > N) Then Continue
 		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
 		        
 		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
@@ -1096,9 +1106,9 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
 		  ' Lock current state
-		  For row As Integer = 0 To Sudoku.N-1
-		    For col As Integer = 0 To Sudoku.N-1
-		      Var index As Integer = row * Sudoku.N + col
+		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
 		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      
 		      If (value > 0) Then
@@ -1405,9 +1415,9 @@ End
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
-		  For row As Integer = 0 To Sudoku.N-1
-		    For col As Integer = 0 To Sudoku.N-1
-		      Var index As Integer = row * Sudoku.N + col
+		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
 		      
 		      If SudokuTextFields(index).IsLocked Then Continue
 		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
@@ -1510,9 +1520,9 @@ End
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
-		  For row As Integer = 0 To Sudoku.N-1
-		    For col As Integer = 0 To Sudoku.N-1
-		      Var index As Integer = row * Sudoku.N + col
+		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
 		      
 		      SudokuTextFields(index).Lock = False
 		      
@@ -1557,18 +1567,18 @@ End
 		    
 		  Case Chr(29) ' Right arrow
 		    Var rightIndex As Integer = sender.PositionIndex + 1
-		    if (rightIndex < Sudoku.N*Sudoku.N) then SudokuTextFields(rightIndex).SetFocus
+		    if (rightIndex < Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N) then SudokuTextFields(rightIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.PositionIndex - Sudoku.N
+		    Var upIndex As Integer = sender.PositionIndex - Me.SudokuPuzzle.GetGridSettings.N
 		    ' Move focus to previous (unlocked) cell
 		    if (upIndex >= 0) then SudokuTextFields(upIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.PositionIndex + Sudoku.N
-		    if (downIndex < Sudoku.N*Sudoku.N) then SudokuTextFields(downIndex).SetFocus
+		    Var downIndex As Integer = sender.PositionIndex + Me.SudokuPuzzle.GetGridSettings.N
+		    if (downIndex < Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N) then SudokuTextFields(downIndex).SetFocus
 		    Return True
 		    
 		    ' Other special keys
@@ -1590,7 +1600,7 @@ End
 		  End If
 		  
 		  ' Allow entering Digits 0-N
-		  If key >= "0" And key <= Sudoku.N.ToString Then
+		  If key >= "0" And key <= Me.SudokuPuzzle.GetGridSettings.N.ToString Then
 		    ' Update Number
 		    Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
 		    
@@ -1614,11 +1624,11 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
-		  Redim SudokuTextFields(Sudoku.N*Sudoku.N-1)
+		  Redim SudokuTextFields(Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N-1)
 		  
-		  For row As Integer = 0 To Sudoku.N-1
-		    For col As Integer = 0 To Sudoku.N-1
-		      Var index As Integer = row * Sudoku.N + col
+		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
+		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
 		      
 		      ' Create Sudoku Number TextField
 		      SudokuTextFields(index) = New SudokuNumberField
@@ -1815,10 +1825,11 @@ End
 		    
 		    If (loadSudoku <> "") Then
 		      Self.SudokuPuzzle.ClearGrid
+		      Self.SudokuPuzzle = New Sudoku.Puzzle(9) 'intentionally because of above values
 		      
-		      For row As Integer = 0 To Sudoku.N-1
-		        For col As Integer = 0 To Sudoku.N-1
-		          Var index As Integer = row * Sudoku.N + col
+		      For row As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
+		        For col As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
+		          Var index As Integer = row * Self.SudokuPuzzle.GetGridSettings.N + col
 		          Self.SudokuPuzzle.SetGridValue(row, col) = loadSudoku.Middle(index, 1).ToInteger
 		        Next
 		      Next

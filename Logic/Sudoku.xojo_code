@@ -85,9 +85,6 @@ Protected Module Sudoku
 	#tag Constant, Name = kURL_Repository, Type = String, Dynamic = False, Default = \"https://github.com/jo-tools/sudoku", Scope = Protected
 	#tag EndConstant
 
-	#tag Constant, Name = N, Type = Double, Dynamic = False, Default = \"9", Scope = Protected
-	#tag EndConstant
-
 
 	#tag Structure, Name = Candidate, Flags = &h1
 		Value As Integer

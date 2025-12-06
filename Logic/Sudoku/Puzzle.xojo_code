@@ -16,15 +16,6 @@ Protected Class Puzzle
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Constructor()
-		  ' Without specifying a Sudoku Puzzle Size
-		  ' this returns a 9x9 Sudoku Puzzle by default
-		  Me.Constructor(9)
-		  
-		End Sub
-	#tag EndMethod
-
 	#tag Method, Flags = &h21
 		Private Sub Constructor(grid As Grid)
 		  mGrid = grid
@@ -49,7 +40,10 @@ Protected Class Puzzle
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Me.Constructor()
+		  // TODO: We need to find out first from json what Sudoku Size we're dealing with
+		  // Only then call Constructor with correct N.
+		  Var N As Integer = 9
+		  Me.Constructor(N)
 		  
 		  ' Init with JSON representation of a Sudoku Grid
 		  Const kExceptionMessage = "Invalid JSON representation of a Sudoku"
@@ -139,7 +133,10 @@ Protected Class Puzzle
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Me.Constructor()
+		  // TODO: We need to find out first from json what Sudoku Size we're dealing with
+		  // Only then call Constructor with correct N.
+		  Var N As Integer = 9
+		  Me.Constructor(N)
 		  
 		  ' Init with String representation of a Sudoku grid
 		  Const kExceptionMessage = "Invalid String representation of a Sudoku"
@@ -295,6 +292,10 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, isPuzzle As Boolean)
+		  // TODO: This method is still hardcoded for a 3x3 Sudoku
+		  // Needs to be changed to use mGrid.Settings (N, BoxWidth, BoxHeight)
+		  Var N As Integer = 9
+		  
 		  Var block As Integer = N \ 3
 		  Var cell As Double = sizePoints / N
 		  
@@ -375,6 +376,7 @@ Protected Class Puzzle
 		  #Pragma DisableBoundsChecking
 		  
 		  Var Rnd As New Random
+		  Var N As Integer = mGrid.Settings.N
 		  
 		  ' Sanitize numClues
 		  If numClues < 1 Then numClues = 1
@@ -392,7 +394,8 @@ Protected Class Puzzle
 		  Wend
 		  
 		  ' Shuffle Digits to get a different-looking solved grid
-		  Var perm(N) As Integer
+		  Var perm() As Integer
+		  ReDim perm(N)
 		  For i As Integer = 1 To N
 		    perm(i) = i
 		  Next
@@ -406,7 +409,8 @@ Protected Class Puzzle
 		  Next
 		  
 		  ' Apply the permutation to create a randomized solution copy
-		  Var solution(N-1, N-1) As Integer
+		  Var solution(-1, -1) As Integer
+		  ReDim solution(N-1, N-1)
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
 		      Var value As Integer = mGrid.Get(row, col)
@@ -537,7 +541,7 @@ Protected Class Puzzle
 		  ' to get a random Sudoku built
 		  
 		  Var valuesInRandomOrder() As Integer
-		  For i As Integer = 1 To N
+		  For i As Integer = 1 To mGrid.Settings.N
 		    valuesInRandomOrder.Add(i)
 		  Next
 		  
@@ -696,6 +700,7 @@ Protected Class Puzzle
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  Var N As Integer = mGrid.Settings.N
 		  Var jsonSudoku As New JSONItem("[]")
 		  
 		  For row As Integer = 0 To N-1
@@ -745,8 +750,9 @@ Protected Class Puzzle
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Var rows() As String
+		  Var N As Integer = mGrid.Settings.N
 		  
+		  Var rows() As String
 		  For row As Integer = 0 To N-1
 		    Var cols() As String
 		    

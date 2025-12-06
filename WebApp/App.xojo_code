@@ -84,6 +84,10 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h21
 		Private Function HandleApiRequestGenerate(request As WebRequest, response As WebResponse) As Boolean
+		  // TODO: This is still hardcoded for a 3x3 Sudoku
+		  // Needs to be changed to use Me.SudokuPuzzle.GetGridSettings.N (N, BoxWidth, BoxHeight)
+		  Var N As Integer = 9
+		  
 		  Print("API Request: " + request.Path)
 		  
 		  If (request.Method <> "GET") Then
@@ -99,11 +103,11 @@ Inherits WebApplication
 		  
 		  Var numClues As Integer = dictParams.Lookup("numClues", 40).IntegerValue
 		  If (numClues < 24) Then numClues = 24
-		  If (numClues > Sudoku.N*Sudoku.N) Then numClues = Sudoku.N*Sudoku.N
+		  If (numClues > N*N) Then numClues = N*N
 		  
 		  var addSolution As Boolean = dictParams.Lookup("addSolution", false).BooleanValue
 		  
-		  Var sudokuPuzzle As New Sudoku.Puzzle
+		  Var sudokuPuzzle As New Sudoku.Puzzle(N)
 		  Call sudokuPuzzle.GenerateRandomPuzzle(numClues)
 		  sudokuPuzzle.LockCurrentState
 		  
