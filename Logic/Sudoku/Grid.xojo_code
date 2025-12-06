@@ -331,7 +331,7 @@ Private Class Grid
 	#tag EndProperty
 
 
-	#tag Structure, Name = Settings, Flags = &h1
+	#tag Structure, Name = Settings, Flags = &h0
 		N As Integer
 		  BoxWidth As Integer
 		BoxHeight As Integer

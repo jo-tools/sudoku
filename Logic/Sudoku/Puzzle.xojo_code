@@ -2,15 +2,15 @@
 Protected Class Puzzle
 	#tag Method, Flags = &h0
 		Sub ClearGrid()
-		  Me.grid.Clear
-		  Me.solver.SetStateIsSolvable
+		  mGrid.Clear
+		  mSolver.SetStateIsSolvable
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function Clone() As Puzzle
-		  Return New Puzzle(Me.grid.Clone)
+		  Return New Puzzle(mGrid.Clone)
 		  
 		  
 		End Function
@@ -18,19 +18,28 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  Var grid As New Grid(9)
-		  Me.Constructor(grid)
+		  ' Without specifying a Sudoku Puzzle Size
+		  ' this returns a 9x9 Sudoku Puzzle by default
+		  Me.Constructor(9)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub Constructor(grid As Grid)
-		  Me.grid = grid
-		  Me.hintsSearcher = New HintsSearcher(Me.grid)
-		  Me.candidatesSearcher = New CandidatesSearcher(Me.grid)
-		  Me.solver = New Solver(Me.grid)
-		  Me.solver.Invalidate
+		  mGrid = grid
+		  mHintsSearcher = New HintsSearcher(mGrid)
+		  mCandidatesSearcher = New CandidatesSearcher(mGrid)
+		  mSolver = New Solver(mGrid)
+		  mSolver.Invalidate
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(n As Integer)
+		  Var grid As New Grid(n)
+		  Me.Constructor(grid)
 		  
 		End Sub
 	#tag EndMethod
@@ -42,7 +51,7 @@ Protected Class Puzzle
 		  
 		  Me.Constructor()
 		  
-		  ' Init with JSON representation of a Sudoku-grid
+		  ' Init with JSON representation of a Sudoku Grid
 		  Const kExceptionMessage = "Invalid JSON representation of a Sudoku"
 		  
 		  Var dictSudoku As New Dictionary
@@ -120,7 +129,7 @@ Protected Class Puzzle
 		    Next
 		  Next
 		  
-		  Me.solver.Invalidate
+		  mSolver.Invalidate
 		  
 		End Sub
 	#tag EndMethod
@@ -132,7 +141,7 @@ Protected Class Puzzle
 		  
 		  Me.Constructor()
 		  
-		  ' Init with String representation of a Sudoku-grid
+		  ' Init with String representation of a Sudoku grid
 		  Const kExceptionMessage = "Invalid String representation of a Sudoku"
 		  
 		  s = s.Trim
@@ -186,7 +195,7 @@ Protected Class Puzzle
 		    Next
 		  Next
 		  
-		  Me.solver.Invalidate
+		  mSolver.Invalidate
 		  
 		  
 		End Sub
@@ -322,7 +331,7 @@ Protected Class Puzzle
 		  
 		  For row As Integer = 0 To N - 1
 		    For col As Integer = 0 To N - 1
-		      Var value As Integer = Me.grid.Get(row, col)
+		      Var value As Integer = mGrid.Get(row, col)
 		      If value <> 0 Then
 		        Var s As String = value.ToString
 		        ' Choose font size relative to cell
@@ -373,10 +382,10 @@ Protected Class Puzzle
 		  
 		  Var isInitSolved As Boolean = False
 		  while (not isInitSolved)
-		    Me.grid.Clear
+		    mGrid.Clear
 		    
 		    ' Place a random Number
-		    me.grid.Set(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
+		    mGrid.Set(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
 		    
 		    ' Start with a valid, solved grid
 		    isInitSolved = Me.GenerateRandomPuzzleSolve
@@ -400,7 +409,7 @@ Protected Class Puzzle
 		  Var solution(N-1, N-1) As Integer
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      Var value As Integer = me.grid.Get(row, col)
+		      Var value As Integer = mGrid.Get(row, col)
 		      If value >= 1 And value <= N Then
 		        solution(row, col) = perm(value)
 		      Else
@@ -412,7 +421,7 @@ Protected Class Puzzle
 		  ' Put the permuted solution back into grid
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      me.grid.Set(row, col) = solution(row, col)
+		      mGrid.Set(row, col) = solution(row, col)
 		    Next
 		  Next
 		  
@@ -441,24 +450,24 @@ Protected Class Puzzle
 		    Var idx As Integer = indices(i)
 		    Var rr As Integer = idx \ N
 		    Var cc As Integer = idx Mod N
-		    Var backup As Integer = me.grid.Get(rr, cc)
+		    Var backup As Integer = mGrid.Get(rr, cc)
 		    
 		    ' Skip already-empty cells (shouldn't happen - just to be safe)
 		    If backup = 0 Then Continue
 		    
 		    ' Try removing
-		    me.grid.Set(rr, cc) = 0
+		    mGrid.Set(rr, cc) = 0
 		    
 		    ' If the puzzle still has exactly 1 solution, accept the removal
-		    If Me.solver.CountSolutions(2) = 1 Then
+		    If mSolver.CountSolutions(2) = 1 Then
 		      removed = removed + 1
 		    Else
 		      ' Not unique solution, restore the value and try to remove another
-		      Me.grid.Set(rr, cc) = backup
+		      mGrid.Set(rr, cc) = backup
 		    End If
 		  Next
 		  
-		  Me.solver.SetStateIsSolvable
+		  mSolver.SetStateIsSolvable
 		  
 		  If removed < removeCount Then
 		    ' Could not remove enough cells while keeping uniqueness.
@@ -491,16 +500,16 @@ Protected Class Puzzle
 		  
 		  ' Find the next empty cell
 		  ' If there are no empty cells left, the puzzle is solved
-		  If Not Me.grid.FindEmpty(row, col) Then
+		  If Not mGrid.FindEmpty(row, col) Then
 		    Return True
 		  End If
 		  
 		  ' Try all possible numbers (1-9) for this empty cell in random order
 		  For Each value As Integer In Me.GenerateRandomValues
 		    ' Check if placing value here is allowed by Sudoku rules
-		    If Me.grid.IsValueValid(row, col, value) Then
+		    If mGrid.IsValueValid(row, col, value) Then
 		      ' Tentatively place value in the cell
-		      me.grid.Set(row, col) = value
+		      mGrid.Set(row, col) = value
 		      
 		      ' Recursively attempt to solve the rest of the grid
 		      If GenerateRandomPuzzleSolve() Then
@@ -512,7 +521,7 @@ Protected Class Puzzle
 		      ' Backtracking
 		      ' If recursion returned False, this value led to a dead end
 		      ' Undo the move before trying the next number in this cell
-		      me.grid.Set(row, col) = 0
+		      mGrid.Set(row, col) = 0
 		    End If
 		  Next
 		  
@@ -548,42 +557,49 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function GetCellCandidates(exclusionParams As Sudoku.ExclusionParams) As CellCandidates()
-		  Return Me.candidatesSearcher.Get(exclusionParams)
+		  Return mCandidatesSearcher.Get(exclusionParams)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetCellHints() As CellHint()
-		  Return Me.hintsSearcher.GetCellHints
+		  Return mHintsSearcher.GetCellHints
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetGridSettings() As Grid.Settings
+		  Return mGrid.Settings
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetGridValue(row As Integer, col As Integer) As Integer
-		  Return me.grid.Get(row, col)
+		  Return mGrid.Get(row, col)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
-		  Return Me.grid.IsEmpty
+		  Return mGrid.IsEmpty
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsGridCellLocked(row As Integer, col As Integer) As Boolean
-		  Return Me.grid.IsGridCellLocked(row, col)
+		  Return mGrid.IsGridCellLocked(row, col)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
-		  Return Me.solver.IsSolvable
+		  Return mSolver.IsSolvable
 		  
 		End Function
 	#tag EndMethod
@@ -594,10 +610,10 @@ Protected Class Puzzle
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not Me.solver.IsValidBasicSudokuRules) Then Return False
+		  If (Not mSolver.IsValidBasicSudokuRules) Then Return False
 		  
 		  ' And no empty cells left
-		  If Me.grid.HasEmptyCells Then Return False
+		  If mGrid.HasEmptyCells Then Return False
 		  
 		  Return True
 		End Function
@@ -605,7 +621,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsValid() As Boolean
-		  Return Me.solver.IsValidBasicSudokuRules
+		  Return mSolver.IsValidBasicSudokuRules
 		  
 		End Function
 	#tag EndMethod
@@ -613,7 +629,7 @@ Protected Class Puzzle
 	#tag Method, Flags = &h0
 		Sub LockCurrentState()
 		  ' Lock current state (used for Export in API only)
-		  Me.grid.LockCurrentState
+		  mGrid.LockCurrentState
 		End Sub
 	#tag EndMethod
 
@@ -641,36 +657,36 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub SetGridCellLocked(index As Integer)
-		  Me.grid.Lock(index)
+		  mGrid.Lock(index)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetGridCellLocked(row As Integer, col As Integer)
-		  Me.grid.Lock(row, col)
+		  mGrid.Lock(row, col)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetGridValue(row As Integer, col As Integer, Assigns value As Integer)
-		  Me.grid.Set(row, col) = value
-		  Me.solver.Invalidate
+		  mGrid.Set(row, col) = value
+		  mSolver.Invalidate
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Solve() As Boolean
-		  Return Me.solver.Solve
+		  Return mSolver.Solve
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function SolveEnabled() As Boolean
-		  Return Me.solver.SolveEnabled
+		  Return mSolver.SolveEnabled
 		  
 		End Function
 	#tag EndMethod
@@ -690,8 +706,8 @@ Protected Class Puzzle
 		      jsonSudokuCell.Value(kJSONKeySudokuCellRow) = row+1
 		      jsonSudokuCell.Value(kJSONKeySudokuCellCol) = col+1
 		      jsonSudokuCell.Value(kJSONKeySudokuCellIndex) = index
-		      jsonSudokuCell.Value(kJSONKeySudokuCellValue) = Me.grid.Get(row, col)
-		      jsonSudokuCell.Value(kJSONKeySudokuCellLocked) = Me.grid.IsGridCellLocked(row, col)
+		      jsonSudokuCell.Value(kJSONKeySudokuCellValue) = mGrid.Get(row, col)
+		      jsonSudokuCell.Value(kJSONKeySudokuCellLocked) = mGrid.IsGridCellLocked(row, col)
 		      
 		      jsonSudoku.Add(jsonSudokuCell)
 		    Next
@@ -735,7 +751,7 @@ Protected Class Puzzle
 		    Var cols() As String
 		    
 		    For col As Integer = 0 To N-1
-		      cols.Add(Me.grid.Get(row, col).ToString)
+		      cols.Add(mGrid.Get(row, col).ToString)
 		    Next
 		    
 		    rows.Add(String.FromArray(cols, ""))
@@ -748,19 +764,19 @@ Protected Class Puzzle
 
 
 	#tag Property, Flags = &h21
-		Private candidatesSearcher As CandidatesSearcher
+		Private mCandidatesSearcher As CandidatesSearcher
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private grid As Grid
+		Private mGrid As Grid
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private hintsSearcher As HintsSearcher
+		Private mHintsSearcher As HintsSearcher
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private solver As Solver
+		Private mSolver As Solver
 	#tag EndProperty
 
 
