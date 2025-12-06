@@ -1783,40 +1783,39 @@ End
 		        Var maxHorizontalSlots As Integer = Max(slotsTop, slotsBottom)
 		        Var slotWidth As Double = kCellSize / maxHorizontalSlots
 		        
+		        ' Define the left and right X positions (centered in margin areas)
+		        Var leftX As Double = marginH / 2
+		        Var rightX As Double = kCellSize - marginH / 2
+		        
 		        If idx < slotsTop Then
-		          ' Top row (candidates 1..slotsTop)
-		          centerX = cellLeft + idx * slotWidth + slotWidth / 2
+		          ' Top row - first slot at leftX, last slot at rightX, others distributed between
+		          If slotsTop = 1 Then
+		            centerX = cellLeft + kCellSize / 2
+		          Else
+		            Var fraction As Double = idx / (slotsTop - 1)
+		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
+		          End If
 		          centerY = cellTop + marginV / 2
 		        ElseIf idx < slotsTop + slotsLeft Then
-		          ' Left side - align X with first slot (same as candidate 1)
+		          ' Left side - center X in margin area (same as first top/bottom slot)
 		          Var leftIdx As Integer = idx - slotsTop
 		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
-		          centerX = cellLeft + slotWidth / 2
+		          centerX = cellLeft + leftX
 		          centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
 		        ElseIf idx < slotsTop + slotsLeft + slotsRight Then
-		          ' Right side - align X with last top slot (same as candidate slotsTop)
+		          ' Right side - center X in margin area (same as last top/bottom slot)
 		          Var rightIdx As Integer = idx - slotsTop - slotsLeft
 		          Var slotHeight As Double = textFieldHeight / Max(slotsRight, 1)
-		          centerX = cellLeft + (slotsTop - 1) * slotWidth + slotWidth / 2
+		          centerX = cellLeft + rightX
 		          centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
 		        Else
-		          ' Bottom row - first slot aligns with first top slot, last slot aligns with last top slot
+		          ' Bottom row - first slot at leftX, last slot at rightX, others distributed between
 		          Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight
 		          If slotsBottom = 1 Then
-		            ' Single bottom slot - center it
 		            centerX = cellLeft + kCellSize / 2
-		          ElseIf bottomIdx = 0 Then
-		            ' First bottom slot - align with first top slot
-		            centerX = cellLeft + slotWidth / 2
-		          ElseIf bottomIdx = slotsBottom - 1 Then
-		            ' Last bottom slot - align with last top slot
-		            centerX = cellLeft + (slotsTop - 1) * slotWidth + slotWidth / 2
 		          Else
-		            ' Middle bottom slots - distribute evenly between first and last
-		            Var firstX As Double = slotWidth / 2
-		            Var lastX As Double = (slotsTop - 1) * slotWidth + slotWidth / 2
 		            Var fraction As Double = bottomIdx / (slotsBottom - 1)
-		            centerX = cellLeft + firstX + fraction * (lastX - firstX)
+		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
 		          End If
 		          centerY = cellTop + kCellSize - marginV / 2
 		        End If
