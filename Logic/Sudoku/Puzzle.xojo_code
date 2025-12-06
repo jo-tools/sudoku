@@ -40,22 +40,38 @@ Protected Class Puzzle
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  // TODO: We need to find out first from json what Sudoku Size we're dealing with
-		  // Only then call Constructor with correct N.
-		  Var N As Integer = 9
-		  Me.Constructor(N)
-		  
 		  ' Init with JSON representation of a Sudoku Grid
 		  Const kExceptionMessage = "Invalid JSON representation of a Sudoku"
+		  
+		  ' First, determine N from the JSON cell count
+		  Var N As Integer = 0
+		  Try
+		    If (json = Nil) Or (Not json.HasKey(kJSONKeySudoku)) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
+		    Var jsonSudoku As JSONItem = json.Child(kJSONKeySudoku)
+		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
+		    
+		    Var cellCount As Integer = jsonSudoku.Count
+		    ' N*N = cellCount, so N = Sqrt(cellCount)
+		    Var sqrtVal As Double = Sqrt(cellCount)
+		    N = CType(sqrtVal, Integer)
+		    If N * N <> cellCount Then
+		      Raise New InvalidArgumentException(kExceptionMessage, 8)
+		    End If
+		  Catch err As JSONException
+		    Raise New InvalidArgumentException(kExceptionMessage, 4)
+		  Catch err As InvalidArgumentException
+		    Raise err
+		  Catch err As RuntimeException
+		    Raise New InvalidArgumentException(kExceptionMessage, 5)
+		  End Try
+		  
+		  Me.Constructor(N)
 		  
 		  Var dictSudoku As New Dictionary
 		  Var loadedLockedCellIndexes() As Integer
 		  
 		  Try
-		    If (json = Nil) Or (Not json.HasKey(kJSONKeySudoku)) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
-		    
 		    Var jsonSudoku As JSONItem = json.Child(kJSONKeySudoku)
-		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		    
 		    Var row, col, value As Integer
 		    Var locked As Boolean
@@ -133,54 +149,74 @@ Protected Class Puzzle
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  // TODO: We need to find out first from json what Sudoku Size we're dealing with
-		  // Only then call Constructor with correct N.
-		  Var N As Integer = 9
-		  Me.Constructor(N)
-		  
 		  ' Init with String representation of a Sudoku grid
 		  Const kExceptionMessage = "Invalid String representation of a Sudoku"
 		  
 		  s = s.Trim
 		  If (s = "") Then Raise New InvalidArgumentException(kExceptionMessage, 1)
 		  
-		  ' Sanity
-		  If (s.Bytes < N*N) Or (s.Bytes > 2048) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
+		  ' Sanity - basic length check
+		  If (s.Bytes < 16) Or (s.Bytes > 4096) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		  
+		  s = s.ReplaceLineEndings(" ")
 		  
-		  s = s.ReplaceLineEndings("")
-		  
-		  Var currentChar As String
-		  Var currentVal As Integer
+		  ' Parse all numbers from the string
+		  ' For N<=9: single digit format "530070000..." 
+		  ' For N>9: space/comma separated format "1 2 0 15 16..."
 		  Var numbers() As Integer
-		  For pos As Integer = 0 To s.Bytes
-		    currentVal = -1
-		    currentChar = s.MiddleBytes(pos, 1)
-		    
-		    Select Case currentChar
-		    Case "0"
-		      currentVal = 0
-		    Else
-		      currentVal = currentChar.ToInteger
-		      If (currentVal < 1) Then
-		        'invalid
-		        Continue
-		      End If
-		    End Select
-		    
-		    If (currentVal < 0) Or (currentVal > N) Then
-		      'invalid
-		      Continue
-		    End If
-		    
-		    numbers.Add(currentVal)
-		  Next
 		  
-		  ' Sanity
-		  If (numbers.Count <> N * N) Then
-		    'invalid
+		  ' Check if string contains separators (spaces or commas) - indicates multi-digit format
+		  Var hasSeparators As Boolean = (s.IndexOf(" ") >= 0) Or (s.IndexOf(",") >= 0)
+		  
+		  If hasSeparators Then
+		    ' Multi-digit format: split by spaces/commas
+		    s = s.ReplaceAll(",", " ")
+		    Var parts() As String = s.Split(" ")
+		    For Each part As String In parts
+		      part = part.Trim
+		      If part = "" Then Continue
+		      
+		      Var val As Integer = part.ToInteger
+		      ' "0" returns 0, non-numeric also returns 0 but we accept 0 as empty cell
+		      If part = "0" Or val > 0 Then
+		        numbers.Add(val)
+		      ElseIf part = "." Or part = "_" Then
+		        ' Common representations for empty cells
+		        numbers.Add(0)
+		      End If
+		    Next
+		  Else
+		    ' Single digit format (N<=9): each character is a digit
+		    For pos As Integer = 0 To s.Length - 1
+		      Var currentChar As String = s.Middle(pos, 1)
+		      
+		      Select Case currentChar
+		      Case "0", "."
+		        numbers.Add(0)
+		      Case "1" To "9"
+		        numbers.Add(currentChar.ToInteger)
+		      End Select
+		    Next
+		  End If
+		  
+		  ' Determine N from the count of numbers
+		  Var cellCount As Integer = numbers.Count
+		  Var sqrtVal As Double = Sqrt(cellCount)
+		  Var N As Integer = CType(sqrtVal, Integer)
+		  
+		  If N * N <> cellCount Then
 		    Raise New InvalidArgumentException(kExceptionMessage, 3)
 		  End If
+		  
+		  ' Validate that all values are in range [0, N]
+		  For i As Integer = 0 To numbers.LastIndex
+		    If numbers(i) < 0 Or numbers(i) > N Then
+		      Raise New InvalidArgumentException(kExceptionMessage, 4)
+		    End If
+		  Next
+		  
+		  ' Now we know N, construct the grid
+		  Me.Constructor(N)
 		  
 		  ' Valid String to build a Sudoku
 		  Me.ClearGrid
@@ -292,11 +328,10 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, isPuzzle As Boolean)
-		  // TODO: This method is still hardcoded for a 3x3 Sudoku
-		  // Needs to be changed to use mGrid.Settings (N, BoxWidth, BoxHeight)
-		  Var N As Integer = 9
+		  Var N As Integer = mGrid.Settings.N
+		  Var boxWidth As Integer = mGrid.Settings.BoxWidth
+		  Var boxHeight As Integer = mGrid.Settings.BoxHeight
 		  
-		  Var block As Integer = N \ 3
 		  Var cell As Double = sizePoints / N
 		  
 		  ' Thin grid lines
@@ -309,12 +344,14 @@ Protected Class Puzzle
 		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
 		  Next
 		  
-		  ' Thicker block separators (inside)
+		  ' Thicker block separators (inside) - vertical lines at BoxWidth intervals, horizontal at BoxHeight
 		  g.PenSize = If(isPuzzle, 1.0, 0.5)
 		  g.DrawingColor = Color.Black
-		  For i As Integer = block To N - 1 Step block
+		  For i As Integer = boxWidth To N - 1 Step boxWidth
 		    Var x As Double = topLeftX + i * cell
 		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints)
+		  Next
+		  For i As Integer = boxHeight To N - 1 Step boxHeight
 		    Var y As Double = topLeftY + i * cell
 		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
 		  Next
@@ -508,7 +545,7 @@ Protected Class Puzzle
 		    Return True
 		  End If
 		  
-		  ' Try all possible numbers (1-9) for this empty cell in random order
+		  ' Try all possible numbers (1-N) for this empty cell in random order
 		  For Each value As Integer In Me.GenerateRandomValues
 		    ' Check if placing value here is allowed by Sudoku rules
 		    If mGrid.IsValueValid(row, col, value) Then
@@ -529,7 +566,7 @@ Protected Class Puzzle
 		    End If
 		  Next
 		  
-		  ' All numbers 1-9 failed in this cell
+		  ' All numbers 1-N failed in this cell
 		  ' Signal to the previous recursive call that it must backtrack
 		  Return False
 		End Function
@@ -752,6 +789,9 @@ Protected Class Puzzle
 		  
 		  Var N As Integer = mGrid.Settings.N
 		  
+		  ' For N>9, use space-separated format to handle multi-digit values
+		  Var separator As String = If(N > 9, " ", "")
+		  
 		  Var rows() As String
 		  For row As Integer = 0 To N-1
 		    Var cols() As String
@@ -760,7 +800,7 @@ Protected Class Puzzle
 		      cols.Add(mGrid.Get(row, col).ToString)
 		    Next
 		    
-		    rows.Add(String.FromArray(cols, ""))
+		    rows.Add(String.FromArray(cols, separator))
 		  Next
 		  
 		  Return String.FromArray(rows, EndOfLine.UNIX)
