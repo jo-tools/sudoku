@@ -11,7 +11,7 @@ Begin DesktopWindow MainWindow
    HasMaximizeButton=   False
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   620
+   Height          =   555
    ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
@@ -46,42 +46,11 @@ Begin DesktopWindow MainWindow
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   20
+      TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   510
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   160
-   End
-   Begin SudokuButton btnEmpty
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "#App.kSudokuEmpty"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   420
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   7
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   120
+      Top             =   445
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -106,14 +75,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   21
+      TabIndex        =   18
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelSudokuStatus"
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   548
+      Top             =   483
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -138,14 +107,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   22
+      TabIndex        =   19
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   580
+      Top             =   515
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -172,11 +141,11 @@ Begin DesktopWindow MainWindow
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   11
+      TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   245
+      Top             =   180
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -388,98 +357,6 @@ Begin DesktopWindow MainWindow
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin SudokuPopupMenu lstNumClues
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      InitialValue    =   ""
-      Italic          =   False
-      Left            =   420
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      Scope           =   2
-      SelectedRowIndex=   -1
-      TabIndex        =   8
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   165
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   55
-   End
-   Begin SudokuLabel labNumClues
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   480
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   2
-      Selectable      =   False
-      TabIndex        =   9
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "#Translations.kLabelNumClues"
-      TextAlignment   =   0
-      TextColor       =   &c000000
-      Tooltip         =   ""
-      Top             =   165
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   75
-   End
-   Begin SudokuButton btnRandom
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "#App.kSudokuRandom"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   420
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   10
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   200
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   160
-   End
    Begin SudokuCheckbox chkShowHints
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -498,11 +375,11 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   13
+      TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   315
+      Top             =   250
       Transparent     =   False
       Underline       =   False
       Value           =   False
@@ -528,11 +405,11 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   14
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   340
+      Top             =   275
       Transparent     =   False
       Underline       =   False
       Value           =   False
@@ -559,14 +436,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   12
+      TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelShow"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   290
+      Top             =   225
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -591,14 +468,14 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   15
+      TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelExclusion"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   370
+      Top             =   305
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -622,11 +499,11 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   16
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   395
+      Top             =   330
       Transparent     =   False
       Underline       =   False
       Value           =   False
@@ -652,11 +529,11 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   17
+      TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   420
+      Top             =   355
       Transparent     =   False
       Underline       =   False
       Value           =   False
@@ -682,11 +559,11 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   19
+      TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   470
+      Top             =   405
       Transparent     =   False
       Underline       =   False
       Value           =   False
@@ -712,17 +589,48 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   18
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   445
+      Top             =   380
       Transparent     =   False
       Underline       =   False
       Value           =   False
       Visible         =   True
       VisualState     =   0
       Width           =   170
+   End
+   Begin SudokuButton btnNew
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "#App.kSudokuNew"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   420
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   2
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   120
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   160
    End
 End
 #tag EndDesktopWindow
@@ -1015,15 +923,6 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
-		Function SudokuEmpty() As Boolean Handles SudokuEmpty.Action
-		  Self.ActionEmpty
-		  
-		  Return True
-		  
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
 		Function SudokuExclusionHiddenSubsets() As Boolean Handles SudokuExclusionHiddenSubsets.Action
 		  Self.mExclusionParams.ExcludeHiddenSubsets = (Not Self.mExclusionParams.ExcludeHiddenSubsets)
 		  Self.RefreshControls
@@ -1073,8 +972,8 @@ End
 	#tag EndMenuHandler
 
 	#tag MenuHandler
-		Function SudokuRandom() As Boolean Handles SudokuRandom.Action
-		  Self.ActionRandom
+		Function SudokuNew() As Boolean Handles SudokuNew.Action
+		  Self.ActionNew
 		  
 		  Return True
 		  
@@ -1201,6 +1100,38 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub ActionNew()
+		  Var w As New SudokuNew(Self.SudokuPuzzle.GetGridSettings.N, mCluesFactor)
+		  
+		  AddHandler w.ActionNew, WeakAddressOf ActionNewExecute
+		  
+		  w.ShowModal(Self)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionNewExecute(sender As SudokuNew, newN As Integer, newCluesFactor As Double)
+		  RemoveHandler sender.ActionNew, WeakAddressOf ActionNewExecute
+		  sender.Close
+		  
+		  Var N As Integer = newN
+		  Var numClues As Integer = CType(Ceiling(newCluesFactor * (N*N)), Integer)
+		  
+		  mCluesFactor = newCluesFactor
+		  
+		  
+		  If (numClues > 0) Then
+		    Me.ActionRandom(n, numClues)
+		  Else
+		    Me.SudokuPuzzle = New Sudoku.Puzzle(n)
+		    Me.ShowSudoku
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub ActionOpen(f As FolderItem)
 		  Try
 		    If (f = Nil) Then
@@ -1244,8 +1175,8 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionRandom()
-		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		Private Sub ActionRandom(n As Integer, numClues As Integer)
+		  Me.SudokuPuzzle = New Sudoku.Puzzle(n)
 		  Call Me.SudokuPuzzle.GenerateRandomPuzzle(numClues)
 		  Me.ShowSudoku
 		  Me.ActionLock
@@ -1317,10 +1248,7 @@ End
 		      json.Value(kJSONKeyExcludeHiddenSubsets) = mExclusionParams.ExcludeHiddenSubsets
 		      json.Value(kJSONKeyExcludeXWing) = mExclusionParams.ExcludeXWing
 		      
-		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		      If (randomNumClues > 0) Then
-		        json.Value(kJSONKeyRandomNumClues) = randomNumClues
-		      End If
+		      json.Value(kJSONKeyCluesFactor1000) = CType(Ceiling(mCluesFactor * 1000), Integer)
 		      
 		      Var jsonOptions As New JSONOptions
 		      jsonOptions.Compact = False
@@ -1383,16 +1311,8 @@ End
 		    If json.HasKey(kJSONKeyExcludeXWing) Then
 		      mExclusionParams.ExcludeXWing = json.Lookup(kJSONKeyExcludeXWing, mExclusionParams.ExcludeXWing).BooleanValue
 		    End If
-		    If json.HasKey(kJSONKeyRandomNumClues) Then
-		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		      randomNumClues = json.Lookup(kJSONKeyRandomNumClues, randomNumClues).IntegerValue
-		      If (lstNumClues.SelectedRowText <> randomNumClues.ToString) Then
-		        Try
-		          lstNumClues.SelectRowWithText(randomNumClues.ToString)
-		        Catch err As InvalidArgumentException
-		          ' Silently ignore
-		        End Try
-		      End If
+		    If json.HasKey(kJSONKeyCluesFactor1000) Then
+		      mCluesFactor = json.Lookup(kJSONKeyCluesFactor1000, 0).IntegerValue / 1000
 		    End If
 		    
 		    
@@ -1430,7 +1350,7 @@ End
 		    
 		  Finally
 		    ' Start with a Random Sudoku
-		    Me.ActionRandom
+		    Me.ActionRandom(9, 36)
 		    
 		  End Try
 		  
@@ -1532,7 +1452,6 @@ End
 		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
-		  btnEmpty.Enabled = (Not isEmpty)
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
 		  
 		  labExclusion.Enabled = me.mShowCandidates
@@ -1542,8 +1461,6 @@ End
 		  chkExcludeXWing.Enabled = me.mShowCandidates
 		  
 		  ' Menu
-		  SudokuEmpty.Enabled = btnEmpty.Enabled
-		  SudokuRandom.Enabled = btnRandom.Enabled
 		  SudokuLock.Enabled = btnLock.Enabled
 		  SudokuSolve.Enabled = btnSolve.Enabled
 		  
@@ -1774,6 +1691,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mCluesFactor As Double = 0.444
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mExclusionParams As Sudoku.ExclusionParams
 	#tag EndProperty
 
@@ -1829,6 +1750,9 @@ End
 	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
 	#tag EndConstant
 
+	#tag Constant, Name = kJSONKeyCluesFactor1000, Type = String, Dynamic = False, Default = \"cluesFactor", Scope = Private
+	#tag EndConstant
+
 	#tag Constant, Name = kJSONKeyExcludeHiddenSubsets, Type = String, Dynamic = False, Default = \"excludeHiddenSubsets", Scope = Private
 	#tag EndConstant
 
@@ -1839,9 +1763,6 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyExcludeXWing, Type = String, Dynamic = False, Default = \"excludeXWing", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyShowCandidates, Type = String, Dynamic = False, Default = \"showCandidates", Scope = Private
@@ -1880,79 +1801,6 @@ End
 		  Self.ActionSolve
 		  
 		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnEmpty
-	#tag Event
-		Sub Pressed()
-		  Self.ActionEmpty
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Function ConstructContextualMenu(base As DesktopMenuItem, x As Integer, y As Integer) As Boolean
-		  #Pragma unused y
-		  #Pragma unused x
-		  
-		  #If DebugBuild Then
-		    For i As Integer = 1 To 10
-		      Var debugExample1 As New DesktopMenuItem("Sudoku " + i.ToString)
-		      debugExample1.Name = "sudoku" + i.ToString
-		      base.AddMenu(debugExample1)
-		    Next
-		    Return True
-		    
-		  #EndIf
-		  
-		  Return False
-		  
-		End Function
-	#tag EndEvent
-	#tag Event
-		Function ContextualMenuItemSelected(selectedItem As DesktopMenuItem) As Boolean
-		  #If DebugBuild Then
-		    Var loadSudoku As String
-		    Select Case selectedItem.Name
-		    Case "sudoku1"
-		      loadSudoku = "000014000030000200070000000000900030601000000000000080200000104000050600000708000"
-		    Case "sudoku2"
-		      loadSudoku = "100006080064000000000040007000090600070400500500070100050000320300008000400000000"
-		    Case "sudoku3"
-		      loadSudoku = "700000000086090000050640800008500043010070020540003100004087060000020710000000009"
-		    Case "sudoku4"
-		      loadSudoku = "400000805030000000000700000020000060000080400000010000000603070500200000104000000"
-		    Case "sudoku5"
-		      loadSudoku = "480300000000000071020000000705000060000200800000000000001076000300000400000050000"
-		    Case "sudoku6"
-		      loadSudoku = "005000987040050001007000000200048000090100000600200000300600200000009070000000500"
-		    Case "sudoku7"
-		      loadSudoku = "098010000200000060000000000000302050084000000000600000000040809300500000000000100"
-		    Case "sudoku8"
-		      loadSudoku = "000501000090000800060000000401000000000070090000000030800000105000200400000360000"
-		    Case "sudoku9"
-		      loadSudoku = "080004050000700300000000000010085000600000200000040000302600000000000041700000000"
-		    Case "sudoku10"
-		      loadSudoku = "000031900300900601419867352080302017053100026102000039000010203000043100031009700"
-		    End Select
-		    
-		    If (loadSudoku <> "") Then
-		      Self.SudokuPuzzle.ClearGrid
-		      Self.SudokuPuzzle = New Sudoku.Puzzle(9) 'intentionally because of above values
-		      
-		      For row As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
-		        For col As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
-		          Var index As Integer = row * Self.SudokuPuzzle.GetGridSettings.N + col
-		          Self.SudokuPuzzle.SetGridValue(row, col) = loadSudoku.Middle(index, 1).ToInteger
-		        Next
-		      Next
-		      
-		      Self.ShowSudoku
-		    End If
-		  #EndIf
-		  
-		  
-		  
-		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag Events btnLock
@@ -2129,32 +1977,6 @@ End
 		End Function
 	#tag EndEvent
 #tag EndEvents
-#tag Events lstNumClues
-	#tag Event
-		Sub Opening()
-		  Me.RemoveAllRows
-		  
-		  Me.AddRow("24")
-		  Me.AddRow("28")
-		  Me.AddRow("32")
-		  Me.AddRow("40")
-		  Me.AddRow("48")
-		  Me.AddRow("56")
-		  Me.AddRow("64")
-		  
-		  Me.SelectedRowIndex = 3
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnRandom
-	#tag Event
-		Sub Pressed()
-		  Self.ActionRandom
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events chkShowHints
 	#tag Event
 		Sub Opening()
@@ -2243,6 +2065,80 @@ End
 		  Self.RefreshControls
 		  
 		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnNew
+	#tag Event
+		Sub Pressed()
+		  Self.ActionNew
+		  
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function ConstructContextualMenu(base As DesktopMenuItem, x As Integer, y As Integer) As Boolean
+		  #Pragma unused y
+		  #Pragma unused x
+		  
+		  #If DebugBuild Then
+		    For i As Integer = 1 To 10
+		      Var debugExample1 As New DesktopMenuItem("Sudoku " + i.ToString)
+		      debugExample1.Name = "sudoku" + i.ToString
+		      base.AddMenu(debugExample1)
+		    Next
+		    Return True
+		    
+		  #EndIf
+		  
+		  Return False
+		  
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function ContextualMenuItemSelected(selectedItem As DesktopMenuItem) As Boolean
+		  #If DebugBuild Then
+		    Var loadSudoku As String
+		    Select Case selectedItem.Name
+		    Case "sudoku1"
+		      loadSudoku = "000014000030000200070000000000900030601000000000000080200000104000050600000708000"
+		    Case "sudoku2"
+		      loadSudoku = "100006080064000000000040007000090600070400500500070100050000320300008000400000000"
+		    Case "sudoku3"
+		      loadSudoku = "700000000086090000050640800008500043010070020540003100004087060000020710000000009"
+		    Case "sudoku4"
+		      loadSudoku = "400000805030000000000700000020000060000080400000010000000603070500200000104000000"
+		    Case "sudoku5"
+		      loadSudoku = "480300000000000071020000000705000060000200800000000000001076000300000400000050000"
+		    Case "sudoku6"
+		      loadSudoku = "005000987040050001007000000200048000090100000600200000300600200000009070000000500"
+		    Case "sudoku7"
+		      loadSudoku = "098010000200000060000000000000302050084000000000600000000040809300500000000000100"
+		    Case "sudoku8"
+		      loadSudoku = "000501000090000800060000000401000000000070090000000030800000105000200400000360000"
+		    Case "sudoku9"
+		      loadSudoku = "080004050000700300000000000010085000600000200000040000302600000000000041700000000"
+		    Case "sudoku10"
+		      loadSudoku = "000031900300900601419867352080302017053100026102000039000010203000043100031009700"
+		    End Select
+		    
+		    If (loadSudoku <> "") Then
+		      Self.SudokuPuzzle.ClearGrid
+		      Self.SudokuPuzzle = New Sudoku.Puzzle(9) 'intentionally because of above values
+		      
+		      For row As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
+		        For col As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
+		          Var index As Integer = row * Self.SudokuPuzzle.GetGridSettings.N + col
+		          Self.SudokuPuzzle.SetGridValue(row, col) = loadSudoku.Middle(index, 1).ToInteger
+		        Next
+		      Next
+		      
+		      Self.ShowSudoku
+		    End If
+		  #EndIf
+		  
+		  
+		  
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior

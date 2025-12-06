@@ -174,23 +174,12 @@ Begin Menu MainMenuBar
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin DesktopMenuItem SudokuEmpty
+      Begin DesktopMenuItem SudokuNew
          SpecialMenu = 0
          Index = -2147483648
-         Text = "#App.kSudokuEmpty"
+         Text = "#App.kSudokuNew"
          ShortcutKey = "N"
          Shortcut = "Cmd+N"
-         MenuModifier = True
-         AutoEnabled = True
-         AutoEnable = True
-         Visible = True
-      End
-      Begin DesktopMenuItem SudokuRandom
-         SpecialMenu = 0
-         Index = -2147483648
-         Text = "#App.kSudokuRandom"
-         ShortcutKey = "R"
-         Shortcut = "Cmd+R"
          MenuModifier = True
          AutoEnabled = True
          AutoEnable = True

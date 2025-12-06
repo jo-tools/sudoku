@@ -1,9 +1,69 @@
 #tag Module
 Protected Module Translations
+	#tag Constant, Name = kButtonCancel, Type = String, Dynamic = True, Default = \"Cance&l", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Abbrechen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Annuler"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Cance&lar"
+	#tag EndConstant
+
+	#tag Constant, Name = kButtonCreate, Type = String, Dynamic = True, Default = \"&Create", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Erstellen"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Cr\xC3\xA9er"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Crear"
+	#tag EndConstant
+
 	#tag Constant, Name = kLabelContact, Type = String, Dynamic = True, Default = \"Contact", Scope = Public
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Kontakt"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Contact"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Contacto"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelDifficulty, Type = String, Dynamic = True, Default = \"Difficulty", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Schwierigkeit"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Difficult\xC3\xA9"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Dificultad"
+	#tag EndConstant
+
+	#tag Constant, Name = kDifficultyVeryHard, Type = String, Dynamic = True, Default = \"Very hard", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sehr schwierig"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Tr\xC3\xA8s difficile"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Muy dif\xC3\xADcil"
+	#tag EndConstant
+
+	#tag Constant, Name = kDifficultyHard, Type = String, Dynamic = True, Default = \"Hard", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Schwierig"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Difficile"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Dif\xC3\xADcil"
+	#tag EndConstant
+
+	#tag Constant, Name = kDifficultyMediumHard, Type = String, Dynamic = True, Default = \"Medium hard", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Mittel schwierig"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Moyennement difficile"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Medio dif\xC3\xADcil"
+	#tag EndConstant
+
+	#tag Constant, Name = kDifficultyMedium, Type = String, Dynamic = True, Default = \"Medium", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Mittel"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Moyen"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Medio"
+	#tag EndConstant
+
+	#tag Constant, Name = kDifficultyMediumEasy, Type = String, Dynamic = True, Default = \"Medium easy", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Mittel leicht"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Moyennement facile"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Medio f\xC3\xA1cil"
+	#tag EndConstant
+
+	#tag Constant, Name = kDifficultyEasy, Type = String, Dynamic = True, Default = \"Easy", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Leicht"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Facile"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"F\xC3\xA1cil"
+	#tag EndConstant
+
+	#tag Constant, Name = kDifficultyVeryEasy, Type = String, Dynamic = True, Default = \"Very easy", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sehr leicht"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Tr\xC3\xA8s facile"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Muy f\xC3\xA1cil"
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelExclusion, Type = String, Dynamic = True, Default = \"Exclusion", Scope = Public
@@ -18,16 +78,16 @@ Protected Module Translations
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Exportar"
 	#tag EndConstant
 
-	#tag Constant, Name = kLabelNumClues, Type = String, Dynamic = True, Default = \"Clues", Scope = Public
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Vorgaben"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Indices"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Pistas"
-	#tag EndConstant
-
 	#tag Constant, Name = kLabelShow, Type = String, Dynamic = True, Default = \"Show", Scope = Public
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Anzeigen"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Afficher"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Mostrar"
+	#tag EndConstant
+
+	#tag Constant, Name = kLabelSudokuSizeN, Type = String, Dynamic = True, Default = \"Size", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"Gr\xC3\xB6sse"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Taille"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"Tama\xC3\xB1o"
 	#tag EndConstant
 
 	#tag Constant, Name = kLabelSudokuStatus, Type = String, Dynamic = True, Default = \"Sudoku Status", Scope = Public
@@ -52,12 +112,6 @@ Protected Module Translations
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Sperren"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Verrou"
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"Bloqueo"
-	#tag EndConstant
-
-	#tag Constant, Name = kSudokuRandom, Type = String, Dynamic = True, Default = \"Random", Scope = Public
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"Zufall"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Al\xC3\xA9atoire"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"Aleatorio"
 	#tag EndConstant
 
 	#tag Constant, Name = kSudokuShowCandidates, Type = String, Dynamic = True, Default = \"Candidates", Scope = Public
