@@ -5,6 +5,7 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Run all enabled exclusion filters until no more candidates change.
 		  Var foundExclusion As Boolean = True
 		  
 		  ' Applying Filters might reveal new Exclusions
@@ -49,18 +50,22 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Look for hidden pairs/triples/quads in each row, column and block.
 		  Var foundExclusion As Boolean
 		  
 		  Var N As Integer = mGrid.Settings.N
 		  Var blockRows As Integer = N \ mGrid.Settings.BoxHeight
 		  Var blockCols As Integer = N \ mGrid.Settings.BoxWidth
 		  
+		  ' Process all rows.
 		  For r As Integer = 0 To N - 1
 		    If FilterHiddenSubsetsProcessUnit(GetRowIndices(r)) Then foundExclusion = True
 		  Next
+		  ' Process all columns.
 		  For c As Integer = 0 To N - 1
 		    If FilterHiddenSubsetsProcessUnit(GetColIndices(c)) Then foundExclusion = True
 		  Next
+		  ' Process all blocks.
 		  For br As Integer = 0 To blockRows - 1
 		    For bc As Integer = 0 To blockCols - 1
 		      If FilterHiddenSubsetsProcessUnit(GetBlockIndices(br, bc)) Then foundExclusion = True
@@ -75,14 +80,17 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Work on a single unit (row/column/block) and search for hidden subsets.
 		  Var N As Integer = mGrid.Settings.N
 		  
+		  ' Collect only cells in this unit that still have candidates.
 		  Var cells() As Integer
 		  For Each p As Integer In unitPositions
 		    If HasCandidates(mCellCandidates(p)) Then cells.Add(p)
 		  Next
 		  If cells.Count < 2 Then Return False
 		  
+		  ' For each value, remember in which cells of this unit it can still appear.
 		  Var valueList() As Integer
 		  Var valueCellsList() As Variant
 		  For value As Integer = 1 To N
@@ -104,6 +112,7 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
+		  ' Try all combinations of 2..4 values to see if they form a hidden subset.
 		  Var maxSubset As Integer = Min(4, valueList.Count)
 		  Var tmpIdx(3) As Integer
 		  For subsetSize As Integer = 2 To maxSubset
@@ -120,6 +129,7 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Recursively build combinations of values and check if they form a hidden subset.
 		  Var foundExclusion As Boolean
 		  
 		  Var n As Integer = valueList.Count
@@ -131,6 +141,8 @@ Private Class CandidatesSearcher
 		        If unionCells.IndexOf(cidx) = -1 Then unionCells.Add(cidx)
 		      Next
 		    Next
+		    ' If the union of cells matches the subset size, we have a hidden subset.
+		    ' These values only occur in this exact set of cells → remove other values there.
 		    If unionCells.Count = subsetSize Then
 		      Var allowedVals() As Integer
 		      For i As Integer = 0 To subsetSize - 1
@@ -167,6 +179,8 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Detect "locked candidates" inside a block and remove that value
+		  ' from the rest of the affected row/column outside the block.
 		  Var foundExclusion As Boolean
 		  
 		  Var N As Integer = mGrid.Settings.N
@@ -182,6 +196,7 @@ Private Class CandidatesSearcher
 		      
 		      For value As Integer = 1 To N
 		        Var positions() As Integer
+		        ' Collect all cells in this block that still allow this value.
 		        For rr As Integer = blockR To blockR + boxH - 1
 		          For cc As Integer = blockC To blockC + boxW - 1
 		            Var idx As Integer = rr * N + cc
@@ -204,6 +219,7 @@ Private Class CandidatesSearcher
 		        Var firstR As Integer = positions(0) \ N
 		        Var firstC As Integer = positions(0) Mod N
 		        
+		        ' Check if all candidate cells lie in a single row or column.
 		        For i As Integer = 1 To positions.LastIndex
 		          If (positions(i) \ N) <> firstR Then sameRow = False
 		          If (positions(i) Mod N) <> firstC Then sameCol = False
@@ -211,7 +227,8 @@ Private Class CandidatesSearcher
 		        
 		        If (Not sameRow) And (Not sameCol) Then Continue
 		        
-		        ' Remove outside-block candidates
+		        ' Remove candidates for this value from the same row/column
+		        ' outside the current block.
 		        If sameRow Then
 		          For cc As Integer = 0 To N - 1
 		            If cc >= blockC And cc <= blockC + boxW - 1 Then Continue
@@ -256,6 +273,7 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Look for naked pairs/triples/quads in each row, column and block.
 		  Var foundExclusion As Boolean
 		  
 		  Var N As Integer = mGrid.Settings.N
@@ -284,6 +302,8 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Work on a single unit and look for cells that share the same small
+		  ' candidate set (naked pairs/triples/quads).
 		  Var N As Integer = mGrid.Settings.N
 		  
 		  Var cells() As Integer
@@ -292,6 +312,7 @@ Private Class CandidatesSearcher
 		  Next
 		  If cells.Count < 2 Then Return False
 		  
+		  ' Build a list of candidate values for each cell in this unit.
 		  Var candList() As Variant
 		  For Each ci As Integer In cells
 		    Var list() As Integer
@@ -306,6 +327,8 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
+		  ' Try all combinations of 2..4 cells to see if their union of values
+		  ' matches the subset size (naked subset detected).
 		  Var maxSubset As Integer = Min(4, candList.Count)
 		  Var tmpIdx(3) As Integer
 		  For subsetSize As Integer = 2 To maxSubset
@@ -322,6 +345,7 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Recursively build combinations of cells and check if they form a naked subset.
 		  Var foundExclusion As Boolean
 		  
 		  Var n As Integer = candList.Count
@@ -380,12 +404,13 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Search for X-Wing patterns for each value across rows and columns.
 		  Var foundExclusion As Boolean
 		  
 		  Var N As Integer = mGrid.Settings.N
 		  
 		  For v As Integer = 1 To N
-		    ' Row-based X-Wing
+		    ' Row-based X-Wing: find rows where value v appears in exactly two columns.
 		    Var rowCols() As Variant
 		    Redim rowCols(N - 1)
 		    For r As Integer = 0 To N - 1
@@ -400,7 +425,7 @@ Private Class CandidatesSearcher
 		    Next
 		    If FilterXWingFindPairs(rowCols, v, True) Then foundExclusion = True
 		    
-		    ' Column-based X-Wing
+		    ' Column-based X-Wing: same idea, but swap roles of rows/columns.
 		    Var colRows() As Variant
 		    Redim colRows(N - 1)
 		    For c As Integer = 0 To N - 1
@@ -425,6 +450,9 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Given candidate positions per line (row/column), find pairs of lines
+		  ' that share the same two positions and eliminate v elsewhere in those
+		  ' columns/rows (classic X-Wing elimination).
 		  Var foundExclusion As Boolean
 		  
 		  Var N As Integer = mGrid.Settings.N
@@ -470,6 +498,8 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  ' Build the full matrix of cell candidates and then run all enabled
+		  ' exclusion filters.
 		  ' Reset Array for each Sudoku Cell
 		  Redim mCellCandidates(-1)
 		  mCellCandidates.ResizeTo(mGrid.Settings.N*mGrid.Settings.N-1)
@@ -539,6 +569,8 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function GetBlockIndices(blockRow As Integer, blockCol As Integer) As Integer()
+		  ' Return linear indices for all cells in the given block.
+		  
 		  Var N As Integer = mGrid.Settings.N
 		  Var boxW As Integer = mGrid.Settings.BoxWidth
 		  Var boxH As Integer = mGrid.Settings.BoxHeight
@@ -558,6 +590,8 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function GetColIndices(col As Integer) As Integer()
+		  ' Return linear indices for all cells in the given column.
+		  
 		  Var N As Integer = mGrid.Settings.N
 		  Var pos() As Integer
 		  Redim pos(N - 1)
@@ -570,6 +604,8 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function GetRowIndices(row As Integer) As Integer()
+		  ' Return linear indices for all cells in the given row.
+		  
 		  Var N As Integer = mGrid.Settings.N
 		  Var pos() As Integer
 		  Redim pos(N - 1)
@@ -582,6 +618,7 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function HasCandidates(c As CellCandidates) As Boolean
+		  ' Return True if the cell still has at least one active candidate.
 		  For k As Integer = 0 To mGrid.Settings.N - 1
 		    If c.Candidates(k).Hint = CandidateHint.Candidate Then Return True
 		  Next
