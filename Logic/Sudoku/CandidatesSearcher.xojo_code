@@ -51,15 +51,18 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
-		  ' Note: Currently Hardcoded for 9x9 Sudoku
-		  For r As Integer = 0 To 8
+		  Var N As Integer = mGrid.Settings.N
+		  Var blockRows As Integer = N \ mGrid.Settings.BoxHeight
+		  Var blockCols As Integer = N \ mGrid.Settings.BoxWidth
+		  
+		  For r As Integer = 0 To N - 1
 		    If FilterHiddenSubsetsProcessUnit(GetRowIndices(r)) Then foundExclusion = True
 		  Next
-		  For c As Integer = 0 To 8
+		  For c As Integer = 0 To N - 1
 		    If FilterHiddenSubsetsProcessUnit(GetColIndices(c)) Then foundExclusion = True
 		  Next
-		  For br As Integer = 0 To 2
-		    For bc As Integer = 0 To 2
+		  For br As Integer = 0 To blockRows - 1
+		    For bc As Integer = 0 To blockCols - 1
 		      If FilterHiddenSubsetsProcessUnit(GetBlockIndices(br, bc)) Then foundExclusion = True
 		    Next
 		  Next
@@ -72,6 +75,8 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  Var N As Integer = mGrid.Settings.N
+		  
 		  Var cells() As Integer
 		  For Each p As Integer In unitPositions
 		    If HasCandidates(mCellCandidates(p)) Then cells.Add(p)
@@ -80,10 +85,10 @@ Private Class CandidatesSearcher
 		  
 		  Var valueList() As Integer
 		  Var valueCellsList() As Variant
-		  For value As Integer = 1 To 9
+		  For value As Integer = 1 To N
 		    Var occ() As Integer
 		    For Each ci As Integer In cells
-		      For k As Integer = 0 To 8
+		      For k As Integer = 0 To N - 1
 		        If mCellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate And mCellCandidates(ci).Candidates(k).Value = value Then
 		          occ.Add(ci)
 		          Exit
@@ -132,7 +137,7 @@ Private Class CandidatesSearcher
 		        allowedVals.Add(valueList(currentIdx(i)))
 		      Next
 		      For Each ci as integer In unionCells
-		        For k As Integer = 0 To 8
+		        For k As Integer = 0 To mGrid.Settings.N - 1
 		          If mCellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
 		            If allowedVals.IndexOf(mCellCandidates(ci).Candidates(k).Value) = -1 Then
 		              mCellCandidates(ci).Candidates(k).Hint = CandidateHint.ExcludedAsHiddenSubset
@@ -164,19 +169,24 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
-		  ' Note: Currently Hardcoded for 9x9 Sudoku
-		  For blockRow As Integer = 0 To 2
-		    For blockCol As Integer = 0 To 2
-		      Var blockR As Integer = blockRow * 3
-		      Var blockC As Integer = blockCol * 3
+		  Var N As Integer = mGrid.Settings.N
+		  Var boxW As Integer = mGrid.Settings.BoxWidth
+		  Var boxH As Integer = mGrid.Settings.BoxHeight
+		  Var blockRows As Integer = N \ boxH
+		  Var blockCols As Integer = N \ boxW
+		  
+		  For blockRow As Integer = 0 To blockRows - 1
+		    For blockCol As Integer = 0 To blockCols - 1
+		      Var blockR As Integer = blockRow * boxH
+		      Var blockC As Integer = blockCol * boxW
 		      
-		      For value As Integer = 1 To 9
+		      For value As Integer = 1 To N
 		        Var positions() As Integer
-		        For rr As Integer = blockR To blockR + 2
-		          For cc As Integer = blockC To blockC + 2
-		            Var idx As Integer = rr * 9 + cc
+		        For rr As Integer = blockR To blockR + boxH - 1
+		          For cc As Integer = blockC To blockC + boxW - 1
+		            Var idx As Integer = rr * N + cc
 		            If HasCandidates(mCellCandidates(idx)) Then
-		              For k As Integer = 0 To 8
+		              For k As Integer = 0 To N - 1
 		                Var cand As Candidate = mCellCandidates(idx).Candidates(k)
 		                If cand.Hint = CandidateHint.Candidate and cand.Value = value Then
 		                  positions.Add(idx)
@@ -191,23 +201,23 @@ Private Class CandidatesSearcher
 		        
 		        Var sameRow As Boolean = True
 		        Var sameCol As Boolean = True
-		        Var firstR As Integer = positions(0) \ 9
-		        Var firstC As Integer = positions(0) Mod 9
+		        Var firstR As Integer = positions(0) \ N
+		        Var firstC As Integer = positions(0) Mod N
 		        
 		        For i As Integer = 1 To positions.LastIndex
-		          If (positions(i) \ 9) <> firstR Then sameRow = False
-		          If (positions(i) Mod 9) <> firstC Then sameCol = False
+		          If (positions(i) \ N) <> firstR Then sameRow = False
+		          If (positions(i) Mod N) <> firstC Then sameCol = False
 		        Next
 		        
 		        If (Not sameRow) And (Not sameCol) Then Continue
 		        
 		        ' Remove outside-block candidates
 		        If sameRow Then
-		          For cc As Integer = 0 To 8
-		            If cc >= blockC And cc <= blockC + 2 Then Continue
-		            Var idx2 As Integer = firstR * 9 + cc
+		          For cc As Integer = 0 To N - 1
+		            If cc >= blockC And cc <= blockC + boxW - 1 Then Continue
+		            Var idx2 As Integer = firstR * N + cc
 		            If HasCandidates(mCellCandidates(idx2)) Then
-		              For k As Integer = 0 To 8
+		              For k As Integer = 0 To N - 1
 		                If mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And mCellCandidates(idx2).Candidates(k).Value = value Then
 		                  mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
 		                  foundExclusion = True
@@ -218,11 +228,11 @@ Private Class CandidatesSearcher
 		        End If
 		        
 		        If sameCol Then
-		          For rr As Integer = 0 To 8
-		            If rr >= blockR And rr <= blockR + 2 Then Continue For
-		            Var idx2 As Integer = rr * 9 + firstC
+		          For rr As Integer = 0 To N - 1
+		            If rr >= blockR And rr <= blockR + boxH - 1 Then Continue For
+		            Var idx2 As Integer = rr * N + firstC
 		            If HasCandidates(mCellCandidates(idx2)) Then
-		              For k As Integer = 0 To 8
+		              For k As Integer = 0 To N - 1
 		                If mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.Candidate And mCellCandidates(idx2).Candidates(k).Value = value Then
 		                  mCellCandidates(idx2).Candidates(k).Hint = CandidateHint.ExcludedAsLockedCandidate
 		                  foundExclusion = True
@@ -248,15 +258,18 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
-		  ' Note: Currently Hardcoded for 9x9 Sudoku
-		  For r As Integer = 0 To 8
+		  Var N As Integer = mGrid.Settings.N
+		  Var blockRows As Integer = N \ mGrid.Settings.BoxHeight
+		  Var blockCols As Integer = N \ mGrid.Settings.BoxWidth
+		  
+		  For r As Integer = 0 To N - 1
 		    If FilterNakedSubsetsProcessUnit(GetRowIndices(r)) Then foundExclusion = True
 		  Next
-		  For c As Integer = 0 To 8
+		  For c As Integer = 0 To N - 1
 		    If FilterNakedSubsetsProcessUnit(GetColIndices(c)) Then foundExclusion = True
 		  Next
-		  For br As Integer = 0 To 2
-		    For bc As Integer = 0 To 2
+		  For br As Integer = 0 To blockRows - 1
+		    For bc As Integer = 0 To blockCols - 1
 		      If FilterNakedSubsetsProcessUnit(GetBlockIndices(br, bc)) Then foundExclusion = True
 		    Next
 		  Next
@@ -271,6 +284,8 @@ Private Class CandidatesSearcher
 		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  Var N As Integer = mGrid.Settings.N
+		  
 		  Var cells() As Integer
 		  For Each p As Integer In unitPositions
 		    If HasCandidates(mCellCandidates(p)) Then cells.Add(p)
@@ -280,7 +295,7 @@ Private Class CandidatesSearcher
 		  Var candList() As Variant
 		  For Each ci As Integer In cells
 		    Var list() As Integer
-		    For k As Integer = 0 To 8
+		    For k As Integer = 0 To N - 1
 		      If mCellCandidates(ci).Candidates(k).Hint = CandidateHint.Candidate Then
 		        list.Add(mCellCandidates(ci).Candidates(k).Value)
 		      End If
@@ -336,7 +351,7 @@ Private Class CandidatesSearcher
 		        If inSubset Then Continue
 		        
 		        Var ciOther As Integer = cells(other)
-		        For k As Integer = 0 To 8
+		        For k As Integer = 0 To mGrid.Settings.N - 1
 		          If mCellCandidates(ciOther).Candidates(k).Hint = CandidateHint.Candidate And _
 		            unionVals.IndexOf(mCellCandidates(ciOther).Candidates(k).Value) <> -1 Then
 		            mCellCandidates(ciOther).Candidates(k).Hint = CandidateHint.ExcludedAsNakedSubset
@@ -367,14 +382,16 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
-		  ' Note: Currently Hardcoded for 9x9 Sudoku
-		  For v As Integer = 1 To 9
+		  Var N As Integer = mGrid.Settings.N
+		  
+		  For v As Integer = 1 To N
 		    ' Row-based X-Wing
-		    Var rowCols(8) As Variant
-		    For r As Integer = 0 To 8
+		    Var rowCols() As Variant
+		    Redim rowCols(N - 1)
+		    For r As Integer = 0 To N - 1
 		      Var cols() As Integer
-		      For c As Integer = 0 To 8
-		        Var idx As Integer = r*9 + c
+		      For c As Integer = 0 To N - 1
+		        Var idx As Integer = r * N + c
 		        If mCellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
 		          cols.Add(c)
 		        End If
@@ -384,11 +401,12 @@ Private Class CandidatesSearcher
 		    If FilterXWingFindPairs(rowCols, v, True) Then foundExclusion = True
 		    
 		    ' Column-based X-Wing
-		    Var colRows(8) As Variant
-		    For c As Integer = 0 To 8
+		    Var colRows() As Variant
+		    Redim colRows(N - 1)
+		    For c As Integer = 0 To N - 1
 		      Var rows() As Integer
-		      For r As Integer = 0 To 8
-		        Var idx As Integer = r*9 + c
+		      For r As Integer = 0 To N - 1
+		        Var idx As Integer = r * N + c
 		        If mCellCandidates(idx).Candidates(v-1).Hint = CandidateHint.Candidate Then
 		          rows.Add(r)
 		        End If
@@ -409,25 +427,27 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
+		  Var N As Integer = mGrid.Settings.N
+		  
 		  ' Compare all pairs of lines (rows or columns)
-		  For l1 As Integer = 0 To 7
+		  For l1 As Integer = 0 To N - 2
 		    Var indices1() As Integer = lines(l1)
 		    If indices1.Count <> 2 Then Continue  ' X-Wing only
-		    For l2 As Integer = l1 + 1 To 8
+		    For l2 As Integer = l1 + 1 To N - 1
 		      Var indices2() As Integer = lines(l2)
 		      If indices2.Count <> 2 Then Continue
 		      
 		      ' Same candidate positions -> X-Wing found
 		      If indices1(0) = indices2(0) And indices1(1) = indices2(1) Then
 		        ' Exclude candidate from other lines
-		        For line As Integer = 0 To 8
+		        For line As Integer = 0 To N - 1
 		          If line = l1 Or line = l2 Then Continue
 		          For i As Integer = 0 To 1
 		            Var idx As Integer
 		            If isRow Then
-		              idx = line*9 + indices1(i)
+		              idx = line * N + indices1(i)
 		            Else
-		              idx = indices1(i)*9 + line
+		              idx = indices1(i) * N + line
 		            End If
 		            Var hint As CandidateHint = mCellCandidates(idx).Candidates(v-1).Hint
 		            If hint = CandidateHint.Candidate Then
@@ -490,13 +510,7 @@ Private Class CandidatesSearcher
 		    Next
 		  Next
 		  
-		  // TODO: Logic in ApplyFilters is currently hardcoded for a 9x9 Sudoku
-		  // Therefore we can currently only apply these Filters on that Sudoku Size.
-		  // Once the Logic works for all supported Sudoku Sizes, ApplyFilter can be
-		  // available for all.
-		  If (mGrid.Settings.N = 9) Then
-		    ApplyFilters(exclusionParams)
-		  End If
+		  ApplyFilters(exclusionParams)
 		  
 		  Return mCellCandidates
 		  
@@ -525,11 +539,16 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function GetBlockIndices(blockRow As Integer, blockCol As Integer) As Integer()
-		  Var pos(8) As Integer
+		  Var N As Integer = mGrid.Settings.N
+		  Var boxW As Integer = mGrid.Settings.BoxWidth
+		  Var boxH As Integer = mGrid.Settings.BoxHeight
+		  
+		  Var pos() As Integer
+		  Redim pos(N - 1)
 		  Var idx As Integer = 0
-		  For r As Integer = blockRow * 3 To blockRow * 3 + 2
-		    For c As Integer = blockCol * 3 To blockCol * 3 + 2
-		      pos(idx) = r * 9 + c
+		  For r As Integer = blockRow * boxH To blockRow * boxH + boxH - 1
+		    For c As Integer = blockCol * boxW To blockCol * boxW + boxW - 1
+		      pos(idx) = r * N + c
 		      idx = idx + 1
 		    Next
 		  Next
@@ -539,9 +558,11 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function GetColIndices(col As Integer) As Integer()
-		  Var pos(8) As Integer
-		  For row As Integer = 0 To 8
-		    pos(row) = row * 9 + col
+		  Var N As Integer = mGrid.Settings.N
+		  Var pos() As Integer
+		  Redim pos(N - 1)
+		  For row As Integer = 0 To N - 1
+		    pos(row) = row * N + col
 		  Next
 		  Return pos
 		End Function
@@ -549,9 +570,11 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function GetRowIndices(row As Integer) As Integer()
-		  Var pos(8) As Integer
-		  For col As Integer = 0 To 8
-		    pos(col) = row * 9 + col
+		  Var N As Integer = mGrid.Settings.N
+		  Var pos() As Integer
+		  Redim pos(N - 1)
+		  For col As Integer = 0 To N - 1
+		    pos(col) = row * N + col
 		  Next
 		  Return pos
 		End Function
@@ -559,7 +582,7 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function HasCandidates(c As CellCandidates) As Boolean
-		  For k As Integer = 0 To 8
+		  For k As Integer = 0 To mGrid.Settings.N - 1
 		    If c.Candidates(k).Hint = CandidateHint.Candidate Then Return True
 		  Next
 		  Return False
