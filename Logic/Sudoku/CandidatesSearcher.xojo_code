@@ -112,9 +112,11 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
-		  ' Try all combinations of 2..4 values to see if they form a hidden subset.
-		  Var maxSubset As Integer = Min(4, valueList.Count)
-		  Var tmpIdx(3) As Integer
+		  ' Try all combinations of 2..kMaxSubsetSize values to see if they form a hidden subset.
+		  ' We deliberately limit the subset size to pairs/triples/quads for
+		  ' performance reasons, especially on larger grids.
+		  Var maxSubset As Integer = Min(kMaxSubsetSize, valueList.Count)
+		  Var tmpIdx(kMaxSubsetSize - 1) As Integer
 		  For subsetSize As Integer = 2 To maxSubset
 		    If FilterHiddenSubsetsProcessUnitRecurse(cells, valueList, valueCellsList, subsetSize, 0, 0, tmpIdx) Then foundExclusion = True
 		  Next
@@ -327,10 +329,12 @@ Private Class CandidatesSearcher
 		  
 		  Var foundExclusion As Boolean
 		  
-		  ' Try all combinations of 2..4 cells to see if their union of values
+		  ' Try all combinations of 2..kMaxSubsetSize cells to see if their union of values
 		  ' matches the subset size (naked subset detected).
-		  Var maxSubset As Integer = Min(4, candList.Count)
-		  Var tmpIdx(3) As Integer
+		  ' We deliberately limit the subset size to pairs/triples/quads for
+		  ' performance reasons, especially on larger grids.
+		  Var maxSubset As Integer = Min(kMaxSubsetSize, candList.Count)
+		  Var tmpIdx(kMaxSubsetSize - 1) As Integer
 		  For subsetSize As Integer = 2 To maxSubset
 		    If FilterNakedSubsetsProcessUnitRecurse(cells, candList, subsetSize, 0, 0, tmpIdx) Then foundExclusion = True
 		  Next
@@ -634,6 +638,10 @@ Private Class CandidatesSearcher
 	#tag Property, Flags = &h21
 		Private mGrid As Grid
 	#tag EndProperty
+
+
+	#tag Constant, Name = kMaxSubsetSize, Type = Double, Dynamic = False, Default = \"4", Scope = Private
+	#tag EndConstant
 
 
 	#tag ViewBehavior
