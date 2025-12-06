@@ -467,7 +467,6 @@ Protected Class Puzzle
 		  ' Returns False if not enough cells could be removed while keeping uniqueness
 		  ' Note: Always contains a new puzzle, even if returning False
 		  
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var Rnd As New Random
@@ -585,7 +584,6 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Function GenerateRandomPuzzleSolve() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' We don't use the .Solve method here because trying to figure out

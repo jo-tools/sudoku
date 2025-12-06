@@ -237,6 +237,37 @@ Begin DesktopWindow SudokuNew
       Visible         =   True
       Width           =   160
    End
+   Begin DesktopProgressWheel pgrWheel
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   16
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   294
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Visible         =   False
+      Width           =   16
+   End
+   Begin Thread thrCreate
+      Index           =   -2147483648
+      LockedInPosition=   False
+      Priority        =   8
+      Scope           =   2
+      StackSize       =   0
+      TabPanelIndex   =   0
+      Type            =   0
+   End
 End
 #tag EndDesktopWindow
 
@@ -253,7 +284,7 @@ End
 
 
 	#tag Hook, Flags = &h0
-		Event ActionNew(newN As Integer, newCluesFactor As Double)
+		Event ActionNew(newN As Integer, newCluesFactor As Double, newSudokuPuzzle As Sudoku.Puzzle)
 	#tag EndHook
 
 
@@ -271,6 +302,10 @@ End
 #tag Events btnCancel
 	#tag Event
 		Sub Pressed()
+		  If (thrCreate.ThreadState <> Thread.ThreadStates.NotRunning) Then
+		    thrCreate.Stop
+		  End If
+		  
 		  Self.Close
 		  
 		End Sub
@@ -279,17 +314,23 @@ End
 #tag Events btnCreate
 	#tag Event
 		Sub Pressed()
-		  Var n As Integer = 9
+		  Me.Enabled = False
+		  
+		  
+		  Var N As Integer = 9
 		  If (lstSudokuN.SelectedRowIndex >= 0) Then
-		    n = lstSudokuN.RowTagAt(lstSudokuN.SelectedRowIndex).IntegerValue
+		    N = lstSudokuN.RowTagAt(lstSudokuN.SelectedRowIndex).IntegerValue
+		    mDefaultN = N
 		  End If
 		  
 		  Var numCluesFactor As Double = 0.444
 		  If (lstDifficulty.SelectedRowIndex >= 0) Then
 		    numCluesFactor = lstDifficulty.RowTagAt(lstDifficulty.SelectedRowIndex).DoubleValue
+		    mDefaultCluesFactor = numCluesFactor
 		  End If
 		  
-		  ActionNew(n, numCluesFactor)
+		  
+		  thrCreate.Start
 		  
 		End Sub
 	#tag EndEvent
@@ -365,6 +406,50 @@ End
 		  Else
 		    Me.SelectRowWithTag(0.444)
 		  End If
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events thrCreate
+	#tag Event
+		Sub Run()
+		  Dim d As New Dictionary
+		  d.Value("start") = Nil
+		  
+		  Me.AddUserInterfaceUpdate(d)
+		  Me.Sleep(100)
+		  
+		  Var sudokuPuzzle As Sudoku.Puzzle = New Sudoku.Puzzle(mDefaultN)
+		  
+		  Var numClues As Integer = CType(Ceiling(mDefaultCluesFactor * (mDefaultN*mDefaultN)), Integer)
+		  If (numClues > 0) Then
+		    Me.Sleep(100)
+		    Call sudokuPuzzle.GenerateRandomPuzzle(numClues)
+		    sudokuPuzzle.LockCurrentState
+		  End If
+		  
+		  d = New Dictionary
+		  d.Value("created") = sudokuPuzzle
+		  
+		  Me.AddUserInterfaceUpdate(d)
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub UserInterfaceUpdate(data() as Dictionary)
+		  For Each update As Dictionary In data
+		    If update.HasKey("start") Then
+		      pgrWheel.Visible = True
+		      btnCreate.Enabled = False
+		      lstDifficulty.Enabled = False
+		      lstSudokuN.Enabled = False
+		    End If
+		    
+		    If update.HasKey("created") Then
+		      pgrWheel.Visible = True
+		      ActionNew(mDefaultN, mDefaultCluesFactor, update.Value("created"))
+		    End If
+		  Next
 		  
 		End Sub
 	#tag EndEvent

@@ -1111,22 +1111,15 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionNewExecute(sender As SudokuNew, newN As Integer, newCluesFactor As Double)
+		Private Sub ActionNewExecute(sender As SudokuNew, newN As Integer, newCluesFactor As Double, newSudokuPuzzle As Sudoku.Puzzle)
 		  RemoveHandler sender.ActionNew, WeakAddressOf ActionNewExecute
 		  sender.Close
 		  
-		  Var N As Integer = newN
-		  Var numClues As Integer = CType(Ceiling(newCluesFactor * (N*N)), Integer)
+		  If (newSudokuPuzzle = Nil) Then Return
 		  
 		  mCluesFactor = newCluesFactor
-		  
-		  
-		  If (numClues > 0) Then
-		    Me.ActionRandom(n, numClues)
-		  Else
-		    Me.SudokuPuzzle = New Sudoku.Puzzle(n)
-		    Me.ShowSudoku
-		  End If
+		  me.SudokuPuzzle = newSudokuPuzzle
+		  Me.ShowSudoku
 		  
 		End Sub
 	#tag EndMethod
