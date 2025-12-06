@@ -50,8 +50,8 @@ Protected Class Puzzle
 		    Var jsonSudoku As JSONItem = json.Child(kJSONKeySudoku)
 		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		    
-		    Var cellCount As Integer = jsonSudoku.Count
 		    ' N*N = cellCount, so N = Sqrt(cellCount)
+		    Var cellCount As Integer = jsonSudoku.Count
 		    Var sqrtVal As Double = Sqrt(cellCount)
 		    N = CType(sqrtVal, Integer)
 		    If N * N <> cellCount Then
@@ -150,70 +150,128 @@ Protected Class Puzzle
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Init with String representation of a Sudoku grid
+		  
+		  ' ------------------------------------------------------------------------------------
+		  ' Supported formats (auto-detected)
+		  ' - 1..N are values
+		  ' - "0", ".", "_", "x", "?" are treated as empty
+		  ' The parser first tries the N<=9 single-digit mode; if that does not yield a
+		  ' valid N in [4..9], it falls back to the separated-token mode (N>=4, incl. N>9).
+		  ' ------------------------------------------------------------------------------------
+		  ' N <= 9:  Digit stream, optionally with spaces/commas/line breaks
+		  ' Example: "530070000600195000..." or "500107008 008305400 ..."
+		  '           → parsed character-by-character, all non-digit separators ignored
+		  ' ------------------------------------------------------------------------------------
+		  ' Separated-token mode (N >= 4, typically used for N > 9):
+		  ' Integers separated by spaces/commas/semicolons/line breaks
+		  ' Example: "1 2 3 ... 16", "1,2,3,...,16", possibly aligned with extra spaces
+		  ' ------------------------------------------------------------------------------------
+		  
 		  Const kExceptionMessage = "Invalid String representation of a Sudoku"
 		  
 		  s = s.Trim
 		  If (s = "") Then Raise New InvalidArgumentException(kExceptionMessage, 1)
 		  
 		  ' Sanity - basic length check
-		  If (s.Bytes < 16) Or (s.Bytes > 4096) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
+		  If (s.Bytes < 16) Or (s.Bytes > 8192) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		  
+		  ' Normalize line endings to spaces
 		  s = s.ReplaceLineEndings(" ")
 		  
-		  ' Parse all numbers from the string
-		  ' For N<=9: single digit format "530070000..." 
-		  ' For N>9: space/comma separated format "1 2 0 15 16..."
 		  Var numbers() As Integer
+		  Var N As Integer = 0
 		  
-		  ' Check if string contains separators (spaces or commas) - indicates multi-digit format
-		  Var hasSeparators As Boolean = (s.IndexOf(" ") >= 0) Or (s.IndexOf(",") >= 0)
+		  ' Strategy: First try single-digit parsing (N<=9), ignoring all whitespace.
+		  ' If that yields a valid N*N count with all values in [0,N], use it.
+		  ' Otherwise, try space/comma-separated parsing for N>9.
 		  
-		  If hasSeparators Then
-		    ' Multi-digit format: split by spaces/commas
-		    s = s.ReplaceAll(",", " ")
-		    Var parts() As String = s.Split(" ")
-		    For Each part As String In parts
-		      part = part.Trim
-		      If part = "" Then Continue
-		      
-		      Var val As Integer = part.ToInteger
-		      ' "0" returns 0, non-numeric also returns 0 but we accept 0 as empty cell
-		      If part = "0" Or val > 0 Then
-		        numbers.Add(val)
-		      ElseIf part = "." Or part = "_" Then
-		        ' Common representations for empty cells
-		        numbers.Add(0)
+		  ' Attempt 1: Single-digit format (N<=9), ignore all whitespace
+		  Var singleDigitNumbers() As Integer
+		  For pos As Integer = 0 To s.Length - 1
+		    Var currentChar As String = s.Middle(pos, 1)
+		    
+		    Select Case currentChar
+		    Case "0", ".", "_", "x", "?"
+		      ' Common representations for empty cells
+		      singleDigitNumbers.Add(0)
+		    Case "1" To "9"
+		      singleDigitNumbers.Add(currentChar.ToInteger)
+		    Else
+		      ' All other characters (spaces, commas, etc.) are ignored
+		    End Select
+		  Next
+		  
+		  ' Check if single-digit parsing yields a valid Sudoku size
+		  Var singleDigitCount As Integer = singleDigitNumbers.Count
+		  Var sqrtSingle As Double = Sqrt(singleDigitCount)
+		  Var nSingle As Integer = CType(sqrtSingle, Integer)
+		  
+		  If (nSingle * nSingle = singleDigitCount) And (nSingle >= 4) And (nSingle <= 9) Then
+		    ' Valid N<=9 grid, verify all values are in range
+		    Var allValid As Boolean = True
+		    For i As Integer = 0 To singleDigitNumbers.LastIndex
+		      If singleDigitNumbers(i) < 0 Or singleDigitNumbers(i) > nSingle Then
+		        allValid = False
+		        Exit
 		      End If
 		    Next
-		  Else
-		    ' Single digit format (N<=9): each character is a digit
-		    For pos As Integer = 0 To s.Length - 1
-		      Var currentChar As String = s.Middle(pos, 1)
-		      
-		      Select Case currentChar
-		      Case "0", "."
-		        numbers.Add(0)
-		      Case "1" To "9"
-		        numbers.Add(currentChar.ToInteger)
-		      End Select
-		    Next
+		    
+		    If allValid Then
+		      numbers = singleDigitNumbers
+		      N = nSingle
+		    End If
 		  End If
 		  
-		  ' Determine N from the count of numbers
-		  Var cellCount As Integer = numbers.Count
-		  Var sqrtVal As Double = Sqrt(cellCount)
-		  Var N As Integer = CType(sqrtVal, Integer)
+		  ' Attempt 2: Space/comma-separated format (for N>9 or if single-digit failed)
+		  If N = 0 Then
+		    ' Replace commas or semicolons with spaces and split
+		    Var sSep As String = s.ReplaceAll(",", " ").ReplaceAll(";", " ")
+		    Var parts() As String = sSep.Split(" ")
+		    Var separatedNumbers() As Integer
+		    
+		    For Each part As String In parts
+		      part = part.Trim
+		      If (part = "") Then Continue
+		      
+		      Var value As Integer = part.ToInteger
+		      ' "0" returns 0, non-numeric also returns 0 but we accept 0 as empty cell
+		      If (part = "0") Or (value > 0) Then
+		        separatedNumbers.Add(value)
+		      Else
+		        Select Case part
+		        Case "0", ".", "_", "x", "?"
+		          ' Common representations for empty cells
+		          separatedNumbers.Add(0)
+		        End Select
+		      End If
+		    Next
+		    
+		    ' Check if separated parsing yields a valid Sudoku size
+		    Var sepCount As Integer = separatedNumbers.Count
+		    Var sqrtSep As Double = Sqrt(sepCount)
+		    Var nSep As Integer = CType(sqrtSep, Integer)
+		    
+		    If (nSep * nSep = sepCount) And (nSep >= 4) Then
+		      ' Verify all values are in range
+		      Var allValid As Boolean = True
+		      For i As Integer = 0 To separatedNumbers.LastIndex
+		        If separatedNumbers(i) < 0 Or separatedNumbers(i) > nSep Then
+		          allValid = False
+		          Exit
+		        End If
+		      Next
+		      
+		      If allValid Then
+		        numbers = separatedNumbers
+		        N = nSep
+		      End If
+		    End If
+		  End If
 		  
-		  If N * N <> cellCount Then
+		  ' Final validation
+		  If N = 0 Or numbers.Count <> N * N Then
 		    Raise New InvalidArgumentException(kExceptionMessage, 3)
 		  End If
-		  
-		  ' Validate that all values are in range [0, N]
-		  For i As Integer = 0 To numbers.LastIndex
-		    If numbers(i) < 0 Or numbers(i) > N Then
-		      Raise New InvalidArgumentException(kExceptionMessage, 4)
-		    End If
-		  Next
 		  
 		  ' Now we know N, construct the grid
 		  Me.Constructor(N)
