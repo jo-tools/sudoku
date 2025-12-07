@@ -22,7 +22,6 @@ Private Class HintsSearcher
 
 	#tag Method, Flags = &h0
 		Function Get(row As Integer, col As Integer) As CellHint
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var cellHint As CellHint
@@ -68,7 +67,6 @@ Private Class HintsSearcher
 
 	#tag Method, Flags = &h0
 		Function GetCellHints() As CellHint()
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var cellHints() As CellHint
@@ -95,7 +93,6 @@ Private Class HintsSearcher
 
 	#tag Method, Flags = &h21
 		Private Function IsValueHiddenSingle(row As Integer, col As Integer, value As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Check if value at Grid(row, col) is a hidden single.

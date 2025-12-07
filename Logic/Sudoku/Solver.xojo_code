@@ -11,7 +11,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h0
 		Function CountSolutions(limit As Integer = 2) As Integer
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var startStackCount As Integer = mSolveStack.Count
@@ -151,7 +150,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function IsValid(checkType As ValidCheck) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  For row As Integer = 0 To mGrid.Settings.N-1
@@ -180,7 +178,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function IsValueValid(row As Integer, col As Integer, value As Integer, checkType As ValidCheck) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Check Basic Sudoku Rules
@@ -230,7 +227,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveApplyDeterministicSteps() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Fill all deterministic cells (Naked singles and Hidden singles).
@@ -292,7 +288,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveFindBestNextCell(ByRef bestRow As Integer, ByRef bestCol As Integer, ByRef bestCandidates() As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Find to-be-solved cells with the least possible candidate values
@@ -331,7 +326,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternal() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' The Solver with Strategies is more performant with complex Sudoku puzzles
@@ -372,7 +366,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternalWithBacktracking() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Remember stack position at entry
@@ -429,7 +422,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternalWithStrategies() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Remember stack position at entry
@@ -496,7 +488,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Sub SolveUndoTo(stackSize As Integer)
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Undo - re-apply old values

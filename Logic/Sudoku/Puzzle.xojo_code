@@ -38,7 +38,6 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub Constructor(json As JSONItem)
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Init with JSON representation of a Sudoku Grid
@@ -147,7 +146,6 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s As String)
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Init with String representation of a Sudoku grid
@@ -703,7 +701,6 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsSolved() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Ensure current filled-in digits are valid
@@ -790,7 +787,6 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function ToJson(application As JSONItem, addSolution As Boolean) As JSONItem
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var N As Integer = mGrid.Settings.N
@@ -840,7 +836,6 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function ToString() As String
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var N As Integer = mGrid.Settings.N

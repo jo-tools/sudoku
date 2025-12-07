@@ -18,7 +18,6 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function Clone() As Grid
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var clone As New Grid(mSettings.N)
@@ -87,7 +86,6 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function FindEmpty(ByRef outRow As Integer, ByRef outCol As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Find the first empty cell
@@ -114,7 +112,6 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function GetCountNonEmpty() As Integer
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  Var count As Integer = 0
@@ -144,7 +141,6 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function HasEmptyCells() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  For row As Integer = 0 To mSettings.N-1
@@ -160,7 +156,6 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  For row As Integer = 0 To mSettings.N-1
@@ -222,7 +217,6 @@ Private Class Grid
 
 	#tag Method, Flags = &h21
 		Private Function IsValueValidInternal(row As Integer, col As Integer, value As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Check if placing value at Grid(row, col) is allowed according to Basic Sudoku rules.
@@ -286,7 +280,6 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub LockCurrentState()
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Lock current state (used for Export in API only)

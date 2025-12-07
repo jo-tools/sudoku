@@ -2,7 +2,6 @@
 Private Class CandidatesSearcher
 	#tag Method, Flags = &h21
 		Private Sub ApplyFilters(exclusionParams As Sudoku.ExclusionParams)
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Run all enabled exclusion filters until no more candidates change.
@@ -47,7 +46,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterHiddenSubsets() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Look for hidden pairs/triples/quads in each row, column and block.
@@ -77,7 +75,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterHiddenSubsetsProcessUnit(unitPositions() As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Work on a single unit (row/column/block) and search for hidden subsets.
@@ -128,7 +125,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterHiddenSubsetsProcessUnitRecurse(cells() As Integer, valueList() As Integer, valueCellsList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Recursively build combinations of values and check if they form a hidden subset.
@@ -178,7 +174,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterLockedCandidates() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Detect "locked candidates" inside a block and remove that value
@@ -272,7 +267,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterNakedSubsets() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Look for naked pairs/triples/quads in each row, column and block.
@@ -301,7 +295,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterNakedSubsetsProcessUnit(unitPositions() As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Work on a single unit and look for cells that share the same small
@@ -346,7 +339,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterNakedSubsetsProcessUnitRecurse(cells() As Integer, candList() As Variant, subsetSize As Integer, start As Integer, level As Integer, currentIdx() As Integer) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Recursively build combinations of cells and check if they form a naked subset.
@@ -405,7 +397,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterXWing() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Search for X-Wing patterns for each value across rows and columns.
@@ -451,7 +442,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h21
 		Private Function FilterXWingFindPairs(lines() As Variant, v As Integer, isRow As Boolean) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Given candidate positions per line (row/column), find pairs of lines
@@ -499,7 +489,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h0
 		Function Get(exclusionParams As Sudoku.ExclusionParams) As CellCandidates()
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Build the full matrix of cell candidates and then run all enabled
@@ -553,7 +542,6 @@ Private Class CandidatesSearcher
 
 	#tag Method, Flags = &h0
 		Function GetAllCellCandidates(row As Integer, col As Integer) As Integer()
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Return candidate values for cell according to Basic Sudoku Rules
