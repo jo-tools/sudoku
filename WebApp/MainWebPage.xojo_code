@@ -1472,8 +1472,9 @@ End
 			  ' Init Sudoku Number Fields
 			  Me.SudokuNumberFieldsInit
 			  
-			  ' Update Controller with new container width for responsive scaling
+			  ' Update Controller with new container dimensions for responsive scaling
 			  Me.Controller.ContainerWidth = rctSudoku.Width
+			  Me.Controller.ContainerHeight = rctSudoku.Height
 			  
 			End Set
 		#tag EndSetter
