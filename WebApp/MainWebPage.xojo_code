@@ -777,6 +777,7 @@ Begin WebPage MainWebPage
       End
    End
    Begin SudokuController Controller
+      ContainerWidth  =   800
       ControlID       =   ""
       Enabled         =   True
       Index           =   -2147483648
@@ -1471,6 +1472,9 @@ End
 			  ' Init Sudoku Number Fields
 			  Me.SudokuNumberFieldsInit
 			  
+			  ' Update Controller with new container width for responsive scaling
+			  Me.Controller.ContainerWidth = rctSudoku.Width
+			  
 			End Set
 		#tag EndSetter
 		Private SudokuPuzzle As Sudoku.Puzzle
@@ -1485,9 +1489,6 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kCookieKeySudokuState, Type = String, Dynamic = False, Default = \"SudokuState", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kJavaScriptWrapper, Type = String, Dynamic = False, Default = \"(function() {\n  var rectID \x3D \'[CONTROLID]\';\n  \n  function wrapAndScale() {\n    var el \x3D document.getElementById(rectID);\n    if (!el) return;\n\n    if (!el.parentElement.classList.contains(\'wrapper\')) {\n      var wrapper \x3D document.createElement(\'div\');\n      wrapper.className \x3D \'wrapper\';\n      el.parentNode.insertBefore(wrapper\x2C el);\n      wrapper.appendChild(el);\n    }\n\n    var baseWidth \x3D 840;\n    var windowWidth \x3D Math.min(window.innerWidth\x2C baseWidth);\n    var scale \x3D windowWidth / baseWidth;\n    el.style.transform \x3D \'scale(\' + scale + \')\';\n  }\n\n  function waitForElement() {\n    var el \x3D document.getElementById(rectID);\n    if (el) {\n      wrapAndScale();\n      window.addEventListener(\'resize\'\x2C wrapAndScale);\n    } else {\n      setTimeout(waitForElement\x2C 50);\n    }\n  }\n\n  waitForElement();\n})();\n", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyCluesFactor1000, Type = String, Dynamic = False, Default = \"cluesFactor", Scope = Private
@@ -1524,14 +1525,6 @@ End
 #tag EndWindowCode
 
 #tag Events rctSudoku
-	#tag Event
-		Sub Opening()
-		  // TODO: This has been written for a 9x9 Sudoku
-		  // Needs to be updated to account for various Sudoku Sizes
-		  ' Me.ExecuteJavaScript(kJavaScriptWrapper.Replace("[CONTROLID]", Me.ControlID))
-		  
-		End Sub
-	#tag EndEvent
 #tag EndEvents
 #tag Events btnSolve
 	#tag Event
