@@ -6,7 +6,7 @@ Begin WebPage MainWebPage
    ControlID       =   ""
    CSSClasses      =   ""
    Enabled         =   False
-   Height          =   690
+   Height          =   670
    ImplicitInstance=   True
    Index           =   -2147483648
    Indicator       =   0
@@ -20,19 +20,18 @@ Begin WebPage MainWebPage
    LockRight       =   False
    LockTop         =   True
    LockVertical    =   False
-   MinimumHeight   =   690
-   MinimumWidth    =   840
+   MinimumHeight   =   670
+   MinimumWidth    =   800
    PanelIndex      =   0
    ScaleFactor     =   0.0
    TabIndex        =   0
    Title           =   "Sudoku"
    Top             =   0
    Visible         =   True
-   Width           =   840
+   Width           =   800
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -44,7 +43,7 @@ Begin WebPage MainWebPage
       Enabled         =   True
       FillColor       =   &cFFFFFF
       HasFillColor    =   False
-      Height          =   690
+      Height          =   670
       Index           =   -2147483648
       Indicator       =   ""
       LayoutDirection =   "LayoutDirections.LeftToRight"
@@ -64,7 +63,7 @@ Begin WebPage MainWebPage
       Tooltip         =   ""
       Top             =   0
       Visible         =   True
-      Width           =   840
+      Width           =   800
       _mDesignHeight  =   0
       _mDesignWidth   =   0
       _mPanelIndex    =   -1
@@ -80,13 +79,13 @@ Begin WebPage MainWebPage
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   200
-         LockBottom      =   False
+         Left            =   580
+         LockBottom      =   True
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
@@ -99,7 +98,7 @@ Begin WebPage MainWebPage
          TextAlignment   =   2
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   52
+         Top             =   622
          Underline       =   False
          Visible         =   True
          Width           =   220
@@ -117,13 +116,13 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   1
          InitialParent   =   "rctSudoku"
-         Left            =   620
-         LockBottom      =   False
+         Left            =   600
+         LockBottom      =   True
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
          LockVertical    =   False
          Outlined        =   False
          PanelIndex      =   0
@@ -133,7 +132,7 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   612
+         Top             =   530
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
@@ -148,12 +147,12 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
@@ -163,7 +162,7 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   390
+         Top             =   295
          Value           =   True
          Visible         =   True
          Width           =   180
@@ -179,12 +178,12 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
@@ -194,7 +193,7 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   360
+         Top             =   265
          Value           =   True
          Visible         =   True
          Width           =   180
@@ -212,12 +211,12 @@ Begin WebPage MainWebPage
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
@@ -231,7 +230,7 @@ Begin WebPage MainWebPage
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   330
+         Top             =   235
          Underline       =   False
          Visible         =   True
          Width           =   180
@@ -249,12 +248,12 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   5
          InitialParent   =   "rctSudoku"
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          Outlined        =   False
@@ -265,15 +264,15 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   275
+         Top             =   180
          Visible         =   True
          Width           =   180
          _mPanelIndex    =   -1
       End
-      Begin WebButton btnRandom
+      Begin WebButton btnNew
          AllowAutoDisable=   False
          Cancel          =   False
-         Caption         =   "#Translations.kSudokuRandom"
+         Caption         =   "#Translations.kSudokuNew"
          ControlID       =   ""
          CSSClasses      =   ""
          Default         =   False
@@ -282,116 +281,12 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Outlined        =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         Scope           =   2
-         TabIndex        =   13
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   216
-         Visible         =   True
-         Width           =   180
-         _mPanelIndex    =   -1
-      End
-      Begin WebLabel labNumClues
-         Bold            =   False
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         FontName        =   ""
-         FontSize        =   0.0
-         Height          =   38
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         Italic          =   False
-         Left            =   703
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         Multiline       =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         Scope           =   2
-         TabIndex        =   12
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Text            =   "#Translations.kLabelNumClues"
-         TextAlignment   =   0
-         TextColor       =   &c000000FF
-         Tooltip         =   ""
-         Top             =   170
-         Underline       =   False
-         Visible         =   True
-         Width           =   97
-         _mPanelIndex    =   -1
-      End
-      Begin SudokuPopupMenu lstNumClues
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Enabled         =   True
-         Height          =   38
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         InitialValue    =   ""
-         LastAddedRowIndex=   0
-         LastRowIndex    =   0
-         Left            =   620
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         RowCount        =   0
-         Scope           =   2
-         SelectedRowIndex=   0
-         SelectedRowText =   ""
-         TabIndex        =   11
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   170
-         Visible         =   True
-         Width           =   75
-         _mPanelIndex    =   -1
-      End
-      Begin WebButton btnEmpty
-         AllowAutoDisable=   False
-         Cancel          =   False
-         Caption         =   "#Translations.kSudokuEmpty"
-         ControlID       =   ""
-         CSSClasses      =   ""
-         Default         =   False
-         Enabled         =   True
-         Height          =   38
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         Left            =   620
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          Outlined        =   False
@@ -416,7 +311,7 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
-         Left            =   20
+         Left            =   0
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -448,12 +343,12 @@ Begin WebPage MainWebPage
          Indicator       =   ""
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   500
+         Left            =   480
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
@@ -483,12 +378,12 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
-         Left            =   700
+         Left            =   680
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
@@ -518,12 +413,12 @@ Begin WebPage MainWebPage
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   635
+         Left            =   615
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
@@ -555,12 +450,12 @@ Begin WebPage MainWebPage
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   610
+         Left            =   590
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
@@ -592,7 +487,7 @@ Begin WebPage MainWebPage
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   105
+         Left            =   85
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -629,7 +524,7 @@ Begin WebPage MainWebPage
          Indicator       =   ""
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   105
+         Left            =   85
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -664,7 +559,7 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   0
          InitialParent   =   "rctSudoku"
-         Left            =   30
+         Left            =   10
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
@@ -698,12 +593,12 @@ Begin WebPage MainWebPage
          Index           =   -2147483648
          Indicator       =   0
          Italic          =   False
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          Multiline       =   False
@@ -717,7 +612,7 @@ Begin WebPage MainWebPage
          TextAlignment   =   0
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   430
+         Top             =   335
          Underline       =   False
          Visible         =   True
          Width           =   180
@@ -732,12 +627,12 @@ Begin WebPage MainWebPage
          Indeterminate   =   False
          Index           =   -2147483648
          Indicator       =   0
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
@@ -747,7 +642,7 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   460
+         Top             =   365
          Value           =   False
          Visible         =   True
          Width           =   180
@@ -762,12 +657,12 @@ Begin WebPage MainWebPage
          Indeterminate   =   False
          Index           =   -2147483648
          Indicator       =   0
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
@@ -777,7 +672,7 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   490
+         Top             =   395
          Value           =   False
          Visible         =   True
          Width           =   180
@@ -795,13 +690,13 @@ Begin WebPage MainWebPage
          Indicator       =   0
          InitialParent   =   "rctSudoku"
          Italic          =   False
-         Left            =   250
-         LockBottom      =   False
+         Left            =   580
+         LockBottom      =   True
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
          LockVertical    =   False
          Multiline       =   False
          PanelIndex      =   0
@@ -814,10 +709,10 @@ Begin WebPage MainWebPage
          TextAlignment   =   2
          TextColor       =   &c000000FF
          Tooltip         =   ""
-         Top             =   24
+         Top             =   594
          Underline       =   False
          Visible         =   True
-         Width           =   120
+         Width           =   220
          _mPanelIndex    =   -1
       End
       Begin SudokuCheckbox chkExcludeHiddenSubsets
@@ -829,12 +724,12 @@ Begin WebPage MainWebPage
          Indeterminate   =   False
          Index           =   -2147483648
          Indicator       =   0
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
@@ -844,7 +739,7 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   520
+         Top             =   425
          Value           =   False
          Visible         =   True
          Width           =   180
@@ -859,12 +754,12 @@ Begin WebPage MainWebPage
          Indeterminate   =   False
          Index           =   -2147483648
          Indicator       =   0
-         Left            =   620
+         Left            =   600
          LockBottom      =   False
          LockedInPosition=   True
          LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
+         LockLeft        =   False
+         LockRight       =   True
          LockTop         =   True
          LockVertical    =   False
          PanelIndex      =   0
@@ -874,7 +769,7 @@ Begin WebPage MainWebPage
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   550
+         Top             =   455
          Value           =   False
          Visible         =   True
          Width           =   180
@@ -897,16 +792,18 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  // TODO: This is still hardcoded for a 3x3 Sudoku
-		  // Needs to be changed to use Me.SudokuPuzzle.GetGridSettings.N (N, BoxWidth, BoxHeight)
+		  ' Try to restore Session State
+		  If Self.CookieGet Then
+		    ' Sudoku loaded from Cookie
+		    Return
+		  End If
+		  
+		  ' Show a 9x9 Sudoku by default when first visiting this WebApp
 		  Var N As Integer = 9
+		  Var numClues As Integer = 36
 		  
 		  Me.SudokuPuzzle = New Sudoku.Puzzle(N)
-		  Self.SudokuNumberFieldsInit
-		  
-		  If (Not Self.CookieGet) Then
-		    Self.ActionRandom
-		  End If
+		  Me.ShowSudoku
 		  
 		End Sub
 	#tag EndEvent
@@ -914,7 +811,7 @@ End
 	#tag Event
 		Sub Shown()
 		  ' Workaround: Re-Set first Focus
-		  lstNumClues.SetFocus
+		  btnNew.SetFocus
 		  
 		  Var focusIndex As Integer = -1
 		  
@@ -1084,10 +981,51 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ActionRandom()
-		  Var numClues As Integer = lstNumClues.SelectedRowText.ToInteger
+		Private Sub ActionNew()
+		  Print "Session '" + Session.Identifier + "': Action Empty"
 		  
-		  Print "Session '" + Session.Identifier + "': Action Random (" + numClues.ToString + ")"
+		  Var popSudokuNew As New SudokuNew(Me.SudokuPuzzle.GetGridSettings.N, mCluesFactor)
+		  
+		  AddHandler popSudokuNew.ActionNew, WeakAddressOf ActionNewExecute
+		  AddHandler popSudokuNew.ActionCancel, WeakAddressOf ActionNewCancel
+		  
+		  popSudokuNew.ShowPopover(btnNew, WebContainer.DisplaySides.Bottom)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionNewCancel(obj As SudokuNew)
+		  Print "Session '" + Session.Identifier + "': Action New Cancel"
+		  
+		  ' Dismiss Popover
+		  If (obj <> Nil) Then obj.Close
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionNewExecute(obj As SudokuNew, newN As Integer, newCluesFactor As Double, newSudokuPuzzle As Sudoku.Puzzle)
+		  #Pragma unused newN
+		  
+		  Print "Session '" + Session.Identifier + "': Action New Execute"
+		  
+		  ' Dismiss Popover
+		  If (obj <> Nil) Then obj.Close
+		  
+		  ' Show new Sudoku
+		  If (newSudokuPuzzle = Nil) Then Return
+		  
+		  mCluesFactor = newCluesFactor
+		  Me.SudokuPuzzle = newSudokuPuzzle
+		  Me.ShowSudoku
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ActionRandom(n As Integer, numClues As Integer)
+		  Print "Session '" + Session.Identifier + "': Action Random (" + n.ToString + "x" + n.ToString + " | " + numClues.ToString + ")"
 		  
 		  Call Me.SudokuPuzzle.GenerateRandomPuzzle(numClues)
 		  Me.ShowSudoku
@@ -1150,17 +1088,11 @@ End
 		    If json.HasKey(kJSONKeyExcludeXWing) Then
 		      mExclusionParams.ExcludeXWing = json.Lookup(kJSONKeyExcludeXWing, mExclusionParams.ExcludeXWing).BooleanValue
 		    End If
-		    If json.HasKey(kJSONKeyRandomNumClues) Then
-		      Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		      randomNumClues = json.Lookup(kJSONKeyRandomNumClues, randomNumClues).IntegerValue
-		      If (lstNumClues.SelectedRowText <> randomNumClues.ToString) Then
-		        Try
-		          lstNumClues.EnsureSelectRowWithText = randomNumClues.ToString
-		        Catch err As InvalidArgumentException
-		          ' Silently ignore
-		        End Try
-		      End If
+		    
+		    If json.HasKey(kJSONKeyCluesFactor1000) Then
+		      mCluesFactor = json.Lookup(kJSONKeyCluesFactor1000, 0).IntegerValue / 1000
 		    End If
+		    
 		    If json.HasKey(kJSONKeySudoku) Then
 		      Var sudokuString As String = json.Lookup(kJSONKeySudoku, "").StringValue.Trim
 		      
@@ -1183,6 +1115,9 @@ End
 		          
 		          Me.SudokuPuzzle = sudokuPuzzle
 		          Me.ShowSudoku
+		          
+		          Return True
+		          
 		        End If
 		        
 		      Catch err As InvalidArgumentException
@@ -1190,8 +1125,6 @@ End
 		        Return False
 		      End Try
 		    End If
-		    
-		    Return True
 		    
 		    
 		  Catch err1 As IOException
@@ -1222,10 +1155,7 @@ End
 		  json.Value(kJSONKeyExcludeHiddenSubsets) = mExclusionParams.ExcludeHiddenSubsets
 		  json.Value(kJSONKeyExcludeXWing) = mExclusionParams.ExcludeXWing
 		  
-		  Var randomNumClues As Integer = lstNumClues.SelectedRowText.ToInteger
-		  If (randomNumClues > 0) Then
-		    json.Value(kJSONKeyRandomNumClues) = randomNumClues
-		  End If
+		  json.Value(kJSONKeyCluesFactor1000) = CType(Ceiling(mCluesFactor * 1000), Integer)
 		  
 		  If (Me.SudokuPuzzle <> Nil) Then
 		    json.Value(kJSONKeySudoku) = Me.SudokuPuzzle.ToString
@@ -1304,7 +1234,6 @@ End
 		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
-		  btnEmpty.Enabled = (Not isEmpty)
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
 		  
 		  labExclusion.Enabled = Me.mShowCandidates
@@ -1394,6 +1323,12 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
+		  ' Close current Sudoku Number Fields
+		  For Each c As SudokuNumberField In SudokuTextFields
+		    rctSudoku.RemoveControl(c)
+		    c.Close
+		  Next
+		  
 		  Redim Me.SudokuTextFields(Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N-1)
 		  
 		  ' Create and add Sudoku Number Fields
@@ -1429,6 +1364,9 @@ End
 		      rctSudoku.AddControl(t)
 		    Next
 		  Next
+		  
+		  Me.Controller.Size = Me.SudokuPuzzle.GetGridSettings.N
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1479,6 +1417,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mCluesFactor As Double = 0.444
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mExclusionParams As Sudoku.ExclusionParams
 	#tag EndProperty
 
@@ -1495,8 +1437,44 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private SudokuPuzzle As Sudoku.Puzzle
+		Private mSudokuPuzzle As Sudoku.Puzzle
 	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h21
+		#tag Getter
+			Get
+			  Return mSudokuPuzzle
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mSudokuPuzzle = value
+			  
+			  ' Adjust Layout for current Sudoku Puzzle
+			  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
+			  
+			  Var cnvSudokuSize As Integer = 2*kMarginWindow + N*kCellSize
+			  cnvSudoku.Width = cnvSudokuSize
+			  cnvSudoku.Height = cnvSudokuSize
+			  
+			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 215 ' Solve and Status are bottom-locked
+			  
+			  rctSudoku.Width = 2 * kMarginWindow + Max(N, 5) * kCellSize + 20 + btnSolve.Width + 20
+			  rctSudoku.Height = Max(cnvSudoku.Top + cnvSudoku.Height, minLayoutHeight)
+			  
+			  Me.Height = rctSudoku.Height
+			  Me.MinimumHeight = Me.Height
+			  
+			  Me.Width = rctSudoku.Width
+			  me.MinimumWidth = me.Width
+			  
+			  ' Init Sudoku Number Fields
+			  Me.SudokuNumberFieldsInit
+			  
+			End Set
+		#tag EndSetter
+		Private SudokuPuzzle As Sudoku.Puzzle
+	#tag EndComputedProperty
 
 	#tag Property, Flags = &h21
 		Private SudokuTextFields() As SudokuNumberField
@@ -1512,6 +1490,9 @@ End
 	#tag Constant, Name = kJavaScriptWrapper, Type = String, Dynamic = False, Default = \"(function() {\n  var rectID \x3D \'[CONTROLID]\';\n  \n  function wrapAndScale() {\n    var el \x3D document.getElementById(rectID);\n    if (!el) return;\n\n    if (!el.parentElement.classList.contains(\'wrapper\')) {\n      var wrapper \x3D document.createElement(\'div\');\n      wrapper.className \x3D \'wrapper\';\n      el.parentNode.insertBefore(wrapper\x2C el);\n      wrapper.appendChild(el);\n    }\n\n    var baseWidth \x3D 840;\n    var windowWidth \x3D Math.min(window.innerWidth\x2C baseWidth);\n    var scale \x3D windowWidth / baseWidth;\n    el.style.transform \x3D \'scale(\' + scale + \')\';\n  }\n\n  function waitForElement() {\n    var el \x3D document.getElementById(rectID);\n    if (el) {\n      wrapAndScale();\n      window.addEventListener(\'resize\'\x2C wrapAndScale);\n    } else {\n      setTimeout(waitForElement\x2C 50);\n    }\n  }\n\n  waitForElement();\n})();\n", Scope = Private
 	#tag EndConstant
 
+	#tag Constant, Name = kJSONKeyCluesFactor1000, Type = String, Dynamic = False, Default = \"cluesFactor", Scope = Private
+	#tag EndConstant
+
 	#tag Constant, Name = kJSONKeyExcludeHiddenSubsets, Type = String, Dynamic = False, Default = \"excludeHiddenSubsets", Scope = Private
 	#tag EndConstant
 
@@ -1522,9 +1503,6 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyExcludeXWing, Type = String, Dynamic = False, Default = \"excludeXWing", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kJSONKeyRandomNumClues, Type = String, Dynamic = False, Default = \"randomNumClues", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyShowCandidates, Type = String, Dynamic = False, Default = \"showCandidates", Scope = Private
@@ -1548,7 +1526,9 @@ End
 #tag Events rctSudoku
 	#tag Event
 		Sub Opening()
-		  Me.ExecuteJavaScript(kJavaScriptWrapper.Replace("[CONTROLID]", Me.ControlID))
+		  // TODO: This has been written for a 9x9 Sudoku
+		  // Needs to be updated to account for various Sudoku Sizes
+		  ' Me.ExecuteJavaScript(kJavaScriptWrapper.Replace("[CONTROLID]", Me.ControlID))
 		  
 		End Sub
 	#tag EndEvent
@@ -1603,45 +1583,10 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events btnRandom
+#tag Events btnNew
 	#tag Event
 		Sub Pressed()
-		  Self.ActionRandom
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events lstNumClues
-	#tag Event
-		Sub Opening()
-		  Me.RemoveAllRows
-		  
-		  Me.AddRow("24")
-		  Me.AddRow("28")
-		  Me.AddRow("32")
-		  Me.AddRow("40")
-		  Me.AddRow("48")
-		  Me.AddRow("56")
-		  Me.AddRow("64")
-		  
-		  Me.EnsureSelectedRowIndex = 3
-		  
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub SelectionChanged(item As WebMenuItem)
-		  #Pragma unused item
-		  
-		  Self.RefreshControls
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events btnEmpty
-	#tag Event
-		Sub Pressed()
-		  Self.ActionEmpty
+		  Self.ActionNew
 		  
 		End Sub
 	#tag EndEvent
@@ -1855,13 +1800,6 @@ End
 		    Next
 		  End If
 		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Shown()
-		  Var N As Integer = Self.SudokuPuzzle.GetGridSettings.N
-		  Me.Width = 2 * kMarginWindow + N * kCellSize
-		  Me.Height = 2 * kMarginWindow + N * kCellSize
 		End Sub
 	#tag EndEvent
 #tag EndEvents

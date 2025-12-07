@@ -238,6 +238,7 @@ Begin DesktopWindow SudokuNew
       Width           =   160
    End
    Begin DesktopProgressWheel pgrWheel
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
@@ -250,6 +251,7 @@ Begin DesktopWindow SudokuNew
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
+      PanelIndex      =   0
       Scope           =   2
       TabIndex        =   7
       TabPanelIndex   =   0
@@ -258,14 +260,21 @@ Begin DesktopWindow SudokuNew
       Transparent     =   False
       Visible         =   False
       Width           =   16
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
    Begin Thread thrCreate
+      DebugIdentifier =   ""
       Index           =   -2147483648
       LockedInPosition=   False
       Priority        =   8
       Scope           =   2
       StackSize       =   0
       TabPanelIndex   =   0
+      ThreadID        =   0
+      ThreadState     =   0
       Type            =   0
    End
 End
@@ -282,6 +291,10 @@ End
 		End Sub
 	#tag EndMethod
 
+
+	#tag Hook, Flags = &h0
+		Event ActionCancel()
+	#tag EndHook
 
 	#tag Hook, Flags = &h0
 		Event ActionNew(newN As Integer, newCluesFactor As Double, newSudokuPuzzle As Sudoku.Puzzle)
@@ -306,7 +319,7 @@ End
 		    thrCreate.Stop
 		  End If
 		  
-		  Self.Close
+		  ActionCancel
 		  
 		End Sub
 	#tag EndEvent

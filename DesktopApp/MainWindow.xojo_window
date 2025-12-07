@@ -1101,9 +1101,10 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionNew()
-		  Var w As New SudokuNew(Self.SudokuPuzzle.GetGridSettings.N, mCluesFactor)
+		  Var w As New SudokuNew(Me.SudokuPuzzle.GetGridSettings.N, mCluesFactor)
 		  
-		  AddHandler w.ActionNew, WeakAddressOf ActionNewExecute
+		  AddHandler w.ActionNew, AddressOf ActionNewExecute
+		  AddHandler w.ActionCancel, AddressOf ActionNewCancel
 		  
 		  w.ShowModal(Self)
 		  
@@ -1111,10 +1112,24 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub ActionNewCancel(sender As SudokuNew)
+		  ' Close Dialog
+		  RemoveHandler sender.ActionNew, AddressOf ActionNewExecute
+		  RemoveHandler sender.ActionCancel, AddressOf ActionNewCancel
+		  sender.Close
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub ActionNewExecute(sender As SudokuNew, newN As Integer, newCluesFactor As Double, newSudokuPuzzle As Sudoku.Puzzle)
+		  #Pragma unused newN
+		  
+		  ' Close Dialog
 		  RemoveHandler sender.ActionNew, WeakAddressOf ActionNewExecute
 		  sender.Close
 		  
+		  ' Load new Sudoku Puzzle
 		  If (newSudokuPuzzle = Nil) Then Return
 		  
 		  mCluesFactor = newCluesFactor
