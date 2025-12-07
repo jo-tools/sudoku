@@ -32,7 +32,6 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1362,6 +1361,25 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub SudokuNumberFieldEnterKeyPressed(sender As SudokuNumberField, value As String)
+		  #Pragma Unused value
+		  
+		  If mIsShowingSudoku Then Return
+		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  
+		  ' For N>9: Commit value when Enter is pressed
+		  If N > 9 Then
+		    Me.SudokuNumberFieldCommitValue(sender)
+		    
+		    ' Select all so user can easily overwrite
+		    sender.SelectAll
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldFocusLost(sender As SudokuNumberField)
 		  If mIsShowingSudoku Then Return
 		  
@@ -1418,6 +1436,7 @@ End
 		      
 		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
 		      AddHandler t.FocusLost, AddressOf SudokuNumberFieldFocusLost
+		      AddHandler t.EnterKeyPressed, AddressOf SudokuNumberFieldEnterKeyPressed
 		      
 		      rctSudoku.AddControl(t)
 		    Next

@@ -46,6 +46,17 @@ Inherits WebTextField
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub TriggerEnterKeyPressed(value As String)
+		  ' Called by SudokuController when Enter key is pressed on this field
+		  EnterKeyPressed(value)
+		End Sub
+	#tag EndMethod
+
+
+	#tag Hook, Flags = &h0
+		Event EnterKeyPressed(value As String)
+	#tag EndHook
 
 	#tag Hook, Flags = &h0
 		Event FocusLost()
