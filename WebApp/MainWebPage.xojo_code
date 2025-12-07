@@ -32,6 +32,7 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1324,6 +1325,57 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub SudokuNumberFieldCommitValue(sender As SudokuNumberField)
+		  ' Commit the current text value to the Sudoku grid
+		  ' Note: Do NOT call SelectAll here - this method is called from FocusLost,
+		  ' and calling SelectAll on a field that lost focus can cause focus to jump back
+		  If sender.IsLocked Then Return
+		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  Var currentNumber As Integer = sender.Text.ToInteger
+		  
+		  ' Validate: must be 0 (empty) or 1..N
+		  If currentNumber < 0 Or currentNumber > N Then
+		    ' Invalid value: reset to grid value
+		    Var gridVal As Integer = Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex)
+		    If gridVal = 0 Then
+		      sender.Text = ""
+		    Else
+		      sender.Text = gridVal.ToString
+		    End If
+		    Return
+		  End If
+		  
+		  ' Update grid if value changed
+		  If Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) <> currentNumber Then
+		    Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		    
+		    If currentNumber = 0 Then
+		      sender.Text = ""
+		    End If
+		    
+		    ' Update Status
+		    Me.RefreshControls
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SudokuNumberFieldFocusLost(sender As SudokuNumberField)
+		  If mIsShowingSudoku Then Return
+		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  
+		  ' For N>9: Commit value when focus is lost
+		  If N > 9 Then
+		    Me.SudokuNumberFieldCommitValue(sender)
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
 		  ' Close current Sudoku Number Fields
 		  For Each c As SudokuNumberField In SudokuTextFields
@@ -1331,12 +1383,14 @@ End
 		    c.Close
 		  Next
 		  
-		  Redim Me.SudokuTextFields(Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N-1)
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  
+		  Redim Me.SudokuTextFields(N*N-1)
 		  
 		  ' Create and add Sudoku Number Fields
-		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      Var index As Integer = row * N + col
 		      
 		      Dim t As New SudokuNumberField
 		      
@@ -1350,7 +1404,8 @@ End
 		      ' FieldTypes.Number shows spinners (which we don't want)
 		      ' FieldTypes.Telephone shows a number pad on mobile devices
 		      t.FieldType = WebTextField.FieldTypes.Telephone
-		      t.MaximumCharactersAllowed = 1
+		      ' For N>9, allow 2 characters (e.g., "12", "16")
+		      t.MaximumCharactersAllowed = If(N > 9, 2, 1)
 		      t.Visible = True
 		      t.Enabled = True
 		      t.ReadOnly = False
@@ -1362,12 +1417,13 @@ End
 		      t.TabIndex = 101 + index
 		      
 		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
+		      AddHandler t.FocusLost, AddressOf SudokuNumberFieldFocusLost
 		      
 		      rctSudoku.AddControl(t)
 		    Next
 		  Next
 		  
-		  Me.Controller.Size = Me.SudokuPuzzle.GetGridSettings.N
+		  Me.Controller.Size = N
 		  
 		End Sub
 	#tag EndMethod
@@ -1375,6 +1431,8 @@ End
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField)
 		  If mIsShowingSudoku Then Return
+		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
 		  
 		  If sender.IsLocked Then
 		    ' Make sure original grid value is not being overwritten
@@ -1385,7 +1443,12 @@ End
 		    Return
 		  End If
 		  
-		  ' Update Number if necessary
+		  ' For N>9: Don't auto-commit on TextChanged (except for when cleared), wait for FocusLost
+		  If N > 9 And (sender.Text <> "") Then
+		    Return
+		  End If
+		  
+		  ' For N<=9: Update Number if necessary (original behavior)
 		  Var currentNumber As Integer = sender.Text.ToInteger
 		  
 		  If (currentNumber < 1) And (sender.Text <> "") Then
@@ -1916,8 +1979,6 @@ End
 		  
 		End Sub
 	#tag EndEvent
-#tag EndEvents
-#tag Events Controller
 #tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty

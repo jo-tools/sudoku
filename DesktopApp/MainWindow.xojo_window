@@ -1082,9 +1082,10 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
 		  ' Lock current state
-		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      Var index As Integer = row * N + col
 		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      
 		      If (value > 0) Then
@@ -1420,9 +1421,10 @@ End
 	#tag Method, Flags = &h21
 		Private Function HasUnlockedCells() As Boolean
 		  ' Are there any unlocked cells with digits?
-		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      Var index As Integer = row * N + col
 		      
 		      If SudokuTextFields(index).IsLocked Then Continue
 		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
@@ -1522,9 +1524,10 @@ End
 		  Var focusIndex As Integer = -1
 		  
 		  ' Put Values into SudokuTextFields
-		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      Var index As Integer = row * N + col
 		      
 		      SudokuTextFields(index).Lock = False
 		      
@@ -1554,11 +1557,65 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub SudokuNumberFieldCommitValue(sender As SudokuNumberField)
+		  ' Commit the current text value to the Sudoku grid
+		  If sender.IsLocked Then Return
+		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  Var currentNumber As Integer = sender.Text.ToInteger
+		  
+		  ' Validate: must be 0 (empty) or 1..N
+		  If currentNumber < 0 Or currentNumber > N Then
+		    ' Invalid value: reset to grid value
+		    Var gridVal As Integer = Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex)
+		    If gridVal = 0 Then
+		      sender.Text = ""
+		    Else
+		      sender.Text = gridVal.ToString
+		    End If
+		    Return
+		  End If
+		  
+		  ' Update grid if value changed
+		  If Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) <> currentNumber Then
+		    Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		    
+		    If currentNumber = 0 Then
+		      sender.Text = ""
+		    End If
+		    
+		    ' Update Status
+		    Me.RefreshControls
+		  End If
+		  
+		  ' Select all so user can easily overwrite
+		  sender.SelectAll
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SudokuNumberFieldFocusLost(sender As SudokuNumberField)
+		  If mIsShowingSudoku Then Return
+		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  
+		  ' For N>9: Commit value when focus is lost
+		  If N > 9 Then
+		    Me.SudokuNumberFieldCommitValue(sender)
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function SudokuNumberFieldKeyDown(sender As SudokuNumberField, key As String) As Boolean
 		  If mIsShowingSudoku Then
 		    'let default behavior happen
 		    Return False
 		  End If
+		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
 		  
 		  Select Case key
 		    ' Handle arrow keys
@@ -1569,24 +1626,36 @@ End
 		    
 		  Case Chr(29) ' Right arrow
 		    Var rightIndex As Integer = sender.PositionIndex + 1
-		    if (rightIndex < Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N) then SudokuTextFields(rightIndex).SetFocus
+		    if (rightIndex < N*N) then SudokuTextFields(rightIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.PositionIndex - Me.SudokuPuzzle.GetGridSettings.N
+		    Var upIndex As Integer = sender.PositionIndex - N
 		    ' Move focus to previous (unlocked) cell
 		    if (upIndex >= 0) then SudokuTextFields(upIndex).SetFocus
 		    Return True
 		    
 		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.PositionIndex + Me.SudokuPuzzle.GetGridSettings.N
-		    if (downIndex < Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N) then SudokuTextFields(downIndex).SetFocus
+		    Var downIndex As Integer = sender.PositionIndex + N
+		    if (downIndex < N*N) then SudokuTextFields(downIndex).SetFocus
+		    Return True
+		    
+		  Case Chr(13), Chr(3) ' Return, Enter
+		    ' Commit value for N>9 (for N<=9 this is handled in TextChanged)
+		    If N > 9 Then
+		      Me.SudokuNumberFieldCommitValue(sender)
+		    End If
 		    Return True
 		    
 		    ' Other special keys
 		  Case Chr(8), Chr(127) ' Backspace, Delete
-		    ' will be filled empty later
-		    key = "0"
+		    If N <= 9 Then
+		      ' For N<=9: immediate update (original behavior)
+		      key = "0"
+		    Else
+		      ' For N>9: let default behavior happen (user is editing multi-digit number)
+		      Return False
+		    End If
 		    
 		  Case Chr(9) 'Tab
 		    'let default behavior happen
@@ -1601,21 +1670,32 @@ End
 		    Return True
 		  End If
 		  
-		  ' Allow entering Digits 0-N
-		  If key >= "0" And key <= Me.SudokuPuzzle.GetGridSettings.N.ToString Then
-		    ' Update Number
-		    Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
-		    
-		    If (key = "0") Then
-		      sender.Text = ""
-		    Else
-		      sender.Text = key
+		  ' For N<=9: Allow entering Digits 0-N with immediate update (original behavior)
+		  If N <= 9 Then
+		    If key >= "0" And key <= N.ToString Then
+		      ' Update Number
+		      Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
+		      
+		      If (key = "0") Then
+		        sender.Text = ""
+		      Else
+		        sender.Text = key
+		      End If
+		      
+		      ' Update Status
+		      Me.RefreshControls
+		      
+		      Return True
 		    End If
 		    
-		    ' Update Status
-		    Me.RefreshControls
-		    
+		    ' Block non-digit keys for N<=9
 		    Return True
+		  End If
+		  
+		  ' For N>9: Allow entering digits 0-9 (multi-digit input, commit on Return/Enter/FocusLost)
+		  If key >= "0" And key <= "9" Then
+		    ' Let the default behavior happen (append digit to text)
+		    Return False
 		  End If
 		  
 		  ' Block everything else
@@ -1633,11 +1713,12 @@ End
 		  Next
 		  
 		  ' Init Sudoku Number Fields
-		  Redim SudokuTextFields(Me.SudokuPuzzle.GetGridSettings.N*Me.SudokuPuzzle.GetGridSettings.N-1)
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  Redim SudokuTextFields(N*N-1)
 		  
-		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
-		      Var index As Integer = row * Me.SudokuPuzzle.GetGridSettings.N + col
+		  For row As Integer = 0 To N-1
+		    For col As Integer = 0 To N-1
+		      Var index As Integer = row * N + col
 		      
 		      ' Create Sudoku Number TextField
 		      SudokuTextFields(index) = New SudokuNumberField
@@ -1650,9 +1731,10 @@ End
 		      SudokuTextFields(index).ColumnIndex = col
 		      SudokuTextFields(index).PositionIndex = index
 		      
-		      ' Add custom KeyDown event handler, then add Control to Window
+		      ' Add custom event handlers, then add Control to Window
 		      AddHandler SudokuTextFields(index).KeyDown, AddressOf SudokuNumberFieldKeyDown
 		      AddHandler SudokuTextFields(index).TextChanged, AddressOf SudokuNumberFieldTextChanged
+		      AddHandler SudokuTextFields(index).FocusLost, AddressOf SudokuNumberFieldFocusLost
 		      Self.AddControl(SudokuTextFields(index))
 		    Next
 		  Next
@@ -1664,6 +1746,8 @@ End
 		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField)
 		  If mIsShowingSudoku Then Return
 		  
+		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
+		  
 		  If sender.IsLocked Then
 		    ' Make sure original grid value is not being overwritten
 		    ' we don't set .Readonly to get arrow navigation
@@ -1673,7 +1757,12 @@ End
 		    Return
 		  End If
 		  
-		  ' Update Number if necessary
+		  ' For N>9: Don't auto-commit on TextChanged (except for when cleared), wait for Return/Enter/FocusLost
+		  If N > 9 And (sender.Text <> "") Then
+		    Return
+		  End If
+		  
+		  ' For N<=9: Update Number if necessary
 		  Var currentNumber As Integer = sender.Text.ToInteger
 		  If (Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
 		  
@@ -2130,12 +2219,12 @@ End
 		    End Select
 		    
 		    If (loadSudoku <> "") Then
-		      Self.SudokuPuzzle.ClearGrid
-		      Self.SudokuPuzzle = New Sudoku.Puzzle(9) 'intentionally because of above values
+		      Var N As Integer = 9
+		      Self.SudokuPuzzle = New Sudoku.Puzzle(N)
 		      
-		      For row As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
-		        For col As Integer = 0 To Self.SudokuPuzzle.GetGridSettings.N-1
-		          Var index As Integer = row * Self.SudokuPuzzle.GetGridSettings.N + col
+		      For row As Integer = 0 To N-1
+		        For col As Integer = 0 To N-1
+		          Var index As Integer = row * N + col
 		          Self.SudokuPuzzle.SetGridValue(row, col) = loadSudoku.Middle(index, 1).ToInteger
 		        Next
 		      Next
