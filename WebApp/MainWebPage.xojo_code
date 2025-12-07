@@ -777,6 +777,7 @@ Begin WebPage MainWebPage
       End
    End
    Begin SudokuController Controller
+      ContainerHeight =   670
       ContainerWidth  =   800
       ControlID       =   ""
       Enabled         =   True
@@ -1525,8 +1526,6 @@ End
 
 #tag EndWindowCode
 
-#tag Events rctSudoku
-#tag EndEvents
 #tag Events btnSolve
 	#tag Event
 		Sub Pressed()
@@ -1919,17 +1918,6 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag Events Controller
-	#tag Event
-		Sub Opening()
-		  // TODO: This method is still hardcoded for a 3x3 Sudoku
-		  // Needs to be changed to use Self.SudokuPuzzle.GetGridSettings (N, BoxWidth, BoxHeight)
-		  // Note: Also needs to be updated when changing Sudoku Puzzle with different N
-		  Var N As Integer = 9
-		  If (Self.SudokuPuzzle <> Nil) Then N = Self.SudokuPuzzle.GetGridSettings.N
-		  
-		  Me.Size = N
-		End Sub
-	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
