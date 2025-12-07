@@ -1433,6 +1433,8 @@ End
 		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) / 2)
 		      t.Style.BackgroundColor = &cffffffff
 		      t.TabIndex = 101 + index
+		      ' Set in App.HTMLHeader with padding adjustment
+		      t.CSSClasses.Add("sudoku-number-field")
 		      
 		      AddHandler t.TextChanged, AddressOf SudokuNumberFieldTextChanged
 		      AddHandler t.FocusLost, AddressOf SudokuNumberFieldFocusLost
