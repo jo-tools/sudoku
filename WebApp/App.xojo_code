@@ -84,10 +84,6 @@ Inherits WebApplication
 
 	#tag Method, Flags = &h21
 		Private Function HandleApiRequestGenerate(request As WebRequest, response As WebResponse) As Boolean
-		  // TODO: This is still hardcoded for a 3x3 Sudoku
-		  // Needs to be changed to use Me.SudokuPuzzle.GetGridSettings.N (N, BoxWidth, BoxHeight)
-		  Var N As Integer = 9
-		  
 		  Print("API Request: " + request.Path)
 		  
 		  If (request.Method <> "GET") Then
@@ -101,15 +97,34 @@ Inherits WebApplication
 		  
 		  Var dictParams As Dictionary = Me.GetQueryStringAsDictionary(request)
 		  
-		  Var numClues As Integer = dictParams.Lookup("numClues", 40).IntegerValue
-		  If (numClues < 24) Then numClues = 24
+		  Var N As Integer = dictParams.Lookup("size", 9).IntegerValue
+		  
+		  Var minCluesFactor As Double = 0.296
+		  Var minNumClues As Integer = CType(Ceiling(minCluesFactor * (N*N)), Integer)
+		  
+		  Var defaultCluesFactor As Double = 0.444
+		  Var defaultNumClues As Integer = CType(Ceiling(defaultCluesFactor * (N*N)), Integer)
+		  
+		  Var numClues As Integer = dictParams.Lookup("numClues", defaultNumClues).IntegerValue
+		  If (numClues < minNumClues) Then numClues = minNumClues
 		  If (numClues > N*N) Then numClues = N*N
 		  
 		  var addSolution As Boolean = dictParams.Lookup("addSolution", false).BooleanValue
 		  
-		  Var sudokuPuzzle As New Sudoku.Puzzle(N)
-		  Call sudokuPuzzle.GenerateRandomPuzzle(numClues)
-		  sudokuPuzzle.LockCurrentState
+		  Var sudokuPuzzle As Sudoku.Puzzle
+		  
+		  Try
+		    sudokuPuzzle = New Sudoku.Puzzle(N)
+		    Call sudokuPuzzle.GenerateRandomPuzzle(numClues)
+		    sudokuPuzzle.LockCurrentState
+		    
+		  Catch err As InvalidArgumentException
+		    response.Status = 400
+		    response.MIMEType ="text/plain"
+		    response.Write("Could not create the Sudoku Puzzle" + EndOfLine.Unix + err.Message)
+		    
+		  End Try
+		  
 		  
 		  Select Case dictParams.Lookup("format", "json").StringValue
 		    
