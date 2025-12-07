@@ -23,6 +23,7 @@ Protected Class Puzzle
 		  mCandidatesSearcher = New CandidatesSearcher(mGrid)
 		  mSolver = New Solver(mGrid)
 		  mSolver.Invalidate
+		  mRandom = New Random
 		  
 		End Sub
 	#tag EndMethod
@@ -470,7 +471,6 @@ Protected Class Puzzle
 		  
 		  #Pragma DisableBoundsChecking
 		  
-		  Var Rnd As New Random
 		  Var N As Integer = mGrid.Settings.N
 		  
 		  ' Sanitize numClues
@@ -482,7 +482,7 @@ Protected Class Puzzle
 		    mGrid.Clear
 		    
 		    ' Place a random Number
-		    mGrid.Set(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
+		    mGrid.Set(mRandom.InRange(0, N-1), mRandom.InRange(0, N-1)) = mRandom.InRange(1, N)
 		    
 		    ' Start with a valid, solved grid
 		    isInitSolved = Me.GenerateRandomPuzzleSolve
@@ -497,7 +497,7 @@ Protected Class Puzzle
 		  
 		  ' Fisher-Yates shuffle
 		  For i As Integer = N DownTo 2
-		    Var j As Integer = Rnd.InRange(1, i)
+		    Var j As Integer = mRandom.InRange(1, i)
 		    Var tmp As Integer = perm(i)
 		    perm(i) = perm(j)
 		    perm(j) = tmp
@@ -533,7 +533,7 @@ Protected Class Puzzle
 		  
 		  ' Fisher-Yates shuffle
 		  For i As Integer = N*N-1 DownTo 1
-		    Var j As Integer = Rnd.InRange(0, i)
+		    Var j As Integer = mRandom.InRange(0, i)
 		    Var tmpIndex As Integer = indices(i)
 		    indices(i) = indices(j)
 		    indices(j) = tmpIndex
@@ -640,9 +640,8 @@ Protected Class Puzzle
 		  Next
 		  
 		  ' Shuffle using Fisher-Yates
-		  Var Rnd As New Random
 		  For i As Integer = valuesInRandomOrder.LastIndex DownTo 1
-		    Var j As Integer = Rnd.InRange(0, i)
+		    Var j As Integer = mRandom.InRange(0, i)
 		    Var tmp As Integer = valuesInRandomOrder(i)
 		    valuesInRandomOrder(i) = valuesInRandomOrder(j)
 		    valuesInRandomOrder(j) = tmp
@@ -880,6 +879,10 @@ Protected Class Puzzle
 
 	#tag Property, Flags = &h21
 		Private mHintsSearcher As HintsSearcher
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mRandom As Random
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
