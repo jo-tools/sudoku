@@ -235,11 +235,12 @@ Protected Class Puzzle
 		      
 		      Var value As Integer = part.ToInteger
 		      ' "0" returns 0, non-numeric also returns 0 but we accept 0 as empty cell
-		      If (part = "0") Or (value > 0) Then
+		      
+		      If (value > 0) Then
 		        separatedNumbers.Add(value)
 		      Else
 		        Select Case part
-		        Case "0", ".", "_", "x", "?"
+		        Case "0", "00", ".", "..", "_", "__", "x", "xx", "?", "??"
 		          ' Common representations for empty cells
 		          separatedNumbers.Add(0)
 		        End Select
@@ -853,7 +854,11 @@ Protected Class Puzzle
 		    Var cols() As String
 		    
 		    For col As Integer = 0 To N-1
-		      cols.Add(mGrid.Get(row, col).ToString)
+		      If (N > 9) Then
+		        cols.Add(Format(mGrid.Get(row, col), "00"))
+		      Else
+		        cols.Add(mGrid.Get(row, col).ToString)
+		      End If
 		    Next
 		    
 		    rows.Add(String.FromArray(cols, separator))
