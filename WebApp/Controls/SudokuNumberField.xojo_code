@@ -2,6 +2,12 @@
 Protected Class SudokuNumberField
 Inherits WebTextField
 	#tag Event
+		Sub FocusLost()
+		  FocusLost
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub FocusReceived()
 		  If (Not Me.IsLocked) And (Me.Text.ToInteger > 0) Then
 		    Me.SelectAll
@@ -14,13 +20,6 @@ Inherits WebTextField
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  // Calling the overridden superclass constructor.
-		  // Note that this may need modifications if there are multiple constructor choices.
-		  // Possible constructor calls:
-		  // Constructor() -- From WebTextControl
-		  // Constructor() -- From WebEntryField
-		  // Constructor() -- From WebUIControl
-		  // Constructor() -- From WebControl
 		  Super.Constructor
 		  
 		End Sub
@@ -47,6 +46,21 @@ Inherits WebTextField
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub TriggerEnterKeyPressed(value As String)
+		  ' Called by SudokuController when Enter key is pressed on this field
+		  EnterKeyPressed(value)
+		End Sub
+	#tag EndMethod
+
+
+	#tag Hook, Flags = &h0
+		Event EnterKeyPressed(value As String)
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event FocusLost()
+	#tag EndHook
 
 	#tag Hook, Flags = &h0
 		Event FocusReceived()

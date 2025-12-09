@@ -2,57 +2,76 @@
 Protected Class Puzzle
 	#tag Method, Flags = &h0
 		Sub ClearGrid()
-		  Me.grid.Clear
-		  Me.solver.SetStateIsSolvable
+		  mGrid.Clear
+		  mSolver.SetStateIsSolvable
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function Clone() As Puzzle
-		  Return New Puzzle(Me.grid.Clone)
+		  Return New Puzzle(mGrid.Clone)
 		  
 		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Constructor()
-		  Var grid As New Grid
-		  Me.Constructor(grid)
+	#tag Method, Flags = &h21
+		Private Sub Constructor(grid As Grid)
+		  mGrid = grid
+		  mHintsSearcher = New HintsSearcher(mGrid)
+		  mCandidatesSearcher = New CandidatesSearcher(mGrid)
+		  mSolver = New Solver(mGrid)
+		  mSolver.Invalidate
+		  mRandom = New Random
 		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub Constructor(grid As Grid)
-		  Me.grid = grid
-		  Me.hintsSearcher = New HintsSearcher(Me.grid)
-		  Me.candidatesSearcher = New CandidatesSearcher(Me.grid)
-		  Me.solver = New Solver(Me.grid)
-		  Me.solver.Invalidate
+	#tag Method, Flags = &h0
+		Sub Constructor(n As Integer)
+		  Var grid As New Grid(n)
+		  Me.Constructor(grid)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(json As JSONItem)
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Me.Constructor()
-		  
-		  ' Init with JSON representation of a Sudoku-grid
+		  ' Init with JSON representation of a Sudoku Grid
 		  Const kExceptionMessage = "Invalid JSON representation of a Sudoku"
+		  
+		  ' First, determine N from the JSON cell count
+		  Var N As Integer = 0
+		  Try
+		    If (json = Nil) Or (Not json.HasKey(kJSONKeySudoku)) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
+		    Var jsonSudoku As JSONItem = json.Child(kJSONKeySudoku)
+		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
+		    
+		    ' N*N = cellCount, so N = Sqrt(cellCount)
+		    Var cellCount As Integer = jsonSudoku.Count
+		    Var sqrtVal As Double = Sqrt(cellCount)
+		    N = CType(sqrtVal, Integer)
+		    If N * N <> cellCount Then
+		      Raise New InvalidArgumentException(kExceptionMessage, 8)
+		    End If
+		  Catch err As JSONException
+		    Raise New InvalidArgumentException(kExceptionMessage, 4)
+		  Catch err As InvalidArgumentException
+		    Raise err
+		  Catch err As RuntimeException
+		    Raise New InvalidArgumentException(kExceptionMessage, 5)
+		  End Try
+		  
+		  Me.Constructor(N)
 		  
 		  Var dictSudoku As New Dictionary
 		  Var loadedLockedCellIndexes() As Integer
 		  
 		  Try
-		    If (json = Nil) Or (Not json.HasKey(kJSONKeySudoku)) Then Raise New InvalidArgumentException(kExceptionMessage, 1)
-		    
 		    Var jsonSudoku As JSONItem = json.Child(kJSONKeySudoku)
-		    If (jsonSudoku = Nil) Or (Not jsonSudoku.IsArray) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		    
 		    Var row, col, value As Integer
 		    Var locked As Boolean
@@ -120,61 +139,142 @@ Protected Class Puzzle
 		    Next
 		  Next
 		  
-		  Me.solver.Invalidate
+		  mSolver.Invalidate
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(s As String)
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Me.Constructor()
+		  ' Init with String representation of a Sudoku grid
 		  
-		  ' Init with String representation of a Sudoku-grid
+		  ' ------------------------------------------------------------------------------------
+		  ' Supported formats (auto-detected)
+		  ' - 1..N are values
+		  ' - "0", ".", "_", "x", "?" are treated as empty
+		  ' The parser first tries the N<=9 single-digit mode; if that does not yield a
+		  ' valid N in [4..9], it falls back to the separated-token mode (N>=4, incl. N>9).
+		  ' ------------------------------------------------------------------------------------
+		  ' N <= 9:  Digit stream, optionally with spaces/commas/line breaks
+		  ' Example: "530070000600195000..." or "500107008 008305400 ..."
+		  '           → parsed character-by-character, all non-digit separators ignored
+		  ' ------------------------------------------------------------------------------------
+		  ' Separated-token mode (N >= 4, typically used for N > 9):
+		  ' Integers separated by spaces/commas/semicolons/line breaks
+		  ' Example: "1 2 3 ... 16", "1,2,3,...,16", possibly aligned with extra spaces
+		  ' ------------------------------------------------------------------------------------
+		  
 		  Const kExceptionMessage = "Invalid String representation of a Sudoku"
 		  
 		  s = s.Trim
 		  If (s = "") Then Raise New InvalidArgumentException(kExceptionMessage, 1)
 		  
-		  ' Sanity
-		  If (s.Bytes < N*N) Or (s.Bytes > 2048) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
+		  ' Sanity - basic length check
+		  If (s.Bytes < 16) Or (s.Bytes > 8192) Then Raise New InvalidArgumentException(kExceptionMessage, 2)
 		  
+		  ' Normalize line endings to spaces
+		  s = s.ReplaceLineEndings(" ")
 		  
-		  s = s.ReplaceLineEndings("")
-		  
-		  Var currentChar As String
-		  Var currentVal As Integer
 		  Var numbers() As Integer
-		  For pos As Integer = 0 To s.Bytes
-		    currentVal = -1
-		    currentChar = s.MiddleBytes(pos, 1)
+		  Var N As Integer = 0
+		  
+		  ' Strategy: First try single-digit parsing (N<=9), ignoring all whitespace.
+		  ' If that yields a valid N*N count with all values in [0,N], use it.
+		  ' Otherwise, try space/comma-separated parsing for N>9.
+		  
+		  ' Attempt 1: Single-digit format (N<=9), ignore all whitespace
+		  Var singleDigitNumbers() As Integer
+		  For pos As Integer = 0 To s.Length - 1
+		    Var currentChar As String = s.Middle(pos, 1)
 		    
 		    Select Case currentChar
-		    Case "0"
-		      currentVal = 0
+		    Case "0", ".", "_", "x", "?"
+		      ' Common representations for empty cells
+		      singleDigitNumbers.Add(0)
+		    Case "1" To "9"
+		      singleDigitNumbers.Add(currentChar.ToInteger)
 		    Else
-		      currentVal = currentChar.ToInteger
-		      If (currentVal < 1) Then
-		        'invalid
-		        Continue
-		      End If
+		      ' All other characters (spaces, commas, etc.) are ignored
 		    End Select
-		    
-		    If (currentVal < 0) Or (currentVal > N) Then
-		      'invalid
-		      Continue
-		    End If
-		    
-		    numbers.Add(currentVal)
 		  Next
 		  
-		  ' Sanity
-		  If (numbers.Count <> N * N) Then
-		    'invalid
+		  ' Check if single-digit parsing yields a valid Sudoku size
+		  Var singleDigitCount As Integer = singleDigitNumbers.Count
+		  Var sqrtSingle As Double = Sqrt(singleDigitCount)
+		  Var nSingle As Integer = CType(sqrtSingle, Integer)
+		  
+		  If (nSingle * nSingle = singleDigitCount) And (nSingle >= 4) And (nSingle <= 9) Then
+		    ' Valid N<=9 grid, verify all values are in range
+		    Var allValid As Boolean = True
+		    For i As Integer = 0 To singleDigitNumbers.LastIndex
+		      If singleDigitNumbers(i) < 0 Or singleDigitNumbers(i) > nSingle Then
+		        allValid = False
+		        Exit
+		      End If
+		    Next
+		    
+		    If allValid Then
+		      numbers = singleDigitNumbers
+		      N = nSingle
+		    End If
+		  End If
+		  
+		  ' Attempt 2: Space/comma-separated format (for N>9 or if single-digit failed)
+		  If N = 0 Then
+		    ' Replace commas or semicolons with spaces and split
+		    Var sSep As String = s.ReplaceAll(",", " ").ReplaceAll(";", " ")
+		    Var parts() As String = sSep.Split(" ")
+		    Var separatedNumbers() As Integer
+		    
+		    For Each part As String In parts
+		      part = part.Trim
+		      If (part = "") Then Continue
+		      
+		      Var value As Integer = part.ToInteger
+		      ' "0" returns 0, non-numeric also returns 0 but we accept 0 as empty cell
+		      
+		      If (value > 0) Then
+		        separatedNumbers.Add(value)
+		      Else
+		        Select Case part
+		        Case "0", "00", ".", "..", "_", "__", "x", "xx", "?", "??"
+		          ' Common representations for empty cells
+		          separatedNumbers.Add(0)
+		        End Select
+		      End If
+		    Next
+		    
+		    ' Check if separated parsing yields a valid Sudoku size
+		    Var sepCount As Integer = separatedNumbers.Count
+		    Var sqrtSep As Double = Sqrt(sepCount)
+		    Var nSep As Integer = CType(sqrtSep, Integer)
+		    
+		    If (nSep * nSep = sepCount) And (nSep >= 4) Then
+		      ' Verify all values are in range
+		      Var allValid As Boolean = True
+		      For i As Integer = 0 To separatedNumbers.LastIndex
+		        If separatedNumbers(i) < 0 Or separatedNumbers(i) > nSep Then
+		          allValid = False
+		          Exit
+		        End If
+		      Next
+		      
+		      If allValid Then
+		        numbers = separatedNumbers
+		        N = nSep
+		      End If
+		    End If
+		  End If
+		  
+		  ' Final validation
+		  If N = 0 Or numbers.Count <> N * N Then
 		    Raise New InvalidArgumentException(kExceptionMessage, 3)
 		  End If
+		  
+		  ' Now we know N, construct the grid
+		  Me.Constructor(N)
 		  
 		  ' Valid String to build a Sudoku
 		  Me.ClearGrid
@@ -186,7 +286,7 @@ Protected Class Puzzle
 		    Next
 		  Next
 		  
-		  Me.solver.Invalidate
+		  mSolver.Invalidate
 		  
 		  
 		End Sub
@@ -286,7 +386,10 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, isPuzzle As Boolean)
-		  Var block As Integer = N \ 3
+		  Var N As Integer = mGrid.Settings.N
+		  Var boxWidth As Integer = mGrid.Settings.BoxWidth
+		  Var boxHeight As Integer = mGrid.Settings.BoxHeight
+		  
 		  Var cell As Double = sizePoints / N
 		  
 		  ' Thin grid lines
@@ -299,12 +402,14 @@ Protected Class Puzzle
 		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
 		  Next
 		  
-		  ' Thicker block separators (inside)
+		  ' Thicker block separators (inside) - vertical lines at BoxWidth intervals, horizontal at BoxHeight
 		  g.PenSize = If(isPuzzle, 1.0, 0.5)
 		  g.DrawingColor = Color.Black
-		  For i As Integer = block To N - 1 Step block
+		  For i As Integer = boxWidth To N - 1 Step boxWidth
 		    Var x As Double = topLeftX + i * cell
 		    g.DrawLine(x, topLeftY, x, topLeftY + sizePoints)
+		  Next
+		  For i As Integer = boxHeight To N - 1 Step boxHeight
 		    Var y As Double = topLeftY + i * cell
 		    g.DrawLine(topLeftX, y, topLeftX + sizePoints, y)
 		  Next
@@ -322,7 +427,7 @@ Protected Class Puzzle
 		  
 		  For row As Integer = 0 To N - 1
 		    For col As Integer = 0 To N - 1
-		      Var value As Integer = Me.grid.Get(row, col)
+		      Var value As Integer = mGrid.Get(row, col)
 		      If value <> 0 Then
 		        Var s As String = value.ToString
 		        ' Choose font size relative to cell
@@ -362,10 +467,9 @@ Protected Class Puzzle
 		  ' Returns False if not enough cells could be removed while keeping uniqueness
 		  ' Note: Always contains a new puzzle, even if returning False
 		  
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Var Rnd As New Random
+		  Var N As Integer = mGrid.Settings.N
 		  
 		  ' Sanitize numClues
 		  If numClues < 1 Then numClues = 1
@@ -373,34 +477,36 @@ Protected Class Puzzle
 		  
 		  Var isInitSolved As Boolean = False
 		  while (not isInitSolved)
-		    Me.grid.Clear
+		    mGrid.Clear
 		    
 		    ' Place a random Number
-		    me.grid.Set(Rnd.InRange(0, N-1), Rnd.InRange(0, N-1)) = Rnd.InRange(1, N)
+		    mGrid.Set(mRandom.InRange(0, N-1), mRandom.InRange(0, N-1)) = mRandom.InRange(1, N)
 		    
 		    ' Start with a valid, solved grid
 		    isInitSolved = Me.GenerateRandomPuzzleSolve
 		  Wend
 		  
 		  ' Shuffle Digits to get a different-looking solved grid
-		  Var perm(N) As Integer
+		  Var perm() As Integer
+		  ReDim perm(N)
 		  For i As Integer = 1 To N
 		    perm(i) = i
 		  Next
 		  
 		  ' Fisher-Yates shuffle
 		  For i As Integer = N DownTo 2
-		    Var j As Integer = Rnd.InRange(1, i)
+		    Var j As Integer = mRandom.InRange(1, i)
 		    Var tmp As Integer = perm(i)
 		    perm(i) = perm(j)
 		    perm(j) = tmp
 		  Next
 		  
 		  ' Apply the permutation to create a randomized solution copy
-		  Var solution(N-1, N-1) As Integer
+		  Var solution(-1, -1) As Integer
+		  ReDim solution(N-1, N-1)
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      Var value As Integer = me.grid.Get(row, col)
+		      Var value As Integer = mGrid.Get(row, col)
 		      If value >= 1 And value <= N Then
 		        solution(row, col) = perm(value)
 		      Else
@@ -412,7 +518,7 @@ Protected Class Puzzle
 		  ' Put the permuted solution back into grid
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      me.grid.Set(row, col) = solution(row, col)
+		      mGrid.Set(row, col) = solution(row, col)
 		    Next
 		  Next
 		  
@@ -425,7 +531,7 @@ Protected Class Puzzle
 		  
 		  ' Fisher-Yates shuffle
 		  For i As Integer = N*N-1 DownTo 1
-		    Var j As Integer = Rnd.InRange(0, i)
+		    Var j As Integer = mRandom.InRange(0, i)
 		    Var tmpIndex As Integer = indices(i)
 		    indices(i) = indices(j)
 		    indices(j) = tmpIndex
@@ -441,24 +547,24 @@ Protected Class Puzzle
 		    Var idx As Integer = indices(i)
 		    Var rr As Integer = idx \ N
 		    Var cc As Integer = idx Mod N
-		    Var backup As Integer = me.grid.Get(rr, cc)
+		    Var backup As Integer = mGrid.Get(rr, cc)
 		    
 		    ' Skip already-empty cells (shouldn't happen - just to be safe)
 		    If backup = 0 Then Continue
 		    
 		    ' Try removing
-		    me.grid.Set(rr, cc) = 0
+		    mGrid.Set(rr, cc) = 0
 		    
 		    ' If the puzzle still has exactly 1 solution, accept the removal
-		    If Me.solver.CountSolutions(2) = 1 Then
+		    If mSolver.CountSolutions(2) = 1 Then
 		      removed = removed + 1
 		    Else
 		      ' Not unique solution, restore the value and try to remove another
-		      Me.grid.Set(rr, cc) = backup
+		      mGrid.Set(rr, cc) = backup
 		    End If
 		  Next
 		  
-		  Me.solver.SetStateIsSolvable
+		  mSolver.SetStateIsSolvable
 		  
 		  If removed < removeCount Then
 		    ' Could not remove enough cells while keeping uniqueness.
@@ -477,7 +583,6 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Function GenerateRandomPuzzleSolve() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' We don't use the .Solve method here because trying to figure out
@@ -491,16 +596,16 @@ Protected Class Puzzle
 		  
 		  ' Find the next empty cell
 		  ' If there are no empty cells left, the puzzle is solved
-		  If Not Me.grid.FindEmpty(row, col) Then
+		  If Not mGrid.FindEmpty(row, col) Then
 		    Return True
 		  End If
 		  
-		  ' Try all possible numbers (1-9) for this empty cell in random order
+		  ' Try all possible numbers (1-N) for this empty cell in random order
 		  For Each value As Integer In Me.GenerateRandomValues
 		    ' Check if placing value here is allowed by Sudoku rules
-		    If Me.grid.IsValueValid(row, col, value) Then
+		    If mGrid.IsValueValid(row, col, value) Then
 		      ' Tentatively place value in the cell
-		      me.grid.Set(row, col) = value
+		      mGrid.Set(row, col) = value
 		      
 		      ' Recursively attempt to solve the rest of the grid
 		      If GenerateRandomPuzzleSolve() Then
@@ -512,11 +617,11 @@ Protected Class Puzzle
 		      ' Backtracking
 		      ' If recursion returned False, this value led to a dead end
 		      ' Undo the move before trying the next number in this cell
-		      me.grid.Set(row, col) = 0
+		      mGrid.Set(row, col) = 0
 		    End If
 		  Next
 		  
-		  ' All numbers 1-9 failed in this cell
+		  ' All numbers 1-N failed in this cell
 		  ' Signal to the previous recursive call that it must backtrack
 		  Return False
 		End Function
@@ -528,14 +633,13 @@ Protected Class Puzzle
 		  ' to get a random Sudoku built
 		  
 		  Var valuesInRandomOrder() As Integer
-		  For i As Integer = 1 To N
+		  For i As Integer = 1 To mGrid.Settings.N
 		    valuesInRandomOrder.Add(i)
 		  Next
 		  
 		  ' Shuffle using Fisher-Yates
-		  Var Rnd As New Random
 		  For i As Integer = valuesInRandomOrder.LastIndex DownTo 1
-		    Var j As Integer = Rnd.InRange(0, i)
+		    Var j As Integer = mRandom.InRange(0, i)
 		    Var tmp As Integer = valuesInRandomOrder(i)
 		    valuesInRandomOrder(i) = valuesInRandomOrder(j)
 		    valuesInRandomOrder(j) = tmp
@@ -548,56 +652,62 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function GetCellCandidates(exclusionParams As Sudoku.ExclusionParams) As CellCandidates()
-		  Return Me.candidatesSearcher.Get(exclusionParams)
+		  Return mCandidatesSearcher.Get(exclusionParams)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetCellHints() As CellHint()
-		  Return Me.hintsSearcher.GetCellHints
+		  Return mHintsSearcher.GetCellHints
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetGridSettings() As Grid.Settings
+		  Return mGrid.Settings
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetGridValue(row As Integer, col As Integer) As Integer
-		  Return me.grid.Get(row, col)
+		  Return mGrid.Get(row, col)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
-		  Return Me.grid.IsEmpty
+		  Return mGrid.IsEmpty
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsGridCellLocked(row As Integer, col As Integer) As Boolean
-		  Return Me.grid.IsGridCellLocked(row, col)
+		  Return mGrid.IsGridCellLocked(row, col)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
-		  Return Me.solver.IsSolvable
+		  Return mSolver.IsSolvable
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsSolved() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not Me.solver.IsValidBasicSudokuRules) Then Return False
+		  If (Not mSolver.IsValidBasicSudokuRules) Then Return False
 		  
 		  ' And no empty cells left
-		  If Me.grid.HasEmptyCells Then Return False
+		  If mGrid.HasEmptyCells Then Return False
 		  
 		  Return True
 		End Function
@@ -605,7 +715,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsValid() As Boolean
-		  Return Me.solver.IsValidBasicSudokuRules
+		  Return mSolver.IsValidBasicSudokuRules
 		  
 		End Function
 	#tag EndMethod
@@ -613,7 +723,7 @@ Protected Class Puzzle
 	#tag Method, Flags = &h0
 		Sub LockCurrentState()
 		  ' Lock current state (used for Export in API only)
-		  Me.grid.LockCurrentState
+		  mGrid.LockCurrentState
 		End Sub
 	#tag EndMethod
 
@@ -641,45 +751,45 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub SetGridCellLocked(index As Integer)
-		  Me.grid.Lock(index)
+		  mGrid.Lock(index)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetGridCellLocked(row As Integer, col As Integer)
-		  Me.grid.Lock(row, col)
+		  mGrid.Lock(row, col)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetGridValue(row As Integer, col As Integer, Assigns value As Integer)
-		  Me.grid.Set(row, col) = value
-		  Me.solver.Invalidate
+		  mGrid.Set(row, col) = value
+		  mSolver.Invalidate
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Solve() As Boolean
-		  Return Me.solver.Solve
+		  Return mSolver.Solve
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function SolveEnabled() As Boolean
-		  Return Me.solver.SolveEnabled
+		  Return mSolver.SolveEnabled
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToJson(application As JSONItem, addSolution As Boolean) As JSONItem
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
+		  Var N As Integer = mGrid.Settings.N
 		  Var jsonSudoku As New JSONItem("[]")
 		  
 		  For row As Integer = 0 To N-1
@@ -690,8 +800,8 @@ Protected Class Puzzle
 		      jsonSudokuCell.Value(kJSONKeySudokuCellRow) = row+1
 		      jsonSudokuCell.Value(kJSONKeySudokuCellCol) = col+1
 		      jsonSudokuCell.Value(kJSONKeySudokuCellIndex) = index
-		      jsonSudokuCell.Value(kJSONKeySudokuCellValue) = Me.grid.Get(row, col)
-		      jsonSudokuCell.Value(kJSONKeySudokuCellLocked) = Me.grid.IsGridCellLocked(row, col)
+		      jsonSudokuCell.Value(kJSONKeySudokuCellValue) = mGrid.Get(row, col)
+		      jsonSudokuCell.Value(kJSONKeySudokuCellLocked) = mGrid.IsGridCellLocked(row, col)
 		      
 		      jsonSudoku.Add(jsonSudokuCell)
 		    Next
@@ -726,19 +836,26 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function ToString() As String
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Var rows() As String
+		  Var N As Integer = mGrid.Settings.N
 		  
+		  ' For N>9, use space-separated format to handle multi-digit values
+		  Var separator As String = If(N > 9, " ", "")
+		  
+		  Var rows() As String
 		  For row As Integer = 0 To N-1
 		    Var cols() As String
 		    
 		    For col As Integer = 0 To N-1
-		      cols.Add(Me.grid.Get(row, col).ToString)
+		      If (N > 9) Then
+		        cols.Add(Format(mGrid.Get(row, col), "00"))
+		      Else
+		        cols.Add(mGrid.Get(row, col).ToString)
+		      End If
 		    Next
 		    
-		    rows.Add(String.FromArray(cols, ""))
+		    rows.Add(String.FromArray(cols, separator))
 		  Next
 		  
 		  Return String.FromArray(rows, EndOfLine.UNIX)
@@ -748,19 +865,23 @@ Protected Class Puzzle
 
 
 	#tag Property, Flags = &h21
-		Private candidatesSearcher As CandidatesSearcher
+		Private mCandidatesSearcher As CandidatesSearcher
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private grid As Grid
+		Private mGrid As Grid
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private hintsSearcher As HintsSearcher
+		Private mHintsSearcher As HintsSearcher
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private solver As Solver
+		Private mRandom As Random
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mSolver As Solver
 	#tag EndProperty
 
 

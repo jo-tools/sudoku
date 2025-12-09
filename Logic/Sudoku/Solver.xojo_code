@@ -2,19 +2,18 @@
 Private Class Solver
 	#tag Method, Flags = &h0
 		Sub Constructor(grid As Grid)
-		  Me.grid = grid
-		  Me.hintsSearcher = New HintsSearcher(grid)
-		  Me.candidatesSearcher = New CandidatesSearcher(grid)
+		  mGrid = grid
+		  mHintsSearcher = New HintsSearcher(grid)
+		  mCandidatesSearcher = New CandidatesSearcher(grid)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function CountSolutions(limit As Integer = 2) As Integer
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  Var startStackCount As Integer = solveStack.Count
+		  Var startStackCount As Integer = mSolveStack.Count
 		  
 		  ' Apply deterministic steps
 		  While Me.SolveApplyDeterministicSteps
@@ -24,7 +23,7 @@ Private Class Solver
 		  
 		  ' Check if solved just with deterministic steps
 		  Var row, col As Integer
-		  If (Not Me.grid.FindEmpty(row, col)) Then
+		  If (Not mGrid.FindEmpty(row, col)) Then
 		    ' Count as one solution
 		    Me.SolveUndoTo(startStackCount)
 		    Return 1
@@ -33,7 +32,7 @@ Private Class Solver
 		  ' Now we don't have any more cells to fill out with a certain value.
 		  ' Let's start to guess the remaining empty cell's values...
 		  
-		  Var deterministicStepsStackCount As Integer = solveStack.Count
+		  Var deterministicStepsStackCount As Integer = mSolveStack.Count
 		  
 		  ' Find to-be-solved cells with the least possible candidate values
 		  Var bestRow As Integer = -1
@@ -57,7 +56,7 @@ Private Class Solver
 		  Var total As Integer = 0
 		  For Each value As Integer In bestCandidates
 		    ' Tentatively place value in the cell
-		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, Me.grid.Get(bestRow, bestCol), value))
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, mGrid.Get(bestRow, bestCol), value))
 		    
 		    ' Recursively attempt to solve the rest of the grid
 		    total = total + Me.CountSolutions(limit - total)
@@ -82,6 +81,7 @@ Private Class Solver
 	#tag Method, Flags = &h21
 		Private Function CreateSolveMove(row As Integer, col As Integer, oldValue As Integer, newValue As Integer) As SolveMove
 		  Var m As SolveMove
+		  
 		  m.Row = row
 		  m.Col = col
 		  m.OldValue = oldValue
@@ -92,39 +92,16 @@ Private Class Solver
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Function GetCountNonEmpty() As Integer
-		  #Pragma DisableBackgroundTasks
-		  #Pragma DisableBoundsChecking
-		  
-		  Var count As Integer = 0
-		  
-		  ' Count non empty cells
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      If Me.grid.Get(row, col) < 1 Then
-		        Continue
-		      End If
-		      
-		      count = count + 1
-		    Next
-		  Next
-		  
-		  Return count
-		  
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Sub Invalidate()
-		  cacheIsSolvable = IsSolvableState.Unknown
+		  mCacheIsSolvable = IsSolvableState.Unknown
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
-		  Select Case cacheIsSolvable
+		  Select Case mCacheIsSolvable
 		    
 		  Case IsSolvableState.Solvable
 		    Return True
@@ -133,30 +110,37 @@ Private Class Solver
 		    Return False
 		    
 		  Else
-		    
+		    ' Check validity
 		    If (Not Me.IsValid(ValidCheck.AdvancedChecks)) Then
-		      cacheIsSolvable = IsSolvableState.NotSolvable
+		      mCacheIsSolvable = IsSolvableState.NotSolvable
 		      Return False
 		    End If
 		    
-		    If (Me.GetCountNonEmpty <= kTresholdAssumeIsSolvable) Then
-		      ' Only check validity (above), skip heavy solving
-		      ' Assume solvable for now (don’t trigger full backtracking)
-		      ' Almost any sparse Sudoku with less than x numbers is solvable
-		      cacheIsSolvable = IsSolvableState.Solvable
-		      Return True
+		    Select Case mGrid.Settings.N
+		    Case Is <= 6
+		      ' Small Sudoku Grid: always check by solving on a clone (further below)
 		      
 		    Else
-		      ' Try solve on a clone, so that this grid is not being modified
-		      Var clone As New Solver(Me.grid.Clone)
-		      If clone.Solve Then
-		        cacheIsSolvable = IsSolvableState.Solvable
+		      Var limitAssumeIsSolvable As Integer = Ceiling(kTresholdFactorAssumeIsSolvable * (mGrid.Settings.N * mGrid.Settings.N))
+		      
+		      If (mGrid.GetCountNonEmpty <= limitAssumeIsSolvable) Then
+		        ' Only check validity (above), skip heavy solving
+		        ' Assume solvable for now (don’t trigger full backtracking)
+		        ' Almost any sparse Sudoku with less than x numbers is solvable
+		        mCacheIsSolvable = IsSolvableState.Solvable
 		        Return True
-		      Else
-		        cacheIsSolvable = IsSolvableState.NotSolvable
-		        Return False
 		      End If
 		      
+		    End Select
+		    
+		    ' Try solve on a clone, so that this grid is not being modified
+		    Var clone As New Solver(mGrid.Clone)
+		    If clone.Solve Then
+		      mCacheIsSolvable = IsSolvableState.Solvable
+		      Return True
+		    Else
+		      mCacheIsSolvable = IsSolvableState.NotSolvable
+		      Return False
 		    End If
 		    
 		  End Select
@@ -166,23 +150,14 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function IsValid(checkType As ValidCheck) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      Var value As Integer = Me.grid.Get(row, col)
+		  For row As Integer = 0 To mGrid.Settings.N-1
+		    For col As Integer = 0 To mGrid.Settings.N-1
+		      Var value As Integer = mGrid.Get(row, col)
 		      If value <> 0 Then
-		        ' Temporarily remove the number
-		        Me.grid.Set(row, col) = 0
-		        
 		        ' Check number in this cell
-		        Var numIsValid As Boolean = Me.IsValueValid(row, col, value, checkType)
-		        
-		        ' Restore the number
-		        Me.grid.Set(row, col) = value
-		        
-		        If (Not numIsValid) Then
+		        If (Not Me.IsValueValid(row, col, value, checkType)) Then
 		          Return False
 		        End If
 		      End If
@@ -203,15 +178,14 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function IsValueValid(row As Integer, col As Integer, value As Integer, checkType As ValidCheck) As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Check Basic Sudoku Rules
-		  If (Not Me.grid.IsValueValid(row, col, value)) Then Return False
+		  If (Not mGrid.IsValueValid(row, col, value)) Then Return False
 		  
 		  ' Advanced Checks: Naked Single, Hidden Single
 		  If (checkType = ValidCheck.AdvancedChecks) Then
-		    Var solveCellHint As CellHint = Me.hintsSearcher.Get(row, col)
+		    Var solveCellHint As CellHint = mHintsSearcher.Get(row, col)
 		    Select Case solveCellHint.SolveHint
 		    Case SolveHint.NakedSingle, SolveHint.HiddenSingle
 		      If (solveCellHint.SolutionValue <> value) Then Return False
@@ -225,14 +199,14 @@ Private Class Solver
 
 	#tag Method, Flags = &h0
 		Sub SetStateIsSolvable()
-		  cacheIsSolvable = IsSolvableState.Solvable
+		  mCacheIsSolvable = IsSolvableState.Solvable
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Solve() As Boolean
-		  Redim solveStack(-1)
+		  Redim mSolveStack(-1)
 		  
 		  ' Ensure current filled-in digits are valid
 		  If (Not Me.IsValid(ValidCheck.AdvancedChecks)) Then Return False
@@ -240,12 +214,12 @@ Private Class Solver
 		  Var solveResult As Boolean = Me.SolveInternal()
 		  
 		  If solveResult Then
-		    cacheIsSolvable = IsSolvableState.Solvable
+		    mCacheIsSolvable = IsSolvableState.Solvable
 		  Else
-		    cacheIsSolvable = IsSolvableState.NotSolvable
+		    mCacheIsSolvable = IsSolvableState.NotSolvable
 		  End If
 		  
-		  Redim solveStack(-1)
+		  Redim mSolveStack(-1)
 		  Return solveResult
 		  
 		End Function
@@ -253,7 +227,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveApplyDeterministicSteps() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Fill all deterministic cells (Naked singles and Hidden singles).
@@ -264,14 +237,14 @@ Private Class Solver
 		  
 		  Do
 		    Var appliedThisPass As Boolean = False
-		    Var cellHints() As CellHint = Me.hintsSearcher.GetCellHints()
+		    Var cellHints() As CellHint = mHintsSearcher.GetCellHints()
 		    
 		    For Each h As CellHint In cellHints
 		      ' Check that this move is still valid under current state
 		      ' Note: No need to check with ValidCheck.AdvancedChecks since we got them from cellHints
 		      If Me.IsValueValid(h.Row, h.Col, h.SolutionValue, ValidCheck.BasicSudokuRules) Then
 		        ' Apply
-		        Me.SolveApplyMove(Me.CreateSolveMove(h.Row, h.Col, Me.grid.Get(h.Row, h.Col), h.SolutionValue))
+		        Me.SolveApplyMove(Me.CreateSolveMove(h.Row, h.Col, mGrid.Get(h.Row, h.Col), h.SolutionValue))
 		        changed = True
 		        appliedThisPass = True
 		      Else
@@ -294,38 +267,40 @@ Private Class Solver
 		Private Sub SolveApplyMove(move As SolveMove)
 		  ' Apply move to grid
 		  ' And add move to solve stack (to make it un-doable)
-		  Me.grid.Set(move.Row, move.Col) = move.NewValue
-		  solveStack.Add(move)
+		  mGrid.Set(move.Row, move.Col) = move.NewValue
+		  mSolveStack.Add(move)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function SolveEnabled() As Boolean
-		  ' Should the UI enable the Solve Button?
-		  ' No valid Sudoku with unique solution can have fewer than 17 clues.
-		  ' While even a blank Sudoku or one with just a couple of numbers
-		  ' can be solved (without unique solution), that probably is not the
-		  ' intent.
+		  ' Should the UI enable the Solve button?
+		  ' 9x9 Sudokus with a unique solution need at least 17 clues.
+		  ' We approximate this "enough clues" requirement by using a
+		  ' threshold factor for any Sudoku size.
 		  
-		  Return Me.GetCountNonEmpty >= kTresholdSolveEnabled
+		  Var threshold As Integer = Ceiling(kTresholdFactorSolveEnabled * (mGrid.Settings.N * mGrid.Settings.N))
+		  Return mGrid.GetCountNonEmpty >= threshold
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function SolveFindBestNextCell(ByRef bestRow As Integer, ByRef bestCol As Integer, ByRef bestCandidates() As Integer) As Boolean
+		  #Pragma DisableBoundsChecking
+		  
 		  ' Find to-be-solved cells with the least possible candidate values
 		  bestRow = -1
 		  bestCol = -1
 		  Redim bestCandidates(-1)
 		  Var bestCount As Integer = 9999
 		  
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      If (Me.grid.Get(row, col) > 0) Then Continue
+		  For row As Integer = 0 To mGrid.Settings.N-1
+		    For col As Integer = 0 To mGrid.Settings.N-1
+		      If (mGrid.Get(row, col) > 0) Then Continue
 		      
-		      Var candidates() As Integer = Me.candidatesSearcher.GetAllCellCandidates(row, col)
+		      Var candidates() As Integer = mCandidatesSearcher.GetAllCellCandidates(row, col)
 		      If (candidates.Count < 1) Then
 		        ' Invalid State
 		        Return False
@@ -351,7 +326,6 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternal() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' The Solver with Strategies is more performant with complex Sudoku puzzles
@@ -363,15 +337,18 @@ Private Class Solver
 		  ' then use the Solver with Strategies.
 		  ' Otherwise use the plain Backtracking Solver (and hope it is faster ;-)
 		  
-		  Select Case Me.GetCountNonEmpty
+		  Var tresholdSparse As Integer = Ceiling(kTresholdFactorSparse * (mGrid.Settings.N*mGrid.Settings.N))
+		  Var tresholdMedium As Integer = Ceiling(kTresholdFactorMedium * (mGrid.Settings.N*mGrid.Settings.N))
+		  
+		  Select Case mGrid.GetCountNonEmpty
 		    
-		  Case Is <= kTresholdSparse
+		  Case Is <= tresholdSparse
 		    ' Sparse: Use Backtracking
 		    Return Me.SolveInternalWithBacktracking
 		    
-		  Case Is <= kTresholdMedium
+		  Case Is <= tresholdMedium
 		    ' Medium density: Try strategies if we find hints right away
-		    Var hints() As CellHint = Me.hintsSearcher.GetCellHints
+		    Var hints() As CellHint = mHintsSearcher.GetCellHints
 		    If hints.LastIndex >= 0 Then
 		      Return Me.SolveInternalWithStrategies
 		    Else
@@ -389,26 +366,25 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternalWithBacktracking() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Remember stack position at entry
-		  Var startStackCount As Integer = solveStack.Count
+		  Var startStackCount As Integer = mSolveStack.Count
 		  
 		  Var row As Integer
 		  Var col As Integer
 		  
 		  ' Find the next empty cell
 		  ' If there are no empty cells left, the puzzle is solved
-		  If Not Me.grid.FindEmpty(row, col) Then
+		  If Not mGrid.FindEmpty(row, col) Then
 		    Return True
 		  End If
 		  
-		  ' Try all possible numbers (1-9) for this empty cell
+		  ' Try all possible numbers for this empty cell
 		  Var tryNumberFrom As Integer = 1
-		  Var tryNumberTo As Integer = N
+		  Var tryNumberTo As Integer = mGrid.Settings.N
 		  
-		  Var solveCellHint As CellHint = Me.hintsSearcher.Get(row, col)
+		  Var solveCellHint As CellHint = mHintsSearcher.Get(row, col)
 		  Select Case solveCellHint.SolveHint
 		  Case SolveHint.NakedSingle, SolveHint.HiddenSingle
 		    ' No need to try all numbers, since we found a Naked/Hidden Single
@@ -421,7 +397,7 @@ Private Class Solver
 		    ' Note: No need to check with ValidCheck.AdvancedChecks since we checked Naked/Hidden Singles in GetCellHint
 		    If Me.IsValueValid(row, col, value, ValidCheck.BasicSudokuRules) Then
 		      ' Tentatively place value in the cell
-		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, Me.grid.Get(row, col), value))
+		      Me.SolveApplyMove(Me.CreateSolveMove(row, col, mGrid.Get(row, col), value))
 		      
 		      ' Recursively attempt to solve the rest of the grid
 		      If Me.SolveInternalWithBacktracking() Then
@@ -446,11 +422,10 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function SolveInternalWithStrategies() As Boolean
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Remember stack position at entry
-		  Var startStackCount As Integer = solveStack.Count
+		  Var startStackCount As Integer = mSolveStack.Count
 		  
 		  ' Apply deterministic steps
 		  While Me.SolveApplyDeterministicSteps
@@ -460,14 +435,14 @@ Private Class Solver
 		  
 		  ' Check if solved just with deterministic steps
 		  Var row, col As Integer
-		  If Not Me.grid.FindEmpty(row, col) Then
+		  If Not mGrid.FindEmpty(row, col) Then
 		    Return True
 		  End If
 		  
 		  ' Now we don't have any more cells to fill out with a certain value.
 		  ' Let's start to guess the remaining empty cell's values...
 		  
-		  Var deterministicStepsStackCount As Integer = solveStack.Count
+		  Var deterministicStepsStackCount As Integer = mSolveStack.Count
 		  
 		  ' Find to-be-solved cells with the least possible candidate values
 		  Var bestRow As Integer = -1
@@ -488,7 +463,7 @@ Private Class Solver
 		  ' Try the cell candidates (in the cell with the least possible candidates)
 		  For Each value As Integer In bestCandidates
 		    ' Tentatively place value in the cell
-		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, Me.grid.Get(bestRow, bestCol), value))
+		    Me.SolveApplyMove(Me.CreateSolveMove(bestRow, bestCol, mGrid.Get(bestRow, bestCol), value))
 		    
 		    ' Recursively attempt to solve the rest of the grid
 		    If Me.SolveInternalWithStrategies() Then
@@ -513,14 +488,13 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Sub SolveUndoTo(stackSize As Integer)
-		  #Pragma DisableBackgroundTasks
 		  #Pragma DisableBoundsChecking
 		  
 		  ' Undo - re-apply old values
-		  While solveStack.Count > stackSize
-		    Var m As SolveMove = solveStack(solveStack.LastIndex)
-		    Me.grid.Set(m.Row, m.Col) = m.OldValue
-		    solveStack.RemoveAt(solveStack.LastIndex)
+		  While mSolveStack.Count > stackSize
+		    Var m As SolveMove = mSolveStack(mSolveStack.LastIndex)
+		    mGrid.Set(m.Row, m.Col) = m.OldValue
+		    mSolveStack.RemoveAt(mSolveStack.LastIndex)
 		  Wend
 		  
 		End Sub
@@ -528,36 +502,36 @@ Private Class Solver
 
 
 	#tag Property, Flags = &h21
-		Private cacheIsSolvable As IsSolvableState = IsSolvableState.Unknown
+		Private mCacheIsSolvable As IsSolvableState = IsSolvableState.Unknown
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private candidatesSearcher As CandidatesSearcher
+		Private mCandidatesSearcher As CandidatesSearcher
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private grid As Grid
+		Private mGrid As Grid
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private hintsSearcher As HintsSearcher
+		Private mHintsSearcher As HintsSearcher
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private solveStack() As SolveMove
+		Private mSolveStack() As SolveMove
 	#tag EndProperty
 
 
-	#tag Constant, Name = kTresholdAssumeIsSolvable, Type = Double, Dynamic = False, Default = \"14", Scope = Private
+	#tag Constant, Name = kTresholdFactorAssumeIsSolvable, Type = Double, Dynamic = False, Default = \"0.172", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kTresholdMedium, Type = Double, Dynamic = False, Default = \"25", Scope = Private
+	#tag Constant, Name = kTresholdFactorMedium, Type = Double, Dynamic = False, Default = \"0.308", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kTresholdSolveEnabled, Type = Double, Dynamic = False, Default = \"17", Scope = Private
+	#tag Constant, Name = kTresholdFactorSolveEnabled, Type = Double, Dynamic = False, Default = \"0.209", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kTresholdSparse, Type = Double, Dynamic = False, Default = \"12", Scope = Private
+	#tag Constant, Name = kTresholdFactorSparse, Type = Double, Dynamic = False, Default = \"0.148", Scope = Private
 	#tag EndConstant
 
 

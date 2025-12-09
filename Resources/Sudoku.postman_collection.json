@@ -43,15 +43,15 @@
 					},
 					"status": "OK",
 					"code": 200,
-					"_postman_previewlanguage": "json",
+					"_postman_previewlanguage": null,
 					"header": [
 						{
 							"key": "Content-Type",
-							"value": "application/json"
+							"value": "application/json; charset=utf-8"
 						},
 						{
 							"key": "Date",
-							"value": "Sun, 16 Nov 2025 13:55:32 GMT"
+							"value": "Sun, 07 Dec 2025 12:09:13 GMT"
 						},
 						{
 							"key": "X-Content-Type-Options",
@@ -62,8 +62,8 @@
 							"value": "SAMEORIGIN"
 						},
 						{
-							"key": "Content-Disposition",
-							"value": "attachment; filename=\"Sudoku 2025-11-16 14-55-32.sudoku\""
+							"key": "X-Powered-By",
+							"value": "Sudoku 1.8.0"
 						},
 						{
 							"key": "Content-Encoding",
@@ -75,7 +75,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"name\": \"Sudoku\",\n    \"version\": \"1.6.1\",\n    \"url\": \"https://github.com/jo-tools/sudoku\"\n}"
+					"body": "{\n    \"name\": \"Sudoku\",\n    \"version\": \"1.8.0\",\n    \"url\": \"https://github.com/jo-tools/sudoku\"\n}"
 				}
 			]
 		},
@@ -85,7 +85,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?numClues=32&format=json&addSolution=false",
+					"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?size=9&numClues=32&format=json&addSolution=false",
 					"host": [
 						"{{WebAppBaseUrl}}"
 					],
@@ -95,6 +95,11 @@
 						"generate"
 					],
 					"query": [
+						{
+							"key": "size",
+							"value": "9",
+							"description": "Sudoku Size (NxN)"
+						},
 						{
 							"key": "numClues",
 							"value": "32",
@@ -120,7 +125,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?numClues=32&format=json&addSolution=false",
+							"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?size=9&numClues=32&format=json&addSolution=false",
 							"host": [
 								"{{WebAppBaseUrl}}"
 							],
@@ -130,6 +135,11 @@
 								"generate"
 							],
 							"query": [
+								{
+									"key": "size",
+									"value": "9",
+									"description": "Sudoku Size (NxN)"
+								},
 								{
 									"key": "numClues",
 									"value": "32",
@@ -150,15 +160,15 @@
 					},
 					"status": "OK",
 					"code": 200,
-					"_postman_previewlanguage": "json",
+					"_postman_previewlanguage": null,
 					"header": [
 						{
 							"key": "Content-Type",
-							"value": "application/json"
+							"value": "application/json; charset=utf-8"
 						},
 						{
 							"key": "Date",
-							"value": "Sun, 16 Nov 2025 13:56:10 GMT"
+							"value": "Sun, 07 Dec 2025 12:14:55 GMT"
 						},
 						{
 							"key": "X-Content-Type-Options",
@@ -169,8 +179,12 @@
 							"value": "SAMEORIGIN"
 						},
 						{
+							"key": "X-Powered-By",
+							"value": "Sudoku 1.8.0"
+						},
+						{
 							"key": "Content-Disposition",
-							"value": "attachment; filename=\"Sudoku 2025-11-16 14-56-11.sudoku\""
+							"value": "attachment; filename=\"Sudoku 2025-12-07 13-14-56.sudoku\""
 						},
 						{
 							"key": "Content-Encoding",
@@ -178,11 +192,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "1023"
+							"value": "1015"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"application\": {\n        \"name\": \"Sudoku\",\n        \"version\": \"1.6.1\",\n        \"url\": \"https://github.com/jo-tools/sudoku\"\n    },\n    \"sudoku\": [\n        {\n            \"row\": 1,\n            \"col\": 1,\n            \"index\": 0,\n            \"value\": 7,\n            \"locked\": true\n        },\n        {\n            \"row\": 1,\n            \"col\": 2,\n            \"index\": 1,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 1,\n            \"col\": 3,\n            \"index\": 2,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 4,\n            \"index\": 3,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 5,\n            \"index\": 4,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 6,\n            \"index\": 5,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 7,\n            \"index\": 6,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 1,\n            \"col\": 8,\n            \"index\": 7,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 1,\n            \"col\": 9,\n            \"index\": 8,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 1,\n            \"index\": 9,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 2,\n            \"index\": 10,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 3,\n            \"index\": 11,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 4,\n            \"index\": 12,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 5,\n            \"index\": 13,\n            \"value\": 7,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 6,\n            \"index\": 14,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 7,\n            \"index\": 15,\n            \"value\": 9,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 8,\n            \"index\": 16,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 9,\n            \"index\": 17,\n            \"value\": 5,\n            \"locked\": true\n        },\n        {\n            \"row\": 3,\n            \"col\": 1,\n            \"index\": 18,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 3,\n            \"col\": 2,\n            \"index\": 19,\n            \"value\": 9,\n            \"locked\": true\n        },\n        {\n            \"row\": 3,\n            \"col\": 3,\n            \"index\": 20,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 4,\n            \"index\": 21,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 3,\n            \"col\": 5,\n            \"index\": 22,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 6,\n            \"index\": 23,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 7,\n            \"index\": 24,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 8,\n            \"index\": 25,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 9,\n            \"index\": 26,\n            \"value\": 7,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 1,\n            \"index\": 27,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 2,\n            \"index\": 28,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 3,\n            \"index\": 29,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 4,\n            \"index\": 30,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 5,\n            \"index\": 31,\n            \"value\": 2,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 6,\n            \"index\": 32,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 7,\n            \"index\": 33,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 8,\n            \"index\": 34,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 9,\n            \"index\": 35,\n            \"value\": 4,\n            \"locked\": true\n        },\n        {\n            \"row\": 5,\n            \"col\": 1,\n            \"index\": 36,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 2,\n            \"index\": 37,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 5,\n            \"col\": 3,\n            \"index\": 38,\n            \"value\": 4,\n            \"locked\": true\n        },\n        {\n            \"row\": 5,\n            \"col\": 4,\n            \"index\": 39,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 5,\n            \"index\": 40,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 5,\n            \"col\": 6,\n            \"index\": 41,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 7,\n            \"index\": 42,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 8,\n            \"index\": 43,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 9,\n            \"index\": 44,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 1,\n            \"index\": 45,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 2,\n            \"index\": 46,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 3,\n            \"index\": 47,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 4,\n            \"index\": 48,\n            \"value\": 5,\n            \"locked\": true\n        },\n        {\n            \"row\": 6,\n            \"col\": 5,\n            \"index\": 49,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 6,\n            \"index\": 50,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 7,\n            \"index\": 51,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 8,\n            \"index\": 52,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 9,\n            \"index\": 53,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 1,\n            \"index\": 54,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 2,\n            \"index\": 55,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 3,\n            \"index\": 56,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 4,\n            \"index\": 57,\n            \"value\": 9,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 5,\n            \"index\": 58,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 6,\n            \"index\": 59,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 7,\n            \"index\": 60,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 8,\n            \"index\": 61,\n            \"value\": 4,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 9,\n            \"index\": 62,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 1,\n            \"index\": 63,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 2,\n            \"index\": 64,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 8,\n            \"col\": 3,\n            \"index\": 65,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 4,\n            \"index\": 66,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 5,\n            \"index\": 67,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 6,\n            \"index\": 68,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 7,\n            \"index\": 69,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 8,\n            \"index\": 70,\n            \"value\": 7,\n            \"locked\": true\n        },\n        {\n            \"row\": 8,\n            \"col\": 9,\n            \"index\": 71,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 1,\n            \"index\": 72,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 2,\n            \"index\": 73,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 3,\n            \"index\": 74,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 4,\n            \"index\": 75,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 9,\n            \"col\": 5,\n            \"index\": 76,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 9,\n            \"col\": 6,\n            \"index\": 77,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 7,\n            \"index\": 78,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 9,\n            \"col\": 8,\n            \"index\": 79,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 9,\n            \"index\": 80,\n            \"value\": 0,\n            \"locked\": false\n        }\n    ]\n}"
+					"body": "{\n    \"application\": {\n        \"name\": \"Sudoku\",\n        \"version\": \"1.8.0\",\n        \"url\": \"https://github.com/jo-tools/sudoku\"\n    },\n    \"sudoku\": [\n        {\n            \"row\": 1,\n            \"col\": 1,\n            \"index\": 0,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 2,\n            \"index\": 1,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 3,\n            \"index\": 2,\n            \"value\": 2,\n            \"locked\": true\n        },\n        {\n            \"row\": 1,\n            \"col\": 4,\n            \"index\": 3,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 5,\n            \"index\": 4,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 6,\n            \"index\": 5,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 7,\n            \"index\": 6,\n            \"value\": 7,\n            \"locked\": true\n        },\n        {\n            \"row\": 1,\n            \"col\": 8,\n            \"index\": 7,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 1,\n            \"col\": 9,\n            \"index\": 8,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 1,\n            \"index\": 9,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 2,\n            \"index\": 10,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 3,\n            \"index\": 11,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 4,\n            \"index\": 12,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 5,\n            \"index\": 13,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 2,\n            \"col\": 6,\n            \"index\": 14,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 7,\n            \"index\": 15,\n            \"value\": 4,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 8,\n            \"index\": 16,\n            \"value\": 2,\n            \"locked\": true\n        },\n        {\n            \"row\": 2,\n            \"col\": 9,\n            \"index\": 17,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 1,\n            \"index\": 18,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 3,\n            \"col\": 2,\n            \"index\": 19,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 3,\n            \"index\": 20,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 4,\n            \"index\": 21,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 5,\n            \"index\": 22,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 6,\n            \"index\": 23,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 7,\n            \"index\": 24,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 8,\n            \"index\": 25,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 3,\n            \"col\": 9,\n            \"index\": 26,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 1,\n            \"index\": 27,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 2,\n            \"index\": 28,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 3,\n            \"index\": 29,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 4,\n            \"index\": 30,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 5,\n            \"index\": 31,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 6,\n            \"index\": 32,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 7,\n            \"index\": 33,\n            \"value\": 5,\n            \"locked\": true\n        },\n        {\n            \"row\": 4,\n            \"col\": 8,\n            \"index\": 34,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 4,\n            \"col\": 9,\n            \"index\": 35,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 1,\n            \"index\": 36,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 2,\n            \"index\": 37,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 5,\n            \"col\": 3,\n            \"index\": 38,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 4,\n            \"index\": 39,\n            \"value\": 5,\n            \"locked\": true\n        },\n        {\n            \"row\": 5,\n            \"col\": 5,\n            \"index\": 40,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 6,\n            \"index\": 41,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 7,\n            \"index\": 42,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 5,\n            \"col\": 8,\n            \"index\": 43,\n            \"value\": 7,\n            \"locked\": true\n        },\n        {\n            \"row\": 5,\n            \"col\": 9,\n            \"index\": 44,\n            \"value\": 2,\n            \"locked\": true\n        },\n        {\n            \"row\": 6,\n            \"col\": 1,\n            \"index\": 45,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 2,\n            \"index\": 46,\n            \"value\": 2,\n            \"locked\": true\n        },\n        {\n            \"row\": 6,\n            \"col\": 3,\n            \"index\": 47,\n            \"value\": 5,\n            \"locked\": true\n        },\n        {\n            \"row\": 6,\n            \"col\": 4,\n            \"index\": 48,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 5,\n            \"index\": 49,\n            \"value\": 4,\n            \"locked\": true\n        },\n        {\n            \"row\": 6,\n            \"col\": 6,\n            \"index\": 50,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 6,\n            \"col\": 7,\n            \"index\": 51,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 6,\n            \"col\": 8,\n            \"index\": 52,\n            \"value\": 3,\n            \"locked\": true\n        },\n        {\n            \"row\": 6,\n            \"col\": 9,\n            \"index\": 53,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 1,\n            \"index\": 54,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 2,\n            \"index\": 55,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 3,\n            \"index\": 56,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 4,\n            \"index\": 57,\n            \"value\": 4,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 5,\n            \"index\": 58,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 6,\n            \"index\": 59,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 7,\n            \"index\": 60,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 7,\n            \"col\": 8,\n            \"index\": 61,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 7,\n            \"col\": 9,\n            \"index\": 62,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 1,\n            \"index\": 63,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 2,\n            \"index\": 64,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 3,\n            \"index\": 65,\n            \"value\": 1,\n            \"locked\": true\n        },\n        {\n            \"row\": 8,\n            \"col\": 4,\n            \"index\": 66,\n            \"value\": 2,\n            \"locked\": true\n        },\n        {\n            \"row\": 8,\n            \"col\": 5,\n            \"index\": 67,\n            \"value\": 6,\n            \"locked\": true\n        },\n        {\n            \"row\": 8,\n            \"col\": 6,\n            \"index\": 68,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 7,\n            \"index\": 69,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 8,\n            \"col\": 8,\n            \"index\": 70,\n            \"value\": 9,\n            \"locked\": true\n        },\n        {\n            \"row\": 8,\n            \"col\": 9,\n            \"index\": 71,\n            \"value\": 4,\n            \"locked\": true\n        },\n        {\n            \"row\": 9,\n            \"col\": 1,\n            \"index\": 72,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 2,\n            \"index\": 73,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 3,\n            \"index\": 74,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 4,\n            \"index\": 75,\n            \"value\": 8,\n            \"locked\": true\n        },\n        {\n            \"row\": 9,\n            \"col\": 5,\n            \"index\": 76,\n            \"value\": 5,\n            \"locked\": true\n        },\n        {\n            \"row\": 9,\n            \"col\": 6,\n            \"index\": 77,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 7,\n            \"index\": 78,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 8,\n            \"index\": 79,\n            \"value\": 0,\n            \"locked\": false\n        },\n        {\n            \"row\": 9,\n            \"col\": 9,\n            \"index\": 80,\n            \"value\": 0,\n            \"locked\": false\n        }\n    ]\n}"
 				}
 			]
 		},
@@ -192,7 +206,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?numClues=32&format=txt",
+					"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?size=9&numClues=32&format=txt",
 					"host": [
 						"{{WebAppBaseUrl}}"
 					],
@@ -202,6 +216,11 @@
 						"generate"
 					],
 					"query": [
+						{
+							"key": "size",
+							"value": "9",
+							"description": "Sudoku Size (NxN)"
+						},
 						{
 							"key": "numClues",
 							"value": "32",
@@ -222,7 +241,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?numClues=32&format=txt",
+							"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?size=9&numClues=32&format=txt",
 							"host": [
 								"{{WebAppBaseUrl}}"
 							],
@@ -232,6 +251,11 @@
 								"generate"
 							],
 							"query": [
+								{
+									"key": "size",
+									"value": "9",
+									"description": "Sudoku Size (NxN)"
+								},
 								{
 									"key": "numClues",
 									"value": "32",
@@ -247,15 +271,15 @@
 					},
 					"status": "OK",
 					"code": 200,
-					"_postman_previewlanguage": "plain",
+					"_postman_previewlanguage": null,
 					"header": [
 						{
 							"key": "Content-Type",
-							"value": "text/plain"
+							"value": "text/plain; charset=utf-8"
 						},
 						{
 							"key": "Date",
-							"value": "Sun, 16 Nov 2025 13:55:45 GMT"
+							"value": "Sun, 07 Dec 2025 12:18:06 GMT"
 						},
 						{
 							"key": "X-Content-Type-Options",
@@ -266,8 +290,12 @@
 							"value": "SAMEORIGIN"
 						},
 						{
+							"key": "X-Powered-By",
+							"value": "Sudoku 1.8.0"
+						},
+						{
 							"key": "Content-Disposition",
-							"value": "attachment; filename=\"Sudoku 2025-11-16 14-55-45.sudoku\""
+							"value": "attachment; filename=\"Sudoku 2025-12-07 13-18-07.sudoku\""
 						},
 						{
 							"key": "Content-Encoding",
@@ -275,11 +303,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "75"
+							"value": "72"
 						}
 					],
 					"cookie": [],
-					"body": "690012000\n000605300\n000740050\n850001460\n000000000\n136000092\n070100905\n000430200\n000850147"
+					"body": "003219006\n002000917\n004050003\n000070000\n719003005\n040000070\n030007054\n907400600\n408600001"
 				}
 			]
 		},
@@ -289,7 +317,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?numClues=32&format=pdf&addSolution=true",
+					"raw": "{{WebAppBaseUrl}}/api/sudoku/generate?size=9&numClues=32&format=pdf&addSolution=true",
 					"host": [
 						"{{WebAppBaseUrl}}"
 					],
@@ -299,6 +327,11 @@
 						"generate"
 					],
 					"query": [
+						{
+							"key": "size",
+							"value": "9",
+							"description": "Sudoku Size (NxN)"
+						},
 						{
 							"key": "numClues",
 							"value": "32",
@@ -530,6 +563,117 @@
 					],
 					"cookie": [],
 					"body": "695312874\n784695321\n321748659\n852971463\n947263518\n136584792\n478126935\n519437286\n263859147"
+				}
+			]
+		},
+		{
+			"name": "solve 12 (txt)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "06 00 00 03 00 05 07 10 12 02 00 08\n00 00 10 02 00 01 00 00 00 00 00 09\n08 00 00 00 00 00 00 00 00 03 05 00\n00 00 00 06 00 00 00 02 00 01 00 12\n01 09 11 00 06 00 00 12 00 05 02 00\n12 00 00 00 01 08 09 00 00 00 00 06\n10 00 00 00 00 03 12 09 00 04 00 00\n00 08 05 00 11 00 06 00 00 09 00 00\n00 00 00 12 00 02 04 00 10 00 00 00\n11 07 00 10 02 00 08 05 00 00 00 00\n03 06 08 09 00 00 00 00 02 00 10 05\n02 00 00 00 10 07 00 06 08 00 09 00",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{WebAppBaseUrl}}/api/sudoku/solve",
+					"host": [
+						"{{WebAppBaseUrl}}"
+					],
+					"path": [
+						"api",
+						"sudoku",
+						"solve"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "txt",
+							"description": "Download as (json, txt); Empty: such as input type",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "solve 12 (txt)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "06 00 00 03 00 05 07 10 12 02 00 08\n00 00 10 02 00 01 00 00 00 00 00 09\n08 00 00 00 00 00 00 00 00 03 05 00\n00 00 00 06 00 00 00 02 00 01 00 12\n01 09 11 00 06 00 00 12 00 05 02 00\n12 00 00 00 01 08 09 00 00 00 00 06\n10 00 00 00 00 03 12 09 00 04 00 00\n00 08 05 00 11 00 06 00 00 09 00 00\n00 00 00 12 00 02 04 00 10 00 00 00\n11 07 00 10 02 00 08 05 00 00 00 00\n03 06 08 09 00 00 00 00 02 00 10 05\n02 00 00 00 10 07 00 06 08 00 09 00",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{WebAppBaseUrl}}/api/sudoku/solve",
+							"host": [
+								"{{WebAppBaseUrl}}"
+							],
+							"path": [
+								"api",
+								"sudoku",
+								"solve"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "txt",
+									"description": "Download as (json, txt); Empty: such as input type",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 07 Dec 2025 12:47:17 GMT"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Sudoku 1.8.0"
+						},
+						{
+							"key": "Content-Disposition",
+							"value": "attachment; filename=\"Sudoku 2025-12-07 13-47-17.sudoku\""
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Content-Length",
+							"value": "196"
+						}
+					],
+					"cookie": [],
+					"body": "06 04 01 03 09 05 07 10 12 02 11 08\n05 12 10 02 03 01 11 08 04 06 07 09\n08 11 09 07 12 06 02 04 01 03 05 10\n04 10 03 06 07 11 05 02 09 01 08 12\n01 09 11 08 06 04 10 12 07 05 02 03\n12 02 07 05 01 08 09 03 11 10 04 06\n10 01 02 11 08 03 12 09 05 04 06 07\n07 08 05 04 11 10 06 01 03 09 12 02\n09 03 06 12 05 02 04 07 10 08 01 11\n11 07 04 10 02 09 08 05 06 12 03 01\n03 06 08 09 04 12 01 11 02 07 10 05\n02 05 12 01 10 07 03 06 08 11 09 04"
 				}
 			]
 		}

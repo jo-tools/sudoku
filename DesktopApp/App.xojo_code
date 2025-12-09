@@ -117,12 +117,6 @@ Inherits DesktopApplication
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Guardar como\xE2\x80\xA6"
 	#tag EndConstant
 
-	#tag Constant, Name = kSudokuEmpty, Type = String, Dynamic = True, Default = \"&Empty", Scope = Public
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"L&eer"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"V&ide"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Vac\xC3\xADo"
-	#tag EndConstant
-
 	#tag Constant, Name = kSudokuExclusion, Type = String, Dynamic = True, Default = \"Exclusion", Scope = Public
 		#Tag Instance, Platform = Any, Language = de, Definition  = \"Ausschluss"
 		#Tag Instance, Platform = Any, Language = fr, Definition  = \"Exclusion"
@@ -135,10 +129,10 @@ Inherits DesktopApplication
 		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Bloqueo"
 	#tag EndConstant
 
-	#tag Constant, Name = kSudokuRandom, Type = String, Dynamic = True, Default = \"&Random", Scope = Public
-		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Zufall"
-		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Al\xC3\xA9atoire"
-		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Aleatorio"
+	#tag Constant, Name = kSudokuNew, Type = String, Dynamic = True, Default = \"&New", Scope = Public
+		#Tag Instance, Platform = Any, Language = de, Definition  = \"&Neu"
+		#Tag Instance, Platform = Any, Language = fr, Definition  = \"&Nouveau"
+		#Tag Instance, Platform = Any, Language = es, Definition  = \"&Nuevo"
 	#tag EndConstant
 
 	#tag Constant, Name = kSudokuShowCandidates, Type = String, Dynamic = True, Default = \"&Candidates", Scope = Public
