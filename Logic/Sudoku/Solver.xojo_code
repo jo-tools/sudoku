@@ -35,6 +35,26 @@ Private Class Solver
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub DLXApplySolutionToGrid(solution() As Integer)
+		  ' Decode DLX solution row IDs and apply them to the grid.
+		  ' Each row ID encodes (row, col, digit) as: row * N² + col * N + digit
+		  
+		  #Pragma DisableBoundsChecking
+		  
+		  Var N As Integer = mGrid.Settings.N
+		  
+		  For Each rowId As Integer In solution
+		    Var cell As Integer = rowId \ N
+		    Var row As Integer = cell \ N
+		    Var col As Integer = cell Mod N
+		    Var digit As Integer = (rowId Mod N) + 1
+		    mGrid.Set(row, col) = digit
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub DLXCountSolutionsRecursive(ByRef count As Integer, limit As Integer)
 		  ' Recursive DLX solution counter
 		  ' Uses Algorithm X to enumerate solutions up to the specified limit
@@ -348,13 +368,22 @@ Private Class Solver
 
 	#tag Method, Flags = &h21
 		Private Function DLXSolve(ByRef solution() As Integer, randomize As Boolean) As Boolean
-		  ' Solve using Dancing Links (DLX) - Knuth's Algorithm X.
-		  ' If randomize is True, rows are shuffled for random solution generation.
+		  ' Solve the current grid using DLX.
+		  ' Covers filled cells (givens), solves, then restores matrix.
+		  ' Returns True if a solution was found, False otherwise.
 		  
-		  #Pragma DisableBoundsChecking
+		  Var coveredCols() As Integer
+		  If Not DLXCoverGivens(coveredCols) Then
+		    DLXUncoverAll(coveredCols)
+		    Redim solution(-1)
+		    Return False
+		  End If
 		  
 		  Redim solution(-1)
-		  Return DLXSolveRecursive(solution, randomize)
+		  Var solved As Boolean = DLXSolveRecursive(solution, randomize)
+		  
+		  DLXUncoverAll(coveredCols)
+		  Return solved
 		  
 		End Function
 	#tag EndMethod
@@ -503,60 +532,20 @@ Private Class Solver
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub DLXApplySolutionToGrid(solution() As Integer)
-		  ' Decode DLX solution row IDs and apply them to the grid.
-		  ' Each row ID encodes (row, col, digit) as: row * N² + col * N + digit
-		  
-		  #Pragma DisableBoundsChecking
-		  
-		  Var N As Integer = mGrid.Settings.N
-		  
-		  For Each rowId As Integer In solution
-		    Var cell As Integer = rowId \ N
-		    Var row As Integer = cell \ N
-		    Var col As Integer = cell Mod N
-		    Var digit As Integer = (rowId Mod N) + 1
-		    mGrid.Set(row, col) = digit
-		  Next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function DLXSolveWithGivens(ByRef solution() As Integer, randomize As Boolean) As Boolean
-		  ' Solve the current grid state using DLX.
-		  ' Covers all filled cells (givens), solves remaining cells, then restores matrix.
-		  ' Returns True if a solution was found, False otherwise.
-		  
-		  Var coveredCols() As Integer
-		  If Not DLXCoverGivens(coveredCols) Then
-		    DLXUncoverAll(coveredCols)
-		    Redim solution(-1)
-		    Return False
-		  End If
-		  
-		  Redim solution(-1)
-		  Var solved As Boolean = DLXSolveRecursive(solution, randomize)
-		  
-		  DLXUncoverAll(coveredCols)
-		  Return solved
-		  
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Function GenerateRandomSolution() As Boolean
 		  ' Generate a complete random valid Sudoku solution.
 		  ' The grid will be completely filled with a valid solution.
 		  ' Returns True on success.
 		  
+		  mGrid.Clear
+		  
 		  Var solution() As Integer
-		  If Not DLXSolve(solution, True) Then
+		  ' Call DLXSolveRecursive directly since we start from empty grid
+		  If Not DLXSolveRecursive(solution, True) Then
 		    Return False
 		  End If
 		  
-		  mGrid.Clear
 		  DLXApplySolutionToGrid(solution)
 		  
 		  Return True
@@ -636,7 +625,7 @@ Private Class Solver
 		  
 		  ' Solve using DLX
 		  Var solution() As Integer
-		  If DLXSolveWithGivens(solution, False) Then
+		  If DLXSolve(solution, False) Then
 		    DLXApplySolutionToGrid(solution)
 		    mCacheIsSolvable = IsSolvableState.Solvable
 		    Return True
