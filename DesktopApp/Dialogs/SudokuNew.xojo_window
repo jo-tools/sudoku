@@ -267,15 +267,16 @@ Begin DesktopWindow SudokuNew
    End
    Begin Thread thrCreate
       DebugIdentifier =   ""
+      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
-      Priority        =   8
+      Priority        =   10
       Scope           =   2
       StackSize       =   0
       TabPanelIndex   =   0
       ThreadID        =   0
       ThreadState     =   0
-      Type            =   0
+      Type            =   1
    End
 End
 #tag EndDesktopWindow
@@ -351,6 +352,8 @@ End
 		  End If
 		  
 		  
+		  ' Stack Size required for Recursion of a 16x16 Sudoku
+		  thrCreate.StackSize = 2 * 1024 * 1024
 		  thrCreate.Start
 		  
 		End Sub
@@ -361,8 +364,7 @@ End
 		Sub Opening()
 		  Me.RemoveAllRows
 		  
-		  'Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
-		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9)
+		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
 		  Var preselectRowIndex As Integer = -1
 		  
 		  For Each sudokuN As Integer In sudokuSizes
