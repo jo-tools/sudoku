@@ -7,6 +7,7 @@ Private Class Generator
 		  ' Initialize the Generator for a Sudoku of size N x N
 		  
 		  ' Init Grid
+		  // TODO: Get this information from Grid.Settings
 		  Select Case n
 		  Case 4
 		    mN = 4

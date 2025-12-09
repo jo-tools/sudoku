@@ -311,6 +311,12 @@ Private Class Grid
 	#tag EndMethod
 
 
+	#tag Note, Name = Grid
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mGrid(-1,-1) As Integer
 	#tag EndProperty

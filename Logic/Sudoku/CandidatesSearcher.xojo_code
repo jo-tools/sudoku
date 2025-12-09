@@ -619,6 +619,12 @@ Private Class CandidatesSearcher
 	#tag EndMethod
 
 
+	#tag Note, Name = CandidatesSearcher
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mCellCandidates() As CellCandidates
 	#tag EndProperty

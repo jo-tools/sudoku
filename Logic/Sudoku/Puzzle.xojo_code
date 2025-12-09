@@ -583,8 +583,8 @@ Protected Class Puzzle
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function GenerateRandomPuzzleDLX(numClues As Integer = 32) As Boolean
+	#tag Method, Flags = &h21
+		Private Function GenerateRandomPuzzleDLX(numClues As Integer = 32) As Boolean
 		  ' Generate a Random Puzzle using DLX (Dancing Links / Algorithm X)
 		  ' This is significantly faster than the backtracking-based GenerateRandomPuzzle,
 		  ' especially for larger Sudoku sizes (N=12, N=16).
@@ -899,6 +899,12 @@ Protected Class Puzzle
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Note, Name = Puzzle
+		
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h21

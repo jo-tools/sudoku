@@ -149,6 +149,12 @@ Private Class HintsSearcher
 	#tag EndMethod
 
 
+	#tag Note, Name = HintsSearcher
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mGrid As Grid
 	#tag EndProperty

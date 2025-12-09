@@ -501,6 +501,12 @@ Private Class Solver
 	#tag EndMethod
 
 
+	#tag Note, Name = Solver
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mCacheIsSolvable As IsSolvableState = IsSolvableState.Unknown
 	#tag EndProperty
