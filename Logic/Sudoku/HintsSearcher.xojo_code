@@ -150,7 +150,18 @@ Private Class HintsSearcher
 
 
 	#tag Note, Name = HintsSearcher
-		
+		' ============================================================================
+		' Hints Searcher - Solving Hint Detection
+		' ============================================================================
+		'
+		' Finds cells that can be solved using deterministic strategies:
+		' - Naked Single
+		'   A cell with exactly one remaining candidate value
+		' - Hidden Single
+		'   A value that appears as a candidate in only one cell of a unit,
+		'   making that cell deterministically solvable
+		'
+		' ============================================================================
 		
 	#tag EndNote
 

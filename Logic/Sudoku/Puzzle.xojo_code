@@ -613,10 +613,11 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsSolved() As Boolean
-		  #Pragma DisableBoundsChecking
+		  ' Check if the puzzle is completely and correctly solved.
+		  ' Returns True if all cells are filled and follow Sudoku rules.
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not mSolver.IsValidBasicSudokuRules) Then Return False
+		  If Not mGrid.IsValid Then Return False
 		  
 		  ' And no empty cells left
 		  If mGrid.HasEmptyCells Then Return False
@@ -628,7 +629,7 @@ Protected Class Puzzle
 	#tag Method, Flags = &h0
 		Function IsValid() As Boolean
 		  ' Check if the current state follows basic Sudoku rules (no duplicates)
-		  Return mSolver.IsValidBasicSudokuRules
+		  Return mGrid.IsValid
 		  
 		End Function
 	#tag EndMethod
@@ -790,43 +791,14 @@ Protected Class Puzzle
 		' ============================================================================
 		' Sudoku Puzzle
 		' ============================================================================
-		' 
-		' This is the main public class for interacting with Sudoku puzzles.
-		' It serves as the entry point for all puzzle operations including:
-		' 
-		' PUZZLE CREATION:
-		' - GenerateRandomPuzzle(numClues): Generate a new random puzzle with DLX
-		' - Constructor(json): Load puzzle from JSON representation
-		' - Constructor(string): Load puzzle from string representation
-		' 
-		' PUZZLE SOLVING:
-		' - Solve(): Solve the puzzle using the Solver class
-		' - IsSolvable(): Check if puzzle has at least one solution
-		' - IsSolved(): Check if puzzle is completely and correctly filled
-		' - IsValid(): Check if current state follows Sudoku rules
-		' 
-		' HINTS & CANDIDATES:
-		' - GetCellHints(): Get hints for cells (Naked Singles, Hidden Singles)
-		' - GetCellCandidates(): Get possible values for each cell
-		' 
-		' GRID ACCESS:
-		' - GetGridValue(row, col): Get value at position
-		' - SetGridValue(row, col): Set value at position
-		' - IsGridCellLocked(row, col): Check if cell is a given (locked)
-		' - ClearGrid(): Reset the grid to empty
-		' 
-		' EXPORT:
-		' - ToJson(): Export as JSON
-		' - ToString(): Export as string
-		' - DrawInto(): Render to Graphics for PDF export
-		' - SaveTo(): Save to file
-		' 
-		' INTERNAL COMPONENTS:
-		' - Grid: Stores the puzzle values
-		' - Solver: Handles solving with DLX and strategies
-		' - HintsSearcher: Finds Naked/Hidden Singles
-		' - CandidatesSearcher: Computes cell candidates
-		' 
+		'
+		' Main class for managing and interacting with Sudoku puzzles.
+		' Provides:
+		' - Implementation of Dancing Links (DLX) - Knuth's Algorithm X for
+		'   puzzle generation and solving
+		' - Hint detection and candidate analysis
+		' - Import and export capabilities (JSON, string, PDF)
+		'
 		' ============================================================================
 		
 	#tag EndNote

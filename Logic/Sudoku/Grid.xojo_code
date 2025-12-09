@@ -188,6 +188,29 @@ Private Class Grid
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function IsValid() As Boolean
+		  ' Check if all filled cells follow basic Sudoku rules (no duplicates).
+		  ' Returns True if valid, False if any conflict exists.
+		  
+		  #Pragma DisableBoundsChecking
+		  
+		  For row As Integer = 0 To mSettings.N - 1
+		    For col As Integer = 0 To mSettings.N - 1
+		      Var value As Integer = mGrid(row, col)
+		      If value <> 0 Then
+		        If Not Me.IsValueValid(row, col, value) Then
+		          Return False
+		        End If
+		      End If
+		    Next
+		  Next
+		  
+		  Return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function IsValueValid(row As Integer, col As Integer, value As Integer) As Boolean
 		  ' Check if placing value at Grid(row, col) is allowed according to Basic Sudoku rules.
 		  ' Returns True if valid, False otherwise.
@@ -329,41 +352,12 @@ Private Class Grid
 
 	#tag Note, Name = Grid
 		' ============================================================================
-		' Sudoku Grid
+		' Sudoku Grid - Data Structure
 		' ============================================================================
 		' 
-		' This class represents the Sudoku grid data structure and provides
-		' basic grid operations. It stores the puzzle values and manages
-		' cell locking (for distinguishing givens from user-entered values).
-		' 
-		' GRID STRUCTURE:
-		' - N x N grid where N is the Sudoku size (4, 6, 8, 9, 12, or 16)
-		' - Values range from 0 (empty) to N
-		' - Box dimensions vary by size (e.g., 3x3 for 9x9, 4x3 for 12x12)
-		' 
-		' KEY METHODS:
-		' - Get(row, col): Get value at position
-		' - Set(row, col): Set value at position
-		' - Clear(): Reset all cells to empty
-		' - Clone(): Create a deep copy of the grid
-		' - FindEmpty(): Find the first empty cell
-		' - IsValueValid(): Check if a value placement follows Sudoku rules
-		' 
-		' CELL LOCKING:
-		' - Lock(row, col): Mark a cell as a given (cannot be changed by user)
-		' - IsGridCellLocked(): Check if a cell is locked
-		' - LockCurrentState(): Lock all non-empty cells
-		' 
-		' VALIDATION:
-		' - IsValueValid() checks the three Sudoku constraints:
-		'   1. No duplicate in the same row
-		'   2. No duplicate in the same column
-		'   3. No duplicate in the same box
-		' 
-		' SETTINGS:
-		' - N: Grid size (4, 6, 8, 9, 12, or 16)
-		' - BoxWidth: Width of each box
-		' - BoxHeight: Height of each box
+		' Stores the NxN Sudoku grid values and manages cell locking.
+		' Supports sizes: 4x4, 6x6, 8x8, 9x9, 12x12, 16x16
+		' Validates placements against basic Sudoku rules (row/column/box).
 		' 
 		' ============================================================================
 		

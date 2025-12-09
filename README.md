@@ -31,7 +31,7 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 
 ### Logic
 
-*The solver uses Dancing Links (DLX) - Knuth's Algorithm X - for fast puzzle generation and solution counting, combined with strategy-based solving (Naked Singles, Hidden Singles) for interactive play. DLX models Sudoku as an exact cover problem, enabling efficient solving even for larger grid sizes (12x12, 16x16). Random puzzle generation creates a complete valid solution using DLX, then removes cells while ensuring a unique solution remains.*
+*The solver uses Dancing Links (DLX) - Knuth's Algorithm X - for all solving operations. DLX models Sudoku as an exact cover problem with a sparse matrix representation, enabling fast solving even for larger grid sizes (12x12, 16x16). Puzzle generation creates a complete random solution using DLX, then removes cells while verifying unique solvability. Interactive hints (Naked Singles, Hidden Singles) and candidate exclusion strategies are provided separately for solving assistance.*
 
 
 ### Web Application
