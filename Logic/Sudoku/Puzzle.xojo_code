@@ -461,6 +461,8 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function GenerateRandomPuzzle(numClues As Integer = 32) As Boolean
+		  return GenerateRandomPuzzleDLX(numClues)
+		  
 		  ' Generate a Random Puzzle
 		  ' Aim to have the number of clues according to parameter
 		  ' Returns True on success
@@ -578,6 +580,41 @@ Protected Class Puzzle
 		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
 		  Return True
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GenerateRandomPuzzleDLX(numClues As Integer = 32) As Boolean
+		  ' Generate a Random Puzzle using DLX (Dancing Links / Algorithm X)
+		  ' This is significantly faster than the backtracking-based GenerateRandomPuzzle,
+		  ' especially for larger Sudoku sizes (N=12, N=16).
+		  '
+		  ' Aim to have the number of clues according to parameter
+		  ' Returns True on success
+		  ' Returns False if not enough cells could be removed while keeping uniqueness
+		  ' Note: Always contains a new puzzle, even if returning False
+		  
+		  #Pragma DisableBoundsChecking
+		  
+		  Var N As Integer = mGrid.Settings.N
+		  
+		  ' Create DLX-based generator
+		  Var gen As New Generator(N)
+		  
+		  ' Generate puzzle
+		  Var success As Boolean = gen.Generate(numClues)
+		  
+		  ' Copy result to our grid
+		  mGrid.Clear
+		  For row As Integer = 0 To N - 1
+		    For col As Integer = 0 To N - 1
+		      mGrid.Set(row, col) = gen.GetSolution(row, col)
+		    Next
+		  Next
+		  
+		  mSolver.SetStateIsSolvable
+		  
+		  Return success
 		End Function
 	#tag EndMethod
 
