@@ -24,6 +24,7 @@ Begin WebContainer SudokuNew
    Width           =   422
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebButton btnCreate
       AllowAutoDisable=   False
@@ -403,7 +404,8 @@ End
 		Sub Opening()
 		  Me.RemoveAllRows
 		  
-		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
+		  'Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
+		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9)
 		  
 		  For Each sudokuN As Integer In sudokuSizes
 		    Me.AddRow(sudokuN.ToString + "x" + sudokuN.ToString)

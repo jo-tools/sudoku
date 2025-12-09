@@ -122,6 +122,7 @@ Inherits WebApplication
 		    response.Status = 400
 		    response.MIMEType ="text/plain"
 		    response.Write("Could not create the Sudoku Puzzle" + EndOfLine.Unix + err.Message)
+		    Return True
 		    
 		  End Try
 		  
@@ -201,6 +202,7 @@ Inherits WebApplication
 		  
 		  ' Load Sudoku from POST content
 		  Var sudokuPuzzle As Sudoku.Puzzle
+		  Var exceptionMessage As String
 		  
 		  If (request.Body.LeftBytes(1) = "{") And (request.Body.MiddleBytes(request.Body.Bytes-1, 1) = "}") Then
 		    ' Assume it's a JSON Content
@@ -215,8 +217,10 @@ Inherits WebApplication
 		      
 		    Catch err1 As JSONException
 		      ' Invalid JSON
+		      exceptionMessage = err1.Message
 		    Catch err2 As InvalidArgumentException
 		      ' Invalid JSON for Sudoku
+		      exceptionMessage = err2.Message
 		    End Try
 		  End If
 		  
@@ -231,14 +235,15 @@ Inherits WebApplication
 		      
 		    Catch err As InvalidArgumentException
 		      ' Invalid String representation of a Sudoku
-		      
+		      exceptionMessage = err.Message
 		    End Try
 		  End If
 		  
 		  If (sudokuPuzzle = Nil) Then
+		    If (exceptionMessage = "") Then exceptionMessage = "Expects a Sudoku in JSON or TXT format."
 		    response.Status = 400
 		    response.MIMEType ="text/plain"
-		    response.Write("Invalid Content. Expects a Sudoku in JSON or TXT format.")
+		    response.Write("Invalid Content." + EndOfLine.UNIX + exceptionMessage)
 		    Return True
 		  End If
 		  

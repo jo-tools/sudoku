@@ -805,7 +805,7 @@ End
 		  Var numClues As Integer = 36
 		  
 		  Me.SudokuPuzzle = New Sudoku.Puzzle(N)
-		  Me.ShowSudoku
+		  Me.ActionRandom(N, numClues)
 		  
 		End Sub
 	#tag EndEvent

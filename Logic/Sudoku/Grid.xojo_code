@@ -63,15 +63,15 @@ Private Class Grid
 		    s.BoxWidth = 3
 		    s.BoxHeight = 3
 		    
-		  Case 12
-		    s.N = 12
-		    s.BoxWidth = 4
-		    s.BoxHeight = 3
-		    
-		  Case 16
-		    s.N = 16
-		    s.BoxWidth = 4
-		    s.BoxHeight = 4
+		    'Case 12
+		    's.N = 12
+		    's.BoxWidth = 4
+		    's.BoxHeight = 3
+		    '
+		    'Case 16
+		    's.N = 16
+		    's.BoxWidth = 4
+		    's.BoxHeight = 4
 		    
 		  Else
 		    Raise New InvalidArgumentException("Unsupported Sudoku Size 'N=" + n.ToString + "; Supported are 4, 6, 8, 9, 12, 16", 99)

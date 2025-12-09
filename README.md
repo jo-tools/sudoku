@@ -10,9 +10,11 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 
 ### Features
 
+- Sudoku Sizes
+  - 4x4 | 6x6 | 8x8 | 9x9
 - Create a Sudoku puzzle
-  - Enter your own Sudoku puzzle
   - Generate a random Sudoku puzzle with a given number of clues
+  - Enter your own Sudoku puzzle
 - Solve the Sudoku puzzle
   - Interactively edit puzzles with
     - On-the-fly validation
@@ -46,9 +48,11 @@ See also the included [Postman Collection: Sudoku API](./Resources/Sudoku.postma
 Endpoints:  
 - `GET: /api/sudoku/info`  
   Returns JSON information about the Web Application
-- `GET: /api/sudoku/generate?numClues=40&format=json&addSolution=false`  
+- `GET: /api/sudoku/generate?size=9&numClues=40&format=json&addSolution=false`  
   Generates a Sudoku according to the Query Params:  
-  - `numClues`: Number of Clues *(Min: `24`, Max: `81`; Default: `40`)*
+  - `size`: Sudoku Size *(`4`, `6`, `8`, `9`; Default: `9`)*
+  - `numClues`: Desired Number of Clues *(not guaranteed to be reached)*  
+     *(Min: `30% of n*n`; Default: `45% of n*n`)*
   - `format`: Download Format *(Available: [`json` | `txt` | `pdf`]; Default: `json`)*
   - `addSolution`: Add Solution in Response *(Default: `false`; not available in Format txt)*
 - `POST: /api/sudoku/solve?format=json`  

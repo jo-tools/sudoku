@@ -281,6 +281,14 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  Self.Title = "Sudoku: " + Translations.kSudokuNew
+		  
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Sub Constructor(defaultN As Integer, defaultCluesFactor As Double)
 		  mDefaultN = defaultN
@@ -353,7 +361,8 @@ End
 		Sub Opening()
 		  Me.RemoveAllRows
 		  
-		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
+		  'Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
+		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9)
 		  Var preselectRowIndex As Integer = -1
 		  
 		  For Each sudokuN As Integer In sudokuSizes
