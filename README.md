@@ -11,7 +11,7 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 ### Features
 
 - Sudoku Sizes
-  - 4x4 | 6x6 | 8x8 | 9x9
+  - 4x4 | 6x6 | 8x8 | 9x9 | 12x12 | 16x16
 - Create a Sudoku puzzle
   - Generate a random Sudoku puzzle with a given number of clues
   - Enter your own Sudoku puzzle
@@ -31,7 +31,7 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 
 ### Logic
 
-*The solver uses a classic backtracking algorithm with strategies and rule checking to guarantee correct solutions. Random puzzle generation is based on creating a full valid grid, applying digit shuffling, and then removing cells to reach the desired clue count while enforcing a unique solution.*
+*The solver uses Dancing Links (DLX) - Knuth's Algorithm X - for fast puzzle generation and solution counting, combined with strategy-based solving (Naked Singles, Hidden Singles) for interactive play. DLX models Sudoku as an exact cover problem, enabling efficient solving even for larger grid sizes (12x12, 16x16). Random puzzle generation creates a complete valid solution using DLX, then removes cells while ensuring a unique solution remains.*
 
 
 ### Web Application
@@ -50,7 +50,7 @@ Endpoints:
   Returns JSON information about the Web Application
 - `GET: /api/sudoku/generate?size=9&numClues=40&format=json&addSolution=false`  
   Generates a Sudoku according to the Query Params:  
-  - `size`: Sudoku Size *(`4`, `6`, `8`, `9`; Default: `9`)*
+  - `size`: Sudoku Size *(`4`, `6`, `8`, `9`, `12`, `16`; Default: `9`)*
   - `numClues`: Desired Number of Clues *(not guaranteed to be reached)*  
      *(Min: `30% of n*n`; Default: `45% of n*n`)*
   - `format`: Download Format *(Available: [`json` | `txt` | `pdf`]; Default: `json`)*

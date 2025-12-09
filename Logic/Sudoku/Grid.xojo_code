@@ -18,6 +18,8 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function Clone() As Grid
+		  ' Create a deep copy of this grid including all values and locked states
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  Var clone As New Grid(mSettings.N)
@@ -39,6 +41,9 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Constructor(n As Integer)
+		  ' Initialize a new grid with the specified size N.
+		  ' Supported sizes: 4, 6, 8, 9, 12, 16
+		  
 		  Var s As Settings
 		  
 		  Select Case n
@@ -105,6 +110,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function Get(row As Integer, col As Integer) As Integer
+		  ' Get the value at the specified position (0 = empty, 1-N = digit)
 		  Return mGrid(row, col)
 		  
 		End Function
@@ -134,6 +140,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function GetIndex(row As Integer, col As Integer) As Integer
+		  ' Convert (row, col) to a linear cell index
 		  Return row * mSettings.N + col
 		  
 		End Function
@@ -141,6 +148,8 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function HasEmptyCells() As Boolean
+		  ' Check if the grid contains any empty cells (value = 0)
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  For row As Integer = 0 To mSettings.N-1
@@ -156,6 +165,8 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
+		  ' Check if the entire grid is empty (all cells = 0)
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  For row As Integer = 0 To mSettings.N-1
@@ -170,6 +181,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function IsGridCellLocked(row As Integer, col As Integer) As Boolean
+		  ' Check if a cell is locked (a given that cannot be changed by the user)
 		  Return (Me.Get(row, col) > 0) And (mLockedCellIndexes.IndexOf(Me.GetIndex(row, col)) >= 0)
 		  
 		End Function
@@ -263,6 +275,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Lock(index As Integer)
+		  ' Lock a cell by its linear index (mark as a given)
 		  If (mLockedCellIndexes.IndexOf(index) < 0) Then
 		    mLockedCellIndexes.Add(index)
 		  End If
@@ -272,6 +285,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Lock(row As Integer, col As Integer)
+		  ' Lock a cell by row and column (mark as a given)
 		  Me.Lock(Me.GetIndex(row, col))
 		  
 		  
@@ -298,6 +312,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Set(row As Integer, col As Integer, Assigns value As Integer)
+		  ' Set the value at the specified position (0 = empty, 1-N = digit)
 		  mGrid(row, col) = value
 		  
 		End Sub
@@ -305,6 +320,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function Settings() As Settings
+		  ' Get the grid settings (N, BoxWidth, BoxHeight)
 		  Return mSettings
 		  
 		End Function
@@ -312,7 +328,44 @@ Private Class Grid
 
 
 	#tag Note, Name = Grid
-		
+		' ============================================================================
+		' Sudoku Grid
+		' ============================================================================
+		' 
+		' This class represents the Sudoku grid data structure and provides
+		' basic grid operations. It stores the puzzle values and manages
+		' cell locking (for distinguishing givens from user-entered values).
+		' 
+		' GRID STRUCTURE:
+		' - N x N grid where N is the Sudoku size (4, 6, 8, 9, 12, or 16)
+		' - Values range from 0 (empty) to N
+		' - Box dimensions vary by size (e.g., 3x3 for 9x9, 4x3 for 12x12)
+		' 
+		' KEY METHODS:
+		' - Get(row, col): Get value at position
+		' - Set(row, col): Set value at position
+		' - Clear(): Reset all cells to empty
+		' - Clone(): Create a deep copy of the grid
+		' - FindEmpty(): Find the first empty cell
+		' - IsValueValid(): Check if a value placement follows Sudoku rules
+		' 
+		' CELL LOCKING:
+		' - Lock(row, col): Mark a cell as a given (cannot be changed by user)
+		' - IsGridCellLocked(): Check if a cell is locked
+		' - LockCurrentState(): Lock all non-empty cells
+		' 
+		' VALIDATION:
+		' - IsValueValid() checks the three Sudoku constraints:
+		'   1. No duplicate in the same row
+		'   2. No duplicate in the same column
+		'   3. No duplicate in the same box
+		' 
+		' SETTINGS:
+		' - N: Grid size (4, 6, 8, 9, 12, or 16)
+		' - BoxWidth: Width of each box
+		' - BoxHeight: Height of each box
+		' 
+		' ============================================================================
 		
 	#tag EndNote
 
