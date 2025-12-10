@@ -32,6 +32,7 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1534,6 +1535,8 @@ End
 		#tag EndGetter
 		#tag Setter
 			Set
+			  mIsShowingSudoku = True
+			  
 			  mSudokuPuzzle = value
 			  
 			  ' Adjust Layout for current Sudoku Puzzle
@@ -1560,6 +1563,8 @@ End
 			  ' Update Controller with new container dimensions for responsive scaling
 			  Me.Controller.ContainerWidth = rctSudoku.Width
 			  Me.Controller.ContainerHeight = rctSudoku.Height
+			  
+			  mIsShowingSudoku = False
 			  
 			End Set
 		#tag EndSetter

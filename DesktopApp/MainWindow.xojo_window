@@ -1819,6 +1819,8 @@ End
 		#tag EndGetter
 		#tag Setter
 			Set
+			  mIsShowingSudoku = True
+			  
 			  mSudokuPuzzle = value
 			  
 			  ' Adjust Layout for current Sudoku Puzzle
@@ -1833,6 +1835,8 @@ End
 			  
 			  ' Init Sudoku Number Fields
 			  Me.SudokuNumberFieldsInit
+			  
+			  mIsShowingSudoku = False
 			  
 			End Set
 		#tag EndSetter
