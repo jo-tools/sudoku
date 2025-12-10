@@ -92,8 +92,6 @@ Private Class Solver
 		  ' Try each row in this column
 		  Var row As Integer = mDLXDown(bestCol)
 		  While row <> bestCol
-		    If count >= limit Then Exit
-		    
 		    ' Cover all other columns in this row
 		    Var node As Integer = mDLXRight(row)
 		    While node <> row
@@ -101,15 +99,20 @@ Private Class Solver
 		      node = mDLXRight(node)
 		    Wend
 		    
-		    ' Recurse
-		    DLXCountSolutionsRecursive(count, limit)
+		    ' Recurse (only if limit not yet reached)
+		    If count < limit Then
+		      DLXCountSolutionsRecursive(count, limit)
+		    End If
 		    
-		    ' Uncover columns in reverse order
+		    ' Always uncover columns in reverse order to maintain matrix consistency
 		    node = mDLXLeft(row)
 		    While node <> row
 		      DLXUncover(mDLXColHeader(node))
 		      node = mDLXLeft(node)
 		    Wend
+		    
+		    ' Exit after uncovering if limit reached
+		    If count >= limit Then Exit
 		    
 		    row = mDLXDown(row)
 		  Wend
