@@ -1,5 +1,5 @@
 # Sudoku
-Sudoku Solver & Generator
+Sudoku DLX Solver & Generator
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -13,7 +13,7 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 - Sudoku Sizes
   - 4x4 | 6x6 | 8x8 | 9x9 | 12x12 | 16x16
 - Create a Sudoku puzzle
-  - Generate a random Sudoku puzzle with a given number of clues
+  - Generate a random Sudoku puzzle based on a selected difficulty level
   - Enter your own Sudoku puzzle
 - Solve the Sudoku puzzle
   - Interactively edit puzzles with
@@ -43,9 +43,10 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 #### Sudoku API
 
 The Web Application also provides an API to generate and solve Sudoku Puzzles.  
-See also the included [Postman Collection: Sudoku API](./Resources/Sudoku.postman_collection.json) *(Note: Change the `WebAppBaseUrl` in the Collection Variables according to your environment)*.
+See also the included [Postman Collection: Sudoku API](./Resources/Sudoku.postman_collection.json)  
+*Note: Change the `WebAppBaseUrl` in the Collection Variables according to your environment*.
 
-Endpoints:  
+API Endpoints:  
 - `GET: /api/sudoku/info`  
   Returns JSON information about the Web Application
 - `GET: /api/sudoku/generate?size=9&numClues=40&format=json&addSolution=false`  
