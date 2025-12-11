@@ -783,9 +783,9 @@ Begin WebPage MainWebPage
       Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   True
+      N               =   9
       PanelIndex      =   0
       Scope           =   2
-      Size            =   9
       _mPanelIndex    =   -1
    End
 End
@@ -1444,7 +1444,7 @@ End
 		    Next
 		  Next
 		  
-		  Me.Controller.Size = N
+		  Me.Controller.N = N
 		  
 		End Sub
 	#tag EndMethod
