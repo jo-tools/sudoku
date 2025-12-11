@@ -14,6 +14,7 @@ Folder=WebApp;WebApp;&h000000002A72E7FF;&h0000000000000000;false
 Folder=Colors;WebApp/Colors;&h0000000059FE8FFF;&h000000002A72E7FF;false
 Folder=Controls;WebApp/Controls;&h0000000011507FFF;&h000000002A72E7FF;false
 Class=SudokuController;WebApp/Controls/SudokuController.xojo_code;&h0000000008A0A7FF;&h0000000011507FFF;false
+Class=SudokuCanvas;WebApp/Controls/SudokuCanvas.xojo_code;&h0000000005E3E7FF;&h0000000011507FFF;false
 Folder=Popup;WebApp/Popup;&h000000007E615FFF;&h000000002A72E7FF;false
 WebContainer=SudokuNew;WebApp/Popup/SudokuNew.xojo_code;&h000000005C53BFFF;&h000000007E615FFF;false
 WebContainer=DownloadChoice;WebApp/Popup/DownloadChoice.xojo_code;&h000000007FEB8FFF;&h000000007E615FFF;false

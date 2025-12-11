@@ -1885,6 +1885,11 @@ End
 		  
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events labExport
 	#tag Event
