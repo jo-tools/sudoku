@@ -32,7 +32,6 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1555,6 +1554,10 @@ End
 			  
 			  ' Adjust Layout for current Sudoku Puzzle
 			  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
+			  
+			  Var cnvSudokuSize As Integer = 2*kMarginWindow + N*kCellSize
+			  cnvSudoku.UpdateSudokuLayout(N, mSudokuPuzzle.GetGridSettings.BoxWidth, mSudokuPuzzle.GetGridSettings.BoxHeight, cnvSudokuSize)
+			  
 			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 215 ' Solve and Status are bottom-locked
 			  
 			  rctSudoku.Width = 2 * kMarginWindow + Max(N, 5) * kCellSize + 20 + btnSolve.Width + 20
@@ -1566,8 +1569,6 @@ End
 			  Me.Width = rctSudoku.Width
 			  me.MinimumWidth = me.Width
 			  
-			  Var cnvSudokuSize As Integer = 2*kMarginWindow + N*kCellSize
-			  cnvSudoku.UpdateSudokuLayout(N, mSudokuPuzzle.GetGridSettings.BoxWidth, mSudokuPuzzle.GetGridSettings.BoxHeight, cnvSudokuSize)
 			  
 			  ' Init Sudoku Number Fields
 			  Me.SudokuNumberFieldsInit
