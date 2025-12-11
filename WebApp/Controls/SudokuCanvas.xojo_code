@@ -4,9 +4,8 @@ Inherits WebSDKUIControl
 	#tag Event
 		Sub DrawControlInLayoutEditor(g As Graphics)
 		  ' Draw a preview of the Sudoku grid in the Xojo IDE
-		  ' Xojo IDE seems to have some margin - let's reduce the Width/Height
-		  Var w As Double = g.Width - 24
-		  Var h As Double = g.Height - 24
+		  Var w As Double = g.Width
+		  Var h As Double = g.Height
 		  
 		  ' Read properties from the control (using default values if needed)
 		  Var n As Integer = IntegerProperty("N")
@@ -14,15 +13,15 @@ Inherits WebSDKUIControl
 		    n = 9
 		  End If
 		  
+		  Var margin As Double = DoubleProperty("MarginWindow")
+		  If margin <= 0 Then margin = 20
+		  Var cellSize As Double = DoubleProperty("CellSize")
+		  If cellSize <= 0 Then cellSize = 60
+		  
 		  Var hairColor As Color = ColorProperty("GridlineHairLight")
 		  if IsDarkMode then hairColor = ColorProperty("GridlineHairDark")
-		  Var thickColor As Color = ColorProperty("GridlineThickLight")
-		  if IsDarkMode then thickColor = ColorProperty("GridlineThickDark")
-		  
-		  ' Calculate cell size based on available space
-		  Var margin As Double = 0 '10
-		  Var availableSize As Double = Min(w, h) ' - 2 * margin
-		  Var cellSize As Double = availableSize / n
+		  Var thickColor As Color = ColorProperty("GridlineLight")
+		  if IsDarkMode then thickColor = ColorProperty("GridlineDark")
 		  
 		  ' Background
 		  g.DrawingColor = FillColor()
@@ -42,18 +41,16 @@ Inherits WebSDKUIControl
 		  g.DrawingColor = thickColor
 		  g.PenSize = 2
 		  
-		  var b as integer = 3
-		  select case n
-		  case 9
-		    b = 3
-		  case 16
-		    b = 4
-		  end select
-		  For rowBlock As Integer = 0 To n Step b
+		  Var boxW As Integer = IntegerProperty("BoxWidth")
+		  If boxW <= 0 Then boxW = 3
+		  Var boxH As Integer = IntegerProperty("BoxHeight")
+		  If boxH <= 0 Then boxH = 3
+		  
+		  For rowBlock As Integer = 0 To n Step boxH
 		    ' Horizontal
 		    g.DrawLine(margin, margin + rowBlock * cellSize, margin + n * cellSize, margin + rowBlock * cellSize)
 		  Next
-		  For colBlock As Integer = 0 To n Step b
+		  For colBlock As Integer = 0 To n Step boxW
 		    ' Vertical
 		    g.DrawLine(margin + colBlock * cellSize, margin, margin + colBlock * cellSize, margin + n * cellSize)
 		  Next
@@ -88,27 +85,67 @@ Inherits WebSDKUIControl
 	#tag EndEvent
 
 	#tag Event
-		Sub Opening()
-		  ebOpening = true
-		  
-		  Opening
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
 		Sub Serialize(js As JSONItem)
 		  js.Value("width") = Self.Width
 		  js.Value("height") = Self.Height
 		  js.Value("n") = mN
 		  js.Value("box_width") = mBoxWidth
 		  js.Value("box_height") = mBoxHeight
+		  js.Value("margin_window") = mMarginWindow
+		  js.Value("cell_size") = mCellSize
+		  js.Value("text_field_width") = mTextFieldWidth
+		  js.Value("text_field_height") = mTextFieldHeight
 		  
 		  ' Colors (as hex strings for JavaScript)
-		  js.Value("color_gridline") = GridlineThickLight.ToString.Replace("&h00", "#")
-		  js.Value("color_gridline_hair") = GridlineHairLight.ToString.Replace("&h00", "#")
-		  js.Value("color_gridline_dark") = GridlineThickDark.ToString.Replace("&h00", "#")
-		  js.Value("color_gridline_hair_dark") = GridlineHairDark.ToString.Replace("&h00", "#")
+		  js.Value("color_gridline_light") = ColorToHex(GridlineLight)
+		  js.Value("color_gridline_dark") = ColorToHex(GridlineDark)
+		  js.Value("color_gridline_hair_light") = ColorToHex(GridlineHairLight)
+		  js.Value("color_gridline_hair_dark") = ColorToHex(GridlineHairDark)
+		  
+		  js.Value("color_hint_naked_single_light") = ColorToRGBA(CellHintNakedSingleLight)
+		  js.Value("color_hint_naked_single_dark") = ColorToRGBA(CellHintNakedSingleDark)
+		  js.Value("color_hint_hidden_single_light") = ColorToRGBA(CellHintHiddenSingleLight)
+		  js.Value("color_hint_hidden_single_dark") = ColorToRGBA(CellHintHiddenSingleDark)
+		  
+		  js.Value("color_candidate_light") = ColorToHex(CandidateLight)
+		  js.Value("color_candidate_dark") = ColorToHex(CandidateDark)
+		  
+		  js.Value("color_excluded_locked_candidate") = ColorToHex(ExcludedLockedCandidate)
+		  js.Value("color_excluded_naked_subset") = ColorToHex(ExcludedNakedSubset)
+		  js.Value("color_excluded_hidden_subset") = ColorToHex(ExcludedHiddenSubset)
+		  js.Value("color_excluded_xwing") = ColorToHex(ExcludedXWing)
+		  
+		  ' Cell hints array (JSON array of {row, col, hint})
+		  Var hintsArray As New JSONItem("[]")
+		  For Each h As Sudoku.CellHint In mCellHints
+		    Var hintObj As New JSONItem
+		    hintObj.Value("row") = h.Row
+		    hintObj.Value("col") = h.Col
+		    hintObj.Value("hint") = CType(h.SolveHint, Integer)
+		    hintsArray.Add(hintObj)
+		  Next
+		  js.Value("cell_hints") = hintsArray
+		  
+		  ' Cell candidates array (JSON array of {row, col, candidates: [{value, hint}]})
+		  Var candidatesArray As New JSONItem("[]")
+		  For Each c As Sudoku.CellCandidates In mCellCandidates
+		    Var cellObj As New JSONItem
+		    cellObj.Value("row") = c.Row
+		    cellObj.Value("col") = c.Col
+		    Var candArr As New JSONItem("[]")
+		    For Each cand As Sudoku.Candidate In c.Candidates
+		      Var candObj As New JSONItem
+		      candObj.Value("value") = cand.Value
+		      candObj.Value("hint") = CType(cand.Hint, Integer)
+		      candArr.Add(candObj)
+		    Next
+		    cellObj.Value("candidates") = candArr
+		    candidatesArray.Add(cellObj)
+		  Next
+		  js.Value("cell_candidates") = candidatesArray
+		  
+		  js.Value("show_hints") = mShowHints
+		  js.Value("show_candidates") = mShowCandidates
 		  
 		End Sub
 	#tag EndEvent
@@ -141,32 +178,219 @@ Inherits WebSDKUIControl
 		End Function
 	#tag EndEvent
 
-	#tag Event
-		Sub Shown()
-		  ebOpening = false
-		  
-		End Sub
-	#tag EndEvent
 
+	#tag Method, Flags = &h21
+		Private Function ColorToHex(c As Color) As String
+		  ' Convert Color to #RRGGBB hex string
+		  Return c.ToString.Replace("&h00", "#")
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function ColorToRGBA(c As Color) As String
+		  ' Convert Color to rgba(r,g,b,a) string
+		  Var alpha As Double = (255 - c.Alpha) / 255.0
+		  Return "rgba(" + c.Red.ToString + "," + c.Green.ToString + "," + c.Blue.ToString + "," + Format(alpha, "0.00") + ")"
+		End Function
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Refresh(sendImmediately As Boolean = False)
-		  if ebOpening then return
-		  
 		  UpdateControl(sendImmediately)
 		  
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SetupLayout(MarginWindow As Integer, CellSize As Integer, TextFieldWidth As Integer, TextFieldHeight As Integer)
+		  Me.mMarginWindow = MarginWindow
+		  Me.mCellSize = CellSize
+		  Me.mTextFieldWidth = TextFieldWidth
+		  Me.mTextFieldHeight = TextFieldHeight
+		End Sub
+	#tag EndMethod
 
-	#tag Hook, Flags = &h0
-		Event Opening()
-	#tag EndHook
+	#tag Method, Flags = &h0
+		Sub UpdateCandidates(cellHints() As Sudoku.CellHint, cellCandidates() As Sudoku.CellCandidates, showHints As Boolean, showCandidates As Boolean)
+		  ' Update all candidate/hint data and refresh the control once
+		  mCellHints = cellHints
+		  mCellCandidates = cellCandidates
+		  mShowHints = showHints
+		  mShowCandidates = showCandidates
+		  
+		  Refresh(True)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateSudokuLayout(N As Integer, BoxWidth As Integer, BoxHeight As Integer, WidthHeight As Integer)
+		  Me.N = N
+		  Me.mBoxWidth = BoxWidth
+		  Me.mBoxHeight = BoxHeight
+		  
+		  Me.Width = WidthHeight
+		  Me.Height = WidthHeight
+		  
+		  
+		End Sub
+	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private ebOpening As Boolean = True
-	#tag EndProperty
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCandidateDark
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mCandidateDark = value
+			End Set
+		#tag EndSetter
+		CandidateDark As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCandidateLight
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mCandidateLight = value
+			End Set
+		#tag EndSetter
+		CandidateLight As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCellHintHiddenSingleDark
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mCellHintHiddenSingleDark = value
+			End Set
+		#tag EndSetter
+		CellHintHiddenSingleDark As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCellHintHiddenSingleLight
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mCellHintHiddenSingleLight = value
+			End Set
+		#tag EndSetter
+		CellHintHiddenSingleLight As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCellHintNakedSingleDark
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mCellHintNakedSingleDark = value
+			End Set
+		#tag EndSetter
+		CellHintNakedSingleDark As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mCellHintNakedSingleLight
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mCellHintNakedSingleLight = value
+			End Set
+		#tag EndSetter
+		CellHintNakedSingleLight As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mExcludedHiddenSubset
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mExcludedHiddenSubset = value
+			End Set
+		#tag EndSetter
+		ExcludedHiddenSubset As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mExcludedLockedCandidate
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mExcludedLockedCandidate = value
+			End Set
+		#tag EndSetter
+		ExcludedLockedCandidate As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mExcludedNakedSubset
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mExcludedNakedSubset = value
+			End Set
+		#tag EndSetter
+		ExcludedNakedSubset As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mExcludedXWing
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mExcludedXWing = value
+			End Set
+		#tag EndSetter
+		ExcludedXWing As Color
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mGridlineDark
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mGridlineDark = value
+			End Set
+		#tag EndSetter
+		GridlineDark As Color
+	#tag EndComputedProperty
 
 	#tag ComputedProperty, Flags = &h0
 		#tag Getter
@@ -199,29 +423,15 @@ Inherits WebSDKUIControl
 	#tag ComputedProperty, Flags = &h0
 		#tag Getter
 			Get
-			  Return mGridlineThickDark
+			  Return mGridlineLight
 			End Get
 		#tag EndGetter
 		#tag Setter
 			Set
-			  mGridlineThickDark = value
+			  mGridlineLight = value
 			End Set
 		#tag EndSetter
-		GridlineThickDark As Color
-	#tag EndComputedProperty
-
-	#tag ComputedProperty, Flags = &h0
-		#tag Getter
-			Get
-			  Return mGridlineThickLight
-			End Get
-		#tag EndGetter
-		#tag Setter
-			Set
-			  mGridlineThickLight = value
-			End Set
-		#tag EndSetter
-		GridlineThickLight As Color
+		GridlineLight As Color
 	#tag EndComputedProperty
 
 	#tag Property, Flags = &h21
@@ -233,7 +443,63 @@ Inherits WebSDKUIControl
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mGridlineHairDark As Color = &cA9A9A9
+		Private mCandidateDark As Color = &cD3D3D3
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCandidateLight As Color = &cA9A9A9
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCellCandidates() As Sudoku.CellCandidates
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCellHintHiddenSingleDark As Color = &cFFFB00E6
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCellHintHiddenSingleLight As Color = &c945200BF
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCellHintNakedSingleDark As Color = &c4F8F00BF
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCellHintNakedSingleLight As Color = &c4F8F00BF
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCellHints() As Sudoku.CellHint
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCellSize As Double = 60
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mExcludedHiddenSubset As Color = &cFFA500
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mExcludedLockedCandidate As Color = &cFF0000
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mExcludedNakedSubset As Color = &cFFA500
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mExcludedXWing As Color = &cFFFF00
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mGridlineDark As Color = &cC0C0C0
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mGridlineHairDark As Color = &c5E5E5E
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -241,15 +507,31 @@ Inherits WebSDKUIControl
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mGridlineThickDark As Color = &c424242
+		Private mGridlineLight As Color = &c424242
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mGridlineThickLight As Color = &c424242
+		Private mMarginWindow As Double = 20
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mN As Integer = 9
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mShowCandidates As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mShowHints As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mTextFieldHeight As Double = 40
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mTextFieldWidth As Double = 40
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0
@@ -260,27 +542,14 @@ Inherits WebSDKUIControl
 		#tag EndGetter
 		#tag Setter
 			Set
-			  select case value
-			  case 9
-			    mN = 9
-			    mBoxWidth = 3
-			    mBoxHeight = 3
-			  case 16
-			    mN = 16
-			    mBoxWidth = 4
-			    mBoxHeight = 4
-			  else
-			    return
-			  end select
-			  
-			  Refresh
+			  mN = value
 			End Set
 		#tag EndSetter
 		N As Integer
 	#tag EndComputedProperty
 
 
-	#tag Constant, Name = kJavaScript, Type = String, Dynamic = False, Default = \"var JoTools;\r\n(function (JoTools) {\r\n  class SudokuCanvas extends XojoWeb.XojoVisualControl {\r\n    constructor(id\x2C events) {\r\n      super(id\x2C events);\r\n      const el \x3D this.DOMElement();\r\n      if (el) { el.style.position \x3D \'absolute\'; }\r\n      this.mCanvas \x3D document.createElement(\'canvas\');\r\n      this.mCanvas.id \x3D this.mControlID + \'_canvas\';\r\n      if (el) { el.appendChild(this.mCanvas); }\r\n      this.mCanvas.style.width \x3D \'100%\';\r\n      this.mCanvas.style.height \x3D \'100%\';\r\n      this.mCanvas.style.display \x3D \'block\';\r\n      this.mCtx \x3D this.mCanvas.getContext(\'2d\');\r\n      this.mData \x3D {};\r\n      this.mDarkQuery \x3D window.matchMedia \? window.matchMedia(\'(prefers-color-scheme: dark)\') : null;\r\n      if (this.mDarkQuery) {\r\n        const mq \x3D this.mDarkQuery;\r\n        const that \x3D this;\r\n        const listener \x3D function () { that.render(); };\r\n        if (mq.addEventListener) { mq.addEventListener(\'change\'\x2C listener); }\r\n        else if (mq.addListener) { mq.addListener(listener); }\r\n      }\r\n    }\r\n    updateControl(data) {\r\n      super.updateControl(data);\r\n      this.mData \x3D JSON.parse(data);\r\n      this.render();\r\n    }\r\n    render() {\r\n      super.render();\r\n      const el \x3D this.DOMElement();\r\n      if (!el) return;\r\n      this.setAttributes();\r\n      this.applyUserStyle();\r\n      this.applyTooltip(el);\r\n      const d \x3D this.mData;\r\n      if (!d || !this.mCanvas || !this.mCtx) return;\r\n      const canvas \x3D this.mCanvas;\r\n      const ctx \x3D this.mCtx;\r\n      const dpr \x3D window.devicePixelRatio || 1;\r\n      const rect \x3D el.getBoundingClientRect();\r\n      const width \x3D rect.width;\r\n      const height \x3D rect.height;\r\n      canvas.width \x3D width * dpr;\r\n      canvas.height \x3D height * dpr;\r\n      canvas.style.width \x3D width + \'px\';\r\n      canvas.style.height \x3D height + \'px\';\r\n      ctx.setTransform(dpr\x2C 0\x2C 0\x2C dpr\x2C 0\x2C 0);\r\n      const n \x3D d.n || 9;\r\n      const boxWidth \x3D d.box_width || Math.round(Math.sqrt(n));\r\n      const boxHeight \x3D d.box_height || Math.round(Math.sqrt(n));\r\n      const margin \x3D 10;\r\n      const gridSize \x3D Math.min(width\x2C height) - 2 * margin;\r\n      const cellSize \x3D gridSize / n;\r\n      ctx.clearRect(0\x2C 0\x2C width\x2C height);\r\n      const colHairLight \x3D d.color_gridline_hair || \'#a9a9a9\';\r\n      const colGridLight \x3D d.color_gridline || \'#424242\';\r\n      const colHairDark \x3D d.color_gridline_hair_dark || colHairLight;\r\n      const colGridDark \x3D d.color_gridline_dark || colGridLight;\r\n      let useDark \x3D false;\r\n      if (this.mDarkQuery) {\r\n        useDark \x3D this.mDarkQuery.matches;\r\n      } else if (window.matchMedia) {\r\n        useDark \x3D window.matchMedia(\'(prefers-color-scheme: dark)\').matches;\r\n      }\r\n      const colHair \x3D useDark \? colHairDark : colHairLight;\r\n      const colGrid \x3D useDark \? colGridDark : colGridLight;\r\n      ctx.strokeStyle \x3D colHair;\r\n      ctx.lineWidth \x3D 1;\r\n      for (let i \x3D 1; i < n; i++) {\r\n        ctx.beginPath(); ctx.moveTo(margin\x2C margin + i * cellSize); ctx.lineTo(margin + n * cellSize\x2C margin + i * cellSize); ctx.stroke();\r\n        ctx.beginPath(); ctx.moveTo(margin + i * cellSize\x2C margin); ctx.lineTo(margin + i * cellSize\x2C margin + n * cellSize); ctx.stroke();\r\n      }\r\n      ctx.strokeStyle \x3D colGrid;\r\n      ctx.lineWidth \x3D 2;\r\n      for (let rb \x3D 0; rb <\x3D n; rb +\x3D boxHeight) {\r\n        ctx.beginPath(); ctx.moveTo(margin - 1\x2C margin + rb * cellSize - 1); ctx.lineTo(margin + n * cellSize - 1\x2C margin + rb * cellSize - 1); ctx.stroke();\r\n      }\r\n      for (let cb \x3D 0; cb <\x3D n; cb +\x3D boxWidth) {\r\n        ctx.beginPath(); ctx.moveTo(margin + cb * cellSize - 1\x2C margin - 1); ctx.lineTo(margin + cb * cellSize - 1\x2C margin + n * cellSize - 1); ctx.stroke();\r\n      }\r\n    }\r\n  }\r\n  JoTools.SudokuCanvas \x3D SudokuCanvas;\r\n})(JoTools || (JoTools \x3D {}));\r\n", Scope = Private
+	#tag Constant, Name = kJavaScript, Type = String, Dynamic = False, Default = \"var JoTools;\n(function (JoTools) {\n  // SudokuCanvas: Client-side canvas control for drawing Sudoku grid\x2C hints\x2C and candidates\n  class SudokuCanvas extends XojoWeb.XojoVisualControl {\n    constructor(id\x2C events) {\n      super(id\x2C events);\n      const el \x3D this.DOMElement();\n      if (el) { el.style.position \x3D \'absolute\'; }\n\n      // Create canvas element for drawing\n      this.mCanvas \x3D document.createElement(\'canvas\');\n      this.mCanvas.id \x3D this.mControlID + \'_canvas\';\n      if (el) { el.appendChild(this.mCanvas); }\n      this.mCanvas.style.width \x3D \'100%\';\n      this.mCanvas.style.height \x3D \'100%\';\n      this.mCanvas.style.display \x3D \'block\';\n      this.mCtx \x3D this.mCanvas.getContext(\'2d\');\n      this.mData \x3D {};\n\n      // Listen for dark mode changes to re-render with correct colors\n      this.mDarkQuery \x3D window.matchMedia \? window.matchMedia(\'(prefers-color-scheme: dark)\') : null;\n      if (this.mDarkQuery) {\n        const mq \x3D this.mDarkQuery;\n        const that \x3D this;\n        const listener \x3D function () { that.render(); };\n        if (mq.addEventListener) { mq.addEventListener(\'change\'\x2C listener); }\n        else if (mq.addListener) { mq.addListener(listener); }\n      }\n    }\n\n    updateControl(data) {\n      super.updateControl(data);\n      this.mData \x3D JSON.parse(data);\n      this.render();\n    }\n\n    render() {\n      super.render();\n      const el \x3D this.DOMElement();\n      if (!el) return;\n      this.setAttributes();\n      this.applyUserStyle();\n      this.applyTooltip(el);\n      const d \x3D this.mData;\n      if (!d || !this.mCanvas || !this.mCtx) return;\n      const canvas \x3D this.mCanvas;\n      const ctx \x3D this.mCtx;\n\n      // Handle high-DPI displays\n      const dpr \x3D window.devicePixelRatio || 1;\n      const rect \x3D el.getBoundingClientRect();\n      const width \x3D rect.width;\n      const height \x3D rect.height;\n      canvas.width \x3D width * dpr;\n      canvas.height \x3D height * dpr;\n      canvas.style.width \x3D width + \'px\';\n      canvas.style.height \x3D height + \'px\';\n      ctx.setTransform(dpr\x2C 0\x2C 0\x2C dpr\x2C 0\x2C 0);\n\n      // Grid parameters from WebApp\n      const n \x3D d.n || 9;\n      const boxWidth \x3D d.box_width || 3;\n      const boxHeight \x3D d.box_height || 3;\n      const margin \x3D d.margin_window || 20;\n      const cellSize \x3D d.cell_size || 60;\n      const tfWidth \x3D d.text_field_width || 40;\n      const tfHeight \x3D d.text_field_height || 40;\n\n      // Detect dark mode\n      let useDark \x3D false;\n      if (this.mDarkQuery) { useDark \x3D this.mDarkQuery.matches; }\n      else if (window.matchMedia) { useDark \x3D window.matchMedia(\'(prefers-color-scheme: dark)\').matches; }\n\n      // Colors from WebApp (with fallbacks)\n      const colGridLight \x3D d.color_gridline_light || \'#424242\';\n      const colGridDark \x3D d.color_gridline_dark || \'#C0C0C0\';\n      const colHairLight \x3D d.color_gridline_hair_light || \'#A9A9A9\';\n      const colHairDark \x3D d.color_gridline_hair_dark || \'#5E5E5E\';\n      const colHintNakedLight \x3D d.color_hint_naked_single_light || \'rgba(79\x2C143\x2C0\x2C0.75)\';\n      const colHintNakedDark \x3D d.color_hint_naked_single_dark || \'rgba(79\x2C143\x2C0\x2C0.75)\';\n      const colHintHiddenLight \x3D d.color_hint_hidden_single_light || \'rgba(148\x2C82\x2C0\x2C0.75)\';\n      const colHintHiddenDark \x3D d.color_hint_hidden_single_dark || \'rgba(255\x2C251\x2C0\x2C0.90)\';\n      const colCandLight \x3D d.color_candidate_light || \'#A9A9A9\';\n      const colCandDark \x3D d.color_candidate_dark || \'#D3D3D3\';\n      const colExclLocked \x3D d.color_excluded_locked_candidate || \'#FF0000\';\n      const colExclNaked \x3D d.color_excluded_naked_subset || \'#FFA500\';\n      const colExclHidden \x3D d.color_excluded_hidden_subset || \'#FFA500\';\n      const colExclXWing \x3D d.color_excluded_xwing || \'#FFFF00\';\n\n      // Select colors based on mode\n      const colHair \x3D useDark \? colHairDark : colHairLight;\n      const colGrid \x3D useDark \? colGridDark : colGridLight;\n      const colHintNaked \x3D useDark \? colHintNakedDark : colHintNakedLight;\n      const colHintHidden \x3D useDark \? colHintHiddenDark : colHintHiddenLight;\n      const colCand \x3D useDark \? colCandDark : colCandLight;\n\n      // Clear canvas\n      ctx.clearRect(0\x2C 0\x2C width\x2C height);\n\n      // Draw cell hint backgrounds (naked/hidden single)\n      const showHints \x3D d.show_hints || false;\n      const cellHints \x3D d.cell_hints || [];\n      if (showHints && cellHints.length > 0) {\n        for (const h of cellHints) {\n          // hint: 1\x3DNakedSingle\x2C 2\x3DHiddenSingle\n          if (h.hint \x3D\x3D\x3D 1) { ctx.fillStyle \x3D colHintNaked; }\n          else if (h.hint \x3D\x3D\x3D 2) { ctx.fillStyle \x3D colHintHidden; }\n          else { continue; }\n          ctx.fillRect(margin + h.col * cellSize\x2C margin + h.row * cellSize\x2C cellSize\x2C cellSize);\n        }\n      }\n\n      // Draw thin \"hair\" grid lines\n      ctx.strokeStyle \x3D colHair;\n      ctx.lineWidth \x3D 1;\n      for (let i \x3D 1; i < n; i++) {\n        // Horizontal line\n        ctx.beginPath();\n        ctx.moveTo(margin\x2C margin + i * cellSize);\n        ctx.lineTo(margin + n * cellSize\x2C margin + i * cellSize);\n        ctx.stroke();\n        // Vertical line\n        ctx.beginPath();\n        ctx.moveTo(margin + i * cellSize\x2C margin);\n        ctx.lineTo(margin + i * cellSize\x2C margin + n * cellSize);\n        ctx.stroke();\n      }\n      // Draw thick block lines (box borders)\n      ctx.strokeStyle \x3D colGrid;\n      ctx.lineWidth \x3D 2;\n      const penOffset \x3D 1; // half of lineWidth for alignment\n      for (let rb \x3D 0; rb <\x3D n; rb +\x3D boxHeight) {\n        ctx.beginPath();\n        ctx.moveTo(margin - penOffset\x2C margin + rb * cellSize - penOffset);\n        ctx.lineTo(margin + n * cellSize - penOffset\x2C margin + rb * cellSize - penOffset);\n        ctx.stroke();\n      }\n      for (let cb \x3D 0; cb <\x3D n; cb +\x3D boxWidth) {\n        ctx.beginPath();\n        ctx.moveTo(margin + cb * cellSize - penOffset\x2C margin - penOffset);\n        ctx.lineTo(margin + cb * cellSize - penOffset\x2C margin + n * cellSize - penOffset);\n        ctx.stroke();\n      }\n\n      // Draw candidates\n      const showCandidates \x3D d.show_candidates || false;\n      const cellCandidates \x3D d.cell_candidates || [];\n      if (showCandidates && cellCandidates.length > 0) {\n        // Calculate margin areas (space between cell border and TextField)\n        const marginH \x3D (cellSize - tfWidth) / 2;\n        const marginV \x3D (cellSize - tfHeight) / 2;\n\n        // Candidate slot layout based on N\n        // Layout patterns:\n        //   N\x3D4:  1\x2C2 top; 3\x2C4 bottom\n        //   N\x3D6:  1\x2C2 top; 3 left; 4 right; 5\x2C6 bottom\n        //   N\x3D8:  1\x2C2\x2C3 top; 4 left; 5 right; 6\x2C7\x2C8 bottom\n        //   N\x3D9:  1\x2C2\x2C3\x2C4 top; 5 left; 6 right; 7\x2C8\x2C9 bottom\n        //   N\x3D12: 1\x2C2\x2C3\x2C4 top; 5\x2C7 left; 6\x2C8 right; 9\x2C10\x2C11\x2C12 bottom\n        //   N\x3D16: 1\x2C2\x2C3\x2C4\x2C5 top; 6\x2C8\x2C10 left; 7\x2C9\x2C11 right; 12\x2C13\x2C14\x2C15\x2C16 bottom\n        let slotsTop\x2C slotsLeft\x2C slotsRight\x2C slotsBottom;\n        if (n \x3D\x3D\x3D 4) { slotsTop \x3D 2; slotsLeft \x3D 0; slotsRight \x3D 0; slotsBottom \x3D 2; }\n        else if (n \x3D\x3D\x3D 6) { slotsTop \x3D 2; slotsLeft \x3D 1; slotsRight \x3D 1; slotsBottom \x3D 2; }\n        else if (n \x3D\x3D\x3D 8) { slotsTop \x3D 3; slotsLeft \x3D 1; slotsRight \x3D 1; slotsBottom \x3D 3; }\n        else if (n \x3D\x3D\x3D 9) { slotsTop \x3D 4; slotsLeft \x3D 1; slotsRight \x3D 1; slotsBottom \x3D 3; }\n        else if (n \x3D\x3D\x3D 12) { slotsTop \x3D 4; slotsLeft \x3D 2; slotsRight \x3D 2; slotsBottom \x3D 4; }\n        else if (n \x3D\x3D\x3D 16) { slotsTop \x3D 5; slotsLeft \x3D 3; slotsRight \x3D 3; slotsBottom \x3D 5; }\n        else { slotsTop \x3D Math.floor((n+3)/4); slotsBottom \x3D Math.floor((n+3)/4); const rem \x3D n - slotsTop - slotsBottom; slotsLeft \x3D Math.floor((rem+1)/2); slotsRight \x3D rem - slotsLeft; }\n        ctx.font \x3D \'8px sans-serif\';\n        ctx.textAlign \x3D \'center\';\n        ctx.textBaseline \x3D \'middle\';\n\n        // Left and right X positions (centered in margin areas)\n        const leftX \x3D marginH / 2;\n        const rightX \x3D cellSize - marginH / 2;\n        for (const cell of cellCandidates) {\n          const cellLeft \x3D margin + cell.col * cellSize;\n          const cellTop \x3D margin + cell.row * cellSize;\n          for (const cand of cell.candidates) {\n            if (cand.value < 1 || cand.value > n) continue;\n            if (cand.hint \x3D\x3D\x3D 0) continue; // NoCandidate\n            const idx \x3D cand.value - 1;\n            let centerX\x2C centerY;\n\n            // Determine position based on slot assignment\n            // Order: top row -> left/right sides (interleaved) -> bottom row\n            if (idx < slotsTop) {\n              // Top row - first slot at leftX\x2C last slot at rightX\x2C others distributed between\n              if (slotsTop \x3D\x3D\x3D 1) { centerX \x3D cellLeft + cellSize / 2; }\n              else { const frac \x3D idx / (slotsTop - 1); centerX \x3D cellLeft + leftX + frac * (rightX - leftX); }\n              centerY \x3D cellTop + marginV / 2;\n            } else if (idx < slotsTop + slotsLeft + slotsRight) {\n              // Middle section: interleave left and right\n              const midIdx \x3D idx - slotsTop;\n              const slotHeight \x3D tfHeight / Math.max(slotsLeft\x2C 1);\n              if (midIdx % 2 \x3D\x3D\x3D 0) {\n                // Left side - even middle indices (0\x2C 2\x2C 4\x2C ...)\n                const leftIdx \x3D Math.floor(midIdx / 2);\n                centerX \x3D cellLeft + leftX;\n                centerY \x3D cellTop + marginV + leftIdx * slotHeight + slotHeight / 2;\n              } else {\n                // Right side - odd middle indices (1\x2C 3\x2C 5\x2C ...)\n                const rightIdx \x3D Math.floor(midIdx / 2);\n                centerX \x3D cellLeft + rightX;\n                centerY \x3D cellTop + marginV + rightIdx * slotHeight + slotHeight / 2;\n              }\n            } else {\n              // Bottom row - first slot at leftX\x2C last slot at rightX\x2C others distributed between\n              const botIdx \x3D idx - slotsTop - slotsLeft - slotsRight;\n              if (slotsBottom \x3D\x3D\x3D 1) { centerX \x3D cellLeft + cellSize / 2; }\n              else { const frac \x3D botIdx / (slotsBottom - 1); centerX \x3D cellLeft + leftX + frac * (rightX - leftX); }\n              centerY \x3D cellTop + cellSize - marginV / 2;\n            }\n\n            // Draw candidate number\n            ctx.fillStyle \x3D colCand;\n            ctx.fillText(cand.value.toString()\x2C centerX\x2C centerY + 2);\n\n            // Draw exclusion mark if applicable (diagonal strike-through)\n            // hint: 0\x3DNoCandidate\x2C 1\x3DCandidate\x2C 2\x3DExcludedAsLockedCandidate\x2C 3\x3DExcludedAsNakedSubset\x2C 4\x3DExcludedAsHiddenSubset\x2C 5\x3DExcludedAsXWing\n            let exclColor \x3D null;\n            if (cand.hint \x3D\x3D\x3D 2) { exclColor \x3D colExclLocked; }\n            else if (cand.hint \x3D\x3D\x3D 3) { exclColor \x3D colExclNaked; }\n            else if (cand.hint \x3D\x3D\x3D 4) { exclColor \x3D colExclHidden; }\n            else if (cand.hint \x3D\x3D\x3D 5) { exclColor \x3D colExclXWing; }\n            if (exclColor) {\n              // Strike-through line centered on the candidate number\n              // Adjusted +2 to match the text vertical offset\n              const crossSize \x3D 8;\n              const crossCenterY \x3D centerY + 2;\n              ctx.strokeStyle \x3D exclColor;\n              ctx.lineWidth \x3D 1;\n              ctx.beginPath();\n              ctx.moveTo(centerX - crossSize * 0.25\x2C crossCenterY + crossSize * 0.25);\n              ctx.lineTo(centerX + crossSize * 0.25\x2C crossCenterY - crossSize * 0.25);\n              ctx.stroke();\n            }\n          }\n        }\n      }\n    }\n  }\n  JoTools.SudokuCanvas \x3D SudokuCanvas;\n})(JoTools || (JoTools \x3D {}));\n", Scope = Private
 	#tag EndConstant
 
 
@@ -398,6 +667,54 @@ Inherits WebSDKUIControl
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="CandidateDark"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CandidateLight"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ExcludedHiddenSubset"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ExcludedLockedCandidate"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ExcludedNakedSubset"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ExcludedXWing"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="TabIndex"
 			Visible=true
 			Group="Visual Controls"
@@ -442,18 +759,10 @@ Inherits WebSDKUIControl
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="GridlineThickLight"
-			Visible=true
-			Group="Sudoku"
-			InitialValue="&c000000"
-			Type="Color"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="GridlineHairLight"
 			Visible=true
 			Group="Sudoku"
-			InitialValue="&c000000"
+			InitialValue="&cA9A9A9"
 			Type="Color"
 			EditorType=""
 		#tag EndViewProperty
@@ -461,13 +770,53 @@ Inherits WebSDKUIControl
 			Name="GridlineHairDark"
 			Visible=true
 			Group="Sudoku"
+			InitialValue="&c5E5E5E"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="GridlineLight"
+			Visible=true
+			Group="Sudoku"
+			InitialValue="&c424242"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="GridlineDark"
+			Visible=true
+			Group="Sudoku"
+			InitialValue="&cC0C0C0"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CellHintNakedSingleLight"
+			Visible=false
+			Group="Sudoku"
 			InitialValue="&c000000"
 			Type="Color"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="GridlineThickDark"
-			Visible=true
+			Name="CellHintNakedSingleDark"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CellHintHiddenSingleLight"
+			Visible=false
+			Group="Sudoku"
+			InitialValue="&c000000"
+			Type="Color"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CellHintHiddenSingleDark"
+			Visible=false
 			Group="Sudoku"
 			InitialValue="&c000000"
 			Type="Color"
