@@ -2,6 +2,7 @@
 Protected Class Puzzle
 	#tag Method, Flags = &h0
 		Sub ClearGrid()
+		  ' Clear the entire grid (set all cells to empty)
 		  mGrid.Clear
 		  mSolver.SetStateIsSolvable
 		  
@@ -10,6 +11,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Function Clone() As Puzzle
+		  ' Create a deep copy of this puzzle (used for solving without modifying original)
 		  Return New Puzzle(mGrid.Clone)
 		  
 		  
@@ -18,6 +20,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Sub Constructor(grid As Grid)
+		  ' Private constructor used for cloning - initializes with existing grid
 		  mGrid = grid
 		  mHintsSearcher = New HintsSearcher(mGrid)
 		  mCandidatesSearcher = New CandidatesSearcher(mGrid)
@@ -30,6 +33,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub Constructor(n As Integer)
+		  ' Create a new empty puzzle with the specified size N (4, 6, 8, 9, 12, or 16)
 		  Var grid As New Grid(n)
 		  Me.Constructor(grid)
 		  
@@ -294,6 +298,9 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub DrawInto(g As Graphics, addSolution As Boolean)
+		  ' Render the puzzle to a Graphics context (for PDF export)
+		  ' If addSolution is True, includes a smaller solution grid below
+		  
 		  g.DrawingColor = Color.Black
 		  
 		  ' Heights
@@ -386,6 +393,8 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h21
 		Private Sub DrawSudokuInternal(g As Graphics, topLeftX As Double, topLeftY As Double, sizePoints As Double, isPuzzle As Boolean)
+		  ' Internal method to draw the Sudoku grid at the specified position and size
+		  
 		  Var N As Integer = mGrid.Settings.N
 		  Var boxWidth As Integer = mGrid.Settings.BoxWidth
 		  Var boxHeight As Integer = mGrid.Settings.BoxHeight
@@ -461,197 +470,94 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function GenerateRandomPuzzle(numClues As Integer = 32) As Boolean
-		  ' Generate a Random Puzzle
-		  ' Aim to have the number of clues according to parameter
-		  ' Returns True on success
-		  ' Returns False if not enough cells could be removed while keeping uniqueness
-		  ' Note: Always contains a new puzzle, even if returning False
+		  ' Generate a random Sudoku puzzle using DLX (Dancing Links / Algorithm X).
+		  ' This is significantly faster than backtracking, especially for larger sizes (N=12, N=16).
+		  '
+		  ' Process:
+		  ' 1. Generate a complete random valid solution using DLX
+		  ' 2. Remove cells while maintaining unique solution
+		  '
+		  ' Parameters:
+		  ' - numClues: Target number of clues (may be more if uniqueness requires it)
+		  '
+		  ' Returns:
+		  ' - True on success (reached target clue count)
+		  ' - False if not enough cells could be removed while keeping uniqueness
+		  ' - Note: Always contains a valid puzzle, even if returning False
 		  
 		  #Pragma DisableBoundsChecking
 		  
 		  Var N As Integer = mGrid.Settings.N
+		  Var NN As Integer = N * N
 		  
 		  ' Sanitize numClues
 		  If numClues < 1 Then numClues = 1
-		  If numClues > N*N Then numClues = N*N
+		  If numClues > NN Then numClues = NN
 		  
-		  Var isInitSolved As Boolean = False
-		  while (not isInitSolved)
-		    mGrid.Clear
-		    
-		    ' Place a random Number
-		    mGrid.Set(mRandom.InRange(0, N-1), mRandom.InRange(0, N-1)) = mRandom.InRange(1, N)
-		    
-		    ' Start with a valid, solved grid
-		    isInitSolved = Me.GenerateRandomPuzzleSolve
-		  Wend
+		  ' Step 1: Generate a complete valid solution using DLX
+		  If Not mSolver.GenerateRandomSolution Then
+		    Return False
+		  End If
 		  
-		  ' Shuffle Digits to get a different-looking solved grid
-		  Var perm() As Integer
-		  ReDim perm(N)
-		  For i As Integer = 1 To N
-		    perm(i) = i
-		  Next
+		  ' Step 2: Remove cells to target numClues while maintaining unique solution
 		  
-		  ' Fisher-Yates shuffle
-		  For i As Integer = N DownTo 2
-		    Var j As Integer = mRandom.InRange(1, i)
-		    Var tmp As Integer = perm(i)
-		    perm(i) = perm(j)
-		    perm(j) = tmp
-		  Next
-		  
-		  ' Apply the permutation to create a randomized solution copy
-		  Var solution(-1, -1) As Integer
-		  ReDim solution(N-1, N-1)
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      Var value As Integer = mGrid.Get(row, col)
-		      If value >= 1 And value <= N Then
-		        solution(row, col) = perm(value)
-		      Else
-		        solution(row, col) = 0
-		      End If
-		    Next
-		  Next
-		  
-		  ' Put the permuted solution back into grid
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      mGrid.Set(row, col) = solution(row, col)
-		    Next
-		  Next
-		  
-		  ' Build indices for cells to be removed and shuffle them
+		  ' Build shuffled list of cell indices
 		  Var indices() As Integer
-		  Redim indices(N*N-1)
-		  For i As Integer = 0 To N*N-1
+		  Redim indices(NN - 1)
+		  For i As Integer = 0 To NN - 1
 		    indices(i) = i
 		  Next
 		  
-		  ' Fisher-Yates shuffle
-		  For i As Integer = N*N-1 DownTo 1
+		  ' Fisher-Yates shuffle for random removal order
+		  For i As Integer = NN - 1 DownTo 1
 		    Var j As Integer = mRandom.InRange(0, i)
-		    Var tmpIndex As Integer = indices(i)
+		    Var tmp As Integer = indices(i)
 		    indices(i) = indices(j)
-		    indices(j) = tmpIndex
+		    indices(j) = tmp
 		  Next
 		  
-		  ' Remove cells while keeping unique solution
-		  Var removeCount As Integer = N*N - numClues
+		  ' Try to remove cells
+		  Var targetRemovals As Integer = NN - numClues
 		  Var removed As Integer = 0
 		  
-		  For i As Integer = 0 To indices.LastIndex
-		    If removed >= removeCount Then Exit ' we're done
+		  For Each idx As Integer In indices
+		    If removed >= targetRemovals Then Exit
 		    
-		    Var idx As Integer = indices(i)
-		    Var rr As Integer = idx \ N
-		    Var cc As Integer = idx Mod N
-		    Var backup As Integer = mGrid.Get(rr, cc)
-		    
-		    ' Skip already-empty cells (shouldn't happen - just to be safe)
+		    Var row As Integer = idx \ N
+		    Var col As Integer = idx Mod N
+		    Var backup As Integer = mGrid.Get(row, col)
 		    If backup = 0 Then Continue
 		    
-		    ' Try removing
-		    mGrid.Set(rr, cc) = 0
+		    ' Try removing this cell
+		    mGrid.Set(row, col) = 0
 		    
-		    ' If the puzzle still has exactly 1 solution, accept the removal
+		    ' Check if puzzle still has unique solution using DLX
 		    If mSolver.CountSolutions(2) = 1 Then
 		      removed = removed + 1
 		    Else
-		      ' Not unique solution, restore the value and try to remove another
-		      mGrid.Set(rr, cc) = backup
+		      ' Restore - removal would create multiple solutions
+		      mGrid.Set(row, col) = backup
 		    End If
 		  Next
 		  
 		  mSolver.SetStateIsSolvable
 		  
-		  If removed < removeCount Then
+		  If removed < targetRemovals Then
 		    ' Could not remove enough cells while keeping uniqueness.
-		    ' Let's just accept the puzzle with more clues than requested...
-		    ' Otherwise we'd need to do repeated passes (retry with a new shuffle)
-		    ' until the target is reached or a max attempt count is exhausted
-		    Break ' Just to show this information in Debug Builds
+		    ' Accept the puzzle with more clues than requested.
+		    Break ' Debug breakpoint
 		    Return False
 		  End If
 		  
-		  ' Done — grid now contains the generated puzzle (numClues non-zero cells)
+		  ' Done - grid now contains the generated puzzle
 		  Return True
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function GenerateRandomPuzzleSolve() As Boolean
-		  #Pragma DisableBoundsChecking
-		  
-		  ' We don't use the .Solve method here because trying to figure out
-		  ' best strategies is actually slower with just a random number placed
-		  '
-		  ' Additionally we always generate random order for the tries
-		  ' to create a more random new 
-		  
-		  Var row As Integer
-		  Var col As Integer
-		  
-		  ' Find the next empty cell
-		  ' If there are no empty cells left, the puzzle is solved
-		  If Not mGrid.FindEmpty(row, col) Then
-		    Return True
-		  End If
-		  
-		  ' Try all possible numbers (1-N) for this empty cell in random order
-		  For Each value As Integer In Me.GenerateRandomValues
-		    ' Check if placing value here is allowed by Sudoku rules
-		    If mGrid.IsValueValid(row, col, value) Then
-		      ' Tentatively place value in the cell
-		      mGrid.Set(row, col) = value
-		      
-		      ' Recursively attempt to solve the rest of the grid
-		      If GenerateRandomPuzzleSolve() Then
-		        ' Success! If the recursive call returns True, the puzzle is solved
-		        ' Propagate success back up the recursion chain
-		        Return True
-		      End If
-		      
-		      ' Backtracking
-		      ' If recursion returned False, this value led to a dead end
-		      ' Undo the move before trying the next number in this cell
-		      mGrid.Set(row, col) = 0
-		    End If
-		  Next
-		  
-		  ' All numbers 1-N failed in this cell
-		  ' Signal to the previous recursive call that it must backtrack
-		  Return False
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function GenerateRandomValues() As Integer()
-		  ' We want to solve by trying random numbers
-		  ' to get a random Sudoku built
-		  
-		  Var valuesInRandomOrder() As Integer
-		  For i As Integer = 1 To mGrid.Settings.N
-		    valuesInRandomOrder.Add(i)
-		  Next
-		  
-		  ' Shuffle using Fisher-Yates
-		  For i As Integer = valuesInRandomOrder.LastIndex DownTo 1
-		    Var j As Integer = mRandom.InRange(0, i)
-		    Var tmp As Integer = valuesInRandomOrder(i)
-		    valuesInRandomOrder(i) = valuesInRandomOrder(j)
-		    valuesInRandomOrder(j) = tmp
-		  Next
-		  
-		  Return valuesInRandomOrder
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetCellCandidates(exclusionParams As Sudoku.ExclusionParams) As CellCandidates()
+		  ' Get possible candidate values for all empty cells with optional exclusion strategies
 		  Return mCandidatesSearcher.Get(exclusionParams)
 		  
 		End Function
@@ -659,6 +565,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function GetCellHints() As CellHint()
+		  ' Get hints for cells that can be solved with Naked Singles or Hidden Singles
 		  Return mHintsSearcher.GetCellHints
 		  
 		End Function
@@ -666,6 +573,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function GetGridSettings() As Grid.Settings
+		  ' Get the grid settings (N, BoxWidth, BoxHeight)
 		  Return mGrid.Settings
 		  
 		End Function
@@ -673,6 +581,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function GetGridValue(row As Integer, col As Integer) As Integer
+		  ' Get the value at the specified position (0 = empty, 1-N = digit)
 		  Return mGrid.Get(row, col)
 		  
 		End Function
@@ -680,6 +589,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
+		  ' Check if the entire puzzle is empty (no values entered)
 		  Return mGrid.IsEmpty
 		  
 		End Function
@@ -687,6 +597,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsGridCellLocked(row As Integer, col As Integer) As Boolean
+		  ' Check if a cell is locked (a given that cannot be changed by the user)
 		  Return mGrid.IsGridCellLocked(row, col)
 		  
 		End Function
@@ -694,6 +605,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsSolvable() As Boolean
+		  ' Check if the puzzle has at least one valid solution
 		  Return mSolver.IsSolvable
 		  
 		End Function
@@ -701,10 +613,11 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsSolved() As Boolean
-		  #Pragma DisableBoundsChecking
+		  ' Check if the puzzle is completely and correctly solved.
+		  ' Returns True if all cells are filled and follow Sudoku rules.
 		  
 		  ' Ensure current filled-in digits are valid
-		  If (Not mSolver.IsValidBasicSudokuRules) Then Return False
+		  If Not mGrid.IsValid Then Return False
 		  
 		  ' And no empty cells left
 		  If mGrid.HasEmptyCells Then Return False
@@ -715,7 +628,8 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function IsValid() As Boolean
-		  Return mSolver.IsValidBasicSudokuRules
+		  ' Check if the current state follows basic Sudoku rules (no duplicates)
+		  Return mGrid.IsValid
 		  
 		End Function
 	#tag EndMethod
@@ -751,6 +665,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub SetGridCellLocked(index As Integer)
+		  ' Lock a cell by its linear index (mark as a given)
 		  mGrid.Lock(index)
 		  
 		End Sub
@@ -758,6 +673,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub SetGridCellLocked(row As Integer, col As Integer)
+		  ' Lock a cell by row and column (mark as a given)
 		  mGrid.Lock(row, col)
 		  
 		End Sub
@@ -765,6 +681,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Sub SetGridValue(row As Integer, col As Integer, Assigns value As Integer)
+		  ' Set the value at the specified position and invalidate solver cache
 		  mGrid.Set(row, col) = value
 		  mSolver.Invalidate
 		  
@@ -773,6 +690,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function Solve() As Boolean
+		  ' Solve the puzzle, filling in all empty cells. Returns True on success.
 		  Return mSolver.Solve
 		  
 		End Function
@@ -780,6 +698,7 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function SolveEnabled() As Boolean
+		  ' Check if the Solve button should be enabled (enough clues present)
 		  Return mSolver.SolveEnabled
 		  
 		End Function
@@ -787,6 +706,8 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function ToJson(application As JSONItem, addSolution As Boolean) As JSONItem
+		  ' Export the puzzle as JSON, optionally including the solution
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  Var N As Integer = mGrid.Settings.N
@@ -836,6 +757,8 @@ Protected Class Puzzle
 
 	#tag Method, Flags = &h0
 		Function ToString() As String
+		  ' Export the puzzle as a string (single-digit for N<=9, space-separated for N>9)
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  Var N As Integer = mGrid.Settings.N
@@ -862,6 +785,23 @@ Protected Class Puzzle
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Note, Name = Puzzle
+		' ============================================================================
+		' Sudoku Puzzle
+		' ============================================================================
+		'
+		' Main class for managing and interacting with Sudoku puzzles.
+		' Provides:
+		' - Implementation of Dancing Links (DLX) - Knuth's Algorithm X for
+		'   puzzle generation and solving
+		' - Hint detection and candidate analysis
+		' - Import and export capabilities (JSON, string, PDF)
+		'
+		' ============================================================================
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h21

@@ -24,7 +24,6 @@ Begin WebContainer SudokuNew
    Width           =   422
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebButton btnCreate
       AllowAutoDisable=   False
@@ -287,12 +286,12 @@ Begin WebContainer SudokuNew
       Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   True
-      Priority        =   5
+      Priority        =   8
       Scope           =   0
       StackSize       =   0
       ThreadID        =   0
       ThreadState     =   ""
-      Type            =   ""
+      Type            =   0
    End
 End
 #tag EndWebContainerControl
@@ -374,7 +373,8 @@ End
 		    mDefaultCluesFactor = numCluesFactor
 		  End If
 		  
-		  
+		  ' Stack Size required for Recursion of a 16x16 Sudoku
+		  thrCreate.StackSize = 2 * 1024 * 1024
 		  thrCreate.Start
 		  
 		End Sub
@@ -404,8 +404,7 @@ End
 		Sub Opening()
 		  Me.RemoveAllRows
 		  
-		  'Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
-		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9)
+		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
 		  
 		  For Each sudokuN As Integer In sudokuSizes
 		    Me.AddRow(sudokuN.ToString + "x" + sudokuN.ToString)

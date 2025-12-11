@@ -737,14 +737,13 @@ End
 		    Var slotsRight As Integer
 		    Var slotsBottom As Integer
 		    
-		    ' Layout patterns:
-		    ' This matches the visual layout requested:
+		    ' Layout patterns - visual layout:
 		    '   N=4:  1,2 top; 3,4 bottom
 		    '   N=6:  1,2 top; 3 left; 4 right; 5,6 bottom
 		    '   N=8:  1,2,3 top; 4 left; 5 right; 6,7,8 bottom
 		    '   N=9:  1,2,3,4 top; 5 left; 6 right; 7,8,9 bottom
-		    '   N=12: 1,2,3,4 top; 5,6 left; 7,8 right; 9,10,11,12 bottom
-		    '   N=16: 1,2,3,4,5 top; 6,7,8 left; 9,10,11 right; 12,13,14,15,16 bottom
+		    '   N=12: 1,2,3,4 top; 5,7 left; 6,8 right; 9,10,11,12 bottom
+		    '   N=16: 1,2,3,4,5 top; 6,8,10 left; 7,9,11 right; 12,13,14,15,16 bottom
 		    
 		    Select Case N
 		    Case 4
@@ -804,45 +803,43 @@ End
 		        Var centerY As Double
 		        
 		        ' Determine position based on slot assignment
-		        ' Order: top row → left side → right side → bottom row
-		        ' Use same slot width for top/bottom to ensure vertical alignment
-		        Var maxHorizontalSlots As Integer = Max(slotsTop, slotsBottom)
-		        Var slotWidth As Double = kCellSize / maxHorizontalSlots
+		        ' Order: top row → left/right sides (interleaved) → bottom row
+		        ' Define the left and right X positions (centered in margin areas)
+		        Var leftX As Double = marginH / 2
+		        Var rightX As Double = kCellSize - marginH / 2
 		        
 		        If idx < slotsTop Then
-		          ' Top row (candidates 1..slotsTop)
-		          centerX = cellLeft + idx * slotWidth + slotWidth / 2
+		          ' Top row - first slot at leftX, last slot at rightX, others distributed between
+		          If slotsTop = 1 Then
+		            centerX = cellLeft + kCellSize / 2
+		          Else
+		            Var fraction As Double = idx / (slotsTop - 1)
+		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
+		          End If
 		          centerY = cellTop + marginV / 2
-		        ElseIf idx < slotsTop + slotsLeft Then
-		          ' Left side - align X with first slot (same as candidate 1)
-		          Var leftIdx As Integer = idx - slotsTop
-		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
-		          centerX = cellLeft + slotWidth / 2
-		          centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
 		        ElseIf idx < slotsTop + slotsLeft + slotsRight Then
-		          ' Right side - align X with last top slot (same as candidate slotsTop)
-		          Var rightIdx As Integer = idx - slotsTop - slotsLeft
-		          Var slotHeight As Double = textFieldHeight / Max(slotsRight, 1)
-		          centerX = cellLeft + (slotsTop - 1) * slotWidth + slotWidth / 2
-		          centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
+		          ' Middle section: interleave left and right
+		          Var middleIdx As Integer = idx - slotsTop
+		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
+		          If (middleIdx Mod 2) = 0 Then
+		            ' Left side - even middle indices (0, 2, 4, ...)
+		            Var leftIdx As Integer = middleIdx \ 2
+		            centerX = cellLeft + leftX
+		            centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
+		          Else
+		            ' Right side - odd middle indices (1, 3, 5, ...)
+		            Var rightIdx As Integer = middleIdx \ 2
+		            centerX = cellLeft + rightX
+		            centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
+		          End If
 		        Else
-		          ' Bottom row - first slot aligns with first top slot, last slot aligns with last top slot
+		          ' Bottom row - first slot at leftX, last slot at rightX, others distributed between
 		          Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight
 		          If slotsBottom = 1 Then
-		            ' Single bottom slot - center it
 		            centerX = cellLeft + kCellSize / 2
-		          ElseIf bottomIdx = 0 Then
-		            ' First bottom slot - align with first top slot
-		            centerX = cellLeft + slotWidth / 2
-		          ElseIf bottomIdx = slotsBottom - 1 Then
-		            ' Last bottom slot - align with last top slot
-		            centerX = cellLeft + (slotsTop - 1) * slotWidth + slotWidth / 2
 		          Else
-		            ' Middle bottom slots - distribute evenly between first and last
-		            Var firstX As Double = slotWidth / 2
-		            Var lastX As Double = (slotsTop - 1) * slotWidth + slotWidth / 2
 		            Var fraction As Double = bottomIdx / (slotsBottom - 1)
-		            centerX = cellLeft + firstX + fraction * (lastX - firstX)
+		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
 		          End If
 		          centerY = cellTop + kCellSize - marginV / 2
 		        End If
@@ -1819,6 +1816,8 @@ End
 		#tag EndGetter
 		#tag Setter
 			Set
+			  mIsShowingSudoku = True
+			  
 			  mSudokuPuzzle = value
 			  
 			  ' Adjust Layout for current Sudoku Puzzle
@@ -1833,6 +1832,8 @@ End
 			  
 			  ' Init Sudoku Number Fields
 			  Me.SudokuNumberFieldsInit
+			  
+			  mIsShowingSudoku = False
 			  
 			End Set
 		#tag EndSetter

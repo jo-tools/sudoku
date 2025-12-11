@@ -18,6 +18,8 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function Clone() As Grid
+		  ' Create a deep copy of this grid including all values and locked states
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  Var clone As New Grid(mSettings.N)
@@ -39,6 +41,9 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Constructor(n As Integer)
+		  ' Initialize a new grid with the specified size N.
+		  ' Supported sizes: 4, 6, 8, 9, 12, 16
+		  
 		  Var s As Settings
 		  
 		  Select Case n
@@ -63,15 +68,15 @@ Private Class Grid
 		    s.BoxWidth = 3
 		    s.BoxHeight = 3
 		    
-		    'Case 12
-		    's.N = 12
-		    's.BoxWidth = 4
-		    's.BoxHeight = 3
-		    '
-		    'Case 16
-		    's.N = 16
-		    's.BoxWidth = 4
-		    's.BoxHeight = 4
+		  Case 12
+		    s.N = 12
+		    s.BoxWidth = 4
+		    s.BoxHeight = 3
+		    
+		  Case 16
+		    s.N = 16
+		    s.BoxWidth = 4
+		    s.BoxHeight = 4
 		    
 		  Else
 		    Raise New InvalidArgumentException("Unsupported Sudoku Size 'N=" + n.ToString + "; Supported are 4, 6, 8, 9, 12, 16", 99)
@@ -105,6 +110,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function Get(row As Integer, col As Integer) As Integer
+		  ' Get the value at the specified position (0 = empty, 1-N = digit)
 		  Return mGrid(row, col)
 		  
 		End Function
@@ -134,6 +140,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function GetIndex(row As Integer, col As Integer) As Integer
+		  ' Convert (row, col) to a linear cell index
 		  Return row * mSettings.N + col
 		  
 		End Function
@@ -141,6 +148,8 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function HasEmptyCells() As Boolean
+		  ' Check if the grid contains any empty cells (value = 0)
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  For row As Integer = 0 To mSettings.N-1
@@ -156,6 +165,8 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function IsEmpty() As Boolean
+		  ' Check if the entire grid is empty (all cells = 0)
+		  
 		  #Pragma DisableBoundsChecking
 		  
 		  For row As Integer = 0 To mSettings.N-1
@@ -170,7 +181,31 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function IsGridCellLocked(row As Integer, col As Integer) As Boolean
+		  ' Check if a cell is locked (a given that cannot be changed by the user)
 		  Return (Me.Get(row, col) > 0) And (mLockedCellIndexes.IndexOf(Me.GetIndex(row, col)) >= 0)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsValid() As Boolean
+		  ' Check if all filled cells follow basic Sudoku rules (no duplicates).
+		  ' Returns True if valid, False if any conflict exists.
+		  
+		  #Pragma DisableBoundsChecking
+		  
+		  For row As Integer = 0 To mSettings.N - 1
+		    For col As Integer = 0 To mSettings.N - 1
+		      Var value As Integer = mGrid(row, col)
+		      If value <> 0 Then
+		        If Not Me.IsValueValid(row, col, value) Then
+		          Return False
+		        End If
+		      End If
+		    Next
+		  Next
+		  
+		  Return True
 		  
 		End Function
 	#tag EndMethod
@@ -263,6 +298,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Lock(index As Integer)
+		  ' Lock a cell by its linear index (mark as a given)
 		  If (mLockedCellIndexes.IndexOf(index) < 0) Then
 		    mLockedCellIndexes.Add(index)
 		  End If
@@ -272,6 +308,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Lock(row As Integer, col As Integer)
+		  ' Lock a cell by row and column (mark as a given)
 		  Me.Lock(Me.GetIndex(row, col))
 		  
 		  
@@ -298,6 +335,7 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Sub Set(row As Integer, col As Integer, Assigns value As Integer)
+		  ' Set the value at the specified position (0 = empty, 1-N = digit)
 		  mGrid(row, col) = value
 		  
 		End Sub
@@ -305,10 +343,25 @@ Private Class Grid
 
 	#tag Method, Flags = &h0
 		Function Settings() As Settings
+		  ' Get the grid settings (N, BoxWidth, BoxHeight)
 		  Return mSettings
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Note, Name = Grid
+		' ============================================================================
+		' Sudoku Grid - Data Structure
+		' ============================================================================
+		' 
+		' Stores the NxN Sudoku grid values and manages cell locking.
+		' Supports sizes: 4x4, 6x6, 8x8, 9x9, 12x12, 16x16
+		' Validates placements against basic Sudoku rules (row/column/box).
+		' 
+		' ============================================================================
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h21

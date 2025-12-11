@@ -619,6 +619,32 @@ Private Class CandidatesSearcher
 	#tag EndMethod
 
 
+	#tag Note, Name = CandidatesSearcher
+		' ============================================================================
+		' Candidates Searcher - Cell Candidate Analysis
+		' ============================================================================
+		'
+		' Computes possible candidate values for each empty cell and applies
+		' exclusion strategies to eliminate candidates:
+		' - Locked Candidates
+		'   Candidate limited to one row/column within a box
+		'   or one box within a row/column
+		' - Naked Subsets
+		'   N cells in a unit whose combined candidates areexactly N values;
+		'   remove these values from all other cells in the unit
+		' - Hidden Subsets
+		'   N values that appear only in the same N cells of a unit;
+		'   remove all other candidates from those cells
+		' - X-Wing
+		'   Candidate appears twice in each of two rows (or columns) aligned in the
+		'   same columns (or rows), forming a rectangle, enabling eliminations
+		'   along the aligned axis.
+		'
+		' ============================================================================
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mCellCandidates() As CellCandidates
 	#tag EndProperty

@@ -1,5 +1,5 @@
 # Sudoku
-Sudoku Solver & Generator
+Sudoku DLX Solver & Generator
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -11,9 +11,9 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 ### Features
 
 - Sudoku Sizes
-  - 4x4 | 6x6 | 8x8 | 9x9
+  - 4x4 | 6x6 | 8x8 | 9x9 | 12x12 | 16x16
 - Create a Sudoku puzzle
-  - Generate a random Sudoku puzzle with a given number of clues
+  - Generate a random Sudoku puzzle based on a selected difficulty level
   - Enter your own Sudoku puzzle
 - Solve the Sudoku puzzle
   - Interactively edit puzzles with
@@ -31,7 +31,7 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 
 ### Logic
 
-*The solver uses a classic backtracking algorithm with strategies and rule checking to guarantee correct solutions. Random puzzle generation is based on creating a full valid grid, applying digit shuffling, and then removing cells to reach the desired clue count while enforcing a unique solution.*
+*The solver uses Dancing Links (DLX) - Knuth's Algorithm X - for all solving operations. DLX models Sudoku as an exact cover problem with a sparse matrix representation, enabling fast solving even for larger grid sizes (12x12, 16x16). Puzzle generation creates a complete random solution using DLX, then removes cells while verifying unique solvability. Interactive hints (Naked Singles, Hidden Singles) and candidate exclusion strategies are provided separately for solving assistance.*
 
 
 ### Web Application
@@ -43,14 +43,15 @@ The Web Application is also available as a [Docker Image: jotools/sudoku](https:
 #### Sudoku API
 
 The Web Application also provides an API to generate and solve Sudoku Puzzles.  
-See also the included [Postman Collection: Sudoku API](./Resources/Sudoku.postman_collection.json) *(Note: Change the `WebAppBaseUrl` in the Collection Variables according to your environment)*.
+See also the included [Postman Collection: Sudoku API](./Resources/Sudoku.postman_collection.json)  
+*Note: Change the `WebAppBaseUrl` in the Collection Variables according to your environment*.
 
-Endpoints:  
+API Endpoints:  
 - `GET: /api/sudoku/info`  
   Returns JSON information about the Web Application
 - `GET: /api/sudoku/generate?size=9&numClues=40&format=json&addSolution=false`  
   Generates a Sudoku according to the Query Params:  
-  - `size`: Sudoku Size *(`4`, `6`, `8`, `9`; Default: `9`)*
+  - `size`: Sudoku Size *(`4`, `6`, `8`, `9`, `12`, `16`; Default: `9`)*
   - `numClues`: Desired Number of Clues *(not guaranteed to be reached)*  
      *(Min: `30% of n*n`; Default: `45% of n*n`)*
   - `format`: Download Format *(Available: [`json` | `txt` | `pdf`]; Default: `json`)*

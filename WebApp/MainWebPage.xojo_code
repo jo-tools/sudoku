@@ -1534,6 +1534,8 @@ End
 		#tag EndGetter
 		#tag Setter
 			Set
+			  mIsShowingSudoku = True
+			  
 			  mSudokuPuzzle = value
 			  
 			  ' Adjust Layout for current Sudoku Puzzle
@@ -1560,6 +1562,8 @@ End
 			  ' Update Controller with new container dimensions for responsive scaling
 			  Me.Controller.ContainerWidth = rctSudoku.Width
 			  Me.Controller.ContainerHeight = rctSudoku.Height
+			  
+			  mIsShowingSudoku = False
 			  
 			End Set
 		#tag EndSetter
@@ -1739,8 +1743,8 @@ End
 		    '   N=6:  1,2 top; 3 left; 4 right; 5,6 bottom
 		    '   N=8:  1,2,3 top; 4 left; 5 right; 6,7,8 bottom
 		    '   N=9:  1,2,3,4 top; 5 left; 6 right; 7,8,9 bottom
-		    '   N=12: 1,2,3,4 top; 5,6 left; 7,8 right; 9,10,11,12 bottom
-		    '   N=16: 1,2,3,4,5 top; 6,7,8 left; 9,10,11 right; 12,13,14,15,16 bottom
+		    '   N=12: 1,2,3,4 top; 5,7 left; 6,8 right; 9,10,11,12 bottom
+		    '   N=16: 1,2,3,4,5 top; 6,8,10 left; 7,9,11 right; 12,13,14,15,16 bottom
 		    
 		    Select Case N
 		    Case 4
@@ -1800,8 +1804,7 @@ End
 		        Var centerY As Double
 		        
 		        ' Determine position based on slot assignment
-		        ' Order: top row → left side → right side → bottom row
-		        ' Use same slot width for top/bottom to ensure vertical alignment
+		        ' Order: top row → left/right sides (interleaved) → bottom row
 		        Var maxHorizontalSlots As Integer = Max(slotsTop, slotsBottom)
 		        Var slotWidth As Double = kCellSize / maxHorizontalSlots
 		        
@@ -1818,18 +1821,21 @@ End
 		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
 		          End If
 		          centerY = cellTop + marginV / 2
-		        ElseIf idx < slotsTop + slotsLeft Then
-		          ' Left side - center X in margin area (same as first top/bottom slot)
-		          Var leftIdx As Integer = idx - slotsTop
-		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
-		          centerX = cellLeft + leftX
-		          centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
 		        ElseIf idx < slotsTop + slotsLeft + slotsRight Then
-		          ' Right side - center X in margin area (same as last top/bottom slot)
-		          Var rightIdx As Integer = idx - slotsTop - slotsLeft
-		          Var slotHeight As Double = textFieldHeight / Max(slotsRight, 1)
-		          centerX = cellLeft + rightX
-		          centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
+		          ' Middle section: interleave left and right
+		          Var middleIdx As Integer = idx - slotsTop
+		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
+		          If (middleIdx Mod 2) = 0 Then
+		            ' Left side - even middle indices (0, 2, 4, ...)
+		            Var leftIdx As Integer = middleIdx \ 2
+		            centerX = cellLeft + leftX
+		            centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
+		          Else
+		            ' Right side - odd middle indices (1, 3, 5, ...)
+		            Var rightIdx As Integer = middleIdx \ 2
+		            centerX = cellLeft + rightX
+		            centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
+		          End If
 		        Else
 		          ' Bottom row - first slot at leftX, last slot at rightX, others distributed between
 		          Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight

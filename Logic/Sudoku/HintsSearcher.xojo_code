@@ -149,6 +149,23 @@ Private Class HintsSearcher
 	#tag EndMethod
 
 
+	#tag Note, Name = HintsSearcher
+		' ============================================================================
+		' Hints Searcher - Solving Hint Detection
+		' ============================================================================
+		'
+		' Finds cells that can be solved using deterministic strategies:
+		' - Naked Single
+		'   A cell with exactly one remaining candidate value
+		' - Hidden Single
+		'   A value that appears as a candidate in only one cell of a unit,
+		'   making that cell deterministically solvable
+		'
+		' ============================================================================
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mGrid As Grid
 	#tag EndProperty
