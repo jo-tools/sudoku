@@ -1753,6 +1753,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField.ISudokuNumberControl, newText As String)
+		  #Pragma unused newText
+		  
 		  If mIsShowingSudoku Then Return
 		  
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N

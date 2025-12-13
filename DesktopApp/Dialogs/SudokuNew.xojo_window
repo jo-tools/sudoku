@@ -267,7 +267,6 @@ Begin DesktopWindow SudokuNew
    End
    Begin Thread thrCreate
       DebugIdentifier =   ""
-      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Priority        =   10
@@ -435,6 +434,8 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub SelectionChanged(item As DesktopMenuItem)
+		  #Pragma unused item
+		  
 		  If Me.SelectedRowIndex = 1 Then
 		    ' Separator
 		    Me.SelectedRowIndex = 0
