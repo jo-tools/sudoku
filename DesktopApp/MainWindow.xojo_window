@@ -18,8 +18,8 @@ Begin DesktopWindow MainWindow
    MaximumWidth    =   32000
    MenuBar         =   1342697471
    MenuBarVisible  =   False
-   MinimumHeight   =   620
-   MinimumWidth    =   600
+   MinimumHeight   =   555
+   MinimumWidth    =   400
    Resizeable      =   False
    Title           =   "Sudoku"
    Type            =   0
@@ -1835,12 +1835,20 @@ End
 			  ' Adjust Layout for current Sudoku Puzzle
 			  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
 			  
-			  Me.Width = 2 * kMarginWindow + Max(N, 5) * kCellSize + 20 + btnSolve.Width
-			  Me.MaximumWidth = Me.Width
+			  Var width As Integer = 2 * kMarginWindow + Max(N, 5) * kCellSize + 20 + btnSolve.Width
 			  
 			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 150 ' Solve and Status are bottom-locked
-			  Me.Height = Max(sepTop.Top + 2 * kMarginWindow + N * kCellSize, minLayoutHeight)
-			  Me.MinimumHeight = Me.Height
+			  Var height As Integer = Max(sepTop.Top + 2 * kMarginWindow + N * kCellSize, minLayoutHeight)
+			  
+			  #If TargetLinux Then
+			    ' Linux seems to best respect Window Size changes by setting new Bounds
+			    Var newWindowBounds As Rect = New Rect(Me.Bounds.Left, Me.Bounds.Top, width , height)
+			    Me.Bounds = newWindowBounds
+			  #Else
+			    Me.Width = width
+			    Me.Height = height
+			  #EndIf
+			  
 			  
 			  ' Init Sudoku Number Fields
 			  Me.SudokuNumberFieldsInit
