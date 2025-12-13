@@ -51,8 +51,8 @@ Begin WebPage MainWebPage
       Left            =   0
       LockBottom      =   False
       LockedInPosition=   True
-      LockHorizontal  =   True
-      LockLeft        =   False
+      LockHorizontal  =   False
+      LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
@@ -1374,6 +1374,11 @@ End
 		  If (currentNumber > 0) And (sender.Text <> currentNumber.ToString) Then
 		    ' This can happen in a N > 9 Sudoku when entering: 05
 		    sender.Text = currentNumber.ToString
+		  End If
+		  
+		  If (currentNumber = 0) And (sender.Text <> "") Then
+		    ' This can happen in a N > 9 Sudoku when entering: ab
+		    sender.Text = ""
 		  End If
 		  
 		End Sub

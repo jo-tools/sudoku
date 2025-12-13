@@ -4,7 +4,11 @@ Inherits DesktopButton
 	#tag Event
 		Sub Opening()
 		  #If TargetMacOS Then
-		    Me.Height = 20
+		    #If XojoVersion >= 2025.03 Then
+		      Me.Height = 24
+		    #Else
+		      Me.Height = 20
+		    #EndIf
 		  #ElseIf TargetWindows Then
 		    Me.Height = 22
 		  #ElseIf TargetLinux Then

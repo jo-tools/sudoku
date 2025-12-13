@@ -1,5 +1,5 @@
 Type=Web2
-RBProjectVersion=2025.021
+RBProjectVersion=2025.03
 MinIDEVersion=20200200
 OrigIDEVersion=20250201
 Folder=Logic;Logic;&h000000003551C7FF;&h0000000000000000;false
@@ -71,6 +71,7 @@ DarkMode=True
 CopyRedistNextToWindowsEXE=False
 IncludePDB=False
 WinUIFramework=False
+NativeWinUISizes=False
 IsWebProject=True
 WebDebugPort=8080
 WebLaunchBrowser=True
