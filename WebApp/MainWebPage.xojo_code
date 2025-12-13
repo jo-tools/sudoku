@@ -1376,6 +1376,11 @@ End
 		    sender.Text = currentNumber.ToString
 		  End If
 		  
+		  If (currentNumber = 0) And (sender.Text <> "") Then
+		    ' This can happen in a N > 9 Sudoku when entering: ab
+		    sender.Text = ""
+		  End If
+		  
 		End Sub
 	#tag EndMethod
 
