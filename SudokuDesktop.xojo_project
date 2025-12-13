@@ -42,6 +42,7 @@ ColorAsset=colExcludeXWing;DesktopApp/Colors/colExcludeXWing.xojo_color;&h000000
 Class=DefaultDesktopTextField;DesktopApp/Controls/SudokuNumberField/DefaultDesktopTextField.xojo_code;&h00000000700FB7FF;&h000000004FA0A7FF;false
 Class=WinUITextField;DesktopApp/Controls/SudokuNumberField/WinUITextField.xojo_code;&h000000007484E7FF;&h000000004FA0A7FF;false
 Interface=ISudokuNumberControl;DesktopApp/Controls/SudokuNumberField/ISudokuNumberControl.xojo_code;&h000000003BFD7FFF;&h000000004FA0A7FF;false
+Class=SudokuCanvas;DesktopApp/Controls/SudokuCanvas.xojo_code;&h0000000065447FFF;&h00000000445187FF;false
 AppMenuBar=MainMenuBar
 MajorVersion=1
 MinorVersion=9

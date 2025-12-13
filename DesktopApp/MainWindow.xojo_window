@@ -46,7 +46,7 @@ Begin DesktopWindow MainWindow
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   17
+      TabIndex        =   18
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -75,7 +75,7 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   18
+      TabIndex        =   19
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelSudokuStatus"
@@ -107,7 +107,7 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   19
+      TabIndex        =   20
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -141,7 +141,7 @@ Begin DesktopWindow MainWindow
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   8
+      TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -375,7 +375,7 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   10
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -405,7 +405,7 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   11
+      TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -436,7 +436,7 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   9
+      TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelShow"
@@ -468,7 +468,7 @@ Begin DesktopWindow MainWindow
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   12
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelExclusion"
@@ -499,7 +499,7 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   13
+      TabIndex        =   14
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -529,7 +529,7 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   14
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -559,7 +559,7 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   16
+      TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -589,7 +589,7 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      TabIndex        =   15
+      TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -622,7 +622,7 @@ Begin DesktopWindow MainWindow
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   7
+      TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -631,6 +631,32 @@ Begin DesktopWindow MainWindow
       Underline       =   False
       Visible         =   True
       Width           =   160
+   End
+   Begin SudokuCanvas cnvSudoku
+      AllowAutoDeactivate=   True
+      AllowFocus      =   True
+      AllowFocusRing  =   False
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   380
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   120
+      Transparent     =   True
+      Visible         =   True
+      Width           =   380
    End
 End
 #tag EndDesktopWindow
@@ -659,225 +685,6 @@ End
 		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
 		  
 		  Me.DocumentInit
-		  
-		End Sub
-	#tag EndEvent
-
-	#tag Event
-		Sub Paint(g As Graphics, areas() As Rect)
-		  #Pragma unused areas
-		  
-		  If (Me.SudokuPuzzle = Nil) Then Return
-		  
-		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  Var boxWidth As Integer = Me.SudokuPuzzle.GetGridSettings.BoxWidth
-		  Var boxHeight As Integer = Me.SudokuPuzzle.GetGridSettings.BoxHeight
-		  
-		  #If TargetWindows Then
-		    If (Not Color.IsDarkMode) Then
-		      g.DrawingColor = Color.White
-		      g.FillRectangle(kMarginWindow, sepTop.Top + kMarginWindow, N * kCellSize, N * kCellSize)
-		    End If
-		  #EndIf
-		  
-		  If Me.mShowHints And (Me.CellHints.LastIndex >= 0) Then
-		    ' Draw next solvable cells
-		    g.PenSize = 4
-		    For Each h As Sudoku.CellHint In Me.CellHints
-		      Select Case h.SolveHint
-		      Case Sudoku.SolveHint.NakedSingle
-		        g.DrawingColor = colSolveHintNakedSingle
-		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
-		      Case Sudoku.SolveHint.HiddenSingle
-		        g.DrawingColor = colSolveHintHiddenSingle
-		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, sepTop.Top + kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
-		      End Select
-		    Next
-		  End If
-		  
-		  ' Draw all thin "hair" lines first (gray)
-		  g.DrawingColor = colGridlineHair
-		  g.PenSize = 1
-		  For i As Integer = 1 To N-1 ' skip outer border (0 and N)
-		    ' Horizontal
-		    g.DrawLine(kMarginWindow, sepTop.Top + kMarginWindow + i * kCellSize, kMarginWindow + N * kCellSize, sepTop.Top + kMarginWindow + i * kCellSize)
-		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow, kMarginWindow + i * kCellSize, sepTop.Top + kMarginWindow + N * kCellSize)
-		  Next
-		  
-		  ' Draw thicker red block lines on top
-		  g.DrawingColor = colGridline
-		  g.PenSize = 2
-		  For rowBlock As Integer = 0 To N Step boxHeight
-		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, sepTop.Top + kMarginWindow + rowBlock * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + rowBlock * kCellSize - g.PenSize/2)
-		  Next
-		  For colBlock As Integer = 0 To N Step boxWidth
-		    ' Vertical
-		    g.DrawLine(kMarginWindow + colBlock * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow - g.PenSize/2, kMarginWindow + colBlock * kCellSize - g.PenSize/2, sepTop.Top + kMarginWindow + N * kCellSize - g.PenSize/2)
-		  Next
-		  
-		  If Me.mShowCandidates And (Me.CellCandidates.LastIndex >= 0) Then
-		    ' Draw Cell Candidates in the margin area outside the TextField
-		    ' TextField is centered in cell; candidates go in the outer margin areas
-		    
-		    ' SudokuNumberField dimensions
-		    Var textFieldWidth As Double = Self.SudokuTextFields(0).GetWidth
-		    Var textFieldHeight As Double = Self.SudokuTextFields(0).GetHeight
-		    
-		    ' Calculate margin areas (space between cell border and TextField)
-		    Var marginH As Double = (kCellSize - textFieldWidth) / 2   ' left/right margin
-		    Var marginV As Double = (kCellSize - textFieldHeight) / 2  ' top/bottom margin
-		    
-		    ' Candidate slot layout based on N
-		    ' Order: top row → left side → right side → bottom row
-		    ' Determine layout parameters based on N
-		    Var slotsTop As Integer
-		    Var slotsLeft As Integer
-		    Var slotsRight As Integer
-		    Var slotsBottom As Integer
-		    
-		    ' Layout patterns - visual layout:
-		    '   N=4:  1,2 top; 3,4 bottom
-		    '   N=6:  1,2 top; 3 left; 4 right; 5,6 bottom
-		    '   N=8:  1,2,3 top; 4 left; 5 right; 6,7,8 bottom
-		    '   N=9:  1,2,3,4 top; 5 left; 6 right; 7,8,9 bottom
-		    '   N=12: 1,2,3,4 top; 5,7 left; 6,8 right; 9,10,11,12 bottom
-		    '   N=16: 1,2,3,4,5 top; 6,8,10 left; 7,9,11 right; 12,13,14,15,16 bottom
-		    
-		    Select Case N
-		    Case 4
-		      slotsTop = 2
-		      slotsLeft = 0
-		      slotsRight = 0
-		      slotsBottom = 2
-		    Case 6
-		      slotsTop = 2
-		      slotsLeft = 1
-		      slotsRight = 1
-		      slotsBottom = 2
-		    Case 8
-		      slotsTop = 3
-		      slotsLeft = 1
-		      slotsRight = 1
-		      slotsBottom = 3
-		    Case 9
-		      slotsTop = 4
-		      slotsLeft = 1
-		      slotsRight = 1
-		      slotsBottom = 3
-		    Case 12
-		      slotsTop = 4
-		      slotsLeft = 2
-		      slotsRight = 2
-		      slotsBottom = 4
-		    Case 16
-		      slotsTop = 5
-		      slotsLeft = 3
-		      slotsRight = 3
-		      slotsBottom = 5
-		    Else
-		      ' Fallback for any other N: distribute evenly
-		      slotsTop = (N + 3) \ 4
-		      slotsBottom = (N + 3) \ 4
-		      Var remaining As Integer = N - slotsTop - slotsBottom
-		      slotsLeft = (remaining + 1) \ 2
-		      slotsRight = remaining - slotsLeft
-		    End Select
-		    
-		    g.FontSize = 8
-		    g.PenSize = 1
-		    
-		    For Each h As Sudoku.CellCandidates In Me.CellCandidates
-		      Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
-		      Var cellTop As Double = sepTop.Top + kMarginWindow + h.Row * kCellSize
-		      
-		      For Each candidate As Sudoku.Candidate In h.Candidates
-		        If (candidate.Value < 1) Or (candidate.Value > N) Then Continue
-		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
-		        
-		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
-		        
-		        Var idx As Integer = candidate.Value - 1
-		        Var centerX As Double
-		        Var centerY As Double
-		        
-		        ' Determine position based on slot assignment
-		        ' Order: top row → left/right sides (interleaved) → bottom row
-		        ' Define the left and right X positions (centered in margin areas)
-		        Var leftX As Double = marginH / 2
-		        Var rightX As Double = kCellSize - marginH / 2
-		        
-		        If idx < slotsTop Then
-		          ' Top row - first slot at leftX, last slot at rightX, others distributed between
-		          If slotsTop = 1 Then
-		            centerX = cellLeft + kCellSize / 2
-		          Else
-		            Var fraction As Double = idx / (slotsTop - 1)
-		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
-		          End If
-		          centerY = cellTop + marginV / 2
-		        ElseIf idx < slotsTop + slotsLeft + slotsRight Then
-		          ' Middle section: interleave left and right
-		          Var middleIdx As Integer = idx - slotsTop
-		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
-		          If (middleIdx Mod 2) = 0 Then
-		            ' Left side - even middle indices (0, 2, 4, ...)
-		            Var leftIdx As Integer = middleIdx \ 2
-		            centerX = cellLeft + leftX
-		            centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
-		          Else
-		            ' Right side - odd middle indices (1, 3, 5, ...)
-		            Var rightIdx As Integer = middleIdx \ 2
-		            centerX = cellLeft + rightX
-		            centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
-		          End If
-		        Else
-		          ' Bottom row - first slot at leftX, last slot at rightX, others distributed between
-		          Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight
-		          If slotsBottom = 1 Then
-		            centerX = cellLeft + kCellSize / 2
-		          Else
-		            Var fraction As Double = bottomIdx / (slotsBottom - 1)
-		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
-		          End If
-		          centerY = cellTop + kCellSize - marginV / 2
-		        End If
-		        
-		        Var s As String = candidate.Value.ToString
-		        Var textW As Double = g.TextWidth(s)
-		        Var textH As Double = g.TextHeight(s, kCellSize)
-		        Var ascent As Double = g.FontAscent
-		        Var xText As Double = centerX - textW / 2
-		        Var yBase As Double = centerY + ascent - textH / 2
-		        
-		        g.DrawText(s, xText, yBase)
-		        
-		        ' Mark excluded candidates with a strike-through line
-		        Var crossSize As Double = 8
-		        
-		        Select Case candidate.Hint
-		        Case Sudoku.CandidateHint.NoCandidate
-		          Continue ' not a candidate
-		        Case Sudoku.CandidateHint.Candidate
-		          Continue ' just display candidate
-		        Case Sudoku.CandidateHint.ExcludedAsLockedCandidate
-		          g.DrawingColor = colExcludeLockedCandidates
-		        Case Sudoku.CandidateHint.ExcludedAsNakedSubset
-		          g.DrawingColor = colExcludeNakedSubsets
-		        Case Sudoku.CandidateHint.ExcludedAsHiddenSubset
-		          g.DrawingColor = colExcludeHiddenSubsets
-		        Case Sudoku.CandidateHint.ExcludedAsXWing
-		          g.DrawingColor = colExcludeXWing
-		        Else
-		          Continue
-		        End Select
-		        
-		        g.PenSize = 1.0
-		        g.DrawLine(centerX - crossSize*0.25, centerY + crossSize*0.25, centerX + crossSize*0.25, centerY - crossSize*0.25)
-		      Next
-		    Next
-		  End If
 		  
 		End Sub
 	#tag EndEvent
@@ -1082,16 +889,15 @@ End
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      Var index As Integer = row * N + col
 		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      
 		      If (value > 0) Then
-		        SudokuTextFields(index).DoLock(value > 0)
 		        Me.SudokuPuzzle.SetGridCellLocked(row, col)
 		      End If
 		    Next
 		  Next
 		  
+		  cnvSudoku.Refresh(False)
 		  Me.RefreshControls
 		  
 		End Sub
@@ -1421,9 +1227,7 @@ End
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
 		  For row As Integer = 0 To N-1
 		    For col As Integer = 0 To N-1
-		      Var index As Integer = row * N + col
-		      
-		      If SudokuTextFields(index).GetIsLocked Then Continue
+		      If Me.SudokuPuzzle.IsGridCellLocked(row, col) Then Continue
 		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
@@ -1443,19 +1247,20 @@ End
 		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.SudokuPuzzle.IsSolvable)
 		  Var isSolved As Boolean = (Not isEmpty) And Me.SudokuPuzzle.IsSolved
 		  
+		  ' Assign CellHints and CellCandidates to show in SudokuCanvas
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.CellHints = Me.SudokuPuzzle.GetCellHints
+		    cnvSudoku.CellHints = Me.SudokuPuzzle.GetCellHints
 		  Else
-		    Redim CellHints(-1)
+		    Var emptyHints() As Sudoku.CellHint
+		    cnvSudoku.CellHints = emptyHints
 		  End If
 		  
 		  If mShowCandidates And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
-		    Me.CellCandidates = Me.SudokuPuzzle.GetCellCandidates(mExclusionParams)
+		    cnvSudoku.CellCandidates = Me.SudokuPuzzle.GetCellCandidates(mExclusionParams)
 		  Else
-		    Redim CellCandidates(-1)
+		    Var emptyCandidates() As Sudoku.CellCandidates
+		    cnvSudoku.CellCandidates = emptyCandidates
 		  End If
-		  
-		  Self.Refresh(False)
 		  
 		  ' Controls
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
@@ -1516,287 +1321,16 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ShowSudoku()
-		  mIsShowingSudoku = True
-		  
-		  Var focusIndex As Integer = -1
-		  
-		  ' Put Values into SudokuTextFields
-		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      Var index As Integer = row * N + col
-		      
-		      SudokuTextFields(index).DoLock(False)
-		      
-		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
-		      If value = 0 Then
-		        SudokuTextFields(index).SetText("")
-		        If (focusIndex < 0) Then focusIndex = index
-		      Else
-		        SudokuTextFields(index).SetText(value.ToString)
-		        SudokuTextFields(index).DoLock(Me.SudokuPuzzle.IsGridCellLocked(row, col))
-		      End If
-		    Next
-		  Next
-		  
-		  ' Focus into first empty field
-		  If (focusIndex < 0) Then
-		    self.SetFocus 'move Focus out of TextFields
-		  Else
-		    SudokuTextFields(focusIndex).DoSetFocus
-		  End If
+		  ' Refresh the canvas display and focus first empty cell
+		  cnvSudoku.ShowSudoku
 		  
 		  Me.RefreshControls
 		  
-		  mIsShowingSudoku = False
+		  cnvSudoku.SetFocus
 		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub SudokuNumberFieldCommitValue(sender As SudokuNumberField.ISudokuNumberControl)
-		  ' Commit the current text value to the Sudoku grid
-		  If sender.GetIsLocked Then Return
-		  
-		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  Var currentNumber As Integer = sender.GetText.ToInteger
-		  
-		  ' Validate: must be 0 (empty) or 1..N
-		  If currentNumber < 0 Or currentNumber > N Then
-		    ' Invalid value: reset to grid value
-		    Var gridVal As Integer = Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex)
-		    If gridVal = 0 Then
-		      sender.SetText("")
-		    Else
-		      sender.SetText(gridVal.ToString)
-		    End If
-		    Return
-		  End If
-		  
-		  ' Update grid if value changed
-		  If Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex) <> currentNumber Then
-		    Me.SudokuPuzzle.SetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = currentNumber
-		    
-		    If currentNumber = 0 Then
-		      sender.SetText("")
-		    End If
-		    
-		    ' Update Status
-		    Me.RefreshControls
-		  End If
-		  
-		  If (currentNumber > 0) And (sender.GetText <> currentNumber.ToString) Then
-		    ' This can happen in a N > 9 Sudoku when entering: 05
-		    sender.SetText(currentNumber.ToString)
-		  End If
-		  
-		  ' Select all so user can easily overwrite
-		  sender.DoSelectAll
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub SudokuNumberFieldFocusLost(sender As SudokuNumberField.ISudokuNumberControl)
-		  If mIsShowingSudoku Then Return
-		  
-		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  
-		  ' For N>9: Commit value when focus is lost
-		  If N > 9 Then
-		    Me.SudokuNumberFieldCommitValue(sender)
-		  End If
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function SudokuNumberFieldKeyDown(sender As SudokuNumberField.ISudokuNumberControl, key As String) As Boolean
-		  If mIsShowingSudoku Then
-		    'let default behavior happen
-		    Return False
-		  End If
-		  
-		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  
-		  Select Case key
-		    ' Handle arrow keys
-		  Case Chr(28) ' Left arrow
-		    Var leftIndex As Integer = sender.GetPositionIndex - 1
-		    if (leftIndex >= 0) then SudokuTextFields(leftIndex).DoSetFocus
-		    Return True
-		    
-		  Case Chr(29) ' Right arrow
-		    Var rightIndex As Integer = sender.GetPositionIndex + 1
-		    if (rightIndex < N*N) then SudokuTextFields(rightIndex).DoSetFocus
-		    Return True
-		    
-		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.GetPositionIndex - N
-		    ' Move focus to previous (unlocked) cell
-		    if (upIndex >= 0) then SudokuTextFields(upIndex).DoSetFocus
-		    Return True
-		    
-		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.GetPositionIndex + N
-		    if (downIndex < N*N) then SudokuTextFields(downIndex).DoSetFocus
-		    Return True
-		    
-		  Case Chr(13), Chr(3) ' Return, Enter
-		    ' Commit value for N>9 (for N<=9 this is handled in TextChanged)
-		    If N > 9 Then
-		      Me.SudokuNumberFieldCommitValue(sender)
-		    End If
-		    Return True
-		    
-		    ' Other special keys
-		  Case Chr(8), Chr(127) ' Backspace, Delete
-		    If N <= 9 Then
-		      ' For N<=9: immediate update (original behavior)
-		      key = "0"
-		    Else
-		      ' For N>9: let default behavior happen (user is editing multi-digit number)
-		      Return False
-		    End If
-		    
-		  Case Chr(9) 'Tab
-		    'let default behavior happen
-		    Return False
-		    
-		  End Select
-		  
-		  ' Locked Sudoku cell
-		  If sender.GetIsLocked Then
-		    ' Make sure original grid value is not being overwritten
-		    ' we don't set .Readonly to get arrow navigation
-		    Return True
-		  End If
-		  
-		  ' For N<=9: Allow entering Digits 0-N with immediate update (original behavior)
-		  If N <= 9 Then
-		    If key >= "0" And key <= N.ToString Then
-		      ' Update Number
-		      Me.SudokuPuzzle.SetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = key.ToInteger
-		      
-		      If (key = "0") Then
-		        sender.SetText("")
-		      Else
-		        sender.SetText(key)
-		      End If
-		      
-		      ' Update Status
-		      Me.RefreshControls
-		      
-		      Return True
-		    End If
-		    
-		    ' Block non-digit keys for N<=9
-		    Return True
-		  End If
-		  
-		  ' For N>9: Allow entering digits 0-9 (multi-digit input, commit on Return/Enter/FocusLost)
-		  If key >= "0" And key <= "9" Then
-		    ' Let the default behavior happen (append digit to text)
-		    Return False
-		  End If
-		  
-		  ' Block everything else
-		  Return True
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub SudokuNumberFieldsInit()
-		  ' Close current Sudoku Number Fields
-		  For Each c As SudokuNumberField.ISudokuNumberControl In SudokuTextFields
-		    If (c IsA DesktopUIControl) Then
-		      Me.RemoveControl(DesktopUIControl(c))
-		      DesktopUIControl(c).Close
-		    End If
-		  Next
-		  
-		  ' Init Sudoku Number Fields
-		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  Redim SudokuTextFields(N*N-1)
-		  
-		  For row As Integer = 0 To N-1
-		    For col As Integer = 0 To N-1
-		      Var index As Integer = row * N + col
-		      
-		      ' Create Sudoku Number TextField
-		      '#If TargetWindows Then
-		      'SudokuTextFields(index) = New SudokuNumberField.WinUITextField(AddressOf SudokuNumberFieldFocusLost, AddressOf SudokuNumberFieldKeyDown, AddressOf SudokuNumberFieldTextChanged)
-		      '#Else
-		      SudokuTextFields(index) = New SudokuNumberField.DefaultDesktopTextField(AddressOf SudokuNumberFieldFocusLost, AddressOf SudokuNumberFieldKeyDown, AddressOf SudokuNumberFieldTextChanged)
-		      '#Endif
-		      
-		      If (SudokuTextFields(index) IsA DesktopUIControl) Then
-		        DesktopUIControl(SudokuTextFields(index)).Parent = Me
-		        DesktopUIControl(SudokuTextFields(index)).Visible = True
-		        DesktopUIControl(SudokuTextFields(index)).Left = kMarginWindow + col * kCellSize + ((kCellSize - SudokuTextFields(index).GetWidth) / 2)
-		        DesktopUIControl(SudokuTextFields(index)).Top = sepTop.Top + kMarginWindow + row * kCellSize + ((kCellSize - SudokuTextFields(index).GetHeight) / 2)
-		      End If
-		      
-		      SudokuTextFields(index).SetRowIndex(row)
-		      SudokuTextFields(index).SetColumnIndex(col)
-		      SudokuTextFields(index).SetPositionIndex(index)
-		      
-		      If (SudokuTextFields(index) IsA DesktopUIControl) Then
-		        Self.AddControl(DesktopUIControl(SudokuTextFields(index)))
-		      End If
-		    Next
-		  Next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField.ISudokuNumberControl, newText As String)
-		  #Pragma unused newText
-		  
-		  If mIsShowingSudoku Then Return
-		  
-		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  
-		  If sender.GetIsLocked Then
-		    ' Make sure original grid value is not being overwritten
-		    ' we don't set .Readonly to get arrow navigation
-		    Var gridVal As String = Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex).ToString
-		    If (gridVal = "0") Then gridVal = ""
-		    If (sender.GetText <> gridVal) Then sender.SetText(gridVal)
-		    Return
-		  End If
-		  
-		  ' For N>9: Don't auto-commit on TextChanged (except for when cleared), wait for Return/Enter/FocusLost
-		  If N > 9 And (sender.GetText <> "") Then
-		    Return
-		  End If
-		  
-		  ' For N<=9: Update Number if necessary
-		  Var currentNumber As Integer = sender.GetText.ToInteger
-		  If (Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = currentNumber) Then Return
-		  
-		  Me.SudokuPuzzle.SetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = currentNumber
-		  
-		  If (currentNumber < 1) And (sender.GetText <> "") Then
-		    sender.SetText("")
-		  End If
-		  
-		  ' Update Status
-		  Me.RefreshControls
-		  
-		End Sub
-	#tag EndMethod
-
-
-	#tag Property, Flags = &h21
-		Private CellCandidates() As Sudoku.CellCandidates
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private CellHints() As Sudoku.CellHint
-	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mCluesFactor As Double = 0.444
@@ -1804,10 +1338,6 @@ End
 
 	#tag Property, Flags = &h21
 		Private mExclusionParams As Sudoku.ExclusionParams
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mIsShowingSudoku As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1830,45 +1360,35 @@ End
 		#tag EndGetter
 		#tag Setter
 			Set
-			  mIsShowingSudoku = True
-			  
 			  mSudokuPuzzle = value
+			  cnvSudoku.SudokuPuzzle = value
 			  
 			  ' Adjust Layout for current Sudoku Puzzle
-			  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
+			  ' Get required size from SudokuCanvas
+			  Var canvasSize As Integer = cnvSudoku.GetRequiredSize
+			  cnvSudoku.Width = canvasSize
+			  cnvSudoku.Height = canvasSize
 			  
-			  Var width As Integer = 2 * kMarginWindow + Max(N, 5) * kCellSize + 20 + btnSolve.Width
+			  ' Calculate window size: canvas left + canvas width + gap + button width + margin
+			  Var windowWidth As Integer = cnvSudoku.Left + canvasSize + 20 + btnSolve.Width + 20
 			  
 			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 150 ' Solve and Status are bottom-locked
-			  Var height As Integer = Max(sepTop.Top + 2 * kMarginWindow + N * kCellSize, minLayoutHeight)
+			  Var windowHeight As Integer = Max(cnvSudoku.Top + canvasSize + 20, minLayoutHeight)
 			  
 			  #If TargetLinux Then
 			    ' Linux seems to best respect Window Size changes by setting new Bounds
-			    Var newWindowBounds As Rect = New Rect(Me.Bounds.Left, Me.Bounds.Top, width , height)
+			    Var newWindowBounds As Rect = New Rect(Me.Bounds.Left, Me.Bounds.Top, windowWidth, windowHeight)
 			    Me.Bounds = newWindowBounds
 			  #Else
-			    Me.Width = width
-			    Me.Height = height
+			    Me.Width = windowWidth
+			    Me.Height = windowHeight
 			  #EndIf
-			  
-			  
-			  ' Init Sudoku Number Fields
-			  Me.SudokuNumberFieldsInit
-			  
-			  mIsShowingSudoku = False
 			  
 			End Set
 		#tag EndSetter
 		Private SudokuPuzzle As Sudoku.Puzzle
 	#tag EndComputedProperty
 
-	#tag Property, Flags = &h21
-		Private SudokuTextFields() As SudokuNumberField.ISudokuNumberControl
-	#tag EndProperty
-
-
-	#tag Constant, Name = kCellSize, Type = Double, Dynamic = False, Default = \"54", Scope = Private
-	#tag EndConstant
 
 	#tag Constant, Name = kJSONKeyCluesFactor1000, Type = String, Dynamic = False, Default = \"cluesFactor", Scope = Private
 	#tag EndConstant
@@ -1888,10 +1408,7 @@ End
 	#tag Constant, Name = kJSONKeyShowCandidates, Type = String, Dynamic = False, Default = \"showCandidates", Scope = Private
 	#tag EndConstant
 
-	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"showHints", Scope = Private
-	#tag EndConstant
-
-	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
+	#tag Constant, Name = kJSONKeyShowHints, Type = String, Dynamic = False, Default = \"howHints", Scope = Private
 	#tag EndConstant
 
 	#tag Constant, Name = kSaveDialogCancel, Type = String, Dynamic = True, Default = \"Cancel", Scope = Private
@@ -2259,6 +1776,15 @@ End
 		  
 		  
 		End Function
+	#tag EndEvent
+#tag EndEvents
+#tag Events cnvSudoku
+	#tag Event
+		Sub ValueChanged()
+		  ' Called when user changes a cell value in the canvas
+		  Self.RefreshControls
+		  
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
