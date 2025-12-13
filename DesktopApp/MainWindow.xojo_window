@@ -722,8 +722,8 @@ End
 		    ' TextField is centered in cell; candidates go in the outer margin areas
 		    
 		    ' SudokuNumberField dimensions
-		    Var textFieldWidth As Double = Self.SudokuTextFields(0).Width
-		    Var textFieldHeight As Double = Self.SudokuTextFields(0).Height
+		    Var textFieldWidth As Double = Self.SudokuTextFields(0).GetWidth
+		    Var textFieldHeight As Double = Self.SudokuTextFields(0).GetHeight
 		    
 		    ' Calculate margin areas (space between cell border and TextField)
 		    Var marginH As Double = (kCellSize - textFieldWidth) / 2   ' left/right margin
@@ -1086,7 +1086,7 @@ End
 		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      
 		      If (value > 0) Then
-		        SudokuTextFields(index).Lock = (value > 0)
+		        SudokuTextFields(index).DoLock(value > 0)
 		        Me.SudokuPuzzle.SetGridCellLocked(row, col)
 		      End If
 		    Next
@@ -1423,7 +1423,7 @@ End
 		    For col As Integer = 0 To N-1
 		      Var index As Integer = row * N + col
 		      
-		      If SudokuTextFields(index).IsLocked Then Continue
+		      If SudokuTextFields(index).GetIsLocked Then Continue
 		      If (Me.SudokuPuzzle.GetGridValue(row, col) < 1) Then Continue 'Is empty
 		      
 		      ' Found a non-empty, unlocked cell
@@ -1526,15 +1526,15 @@ End
 		    For col As Integer = 0 To N-1
 		      Var index As Integer = row * N + col
 		      
-		      SudokuTextFields(index).Lock = False
+		      SudokuTextFields(index).DoLock(False)
 		      
 		      Var value As Integer = Me.SudokuPuzzle.GetGridValue(row, col)
 		      If value = 0 Then
-		        SudokuTextFields(index).Text = ""
+		        SudokuTextFields(index).SetText("")
 		        If (focusIndex < 0) Then focusIndex = index
 		      Else
-		        SudokuTextFields(index).Text = value.ToString
-		        SudokuTextFields(index).Lock = Me.SudokuPuzzle.IsGridCellLocked(row, col)
+		        SudokuTextFields(index).SetText(value.ToString)
+		        SudokuTextFields(index).DoLock(Me.SudokuPuzzle.IsGridCellLocked(row, col))
 		      End If
 		    Next
 		  Next
@@ -1543,7 +1543,7 @@ End
 		  If (focusIndex < 0) Then
 		    self.SetFocus 'move Focus out of TextFields
 		  Else
-		    SudokuTextFields(focusIndex).SetFocus
+		    SudokuTextFields(focusIndex).DoSetFocus
 		  End If
 		  
 		  Me.RefreshControls
@@ -1554,50 +1554,50 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub SudokuNumberFieldCommitValue(sender As SudokuNumberField)
+		Private Sub SudokuNumberFieldCommitValue(sender As SudokuNumberField.ISudokuNumberControl)
 		  ' Commit the current text value to the Sudoku grid
-		  If sender.IsLocked Then Return
+		  If sender.GetIsLocked Then Return
 		  
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
-		  Var currentNumber As Integer = sender.Text.ToInteger
+		  Var currentNumber As Integer = sender.GetText.ToInteger
 		  
 		  ' Validate: must be 0 (empty) or 1..N
 		  If currentNumber < 0 Or currentNumber > N Then
 		    ' Invalid value: reset to grid value
-		    Var gridVal As Integer = Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex)
+		    Var gridVal As Integer = Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex)
 		    If gridVal = 0 Then
-		      sender.Text = ""
+		      sender.SetText("")
 		    Else
-		      sender.Text = gridVal.ToString
+		      sender.SetText(gridVal.ToString)
 		    End If
 		    Return
 		  End If
 		  
 		  ' Update grid if value changed
-		  If Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) <> currentNumber Then
-		    Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		  If Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex) <> currentNumber Then
+		    Me.SudokuPuzzle.SetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = currentNumber
 		    
 		    If currentNumber = 0 Then
-		      sender.Text = ""
+		      sender.SetText("")
 		    End If
 		    
 		    ' Update Status
 		    Me.RefreshControls
 		  End If
 		  
-		  If (currentNumber > 0) And (sender.Text <> currentNumber.ToString) Then
+		  If (currentNumber > 0) And (sender.GetText <> currentNumber.ToString) Then
 		    ' This can happen in a N > 9 Sudoku when entering: 05
-		    sender.Text = currentNumber.ToString
+		    sender.SetText(currentNumber.ToString)
 		  End If
 		  
 		  ' Select all so user can easily overwrite
-		  sender.SelectAll
+		  sender.DoSelectAll
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub SudokuNumberFieldFocusLost(sender As SudokuNumberField)
+		Private Sub SudokuNumberFieldFocusLost(sender As SudokuNumberField.ISudokuNumberControl)
 		  If mIsShowingSudoku Then Return
 		  
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
@@ -1611,7 +1611,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function SudokuNumberFieldKeyDown(sender As SudokuNumberField, key As String) As Boolean
+		Private Function SudokuNumberFieldKeyDown(sender As SudokuNumberField.ISudokuNumberControl, key As String) As Boolean
 		  If mIsShowingSudoku Then
 		    'let default behavior happen
 		    Return False
@@ -1622,24 +1622,24 @@ End
 		  Select Case key
 		    ' Handle arrow keys
 		  Case Chr(28) ' Left arrow
-		    Var leftIndex As Integer = sender.PositionIndex - 1
-		    if (leftIndex >= 0) then SudokuTextFields(leftIndex).SetFocus
+		    Var leftIndex As Integer = sender.GetPositionIndex - 1
+		    if (leftIndex >= 0) then SudokuTextFields(leftIndex).DoSetFocus
 		    Return True
 		    
 		  Case Chr(29) ' Right arrow
-		    Var rightIndex As Integer = sender.PositionIndex + 1
-		    if (rightIndex < N*N) then SudokuTextFields(rightIndex).SetFocus
+		    Var rightIndex As Integer = sender.GetPositionIndex + 1
+		    if (rightIndex < N*N) then SudokuTextFields(rightIndex).DoSetFocus
 		    Return True
 		    
 		  Case Chr(30) ' Up arrow
-		    Var upIndex As Integer = sender.PositionIndex - N
+		    Var upIndex As Integer = sender.GetPositionIndex - N
 		    ' Move focus to previous (unlocked) cell
-		    if (upIndex >= 0) then SudokuTextFields(upIndex).SetFocus
+		    if (upIndex >= 0) then SudokuTextFields(upIndex).DoSetFocus
 		    Return True
 		    
 		  Case Chr(31) ' Down arrow
-		    Var downIndex As Integer = sender.PositionIndex + N
-		    if (downIndex < N*N) then SudokuTextFields(downIndex).SetFocus
+		    Var downIndex As Integer = sender.GetPositionIndex + N
+		    if (downIndex < N*N) then SudokuTextFields(downIndex).DoSetFocus
 		    Return True
 		    
 		  Case Chr(13), Chr(3) ' Return, Enter
@@ -1666,7 +1666,7 @@ End
 		  End Select
 		  
 		  ' Locked Sudoku cell
-		  If sender.IsLocked Then
+		  If sender.GetIsLocked Then
 		    ' Make sure original grid value is not being overwritten
 		    ' we don't set .Readonly to get arrow navigation
 		    Return True
@@ -1676,12 +1676,12 @@ End
 		  If N <= 9 Then
 		    If key >= "0" And key <= N.ToString Then
 		      ' Update Number
-		      Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = key.ToInteger
+		      Me.SudokuPuzzle.SetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = key.ToInteger
 		      
 		      If (key = "0") Then
-		        sender.Text = ""
+		        sender.SetText("")
 		      Else
-		        sender.Text = key
+		        sender.SetText(key)
 		      End If
 		      
 		      ' Update Status
@@ -1709,9 +1709,11 @@ End
 	#tag Method, Flags = &h21
 		Private Sub SudokuNumberFieldsInit()
 		  ' Close current Sudoku Number Fields
-		  For Each c As SudokuNumberField In SudokuTextFields
-		    Me.RemoveControl(c)
-		    c.Close
+		  For Each c As SudokuNumberField.ISudokuNumberControl In SudokuTextFields
+		    If (c IsA DesktopUIControl) Then
+		      Me.RemoveControl(DesktopUIControl(c))
+		      DesktopUIControl(c).Close
+		    End If
 		  Next
 		  
 		  ' Init Sudoku Number Fields
@@ -1723,21 +1725,26 @@ End
 		      Var index As Integer = row * N + col
 		      
 		      ' Create Sudoku Number TextField
-		      SudokuTextFields(index) = New SudokuNumberField
-		      SudokuTextFields(index).Parent = Me
-		      SudokuTextFields(index).Visible = True
-		      SudokuTextFields(index).Left = kMarginWindow + col * kCellSize + ((kCellSize - SudokuTextFields(index).Width) / 2)
-		      SudokuTextFields(index).Top = sepTop.Top + kMarginWindow + row * kCellSize + ((kCellSize - SudokuTextFields(index).Height) / 2)
+		      '#If TargetWindows Then
+		      'SudokuTextFields(index) = New SudokuNumberField.WinUITextField(AddressOf SudokuNumberFieldFocusLost, AddressOf SudokuNumberFieldKeyDown, AddressOf SudokuNumberFieldTextChanged)
+		      '#Else
+		      SudokuTextFields(index) = New SudokuNumberField.DefaultDesktopTextField(AddressOf SudokuNumberFieldFocusLost, AddressOf SudokuNumberFieldKeyDown, AddressOf SudokuNumberFieldTextChanged)
+		      '#Endif
 		      
-		      SudokuTextFields(index).RowIndex = row
-		      SudokuTextFields(index).ColumnIndex = col
-		      SudokuTextFields(index).PositionIndex = index
+		      If (SudokuTextFields(index) IsA DesktopUIControl) Then
+		        DesktopUIControl(SudokuTextFields(index)).Parent = Me
+		        DesktopUIControl(SudokuTextFields(index)).Visible = True
+		        DesktopUIControl(SudokuTextFields(index)).Left = kMarginWindow + col * kCellSize + ((kCellSize - SudokuTextFields(index).GetWidth) / 2)
+		        DesktopUIControl(SudokuTextFields(index)).Top = sepTop.Top + kMarginWindow + row * kCellSize + ((kCellSize - SudokuTextFields(index).GetHeight) / 2)
+		      End If
 		      
-		      ' Add custom event handlers, then add Control to Window
-		      AddHandler SudokuTextFields(index).KeyDown, AddressOf SudokuNumberFieldKeyDown
-		      AddHandler SudokuTextFields(index).TextChanged, AddressOf SudokuNumberFieldTextChanged
-		      AddHandler SudokuTextFields(index).FocusLost, AddressOf SudokuNumberFieldFocusLost
-		      Self.AddControl(SudokuTextFields(index))
+		      SudokuTextFields(index).SetRowIndex(row)
+		      SudokuTextFields(index).SetColumnIndex(col)
+		      SudokuTextFields(index).SetPositionIndex(index)
+		      
+		      If (SudokuTextFields(index) IsA DesktopUIControl) Then
+		        Self.AddControl(DesktopUIControl(SudokuTextFields(index)))
+		      End If
 		    Next
 		  Next
 		  
@@ -1745,33 +1752,33 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField)
+		Private Sub SudokuNumberFieldTextChanged(sender As SudokuNumberField.ISudokuNumberControl, newText As String)
 		  If mIsShowingSudoku Then Return
 		  
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
 		  
-		  If sender.IsLocked Then
+		  If sender.GetIsLocked Then
 		    ' Make sure original grid value is not being overwritten
 		    ' we don't set .Readonly to get arrow navigation
-		    Var gridVal As String = Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex).ToString
+		    Var gridVal As String = Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex).ToString
 		    If (gridVal = "0") Then gridVal = ""
-		    If (sender.Text <> gridVal) Then sender.Text = gridVal
+		    If (sender.GetText <> gridVal) Then sender.SetText(gridVal)
 		    Return
 		  End If
 		  
 		  ' For N>9: Don't auto-commit on TextChanged (except for when cleared), wait for Return/Enter/FocusLost
-		  If N > 9 And (sender.Text <> "") Then
+		  If N > 9 And (sender.GetText <> "") Then
 		    Return
 		  End If
 		  
 		  ' For N<=9: Update Number if necessary
-		  Var currentNumber As Integer = sender.Text.ToInteger
-		  If (Me.SudokuPuzzle.GetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber) Then Return
+		  Var currentNumber As Integer = sender.GetText.ToInteger
+		  If (Me.SudokuPuzzle.GetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = currentNumber) Then Return
 		  
-		  Me.SudokuPuzzle.SetGridValue(sender.RowIndex, sender.ColumnIndex) = currentNumber
+		  Me.SudokuPuzzle.SetGridValue(sender.GetRowIndex, sender.GetColumnIndex) = currentNumber
 		  
-		  If (currentNumber < 1) And (sender.Text <> "") Then
-		    sender.Text = ""
+		  If (currentNumber < 1) And (sender.GetText <> "") Then
+		    sender.SetText("")
 		  End If
 		  
 		  ' Update Status
@@ -1846,7 +1853,7 @@ End
 	#tag EndComputedProperty
 
 	#tag Property, Flags = &h21
-		Private SudokuTextFields() As SudokuNumberField
+		Private SudokuTextFields() As SudokuNumberField.ISudokuNumberControl
 	#tag EndProperty
 
 

@@ -51,8 +51,8 @@ Begin WebPage MainWebPage
       Left            =   0
       LockBottom      =   False
       LockedInPosition=   True
-      LockHorizontal  =   True
-      LockLeft        =   False
+      LockHorizontal  =   False
+      LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       LockVertical    =   False
