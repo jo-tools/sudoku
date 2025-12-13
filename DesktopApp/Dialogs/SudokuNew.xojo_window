@@ -433,6 +433,15 @@ End
 		  
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(item As DesktopMenuItem)
+		  If Me.SelectedRowIndex = 1 Then
+		    ' Separator
+		    Me.SelectedRowIndex = 0
+		  End If
+		  
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events thrCreate
 	#tag Event
