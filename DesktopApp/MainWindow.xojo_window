@@ -1585,6 +1585,11 @@ End
 		    Me.RefreshControls
 		  End If
 		  
+		  If (currentNumber > 0) And (sender.Text <> currentNumber.ToString) Then
+		    ' This can happen in a N > 9 Sudoku when entering: 05
+		    sender.Text = currentNumber.ToString
+		  End If
+		  
 		  ' Select all so user can easily overwrite
 		  sender.SelectAll
 		  
