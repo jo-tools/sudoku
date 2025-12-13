@@ -302,35 +302,6 @@ Begin WebPage MainWebPage
          Width           =   180
          _mPanelIndex    =   -1
       End
-      Begin WebCanvas cnvSudoku
-         ControlID       =   ""
-         CSSClasses      =   ""
-         DiffEngineDisabled=   False
-         Enabled         =   True
-         Height          =   580
-         Index           =   -2147483648
-         Indicator       =   0
-         InitialParent   =   "rctSudoku"
-         Left            =   0
-         LockBottom      =   False
-         LockedInPosition=   True
-         LockHorizontal  =   False
-         LockLeft        =   True
-         LockRight       =   False
-         LockTop         =   True
-         LockVertical    =   False
-         PanelIndex      =   0
-         Parent          =   "rctSudoku"
-         Scope           =   2
-         TabIndex        =   9
-         TabPanelIndex   =   0
-         TabStop         =   True
-         Tooltip         =   ""
-         Top             =   90
-         Visible         =   True
-         Width           =   580
-         _mPanelIndex    =   -1
-      End
       Begin WebLabel labExport
          Bold            =   False
          ControlID       =   ""
@@ -775,6 +746,49 @@ Begin WebPage MainWebPage
          Width           =   180
          _mPanelIndex    =   -1
       End
+      Begin SudokuCanvas cnvSudoku
+         CandidateDark   =   &c00000000
+         CandidateLight  =   &c00000000
+         CellHintHiddenSingleDark=   &cFFFB00E6
+         CellHintHiddenSingleLight=   &c945200BF
+         CellHintNakedSingleDark=   &c4F8F00BF
+         CellHintNakedSingleLight=   &c4F8F00BF
+         ControlID       =   ""
+         CSSClasses      =   ""
+         Enabled         =   True
+         ExcludedHiddenSubset=   &c00000000
+         ExcludedLockedCandidate=   &c00000000
+         ExcludedNakedSubset=   &c00000000
+         ExcludedXWing   =   &c00000000
+         GridlineDark    =   &cC0C0C000
+         GridlineHairDark=   &c5E5E5E00
+         GridlineHairLight=   &cA9A9A900
+         GridlineLight   =   &c42424200
+         Height          =   580
+         Index           =   -2147483648
+         Indicator       =   0
+         InitialParent   =   "rctSudoku"
+         Left            =   0
+         LockBottom      =   False
+         LockedInPosition=   True
+         LockHorizontal  =   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         LockVertical    =   False
+         N               =   9
+         PanelIndex      =   0
+         Parent          =   "rctSudoku"
+         Scope           =   2
+         TabIndex        =   9
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   90
+         Visible         =   True
+         Width           =   580
+         _mPanelIndex    =   -1
+      End
    End
    Begin SudokuController Controller
       ContainerHeight =   670
@@ -783,9 +797,9 @@ Begin WebPage MainWebPage
       Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   True
+      N               =   9
       PanelIndex      =   0
       Scope           =   2
-      Size            =   9
       _mPanelIndex    =   -1
    End
 End
@@ -1253,7 +1267,7 @@ End
 		  chkExcludeHiddenSubsets.EnsureValue = mExclusionParams.ExcludeHiddenSubsets
 		  chkExcludeXWing.EnsureValue = mExclusionParams.ExcludeXWing
 		  
-		  cnvSudoku.Refresh
+		  cnvSudoku.UpdateCandidates(CellHints, CellCandidates, mShowHints, mShowCandidates)
 		  Me.CookieSet
 		  
 		  ' Status
@@ -1357,6 +1371,11 @@ End
 		    Me.RefreshControls
 		  End If
 		  
+		  If (currentNumber > 0) And (sender.Text <> currentNumber.ToString) Then
+		    ' This can happen in a N > 9 Sudoku when entering: 05
+		    sender.Text = currentNumber.ToString
+		  End If
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1427,8 +1446,8 @@ End
 		      t.Visible = True
 		      t.Enabled = True
 		      t.ReadOnly = False
-		      t.Width = 40
-		      t.Height = 40
+		      t.Width = kTextFieldSize
+		      t.Height = kTextFieldSize
 		      t.Left = cnvSudoku.Left + kMarginWindow + col * kCellSize + ((kCellSize - t.Width) / 2)
 		      t.Top = cnvSudoku.Top + kMarginWindow + row * kCellSize + ((kCellSize - t.Height) / 2)
 		      t.Style.BackgroundColor = &cffffffff
@@ -1444,7 +1463,7 @@ End
 		    Next
 		  Next
 		  
-		  Me.Controller.Size = N
+		  Me.Controller.N = N
 		  
 		End Sub
 	#tag EndMethod
@@ -1542,8 +1561,7 @@ End
 			  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
 			  
 			  Var cnvSudokuSize As Integer = 2*kMarginWindow + N*kCellSize
-			  cnvSudoku.Width = cnvSudokuSize
-			  cnvSudoku.Height = cnvSudokuSize
+			  cnvSudoku.UpdateSudokuLayout(N, mSudokuPuzzle.GetGridSettings.BoxWidth, mSudokuPuzzle.GetGridSettings.BoxHeight, cnvSudokuSize)
 			  
 			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 215 ' Solve and Status are bottom-locked
 			  
@@ -1555,6 +1573,7 @@ End
 			  
 			  Me.Width = rctSudoku.Width
 			  me.MinimumWidth = me.Width
+			  
 			  
 			  ' Init Sudoku Number Fields
 			  Me.SudokuNumberFieldsInit
@@ -1609,6 +1628,9 @@ End
 	#tag EndConstant
 
 	#tag Constant, Name = kMarginWindow, Type = Double, Dynamic = False, Default = \"20", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = kTextFieldSize, Type = Double, Dynamic = False, Default = \"40", Scope = Private
 	#tag EndConstant
 
 
@@ -1668,220 +1690,6 @@ End
 	#tag Event
 		Sub Pressed()
 		  Self.ActionNew
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events cnvSudoku
-	#tag Event
-		Sub Paint(g As WebGraphics)
-		  If (Self.SudokuPuzzle = Nil) Then Return
-		  
-		  Var N As Integer = Self.SudokuPuzzle.GetGridSettings.N
-		  Var boxWidth As Integer = Self.SudokuPuzzle.GetGridSettings.BoxWidth
-		  Var boxHeight As Integer = Self.SudokuPuzzle.GetGridSettings.BoxHeight
-		  
-		  If Self.mShowHints And (Self.CellHints.LastIndex >= 0) Then
-		    ' Draw next solvable cells
-		    g.PenSize = 4
-		    For Each h As Sudoku.CellHint In Self.CellHints
-		      Select Case h.SolveHint
-		      Case Sudoku.SolveHint.NakedSingle
-		        g.DrawingColor = colSolveHintNakedSingle
-		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
-		      Case Sudoku.SolveHint.HiddenSingle
-		        g.DrawingColor = colSolveHintHiddenSingle
-		        g.FillRectangle(kMarginWindow + h.Col * kCellSize, kMarginWindow + h.Row * kCellSize, kCellSize, kCellSize)
-		      End Select
-		    Next
-		  End If
-		  
-		  ' Draw all thin "hair" lines first (gray)
-		  g.DrawingColor = colGridlineHair
-		  g.PenSize = 1
-		  For i As Integer = 1 To N-1 ' skip outer border (0 and N)
-		    ' Horizontal
-		    g.DrawLine(kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + N * kCellSize, kMarginWindow + i * kCellSize)
-		    ' Vertical
-		    g.DrawLine(kMarginWindow + i * kCellSize, kMarginWindow, kMarginWindow + i * kCellSize, kMarginWindow + N * kCellSize)
-		  Next
-		  
-		  ' Draw thicker red block lines on top
-		  g.DrawingColor = colGridline
-		  g.PenSize = 2
-		  For rowBlock As Integer = 0 To N Step boxHeight
-		    ' Horizontal
-		    g.DrawLine(kMarginWindow - g.PenSize/2, kMarginWindow + rowBlock * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2, kMarginWindow + rowBlock * kCellSize - g.PenSize/2)
-		  Next
-		  For colBlock As Integer = 0 To N Step boxWidth
-		    ' Vertical
-		    g.DrawLine(kMarginWindow + colBlock * kCellSize - g.PenSize/2, kMarginWindow - g.PenSize/2, kMarginWindow + colBlock * kCellSize - g.PenSize/2, kMarginWindow + N * kCellSize - g.PenSize/2)
-		  Next
-		  
-		  If Self.mShowCandidates And (Self.CellCandidates.LastIndex >= 0) Then
-		    ' Draw Cell Candidates in the margin area outside the TextField
-		    ' TextField is centered in cell; candidates go in the outer margin areas
-		    
-		    ' SudokuNumberField dimensions
-		    Var textFieldWidth As Double = Self.SudokuTextFields(0).Width
-		    Var textFieldHeight As Double = Self.SudokuTextFields(0).Height
-		    
-		    ' Calculate margin areas (space between cell border and TextField)
-		    Var marginH As Double = (kCellSize - textFieldWidth) / 2   ' left/right margin
-		    Var marginV As Double = (kCellSize - textFieldHeight) / 2  ' top/bottom margin
-		    
-		    ' Candidate slot layout based on N
-		    ' Order: top row → left side → right side → bottom row
-		    ' Determine layout parameters based on N
-		    Var slotsTop As Integer
-		    Var slotsLeft As Integer
-		    Var slotsRight As Integer
-		    Var slotsBottom As Integer
-		    
-		    ' Layout patterns:
-		    '   N=4:  1,2 top; 3,4 bottom
-		    '   N=6:  1,2 top; 3 left; 4 right; 5,6 bottom
-		    '   N=8:  1,2,3 top; 4 left; 5 right; 6,7,8 bottom
-		    '   N=9:  1,2,3,4 top; 5 left; 6 right; 7,8,9 bottom
-		    '   N=12: 1,2,3,4 top; 5,7 left; 6,8 right; 9,10,11,12 bottom
-		    '   N=16: 1,2,3,4,5 top; 6,8,10 left; 7,9,11 right; 12,13,14,15,16 bottom
-		    
-		    Select Case N
-		    Case 4
-		      slotsTop = 2
-		      slotsLeft = 0
-		      slotsRight = 0
-		      slotsBottom = 2
-		    Case 6
-		      slotsTop = 2
-		      slotsLeft = 1
-		      slotsRight = 1
-		      slotsBottom = 2
-		    Case 8
-		      slotsTop = 3
-		      slotsLeft = 1
-		      slotsRight = 1
-		      slotsBottom = 3
-		    Case 9
-		      slotsTop = 4
-		      slotsLeft = 1
-		      slotsRight = 1
-		      slotsBottom = 3
-		    Case 12
-		      slotsTop = 4
-		      slotsLeft = 2
-		      slotsRight = 2
-		      slotsBottom = 4
-		    Case 16
-		      slotsTop = 5
-		      slotsLeft = 3
-		      slotsRight = 3
-		      slotsBottom = 5
-		    Else
-		      ' Fallback for any other N: distribute evenly
-		      slotsTop = (N + 3) \ 4
-		      slotsBottom = (N + 3) \ 4
-		      Var remaining As Integer = N - slotsTop - slotsBottom
-		      slotsLeft = (remaining + 1) \ 2
-		      slotsRight = remaining - slotsLeft
-		    End Select
-		    
-		    g.FontSize = 8
-		    g.PenSize = 1
-		    
-		    For Each h As Sudoku.CellCandidates In Self.CellCandidates
-		      Var cellLeft As Double = kMarginWindow + h.Col * kCellSize
-		      Var cellTop As Double = kMarginWindow + h.Row * kCellSize
-		      
-		      For Each candidate As Sudoku.Candidate In h.Candidates
-		        If (candidate.Value < 1) Or (candidate.Value > N) Then Continue
-		        If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
-		        
-		        g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
-		        
-		        Var idx As Integer = candidate.Value - 1
-		        Var centerX As Double
-		        Var centerY As Double
-		        
-		        ' Determine position based on slot assignment
-		        ' Order: top row → left/right sides (interleaved) → bottom row
-		        Var maxHorizontalSlots As Integer = Max(slotsTop, slotsBottom)
-		        Var slotWidth As Double = kCellSize / maxHorizontalSlots
-		        
-		        ' Define the left and right X positions (centered in margin areas)
-		        Var leftX As Double = marginH / 2
-		        Var rightX As Double = kCellSize - marginH / 2
-		        
-		        If idx < slotsTop Then
-		          ' Top row - first slot at leftX, last slot at rightX, others distributed between
-		          If slotsTop = 1 Then
-		            centerX = cellLeft + kCellSize / 2
-		          Else
-		            Var fraction As Double = idx / (slotsTop - 1)
-		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
-		          End If
-		          centerY = cellTop + marginV / 2
-		        ElseIf idx < slotsTop + slotsLeft + slotsRight Then
-		          ' Middle section: interleave left and right
-		          Var middleIdx As Integer = idx - slotsTop
-		          Var slotHeight As Double = textFieldHeight / Max(slotsLeft, 1)
-		          If (middleIdx Mod 2) = 0 Then
-		            ' Left side - even middle indices (0, 2, 4, ...)
-		            Var leftIdx As Integer = middleIdx \ 2
-		            centerX = cellLeft + leftX
-		            centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
-		          Else
-		            ' Right side - odd middle indices (1, 3, 5, ...)
-		            Var rightIdx As Integer = middleIdx \ 2
-		            centerX = cellLeft + rightX
-		            centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
-		          End If
-		        Else
-		          ' Bottom row - first slot at leftX, last slot at rightX, others distributed between
-		          Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight
-		          If slotsBottom = 1 Then
-		            centerX = cellLeft + kCellSize / 2
-		          Else
-		            Var fraction As Double = bottomIdx / (slotsBottom - 1)
-		            centerX = cellLeft + leftX + fraction * (rightX - leftX)
-		          End If
-		          centerY = cellTop + kCellSize - marginV / 2
-		        End If
-		        
-		        ' WebGraphics.DrawText with TextAlignment.Center uses x as center point
-		        ' and y as the vertical center (not baseline like Desktop),
-		        ' However, WebGraphics seems to vertically center text differently,
-		        ' that's why we adjust it here manually with "+2" just for drawing text,
-		        ' but keep the variable for further placement caluclations
-		        g.TextAlignment = TextAlignments.Center
-		        g.DrawText(candidate.Value.ToString, centerX, centerY+2)
-		        
-		        ' Mark excluded candidates with a strike-through line
-		        Var crossSize As Double = 8
-		        
-		        Select Case candidate.Hint
-		        Case Sudoku.CandidateHint.NoCandidate
-		          Continue ' not a candidate
-		        Case Sudoku.CandidateHint.Candidate
-		          Continue ' just display candidate
-		        Case Sudoku.CandidateHint.ExcludedAsLockedCandidate
-		          g.DrawingColor = Color.Red
-		        Case Sudoku.CandidateHint.ExcludedAsNakedSubset
-		          g.DrawingColor = Color.Orange
-		        Case Sudoku.CandidateHint.ExcludedAsHiddenSubset
-		          g.DrawingColor = Color.Orange
-		        Case Sudoku.CandidateHint.ExcludedAsXWing
-		          g.DrawingColor = Color.Yellow
-		        Else
-		          Continue
-		        End Select
-		        
-		        Var crossCenterY As Double = centerY
-		        g.PenSize = 1.0
-		        g.DrawLine(centerX - crossSize*0.25, crossCenterY + crossSize*0.25, centerX + crossSize*0.25, crossCenterY - crossSize*0.25)
-		      Next
-		    Next
-		  End If
 		  
 		End Sub
 	#tag EndEvent
@@ -2003,6 +1811,25 @@ End
 	#tag Event
 		Sub Opening()
 		  Me.EnsureValue = Self.mExclusionParams.ExcludeXWing And Self.mExclusionParams.ExcludeXWing
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events cnvSudoku
+	#tag Event
+		Sub Opening()
+		  ' Initialize colors from ColorGroup values
+		  Me.GridlineLight = &c42424200
+		  Me.GridlineDark = &cC0C0C000
+		  Me.GridlineHairLight = &cA9A9A900
+		  Me.GridlineHairDark = &c5E5E5E00
+		  Me.CellHintNakedSingleLight = &c4F8F00BF
+		  Me.CellHintNakedSingleDark = &c4F8F00BF
+		  Me.CellHintHiddenSingleLight = &c945200BF
+		  Me.CellHintHiddenSingleDark = &cFFFB00E6
+		  
+		  ' Set layout parameters
+		  Me.SetupLayout(kMarginWindow, kCellSize, kTextFieldSize, kTextFieldSize)
 		  
 		End Sub
 	#tag EndEvent
