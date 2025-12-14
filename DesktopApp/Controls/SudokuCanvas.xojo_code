@@ -392,8 +392,8 @@ Inherits DesktopCanvas
 		      Var centerX As Double = cellLeft + gridCol * slotWidth + slotWidth / 2
 		      Var centerY As Double = cellTop + gridRow * slotHeight + slotHeight / 2
 		      
-		      ' Set text color
-		      g.DrawingColor = Color.TextColor
+		      ' Set candidate color
+		      g.DrawingColor = colCandidate
 		      g.Bold = False
 		      
 		      Var s As String = candidate.Value.ToString
@@ -506,15 +506,71 @@ Inherits DesktopCanvas
 
 	#tag Method, Flags = &h21
 		Private Sub DrawFocusIndicator(g As Graphics, row As Integer, col As Integer, cellSize As Double, opacity As Double)
-		  ' Draw a rounded rectangle focus indicator
+		  ' Draw a rounded rectangle focus indicator inside the cell
+		  ' Grid lines: hair=1px at cell boundary, thick=2px offset by -1 from boundary
+		  ' Focus indicator must be drawn after the grid lines (inside the cell area)
 		  
-		  Var inset As Double = 1 ' Minimal inset to stay inside cell borders
+		  If (mSudokuPuzzle = Nil) Then Return
+		  
+		  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
+		  Var boxWidth As Integer = mSudokuPuzzle.GetGridSettings.BoxWidth
+		  Var boxHeight As Integer = mSudokuPuzzle.GetGridSettings.BoxHeight
+		  
+		  ' Calculate the drawable area inside the cell (after grid lines)
+		  ' Left edge: thick line if col=0 or at box boundary, else hair line
+		  ' Thick lines are drawn at cellBoundary - 1 (offset), so they occupy cellBoundary-1 to cellBoundary+1
+		  ' Hair lines are drawn at cellBoundary, so they occupy cellBoundary-0.5 to cellBoundary+0.5
+		  
+		  Var leftEdge As Double = col * cellSize
+		  Var topEdge As Double = row * cellSize
+		  Var rightEdge As Double = (col + 1) * cellSize
+		  Var bottomEdge As Double = (row + 1) * cellSize
+		  
+		  ' Left border adjustment
+		  ' Outer border: rectangle drawn at PenSize/2 with width 2, occupies ~1-2
+		  ' Inner thick lines: drawn at boundary - 1, occupies boundary-1 to boundary+1
+		  ' Hair lines: drawn at boundary, occupies boundary-0.5 to boundary+0.5
+		  If col = 0 Then
+		    leftEdge = leftEdge + 2 ' After outer border rectangle
+		  ElseIf (col Mod boxWidth) = 0 Then
+		    leftEdge = leftEdge + 1 ' After inner thick line
+		  Else
+		    leftEdge = leftEdge + 1 ' After hair line
+		  End If
+		  
+		  ' Top border adjustment
+		  If row = 0 Then
+		    topEdge = topEdge + 2 ' After outer border rectangle
+		  ElseIf (row Mod boxHeight) = 0 Then
+		    topEdge = topEdge + 1 ' After inner thick line
+		  Else
+		    topEdge = topEdge + 1 ' After hair line
+		  End If
+		  
+		  ' Right border adjustment
+		  If col = N - 1 Then
+		    rightEdge = rightEdge - 2 ' Before outer border rectangle
+		  ElseIf ((col + 1) Mod boxWidth) = 0 Then
+		    rightEdge = rightEdge - 1 ' Before inner thick line
+		  Else
+		    rightEdge = rightEdge ' Hair line is at boundary, indicator can go up to it
+		  End If
+		  
+		  ' Bottom border adjustment
+		  If row = N - 1 Then
+		    bottomEdge = bottomEdge - 2 ' Before outer border rectangle
+		  ElseIf ((row + 1) Mod boxHeight) = 0 Then
+		    bottomEdge = bottomEdge - 1 ' Before inner thick line
+		  Else
+		    bottomEdge = bottomEdge ' Hair line is at boundary, indicator can go up to it
+		  End If
+		  
 		  Var cornerRadius As Double = 4
 		  
-		  Var x As Double = col * cellSize + inset
-		  Var y As Double = row * cellSize + inset
-		  Var w As Double = cellSize - 2 * inset
-		  Var h As Double = cellSize - 2 * inset
+		  Var x As Double = leftEdge
+		  Var y As Double = topEdge
+		  Var w As Double = rightEdge - leftEdge
+		  Var h As Double = bottomEdge - topEdge
 		  
 		  ' Use highlight color with opacity
 		  Var highlightColor As Color = Color.HighlightColor
@@ -529,45 +585,35 @@ Inherits DesktopCanvas
 	#tag Method, Flags = &h21
 		Private Sub DrawGrid(g As Graphics, cellSize As Double, N As Integer, boxWidth As Integer, boxHeight As Integer)
 		  ' Draw the Sudoku grid lines
+		  ' Hair lines at exact cell boundaries, thick lines offset by -PenSize/2
 		  
-		  ' Draw thin "hair" grid lines (gray) for inner cell borders
+		  ' Draw all thin "hair" lines first (gray) - skip outer border (0 and N)
 		  g.DrawingColor = colGridlineHair
 		  g.PenSize = 1
 		  For i As Integer = 1 To N-1
-		    ' Skip lines that will be drawn as thick box lines
-		    If (i Mod boxHeight) <> 0 Then
-		      ' Horizontal
-		      g.DrawLine(0, i * cellSize, N * cellSize, i * cellSize)
-		    End If
-		    If (i Mod boxWidth) <> 0 Then
-		      ' Vertical
-		      g.DrawLine(i * cellSize, 0, i * cellSize, N * cellSize)
-		    End If
+		    ' Horizontal
+		    g.DrawLine(0, i * cellSize, N * cellSize, i * cellSize)
+		    ' Vertical
+		    g.DrawLine(i * cellSize, 0, i * cellSize, N * cellSize)
 		  Next
 		  
-		  ' Draw thicker block lines on top including outer borders
+		  ' Draw thicker block lines on top (inner box boundaries only, not outer)
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  For rowBlock As Integer = 0 To N Step boxHeight
-		    ' Horizontal
-		    Var yPos As Double = rowBlock * cellSize
-		    If rowBlock = 0 Then
-		      yPos = g.PenSize / 2
-		    ElseIf rowBlock = N Then
-		      yPos = N * cellSize - g.PenSize / 2
-		    End If
-		    g.DrawLine(0, yPos, N * cellSize, yPos)
+		  For rowBlock As Integer = boxHeight To N - 1 Step boxHeight
+		    ' Horizontal - offset by -PenSize/2
+		    g.DrawLine(-g.PenSize/2, rowBlock * cellSize - g.PenSize/2, N * cellSize - g.PenSize/2, rowBlock * cellSize - g.PenSize/2)
 		  Next
-		  For colBlock As Integer = 0 To N Step boxWidth
-		    ' Vertical
-		    Var xPos As Double = colBlock * cellSize
-		    If colBlock = 0 Then
-		      xPos = g.PenSize / 2
-		    ElseIf colBlock = N Then
-		      xPos = N * cellSize - g.PenSize / 2
-		    End If
-		    g.DrawLine(xPos, 0, xPos, N * cellSize)
+		  For colBlock As Integer = boxWidth To N - 1 Step boxWidth
+		    ' Vertical - offset by -PenSize/2
+		    g.DrawLine(colBlock * cellSize - g.PenSize/2, -g.PenSize/2, colBlock * cellSize - g.PenSize/2, N * cellSize - g.PenSize/2)
 		  Next
+		  
+		  ' Draw thick outer border as a rectangle
+		  g.DrawingColor = colGridline
+		  g.PenSize = 2
+		  Var gridSize As Double = N * cellSize
+		  g.DrawRectangle(0, 0, gridSize, gridSize)
 		  
 		End Sub
 	#tag EndMethod
