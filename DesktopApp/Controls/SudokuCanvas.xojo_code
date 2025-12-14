@@ -241,41 +241,10 @@ Inherits DesktopCanvas
 		  #EndIf
 		  
 		  ' Draw cell hints (solvable cells highlighting)
-		  If (mCellHints.LastIndex >= 0) Then
-		    g.PenSize = 4
-		    For Each h As Sudoku.CellHint In mCellHints
-		      Select Case h.SolveHint
-		      Case Sudoku.SolveHint.NakedSingle
-		        g.DrawingColor = colSolveHintNakedSingle
-		        g.FillRectangle(h.Col * cellSize, h.Row * cellSize, cellSize, cellSize)
-		      Case Sudoku.SolveHint.HiddenSingle
-		        g.DrawingColor = colSolveHintHiddenSingle
-		        g.FillRectangle(h.Col * cellSize, h.Row * cellSize, cellSize, cellSize)
-		      End Select
-		    Next
-		  End If
+		  Me.DrawCellHints(g, cellSize)
 		  
-		  ' Draw thin "hair" grid lines (gray)
-		  g.DrawingColor = colGridlineHair
-		  g.PenSize = 1
-		  For i As Integer = 1 To N-1
-		    ' Horizontal
-		    g.DrawLine(0, i * cellSize, N * cellSize, i * cellSize)
-		    ' Vertical
-		    g.DrawLine(i * cellSize, 0, i * cellSize, N * cellSize)
-		  Next
-		  
-		  ' Draw thicker block lines on top
-		  g.DrawingColor = colGridline
-		  g.PenSize = 2
-		  For rowBlock As Integer = 0 To N Step boxHeight
-		    ' Horizontal
-		    g.DrawLine(-g.PenSize/2, rowBlock * cellSize - g.PenSize/2, N * cellSize - g.PenSize/2, rowBlock * cellSize - g.PenSize/2)
-		  Next
-		  For colBlock As Integer = 0 To N Step boxWidth
-		    ' Vertical
-		    g.DrawLine(colBlock * cellSize - g.PenSize/2, -g.PenSize/2, colBlock * cellSize - g.PenSize/2, N * cellSize - g.PenSize/2)
-		  Next
+		  ' Draw grid lines
+		  Me.DrawGrid(g, cellSize, N, boxWidth, boxHeight)
 		  
 		  ' Draw cell candidates
 		  If (mCellCandidates.LastIndex >= 0) Then
@@ -288,7 +257,7 @@ Inherits DesktopCanvas
 		  ' Draw hover indicator (half opacity)
 		  If (mHoverRow >= 0) And (mHoverCol >= 0) Then
 		    If (mHoverRow <> mActiveRow) Or (mHoverCol <> mActiveCol) Then
-		      Me.DrawFocusIndicator(g, mHoverRow, mHoverCol, cellSize, 0.3)
+		      Me.DrawFocusIndicator(g, mHoverRow, mHoverCol, cellSize, 0.5)
 		    End If
 		  End If
 		  
@@ -359,118 +328,73 @@ Inherits DesktopCanvas
 
 	#tag Method, Flags = &h21
 		Private Sub DrawCellCandidates(g As Graphics, cellSize As Double, N As Integer)
-		  ' Draw Cell Candidates around the cell number area
+		  ' Draw Cell Candidates inside the cell in a grid layout
+		  ' Candidates are arranged in rows based on N:
+		  '   N=4:  2x2 grid (1,2 / 3,4)
+		  '   N=6:  2x3 grid (1,2,3 / 4,5,6)
+		  '   N=8:  3x3 grid with last row having 2 (1,2,3 / 4,5,6 / 7,8)
+		  '   N=9:  3x3 grid (1,2,3 / 4,5,6 / 7,8,9)
+		  '   N=12: 3x4 grid (1,2,3,4 / 5,6,7,8 / 9,10,11,12)
+		  '   N=16: 4x4 grid (1,2,3,4 / 5,6,7,8 / 9,10,11,12 / 13,14,15,16)
 		  
-		  ' Calculate the "text field" area (where the number goes) - roughly 60% of cell
-		  Var textFieldRatio As Double = 0.6
-		  Var textFieldSize As Double = cellSize * textFieldRatio
-		  
-		  ' Calculate margin areas (space between cell border and text area)
-		  Var marginH As Double = (cellSize - textFieldSize) / 2
-		  Var marginV As Double = (cellSize - textFieldSize) / 2
-		  
-		  ' Candidate slot layout based on N
-		  Var slotsTop As Integer
-		  Var slotsLeft As Integer
-		  Var slotsRight As Integer
-		  Var slotsBottom As Integer
+		  ' Determine grid layout (rows x cols) for candidates
+		  Var gridRows As Integer
+		  Var gridCols As Integer
 		  
 		  Select Case N
 		  Case 4
-		    slotsTop = 2
-		    slotsLeft = 0
-		    slotsRight = 0
-		    slotsBottom = 2
+		    gridRows = 2
+		    gridCols = 2
 		  Case 6
-		    slotsTop = 2
-		    slotsLeft = 1
-		    slotsRight = 1
-		    slotsBottom = 2
+		    gridRows = 2
+		    gridCols = 3
 		  Case 8
-		    slotsTop = 3
-		    slotsLeft = 1
-		    slotsRight = 1
-		    slotsBottom = 3
+		    gridRows = 3
+		    gridCols = 3
 		  Case 9
-		    slotsTop = 4
-		    slotsLeft = 1
-		    slotsRight = 1
-		    slotsBottom = 3
+		    gridRows = 3
+		    gridCols = 3
 		  Case 12
-		    slotsTop = 4
-		    slotsLeft = 2
-		    slotsRight = 2
-		    slotsBottom = 4
+		    gridRows = 3
+		    gridCols = 4
 		  Case 16
-		    slotsTop = 5
-		    slotsLeft = 3
-		    slotsRight = 3
-		    slotsBottom = 5
+		    gridRows = 4
+		    gridCols = 4
 		  Else
-		    ' Fallback for any other N
-		    slotsTop = (N + 3) \ 4
-		    slotsBottom = (N + 3) \ 4
-		    Var remaining As Integer = N - slotsTop - slotsBottom
-		    slotsLeft = (remaining + 1) \ 2
-		    slotsRight = remaining - slotsLeft
+		    ' Fallback: try to make a roughly square grid
+		    gridCols = Ceiling(Sqrt(N))
+		    gridRows = Ceiling(N / gridCols)
 		  End Select
 		  
-		  g.FontSize = 8
+		  ' Calculate candidate font size and slot dimensions
+		  ' Leave some padding inside the cell
+		  Var padding As Double = 2
+		  Var slotWidth As Double = (cellSize - 2 * padding) / gridCols
+		  Var slotHeight As Double = (cellSize - 2 * padding) / gridRows
+		  
+		  g.FontSize = Min(slotHeight * 0.7, slotWidth * 0.7)
 		  g.PenSize = 1
 		  
 		  For Each h As Sudoku.CellCandidates In mCellCandidates
-		    Var cellLeft As Double = h.Col * cellSize
-		    Var cellTop As Double = h.Row * cellSize
+		    Var cellLeft As Double = h.Col * cellSize + padding
+		    Var cellTop As Double = h.Row * cellSize + padding
 		    
 		    For Each candidate As Sudoku.Candidate In h.Candidates
 		      If (candidate.Value < 1) Or (candidate.Value > N) Then Continue
 		      If (candidate.Hint = Sudoku.CandidateHint.NoCandidate) Then Continue
 		      
-		      g.DrawingColor = If(Color.IsDarkMode, Color.LightGray, Color.DarkGray)
-		      
+		      ' Calculate grid position for this candidate value
 		      Var idx As Integer = candidate.Value - 1
-		      Var centerX As Double
-		      Var centerY As Double
+		      Var gridRow As Integer = idx \ gridCols
+		      Var gridCol As Integer = idx Mod gridCols
 		      
-		      ' Define the left and right X positions
-		      Var leftX As Double = marginH / 2
-		      Var rightX As Double = cellSize - marginH / 2
+		      ' Calculate center position of this slot
+		      Var centerX As Double = cellLeft + gridCol * slotWidth + slotWidth / 2
+		      Var centerY As Double = cellTop + gridRow * slotHeight + slotHeight / 2
 		      
-		      If idx < slotsTop Then
-		        ' Top row
-		        If slotsTop = 1 Then
-		          centerX = cellLeft + cellSize / 2
-		        Else
-		          Var fraction As Double = idx / (slotsTop - 1)
-		          centerX = cellLeft + leftX + fraction * (rightX - leftX)
-		        End If
-		        centerY = cellTop + marginV / 2
-		      ElseIf idx < slotsTop + slotsLeft + slotsRight Then
-		        ' Middle section: interleave left and right
-		        Var middleIdx As Integer = idx - slotsTop
-		        Var slotHeight As Double = textFieldSize / Max(slotsLeft, 1)
-		        If (middleIdx Mod 2) = 0 Then
-		          ' Left side
-		          Var leftIdx As Integer = middleIdx \ 2
-		          centerX = cellLeft + leftX
-		          centerY = cellTop + marginV + leftIdx * slotHeight + slotHeight / 2
-		        Else
-		          ' Right side
-		          Var rightIdx As Integer = middleIdx \ 2
-		          centerX = cellLeft + rightX
-		          centerY = cellTop + marginV + rightIdx * slotHeight + slotHeight / 2
-		        End If
-		      Else
-		        ' Bottom row
-		        Var bottomIdx As Integer = idx - slotsTop - slotsLeft - slotsRight
-		        If slotsBottom = 1 Then
-		          centerX = cellLeft + cellSize / 2
-		        Else
-		          Var fraction As Double = bottomIdx / (slotsBottom - 1)
-		          centerX = cellLeft + leftX + fraction * (rightX - leftX)
-		        End If
-		        centerY = cellTop + cellSize - marginV / 2
-		      End If
+		      ' Set text color
+		      g.DrawingColor = Color.TextColor
+		      g.Bold = False
 		      
 		      Var s As String = candidate.Value.ToString
 		      Var textW As Double = g.TextWidth(s)
@@ -482,7 +406,7 @@ Inherits DesktopCanvas
 		      g.DrawText(s, xText, yBase)
 		      
 		      ' Mark excluded candidates with a strike-through line
-		      Var crossSize As Double = 8
+		      Var crossSize As Double = Min(slotWidth, slotHeight) * 0.6
 		      
 		      Select Case candidate.Hint
 		      Case Sudoku.CandidateHint.NoCandidate
@@ -502,8 +426,27 @@ Inherits DesktopCanvas
 		      End Select
 		      
 		      g.PenSize = 1.0
-		      g.DrawLine(centerX - crossSize*0.25, centerY + crossSize*0.25, centerX + crossSize*0.25, centerY - crossSize*0.25)
+		      g.DrawLine(centerX - crossSize*0.4, centerY + crossSize*0.4, centerX + crossSize*0.4, centerY - crossSize*0.4)
 		    Next
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DrawCellHints(g As Graphics, cellSize As Double)
+		  ' Draw cell hints (solvable cells highlighting)
+		  If (mCellHints.LastIndex < 0) Then Return
+		  
+		  For Each h As Sudoku.CellHint In mCellHints
+		    Select Case h.SolveHint
+		    Case Sudoku.SolveHint.NakedSingle
+		      g.DrawingColor = colSolveHintNakedSingle
+		      g.FillRectangle(h.Col * cellSize, h.Row * cellSize, cellSize, cellSize)
+		    Case Sudoku.SolveHint.HiddenSingle
+		      g.DrawingColor = colSolveHintHiddenSingle
+		      g.FillRectangle(h.Col * cellSize, h.Row * cellSize, cellSize, cellSize)
+		    End Select
 		  Next
 		  
 		End Sub
@@ -512,11 +455,13 @@ Inherits DesktopCanvas
 	#tag Method, Flags = &h21
 		Private Sub DrawCellNumbers(g As Graphics, cellSize As Double, N As Integer)
 		  ' Draw the numbers in each cell
+		  ' Locked cells = bold, unlocked cells = normal weight
+		  ' All cells use TextColor
 		  
 		  ' Calculate font size based on cell size
 		  Var fontSize As Double = cellSize * 0.5
 		  g.FontSize = fontSize
-		  g.Bold = True
+		  g.DrawingColor = Color.TextColor
 		  
 		  For row As Integer = 0 To N - 1
 		    For col As Integer = 0 To N - 1
@@ -537,12 +482,8 @@ Inherits DesktopCanvas
 		      
 		      If displayText = "" Then Continue
 		      
-		      ' Set color based on locked state
-		      If isLocked Then
-		        g.DrawingColor = Color.TextColor
-		      Else
-		        g.DrawingColor = Color.HighlightColor
-		      End If
+		      ' Set bold based on locked state
+		      g.Bold = isLocked
 		      
 		      ' Calculate text position (centered in cell)
 		      Var cellCenterX As Double = col * cellSize + cellSize / 2
@@ -566,10 +507,10 @@ Inherits DesktopCanvas
 
 	#tag Method, Flags = &h21
 		Private Sub DrawFocusIndicator(g As Graphics, row As Integer, col As Integer, cellSize As Double, opacity As Double)
-		  ' Draw a rounded rectangle focus indicator around the cell
+		  ' Draw a rounded rectangle focus indicator filling the entire cell up to borders
 		  
-		  Var inset As Double = 3
-		  Var cornerRadius As Double = 6
+		  Var inset As Double = 1 ' Minimal inset to stay inside cell borders
+		  Var cornerRadius As Double = 4
 		  
 		  Var x As Double = col * cellSize + inset
 		  Var y As Double = row * cellSize + inset
@@ -582,6 +523,53 @@ Inherits DesktopCanvas
 		  
 		  g.PenSize = 2
 		  g.DrawRoundRectangle(x, y, w, h, cornerRadius, cornerRadius)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DrawGrid(g As Graphics, cellSize As Double, N As Integer, boxWidth As Integer, boxHeight As Integer)
+		  ' Draw the Sudoku grid lines
+		  ' Thin "hair" lines for cell borders, thick lines for box borders (including outer border)
+		  
+		  ' Draw thin "hair" grid lines (gray) for inner cell borders
+		  g.DrawingColor = colGridlineHair
+		  g.PenSize = 1
+		  For i As Integer = 1 To N-1
+		    ' Skip lines that will be drawn as thick box lines
+		    If (i Mod boxHeight) <> 0 Then
+		      ' Horizontal
+		      g.DrawLine(0, i * cellSize, N * cellSize, i * cellSize)
+		    End If
+		    If (i Mod boxWidth) <> 0 Then
+		      ' Vertical
+		      g.DrawLine(i * cellSize, 0, i * cellSize, N * cellSize)
+		    End If
+		  Next
+		  
+		  ' Draw thicker block lines on top (including outer border at 0 and N)
+		  g.DrawingColor = colGridline
+		  g.PenSize = 2
+		  For rowBlock As Integer = 0 To N Step boxHeight
+		    ' Horizontal
+		    Var yPos As Double = rowBlock * cellSize
+		    If rowBlock = 0 Then
+		      yPos = g.PenSize / 2
+		    ElseIf rowBlock = N Then
+		      yPos = N * cellSize - g.PenSize / 2
+		    End If
+		    g.DrawLine(0, yPos, N * cellSize, yPos)
+		  Next
+		  For colBlock As Integer = 0 To N Step boxWidth
+		    ' Vertical
+		    Var xPos As Double = colBlock * cellSize
+		    If colBlock = 0 Then
+		      xPos = g.PenSize / 2
+		    ElseIf colBlock = N Then
+		      xPos = N * cellSize - g.PenSize / 2
+		    End If
+		    g.DrawLine(xPos, 0, xPos, N * cellSize)
+		  Next
 		  
 		End Sub
 	#tag EndMethod
@@ -726,7 +714,7 @@ Inherits DesktopCanvas
 	#tag EndProperty
 
 
-	#tag Constant, Name = kDefaultCellSize, Type = Double, Dynamic = False, Default = \"42", Scope = Private
+	#tag Constant, Name = kDefaultCellSize, Type = Double, Dynamic = False, Default = \"48", Scope = Private
 	#tag EndConstant
 
 
