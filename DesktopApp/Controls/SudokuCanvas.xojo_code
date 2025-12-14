@@ -140,6 +140,11 @@ Inherits DesktopCanvas
 		  
 		  ' For N>9: Allow entering digits 0-9 (multi-digit input)
 		  If key >= "0" And key <= "9" Then
+		    If (mPendingInput.Length >= 2) Then
+		      ' 3 Letters are too much, so ignore
+		      Return True
+		    End If
+		    
 		    mPendingInput = mPendingInput + key
 		    Me.Refresh(False)
 		    Return True
@@ -622,7 +627,11 @@ Inherits DesktopCanvas
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
 		  Var gridSize As Double = N * cellSize
-		  g.DrawRectangle(0, 0, gridSize, gridSize)
+		  #If TargetLinux Then
+		    g.DrawRectangle(0 - g.PenSize/2, 0 - g.PenSize/2, gridSize + g.PenSize, gridSize + g.PenSize)
+		  #Else
+		    g.DrawRectangle(0, 0, gridSize, gridSize)
+		  #EndIf
 		  
 		End Sub
 	#tag EndMethod
