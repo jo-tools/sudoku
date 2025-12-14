@@ -565,7 +565,7 @@ Inherits DesktopCanvas
 		    bottomEdge = bottomEdge ' Hair line is at boundary, indicator can go up to it
 		  End If
 		  
-		  Var cornerRadius As Double = 4
+		  Var cornerRadius As Double = 8
 		  
 		  Var x As Double = leftEdge
 		  Var y As Double = topEdge
@@ -574,9 +574,18 @@ Inherits DesktopCanvas
 		  
 		  ' Use highlight color with opacity
 		  Var highlightColor As Color = Color.HighlightColor
+		  g.PenSize = 2
+		  
+		  ' Make active cell more distinct with an opaque background color
+		  If (opacity = 1.0) Then
+		    g.DrawingColor = Color.RGB(HighlightColor.Red, HighlightColor.Green, HighlightColor.Blue, 224)
+		    g.FillRectangle(x, y, w, h)
+		  End If
+		  
 		  g.DrawingColor = Color.RGB(highlightColor.Red, highlightColor.Green, highlightColor.Blue, CType(255 * (1 - opacity), Integer))
 		  
-		  g.PenSize = 2
+		  ' Rectangle in grid cell, rounded corners inside
+		  g.DrawRectangle(x, y, w, h)
 		  g.DrawRoundRectangle(x, y, w, h, cornerRadius, cornerRadius)
 		  
 		End Sub
