@@ -922,6 +922,8 @@ End
 		  RemoveHandler sender.ActionCancel, AddressOf ActionNewCancel
 		  sender.Close
 		  
+		  cnvSudoku.SetFocus
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1316,17 +1318,17 @@ End
 		  End If
 		  labStatus.TextColor = colStatusValid
 		  
+		  cnvSudoku.SetFocus
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub ShowSudoku()
-		  ' Refresh the canvas display and focus first empty cell
+		  ' Refresh the canvas display
 		  cnvSudoku.ShowSudoku
 		  
 		  Me.RefreshControls
-		  
-		  cnvSudoku.SetFocus
 		  
 		End Sub
 	#tag EndMethod

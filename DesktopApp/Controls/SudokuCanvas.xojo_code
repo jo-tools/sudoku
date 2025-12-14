@@ -6,9 +6,8 @@ Inherits DesktopCanvas
 		  ' Commit pending input when focus leaves the canvas
 		  Me.CommitPendingInput
 		  
-		  ' Clear active cell indicator
-		  mActiveRow = -1
-		  mActiveCol = -1
+		  ' Track focus state (keep active cell remembered)
+		  mHasFocus = False
 		  Me.Refresh(False)
 		  
 		End Sub
@@ -16,16 +15,10 @@ Inherits DesktopCanvas
 
 	#tag Event
 		Sub FocusReceived()
-		  ' Re-activate focus to active cell, or first empty cell if none
-		  If (mSudokuPuzzle = Nil) Then Return
+		  ' Track focus state
+		  mHasFocus = True
 		  
-		  If (mActiveRow < 0) Or (mActiveCol < 0) Then
-		    ' Find first empty cell
-		    Me.SetFocusToFirstEmptyCell
-		  End If
-		  
-		  Me.Refresh(False)
-		  
+		  Me.ShowSudoku
 		End Sub
 	#tag EndEvent
 
@@ -266,8 +259,8 @@ Inherits DesktopCanvas
 		    End If
 		  End If
 		  
-		  ' Draw active cell focus indicator
-		  If (mActiveRow >= 0) And (mActiveCol >= 0) Then
+		  ' Draw active cell focus indicator (only when canvas has focus)
+		  If mHasFocus And (mActiveRow >= 0) And (mActiveCol >= 0) Then
 		    Me.DrawFocusIndicator(g, mActiveRow, mActiveCol, cellSize, 1.0)
 		  End If
 		  
@@ -669,19 +662,8 @@ Inherits DesktopCanvas
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub SetActiveCell(row As Integer, col As Integer)
-		  ' Set the active cell programmatically
-		  mActiveRow = row
-		  mActiveCol = col
-		  mPendingInput = ""
-		  Me.Refresh(False)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetFocusToFirstEmptyCell()
+	#tag Method, Flags = &h21
+		Private Sub SetFirstEmptyCellAsActive()
 		  ' Find and focus the first empty cell
 		  If (mSudokuPuzzle = Nil) Then Return
 		  
@@ -693,7 +675,6 @@ Inherits DesktopCanvas
 		        mActiveRow = row
 		        mActiveCol = col
 		        mPendingInput = ""
-		        Me.Refresh(False)
 		        Return
 		      End If
 		    Next
@@ -703,16 +684,21 @@ Inherits DesktopCanvas
 		  mActiveRow = 0
 		  mActiveCol = 0
 		  mPendingInput = ""
-		  Me.Refresh(False)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ShowSudoku()
-		  ' Refresh display and focus first empty cell
+		  ' Re-activate focus to active cell, or first empty cell if none
+		  If (mSudokuPuzzle = Nil) Then Return
+		  
+		  If (mActiveRow < 0) Or (mActiveCol < 0) Then
+		    ' Find first empty cell
+		    Me.SetFirstEmptyCellAsActive
+		  End If
+		  
 		  Me.Refresh(False)
-		  Me.SetFocusToFirstEmptyCell
 		  
 		End Sub
 	#tag EndMethod
@@ -757,6 +743,10 @@ Inherits DesktopCanvas
 
 	#tag Property, Flags = &h21
 		Private mCellHints() As Sudoku.CellHint
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mHasFocus As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
