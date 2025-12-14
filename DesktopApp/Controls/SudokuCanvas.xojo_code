@@ -456,7 +456,6 @@ Inherits DesktopCanvas
 		Private Sub DrawCellNumbers(g As Graphics, cellSize As Double, N As Integer)
 		  ' Draw the numbers in each cell
 		  ' Locked cells = bold, unlocked cells = normal weight
-		  ' All cells use TextColor
 		  
 		  ' Calculate font size based on cell size
 		  Var fontSize As Double = cellSize * 0.5
@@ -507,7 +506,7 @@ Inherits DesktopCanvas
 
 	#tag Method, Flags = &h21
 		Private Sub DrawFocusIndicator(g As Graphics, row As Integer, col As Integer, cellSize As Double, opacity As Double)
-		  ' Draw a rounded rectangle focus indicator filling the entire cell up to borders
+		  ' Draw a rounded rectangle focus indicator
 		  
 		  Var inset As Double = 1 ' Minimal inset to stay inside cell borders
 		  Var cornerRadius As Double = 4
@@ -530,7 +529,6 @@ Inherits DesktopCanvas
 	#tag Method, Flags = &h21
 		Private Sub DrawGrid(g As Graphics, cellSize As Double, N As Integer, boxWidth As Integer, boxHeight As Integer)
 		  ' Draw the Sudoku grid lines
-		  ' Thin "hair" lines for cell borders, thick lines for box borders (including outer border)
 		  
 		  ' Draw thin "hair" grid lines (gray) for inner cell borders
 		  g.DrawingColor = colGridlineHair
@@ -547,7 +545,7 @@ Inherits DesktopCanvas
 		    End If
 		  Next
 		  
-		  ' Draw thicker block lines on top (including outer border at 0 and N)
+		  ' Draw thicker block lines on top including outer borders
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
 		  For rowBlock As Integer = 0 To N Step boxHeight

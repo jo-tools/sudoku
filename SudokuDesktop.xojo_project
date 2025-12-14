@@ -22,6 +22,7 @@ BuildSteps=Build Automation;Build Automation.xojo_code;&h0000000047824FFF;&h0000
 Class=SudokuButton;DesktopApp/Controls/SudokuButton.xojo_code;&h0000000046BE3FFF;&h00000000445187FF;false
 ColorAsset=colGridline;DesktopApp/Colors/colGridline.xojo_color;&h000000004F8DD7FF;&h0000000052A4A7FF;false
 ColorAsset=colGridlineHair;DesktopApp/Colors/colGridlineHair.xojo_color;&h000000005A4E9FFF;&h0000000052A4A7FF;false
+ColorAsset=colCandidate;DesktopApp/Colors/colCandidate.xojo_color;&h0000000068A807FF;&h0000000052A4A7FF;false
 ColorAsset=colStatusInvalid;DesktopApp/Colors/colStatusInvalid.xojo_color;&h0000000065D287FF;&h0000000052A4A7FF;false
 ColorAsset=colStatusValid;DesktopApp/Colors/colStatusValid.xojo_color;&h000000002BB917FF;&h0000000052A4A7FF;false
 ColorAsset=colStatusSolved;DesktopApp/Colors/colStatusSolved.xojo_color;&h00000000314947FF;&h0000000052A4A7FF;false
