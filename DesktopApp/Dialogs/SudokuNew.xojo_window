@@ -46,7 +46,7 @@ Begin DesktopWindow SudokuNew
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   5
+      TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -77,7 +77,7 @@ Begin DesktopWindow SudokuNew
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   6
+      TabIndex        =   0
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -103,7 +103,7 @@ Begin DesktopWindow SudokuNew
       LockTop         =   False
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   4
+      TabIndex        =   5
       TabPanelIndex   =   0
       Tooltip         =   ""
       Top             =   87
@@ -134,7 +134,7 @@ Begin DesktopWindow SudokuNew
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   0
+      TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelSudokuSizeN"
@@ -166,7 +166,7 @@ Begin DesktopWindow SudokuNew
       LockTop         =   True
       Scope           =   2
       SelectedRowIndex=   -1
-      TabIndex        =   1
+      TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -195,7 +195,7 @@ Begin DesktopWindow SudokuNew
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   2
+      TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "#Translations.kLabelDifficulty"
@@ -227,7 +227,7 @@ Begin DesktopWindow SudokuNew
       LockTop         =   True
       Scope           =   2
       SelectedRowIndex=   -1
-      TabIndex        =   3
+      TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""

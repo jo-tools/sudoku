@@ -232,6 +232,16 @@ Inherits DesktopCanvas
 		  mMouseDownRow = -1
 		  mMouseDownCol = -1
 		  
+		  ' Workaround
+		  ' Happens when clicking 'Lock' on a N>9 Sudoku with pending,
+		  ' but invalid state. LockButton gets disabled, but Focus is now
+		  ' outside of SudokuCanvas. A simple click doesn't always re-set Focus,
+		  ' so we need to work around this and temporarily shift focus.
+		  If (Not mHasFocus) Then
+		    me.Window.SetFocus
+		    me.SetFocus
+		  End If
+		  
 		End Sub
 	#tag EndEvent
 
@@ -271,7 +281,7 @@ Inherits DesktopCanvas
 		  Me.DrawCellNumbers(g, cellSize, N)
 		  
 		  ' Draw hover indicator (half opacity)
-		  If (mHoverRow >= 0) And (mHoverCol >= 0) Then
+		  If mHasFocus And (mHoverRow >= 0) And (mHoverCol >= 0) Then
 		    If (mHoverRow <> mActiveRow) Or (mHoverCol <> mActiveCol) Then
 		      Me.DrawFocusIndicator(g, mHoverRow, mHoverCol, cellSize, 0.5)
 		    End If
