@@ -29,6 +29,7 @@ Inherits DesktopCanvas
 		  
 		  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
 		  
+		  ' 1. Handle Special Keys
 		  Select Case key
 		    ' Handle arrow keys for navigation
 		  Case Chr(28) ' Left arrow
@@ -81,39 +82,46 @@ Inherits DesktopCanvas
 		    Return True
 		    
 		  Case Chr(9) ' Tab
-		    ' Let default behavior happen (move to next control)
+		    ' Let default behavior happen (set focus to next control)
 		    Me.CommitPendingInput
 		    Return False
 		    
 		  Case Chr(8), Chr(127) ' Backspace, Delete
 		    If mSudokuPuzzle.IsGridCellLocked(mActiveRow, mActiveCol) Then
-		      Return True ' Ignore for locked cells
+		      ' Ignore for locked cells
+		      Return True
 		    End If
 		    
 		    If N <= 9 Then
 		      ' For N<=9: immediate clear
 		      mSudokuPuzzle.SetGridValue(mActiveRow, mActiveCol) = 0
 		      mPendingInput = ""
-		      Me.Refresh(False)
 		      RaiseEvent ValueChanged
 		    Else
 		      ' For N>9: remove last character from pending input
 		      If mPendingInput.Length > 0 Then
 		        mPendingInput = mPendingInput.Left(mPendingInput.Length - 1)
-		        Me.Refresh(False)
 		      Else
 		        ' Clear the cell
 		        mSudokuPuzzle.SetGridValue(mActiveRow, mActiveCol) = 0
-		        Me.Refresh(False)
 		        RaiseEvent ValueChanged
 		      End If
 		    End If
+		    
+		    Me.Refresh(False)
 		    Return True
 		    
 		  End Select
 		  
+		  ' 2. Handle Number Input
+		  If key < "0" Or key > "9" Then
+		    ' not a digit, so don't handle this key
+		    Return False
+		  End If
+		  
 		  ' Locked cell - ignore input
 		  If mSudokuPuzzle.IsGridCellLocked(mActiveRow, mActiveCol) Then
+		    ' Ignore for locked cells
 		    Return True
 		  End If
 		  
@@ -127,7 +135,8 @@ Inherits DesktopCanvas
 		      RaiseEvent ValueChanged
 		      Return True
 		    End If
-		    ' Block non-digit keys
+		    
+		    ' Block non-digit keys and digits > N
 		    Return True
 		  End If
 		  
@@ -143,17 +152,10 @@ Inherits DesktopCanvas
 		    Return True
 		  End If
 		  
-		  ' Block everything else
+		  ' Nothing else to handle regarding Number Input
 		  Return True
 		  
 		End Function
-	#tag EndEvent
-
-	#tag Event
-		Sub KeyUp(key As String)
-		  #Pragma unused key
-		  ' Not needed for our implementation
-		End Sub
 	#tag EndEvent
 
 	#tag Event
