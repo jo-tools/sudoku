@@ -160,8 +160,16 @@ Inherits DesktopCanvas
 
 	#tag Event
 		Function MouseDown(x As Integer, y As Integer) As Boolean
-		  #Pragma unused x
-		  #Pragma unused y
+		  ' Track the cell where mouse was pressed
+		  If (mSudokuPuzzle = Nil) Then
+		    mMouseDownRow = -1
+		    mMouseDownCol = -1
+		    Return True
+		  End If
+		  
+		  Var cellInfo As Pair = Me.GetCellAtPoint(x, y)
+		  mMouseDownRow = cellInfo.Left
+		  mMouseDownCol = cellInfo.Right
 		  
 		  ' Return true to indicate we handle mouse events
 		  Return True
@@ -200,21 +208,29 @@ Inherits DesktopCanvas
 
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
-		  ' Clicking in a cell moves focus to it
+		  ' Only select a cell if mouse is released in the same cell where it was pressed
+		  ' This allows the user to "cancel" a selection by dragging outside the cell
 		  If (mSudokuPuzzle = Nil) Then Return
 		  
 		  Var cellInfo As Pair = Me.GetCellAtPoint(x, y)
 		  Var clickedRow As Integer = cellInfo.Left
 		  Var clickedCol As Integer = cellInfo.Right
 		  
+		  ' Only select if released in the same cell as mouse down
 		  If (clickedRow >= 0) And (clickedCol >= 0) Then
-		    ' Commit any pending input before changing cell
-		    Me.CommitPendingInput
-		    
-		    mActiveRow = clickedRow
-		    mActiveCol = clickedCol
-		    Me.Refresh(False)
+		    If (clickedRow = mMouseDownRow) And (clickedCol = mMouseDownCol) Then
+		      ' Commit any pending input before changing cell
+		      Me.CommitPendingInput
+		      
+		      mActiveRow = clickedRow
+		      mActiveCol = clickedCol
+		      Me.Refresh(False)
+		    End If
 		  End If
+		  
+		  ' Reset mouse down tracking
+		  mMouseDownRow = -1
+		  mMouseDownCol = -1
 		  
 		End Sub
 	#tag EndEvent
@@ -731,6 +747,24 @@ Inherits DesktopCanvas
 	#tag EndHook
 
 
+	#tag Note, Name = SudokuCanvas
+		' ============================================================================
+		' SudokuCanvas
+		' ============================================================================
+		'
+		' Custom canvas control for displaying and interacting with Sudoku.Puzzle
+		' Provides:
+		' - Visual rendering of the Sudoku grid with cells, numbers, and candidates
+		' - Mouse interaction for cell selection (click-to-select)
+		' - Keyboard input for entering values and navigation (arrow keys)
+		' - Visual hints for solvable cells and candidate exclusions
+		' - Focus and hover state management
+		'
+		' ============================================================================
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mActiveCol As Integer = -1
 	#tag EndProperty
@@ -757,6 +791,14 @@ Inherits DesktopCanvas
 
 	#tag Property, Flags = &h21
 		Private mHoverRow As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mMouseDownCol As Integer = -1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mMouseDownRow As Integer = -1
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
