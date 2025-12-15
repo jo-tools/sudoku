@@ -978,6 +978,9 @@ End
 		Private Sub ActionLock()
 		  Print "Session '" + Session.Identifier + "': Action Lock"
 		  
+		  ' Sanity Check
+		  If (Not Me.SudokuPuzzle.IsSolvable) Then Return
+		  
 		  ' Lock current state
 		  For row As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1
 		    For col As Integer = 0 To Me.SudokuPuzzle.GetGridSettings.N-1

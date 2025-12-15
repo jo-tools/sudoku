@@ -885,6 +885,9 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionLock()
+		  ' Sanity Check
+		  If (Not Me.SudokuPuzzle.IsSolvable) Then Return
+		  
 		  ' Lock current state
 		  Var N As Integer = Me.SudokuPuzzle.GetGridSettings.N
 		  For row As Integer = 0 To N-1
@@ -1018,6 +1021,7 @@ End
 		Private Sub ActionSolve()
 		  ' Sanity Check
 		  If (Not Me.SudokuPuzzle.IsSolvable) Then Return
+		  cnvSudoku.DiscardPendingInput
 		  
 		  ' Solve and Show
 		  Call Me.SudokuPuzzle.Solve

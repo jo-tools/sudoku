@@ -346,6 +346,13 @@ Inherits DesktopCanvas
 		    End If
 		  End If
 		  
+		  Me.DiscardPendingInput
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DiscardPendingInput()
 		  mPendingInput = ""
 		  Me.Refresh(False)
 		  
