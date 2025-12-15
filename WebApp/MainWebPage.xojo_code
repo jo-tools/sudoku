@@ -32,6 +32,7 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1238,6 +1239,7 @@ End
 		  Var isValid As Boolean = isEmpty Or Me.SudokuPuzzle.IsValid
 		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.SudokuPuzzle.IsSolvable)
 		  Var isSolved As Boolean = (Not isEmpty) And Me.SudokuPuzzle.IsSolved
+		  Var areHintsAvailable As Boolean = (Not isEmpty) And isValid And isSolvable
 		  
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
 		    Me.CellHints = Me.SudokuPuzzle.GetCellHints
@@ -1255,11 +1257,14 @@ End
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
 		  
-		  labExclusion.Enabled = Me.mShowCandidates
-		  chkExcludeLockedCandidates.Enabled = Me.mShowCandidates
-		  chkExcludeNakedSubsets.Enabled = Me.mShowCandidates
-		  chkExcludeHiddenSubsets.Enabled = Me.mShowCandidates
-		  chkExcludeXWing.Enabled = Me.mShowCandidates
+		  chkShowHints.Enabled = areHintsAvailable
+		  chkShowCandidates.Enabled = areHintsAvailable
+		  
+		  labExclusion.Enabled = areHintsAvailable And Me.mShowCandidates
+		  chkExcludeLockedCandidates.Enabled = areHintsAvailable And Me.mShowCandidates
+		  chkExcludeNakedSubsets.Enabled = areHintsAvailable And Me.mShowCandidates
+		  chkExcludeHiddenSubsets.Enabled = areHintsAvailable And Me.mShowCandidates
+		  chkExcludeXWing.Enabled = areHintsAvailable And Me.mShowCandidates
 		  
 		  ' Show
 		  chkShowHints.EnsureValue = mShowHints

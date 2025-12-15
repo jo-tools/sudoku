@@ -1252,6 +1252,7 @@ End
 		  Var isValid As Boolean = isEmpty Or Me.SudokuPuzzle.IsValid
 		  Var isSolvable As Boolean = isEmpty Or (isValid And Me.SudokuPuzzle.IsSolvable)
 		  Var isSolved As Boolean = (Not isEmpty) And Me.SudokuPuzzle.IsSolved
+		  Var areHintsAvailable As Boolean = (Not isEmpty) And isValid And isSolvable
 		  
 		  ' Assign CellHints and CellCandidates to show in SudokuCanvas
 		  If mShowHints And (Not isEmpty) And isValid And isSolvable And (Not isSolved) Then
@@ -1272,11 +1273,14 @@ End
 		  btnLock.Enabled = (Not isEmpty) And isValid And isSolvable And Me.HasUnlockedCells
 		  btnSolve.Enabled = (Not isEmpty) And isValid And isSolvable And (Not isSolved) And Me.SudokuPuzzle.SolveEnabled
 		  
-		  labExclusion.Enabled = me.mShowCandidates
-		  chkExcludeLockedCandidates.Enabled = me.mShowCandidates
-		  chkExcludeNakedSubsets.Enabled = Me.mShowCandidates
-		  chkExcludeHiddenSubsets.Enabled = Me.mShowCandidates
-		  chkExcludeXWing.Enabled = me.mShowCandidates
+		  chkShowHints.Enabled = areHintsAvailable
+		  chkShowCandidates.Enabled = areHintsAvailable
+		  
+		  labExclusion.Enabled = Me.mShowCandidates
+		  chkExcludeLockedCandidates.Enabled = areHintsAvailable And Me.mShowCandidates
+		  chkExcludeNakedSubsets.Enabled = areHintsAvailable And Me.mShowCandidates
+		  chkExcludeHiddenSubsets.Enabled = areHintsAvailable And Me.mShowCandidates
+		  chkExcludeXWing.Enabled = areHintsAvailable And Me.mShowCandidates
 		  
 		  ' Menu
 		  SudokuLock.Enabled = btnLock.Enabled
@@ -1295,6 +1299,14 @@ End
 		  SudokuExclusionNakedSubsets.HasCheckMark = mExclusionParams.ExcludeNakedSubsets
 		  SudokuExclusionHiddenSubsets.HasCheckMark = mExclusionParams.ExcludeHiddenSubsets
 		  SudokuExclusionXWing.HasCheckMark = mExclusionParams.ExcludeXWing
+		  
+		  SudokuShowHints.Enabled = areHintsAvailable
+		  SudokuShowCandidates.Enabled = areHintsAvailable
+		  SudokuExclusionLockedCandidates.Enabled = areHintsAvailable And Me.mShowCandidates
+		  SudokuExclusionNakedSubsets.Enabled = areHintsAvailable And Me.mShowCandidates
+		  SudokuExclusionHiddenSubsets.Enabled = areHintsAvailable And Me.mShowCandidates
+		  SudokuExclusionXWing.Enabled = areHintsAvailable And Me.mShowCandidates
+		  
 		  
 		  ' Status
 		  If isEmpty Then
