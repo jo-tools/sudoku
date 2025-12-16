@@ -628,15 +628,16 @@ Inherits DesktopCanvas
 		Private Sub DrawGrid(g As Graphics, cellSize As Double, N As Integer, boxWidth As Integer, boxHeight As Integer)
 		  ' Draw the Sudoku grid lines
 		  ' Hair lines at exact cell boundaries, thick lines offset by -PenSize/2
+		  Var gridSize As Double = N * cellSize
 		  
 		  ' Draw all thin "hair" lines first (gray) - skip outer border (0 and N)
 		  g.DrawingColor = colGridlineHair
 		  g.PenSize = 1
 		  For i As Integer = 1 To N-1
 		    ' Horizontal
-		    g.DrawLine(0, i * cellSize, N * cellSize, i * cellSize)
+		    g.DrawLine(g.PenSize, i * cellSize, gridSize - g.PenSize, i * cellSize)
 		    ' Vertical
-		    g.DrawLine(i * cellSize, 0, i * cellSize, N * cellSize)
+		    g.DrawLine(i * cellSize, g.PenSize, i * cellSize, gridSize - g.PenSize)
 		  Next
 		  
 		  ' Draw thicker block lines on top (inner box boundaries only, not outer)
@@ -644,22 +645,17 @@ Inherits DesktopCanvas
 		  g.PenSize = 2
 		  For rowBlock As Integer = boxHeight To N - 1 Step boxHeight
 		    ' Horizontal - offset by -PenSize/2
-		    g.DrawLine(-g.PenSize/2, rowBlock * cellSize - g.PenSize/2, N * cellSize - g.PenSize/2, rowBlock * cellSize - g.PenSize/2)
+		    g.DrawLine(g.PenSize, rowBlock * cellSize - g.PenSize/2, gridSize - g.PenSize, rowBlock * cellSize - g.PenSize/2)
 		  Next
 		  For colBlock As Integer = boxWidth To N - 1 Step boxWidth
 		    ' Vertical - offset by -PenSize/2
-		    g.DrawLine(colBlock * cellSize - g.PenSize/2, -g.PenSize/2, colBlock * cellSize - g.PenSize/2, N * cellSize - g.PenSize/2)
+		    g.DrawLine(colBlock * cellSize - g.PenSize/2, g.PenSize, colBlock * cellSize - g.PenSize/2, gridSize - g.PenSize)
 		  Next
 		  
 		  ' Draw thick outer border as a rectangle
 		  g.DrawingColor = colGridline
 		  g.PenSize = 2
-		  Var gridSize As Double = N * cellSize
-		  #If TargetLinux Then
-		    g.DrawRectangle(0 - g.PenSize/2, 0 - g.PenSize/2, gridSize + g.PenSize, gridSize + g.PenSize)
-		  #Else
-		    g.DrawRectangle(0, 0, gridSize, gridSize)
-		  #EndIf
+		  g.DrawRectangle(0, 0, gridSize, gridSize)
 		  
 		End Sub
 	#tag EndMethod
