@@ -23,10 +23,6 @@ Inherits WebSDKUIControl
 		  Var thickColor As Color = ColorProperty("GridlineLight")
 		  if IsDarkMode then thickColor = ColorProperty("GridlineDark")
 		  
-		  ' Background
-		  g.DrawingColor = FillColor()
-		  g.FillRectangle(0, 0, w, h)
-		  
 		  ' Draw thin grid lines (hair lines)
 		  g.DrawingColor = hairColor
 		  g.PenSize = 1
