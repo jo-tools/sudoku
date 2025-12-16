@@ -686,17 +686,6 @@ Inherits DesktopCanvas
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function GetRequiredSize() As Integer
-		  ' Returns the required size (width=height) for the canvas based on current puzzle
-		  If (mSudokuPuzzle = Nil) Then Return kDefaultCellSize * 9
-		  
-		  Var N As Integer = mSudokuPuzzle.GetGridSettings.N
-		  Return N * kDefaultCellSize
-		  
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h21
 		Private Sub SetFirstEmptyCellAsActive()
 		  ' Find and focus the first empty cell
@@ -825,10 +814,6 @@ Inherits DesktopCanvas
 	#tag Property, Flags = &h21
 		Private mSudokuPuzzle As Sudoku.Puzzle
 	#tag EndProperty
-
-
-	#tag Constant, Name = kDefaultCellSize, Type = Double, Dynamic = False, Default = \"48", Scope = Private
-	#tag EndConstant
 
 
 	#tag ViewBehavior

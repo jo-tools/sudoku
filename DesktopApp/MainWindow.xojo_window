@@ -7,8 +7,8 @@ Begin DesktopWindow MainWindow
    FullScreen      =   False
    HasBackgroundColor=   False
    HasCloseButton  =   True
-   HasFullScreenButton=   False
-   HasMaximizeButton=   False
+   HasFullScreenButton=   True
+   HasMaximizeButton=   True
    HasMinimizeButton=   True
    HasTitleBar     =   True
    Height          =   555
@@ -20,7 +20,7 @@ Begin DesktopWindow MainWindow
    MenuBarVisible  =   False
    MinimumHeight   =   555
    MinimumWidth    =   400
-   Resizeable      =   False
+   Resizeable      =   True
    Title           =   "Sudoku"
    Type            =   0
    Visible         =   True
@@ -639,14 +639,14 @@ Begin DesktopWindow MainWindow
       AllowTabs       =   False
       Backdrop        =   0
       Enabled         =   True
-      Height          =   380
+      Height          =   415
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       Scope           =   2
       TabIndex        =   7
@@ -1378,29 +1378,9 @@ End
 		#tag EndGetter
 		#tag Setter
 			Set
+			  ' Set new Sudoku Puzzle
 			  mSudokuPuzzle = value
 			  cnvSudoku.SudokuPuzzle = value
-			  
-			  ' Adjust Layout for current Sudoku Puzzle
-			  ' Get required size from SudokuCanvas
-			  Var canvasSize As Integer = cnvSudoku.GetRequiredSize
-			  cnvSudoku.Width = canvasSize
-			  cnvSudoku.Height = canvasSize
-			  
-			  ' Calculate window size: canvas left + canvas width + gap + button width + margin
-			  Var windowWidth As Integer = cnvSudoku.Left + canvasSize + 20 + btnSolve.Width + 20
-			  
-			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 150 ' Solve and Status are bottom-locked
-			  Var windowHeight As Integer = Max(cnvSudoku.Top + canvasSize + 20, minLayoutHeight)
-			  
-			  #If TargetLinux Then
-			    ' Linux seems to best respect Window Size changes by setting new Bounds
-			    Var newWindowBounds As Rect = New Rect(Me.Bounds.Left, Me.Bounds.Top, windowWidth, windowHeight)
-			    Me.Bounds = newWindowBounds
-			  #Else
-			    Me.Width = windowWidth
-			    Me.Height = windowHeight
-			  #EndIf
 			  
 			End Set
 		#tag EndSetter
