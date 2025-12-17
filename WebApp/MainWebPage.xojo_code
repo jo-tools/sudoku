@@ -32,7 +32,6 @@ Begin WebPage MainWebPage
    _ImplicitInstance=   False
    _mDesignHeight  =   0
    _mDesignWidth   =   0
-   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle rctSudoku
       BorderColor     =   colAppLabel
@@ -1002,7 +1001,7 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionNew()
-		  Print "Session '" + Session.Identifier + "': Action Empty"
+		  Print "Session '" + Session.Identifier + "': Action New"
 		  
 		  Var popSudokuNew As New SudokuNew(Me.SudokuPuzzle.GetGridSettings.N, mCluesFactor)
 		  
@@ -1026,9 +1025,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub ActionNewExecute(obj As SudokuNew, newN As Integer, newCluesFactor As Double, newSudokuPuzzle As Sudoku.Puzzle)
-		  #Pragma unused newN
-		  
-		  Print "Session '" + Session.Identifier + "': Action New Execute"
+		  Var numClues As Integer = CType(Ceiling(newCluesFactor * (newN*newN)), Integer)
+		  Print "Session '" + Session.Identifier + "': Action New Execute (" + newN.ToString + "x" + newN.ToString + " | " + numClues.ToString + ")"
 		  
 		  ' Dismiss Popover
 		  If (obj <> Nil) Then obj.Close

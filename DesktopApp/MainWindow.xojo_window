@@ -7,24 +7,24 @@ Begin DesktopWindow MainWindow
    FullScreen      =   False
    HasBackgroundColor=   False
    HasCloseButton  =   True
-   HasFullScreenButton=   False
-   HasMaximizeButton=   False
+   HasFullScreenButton=   True
+   HasMaximizeButton=   True
    HasMinimizeButton=   True
    HasTitleBar     =   True
-   Height          =   555
+   Height          =   570
    ImplicitInstance=   False
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   1342697471
    MenuBarVisible  =   False
-   MinimumHeight   =   555
-   MinimumWidth    =   400
-   Resizeable      =   False
+   MinimumHeight   =   570
+   MinimumWidth    =   450
+   Resizeable      =   True
    Title           =   "Sudoku"
    Type            =   0
    Visible         =   True
-   Width           =   600
+   Width           =   650
    Begin SudokuButton btnSolve
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -38,7 +38,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   False
@@ -50,7 +50,7 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   445
+      Top             =   460
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -66,7 +66,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   False
@@ -82,7 +82,7 @@ Begin DesktopWindow MainWindow
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   483
+      Top             =   498
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -98,7 +98,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   False
@@ -114,7 +114,7 @@ Begin DesktopWindow MainWindow
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   515
+      Top             =   530
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -133,7 +133,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -190,7 +190,7 @@ Begin DesktopWindow MainWindow
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
@@ -206,7 +206,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   True
       Visible         =   True
-      Width           =   180
+      Width           =   110
    End
    Begin DesktopLabel labThanks
       AllowAutoDeactivate=   True
@@ -218,7 +218,7 @@ Begin DesktopWindow MainWindow
       Height          =   30
       Index           =   -2147483648
       Italic          =   False
-      Left            =   350
+      Left            =   400
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -254,7 +254,7 @@ Begin DesktopWindow MainWindow
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
@@ -270,7 +270,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   180
+      Width           =   110
    End
    Begin DesktopLabel labContact
       AllowAutoDeactivate=   True
@@ -282,7 +282,7 @@ Begin DesktopWindow MainWindow
       Height          =   30
       Index           =   -2147483648
       Italic          =   False
-      Left            =   395
+      Left            =   445
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -313,7 +313,7 @@ Begin DesktopWindow MainWindow
       Enabled         =   True
       Height          =   30
       Index           =   -2147483648
-      Left            =   474
+      Left            =   524
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -351,7 +351,7 @@ Begin DesktopWindow MainWindow
       Top             =   100
       Transparent     =   False
       Visible         =   True
-      Width           =   600
+      Width           =   650
       _mIndex         =   0
       _mInitialParent =   ""
       _mName          =   ""
@@ -368,7 +368,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -398,7 +398,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -427,7 +427,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -459,7 +459,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -492,7 +492,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -522,7 +522,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -552,7 +552,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -582,7 +582,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -614,7 +614,7 @@ Begin DesktopWindow MainWindow
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   420
+      Left            =   470
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   False
@@ -639,14 +639,14 @@ Begin DesktopWindow MainWindow
       AllowTabs       =   False
       Backdrop        =   0
       Enabled         =   True
-      Height          =   380
+      Height          =   430
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       Scope           =   2
       TabIndex        =   7
@@ -656,7 +656,7 @@ Begin DesktopWindow MainWindow
       Top             =   120
       Transparent     =   False
       Visible         =   True
-      Width           =   380
+      Width           =   430
    End
 End
 #tag EndDesktopWindow
@@ -1378,29 +1378,9 @@ End
 		#tag EndGetter
 		#tag Setter
 			Set
+			  ' Set new Sudoku Puzzle
 			  mSudokuPuzzle = value
 			  cnvSudoku.SudokuPuzzle = value
-			  
-			  ' Adjust Layout for current Sudoku Puzzle
-			  ' Get required size from SudokuCanvas
-			  Var canvasSize As Integer = cnvSudoku.GetRequiredSize
-			  cnvSudoku.Width = canvasSize
-			  cnvSudoku.Height = canvasSize
-			  
-			  ' Calculate window size: canvas left + canvas width + gap + button width + margin
-			  Var windowWidth As Integer = cnvSudoku.Left + canvasSize + 20 + btnSolve.Width + 20
-			  
-			  Var minLayoutHeight As Integer = chkExcludeXWing.Top + 150 ' Solve and Status are bottom-locked
-			  Var windowHeight As Integer = Max(cnvSudoku.Top + canvasSize + 20, minLayoutHeight)
-			  
-			  #If TargetLinux Then
-			    ' Linux seems to best respect Window Size changes by setting new Bounds
-			    Var newWindowBounds As Rect = New Rect(Me.Bounds.Left, Me.Bounds.Top, windowWidth, windowHeight)
-			    Me.Bounds = newWindowBounds
-			  #Else
-			    Me.Width = windowWidth
-			    Me.Height = windowHeight
-			  #EndIf
 			  
 			End Set
 		#tag EndSetter
