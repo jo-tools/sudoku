@@ -19,7 +19,7 @@ Begin DesktopWindow MainWindow
    MenuBar         =   1342697471
    MenuBarVisible  =   False
    MinimumHeight   =   570
-   MinimumWidth    =   400
+   MinimumWidth    =   450
    Resizeable      =   True
    Title           =   "Sudoku"
    Type            =   0
@@ -190,7 +190,7 @@ Begin DesktopWindow MainWindow
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
@@ -206,7 +206,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   True
       Visible         =   True
-      Width           =   230
+      Width           =   110
    End
    Begin DesktopLabel labThanks
       AllowAutoDeactivate=   True
@@ -254,7 +254,7 @@ Begin DesktopWindow MainWindow
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
@@ -270,7 +270,7 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   230
+      Width           =   110
    End
    Begin DesktopLabel labContact
       AllowAutoDeactivate=   True
