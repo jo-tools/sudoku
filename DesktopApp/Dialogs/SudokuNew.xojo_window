@@ -361,6 +361,10 @@ End
 #tag Events lstSudokuN
 	#tag Event
 		Sub Opening()
+		  #If TargetWindows And TargetWinUI Then
+		    Me.Width = 100
+		  #EndIf
+		  
 		  Me.RemoveAllRows
 		  
 		  Var sudokuSizes() As Integer = Array(4, 6, 8, 9, 12, 16)
