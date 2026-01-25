@@ -76,7 +76,7 @@ API Endpoints:
 [Xojo](https://www.xojo.com/) is a rapid application development for Desktop, Web, Mobile & Raspberry Pi.  
 
 The Xojo projects `SudokuDesktop.xojo_project` and `SudokuWeb.xojo_project` are using:
-- Xojo 2025r3
+- Xojo 2025r3.1
 - API 2
 
 

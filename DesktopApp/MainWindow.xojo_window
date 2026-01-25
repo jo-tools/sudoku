@@ -682,6 +682,8 @@ End
 
 	#tag Event
 		Sub Opening()
+		  Me.InitLayout
+		  
 		  Me.AcceptFileDrop(SudokuFileTypeGroup.Sudoku)
 		  
 		  Me.DocumentInit
@@ -1037,7 +1039,6 @@ End
 		  
 		  Super.Constructor
 		  
-		  
 		End Sub
 	#tag EndMethod
 
@@ -1244,6 +1245,32 @@ End
 		  Return False
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub InitLayout()
+		  #If TargetWindows And TargetWinUI Then
+		    const kSpacing = 30
+		    btnLock.Top = 160
+		    
+		    labShow.Top = btnLock.Top + kSpacing + 10
+		    chkShowHints.Top = labShow.Top + kSpacing
+		    chkShowCandidates.Top = chkShowHints.Top + kSpacing
+		    
+		    labExclusion.Top = chkShowCandidates.Top + kSpacing + 10
+		    chkExcludeLockedCandidates.Top = labExclusion.Top + kSpacing
+		    chkExcludeNakedSubsets.Top = chkExcludeLockedCandidates.Top + kSpacing
+		    chkExcludeHiddenSubsets.Top = chkExcludeNakedSubsets.Top + kSpacing
+		    chkExcludeXWing.Top = chkExcludeHiddenSubsets.Top + kSpacing
+		    
+		    Var iAdd As Integer = (chkExcludeXWing.Top + kSpacing + 20) - btnSolve.Top
+		    
+		    Self.Height = Self.Height + iAdd
+		    self.Width = self.Width + iAdd
+		    Self.MinimumHeight = Self.Height
+		  #EndIf
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
